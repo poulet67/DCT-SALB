@@ -40,6 +40,7 @@ enum.assetType = {
 	["SPECIALFORCES"] = 22,
 	["FOB"]           = 23,
 	["SQUADRONPLAYER"]= 24,
+	["DOWNEDPILOT"] = 25,
 }
 
 --[[
@@ -49,6 +50,7 @@ enum.assetType = {
 enum.assetTypePriority = {
 	[enum.assetType.AIRSPACE]    = 10,
 	[enum.assetType.JTAC]        = 10,
+	[enum.assetType.DOWNEDPILOT] = 10,
 	[enum.assetType.EWR]         = 20,
 	[enum.assetType.SAM]         = 20,
 	[enum.assetType.C2]          = 30,
@@ -81,6 +83,7 @@ enum.missionType = {
 	["BAI"]      = 5,
 	["OCA"]      = 6,
 	["ARMEDRECON"] = 7,
+	["CSAR"]     = 8,
 }
 
 enum.assetClass = {
@@ -159,6 +162,9 @@ enum.missionTypeMap = {
 		[enum.assetType.SPECIALFORCES] = true,
 		[enum.assetType.FOB]           = true,
 	},
+	[enum.missionType.CSAR] = {
+		[enum.assetType.DOWNEDPILOT] = true,
+	},
 }
 
 enum.missionAbortType = {
@@ -180,6 +186,7 @@ enum.uiRequestType = {
 	["SCRATCHPADSET"]   = 10,
 	["CHECKPAYLOAD"]    = 11,
 	["MISSIONJOIN"]     = 12,
+	["MISSIONPICKUP"]   = 13,
 }
 
 enum.weaponCategory = {
