@@ -37,6 +37,7 @@ function Squadron:_completeinit(template)
 		self._location = { x = 0, y = 0, z = 0 }
 		self._logger:error(string.format("Airbase(%s) does not exist",
 			self.airbase))
+		self:setDead(true)
 	else
 		self._location = ab:getPoint()
 	end
