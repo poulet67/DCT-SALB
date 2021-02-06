@@ -20,6 +20,7 @@ local class = require("libs.class")
 
 local dctcheck = {}
 dctcheck.spawngroups  = 0
+dctcheck.spawnunits   = 0
 dctcheck.spawnstatics = 0
 _G.dctcheck = dctcheck
 
@@ -163,6 +164,7 @@ country.id = {
 	["QATAR"]                   = 72,
 	["OMAN"]                    = 73,
 	["UNITED_ARAB_EMIRATES"]    = 74,
+	["UNKNOWN_81"]              = 81,
 }
 
 country.name  = {}
@@ -446,6 +448,7 @@ function coalition.addGroup(cntryid, groupcat, groupdata)
 		assert(unit.unitId == nil, "unitId field defined")
 	end
 	dctcheck.spawngroups = dctcheck.spawngroups + 1
+	dctcheck.spawnunits = dctcheck.spawnunits + #(groupdata.units)
 	groupdata.country = cntryid
 	groupdata.groupCategory = groupcat
 	groupdata.exists = true
@@ -641,6 +644,11 @@ local coaltbl = {
 		["name"] = "JORDAN",
 		["side"] = coalition.side.RED,
 	},
+	[81] = {
+		["name"] = "UNKNOWN-RED81",
+		["side"] = coalition.side.RED,
+	},
+
 }
 
 function coalition.getCountryCoalition(id)
