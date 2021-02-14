@@ -2,14 +2,6 @@ local Logger      = require("dct.libs.Logger").getByName("IADS")
 local Command     = require("dct.Command")
 local class       = require("libs.class")
 
--- luacheck: max_cyclomatic_complexity 21, ignore 241
--- luacheck: ignore 311
-local trkFiles = {
-	["SAM"] = {},
-	["EWR"] = {},
-	["AWACS"] = {},
-}
-
 -- Ranges at which SAM sites are
 -- considered close enough to activate in meters
 local rangeTbl = {
@@ -243,9 +235,7 @@ function IADS:EWRtrkFileBuild()
 		for _, targets in pairs(det) do
 			if targets.object and targets.object:isExist()
 				and targets.object:inAir() then
-				local trkName = targets.object.id_
 				self:addtrkFile(EWR, targets)
-				trkFiles["EWR"][trkName] = EWR.trkFiles[trkName]
 				if targets.object:getCategory() == Object.Category.WEAPON
 					and targets.object:getDesc().guidance ==
 						Weapon.GuidanceType.RADAR_PASSIVE
@@ -271,9 +261,7 @@ function IADS:SAMtrkFileBuild()
 		for _, targets in pairs(det) do
 			if targets.object and targets.object:isExist()
 				and targets.object:inAir() then
-				local trkName = targets.object.id_
 				self:addtrkFile(SAM, targets)
-				trkFiles["SAM"][trkName] = SAM.trkFiles[trkName]
 				if targets.object:getCategory() == Object.Category.WEAPON
 					and targets.object:getDesc().guidance == Weapon.GuidanceType.RADAR_PASSIVE
 					and SamArmDetect and not self:prevDetected(SAM, targets.object) then
@@ -295,9 +283,7 @@ function IADS:AWACStrkFileBuild()
 		for _, targets in pairs(det) do
 			if targets.object and targets.object:isExist()
 				and targets.object:inAir() then
-				local trkName = targets.object.id_
 				self:addtrkFile(AWACS, targets)
-				trkFiles["AWACS"][trkName] = AWACS.trkFiles[trkName]
 			end
 		end
 	end
@@ -445,53 +431,49 @@ function IADS:checkGroupRole(gp)
 end
 
 function IADS:onDeath(event)
-	if event.initiator:getCategory() == Object.Category.UNIT
-		and event.initiator:getGroup() then
-		local eventUnit = event.initiator
-		local eventGroup = event.initiator:getGroup()
-		for _, SAM in pairs(self.SAMSites) do
-			if eventGroup:getName() == SAM.Name then
-				if eventUnit:hasAttribute("SAM TR") then
-					SAM.numSAMRadars = SAM.numSAMRadars - 1
-				end
-				if SAM.numSAMRadars < 1 then
-					for _, EWR in pairs(self.EWRSites) do
-						for _, SAMControlled in pairs(EWR.SAMsControlled) do
-							if SAMControlled.Name == SAM.Name then
-								EWR.SAMsControlled[SAM.Name] = nil
-							end
-						end
+	if event.initiator:getCategory() ~= Object.Category.UNIT then
+		return
+	end
+
+	local eventUnit = event.initiator
+	local eventGroup = event.initiator:getGroup()
+	local grpname = eventGroup:getName()
+
+	local SAM = self.SAMSites[grpname]
+	if SAM and eventUnit:hasAttribute("SAM TR") then
+		SAM.numSAMRadars = SAM.numSAMRadars - 1
+		if SAM.numSAMRadars < 1 then
+			for _, EWR in pairs(self.EWRSites) do
+				for _, SAMControlled in pairs(EWR.SAMsControlled) do
+					if SAMControlled.Name == SAM.Name then
+						EWR.SAMsControlled[SAM.Name] = nil
 					end
-					self.SAMSites[SAM.Name] = nil
 				end
 			end
+			self.SAMSites[SAM.Name] = nil
 		end
-		for _, EWR in pairs(self.EWRSites) do
-			if eventGroup:getName() == EWR.Name then
-				if eventUnit:hasAttribute("EWR") then
-					EWR.numEWRRadars = EWR.numEWRRadars - 1
-					if EWR.numEWRRadars < 1 then
-						for _, SAM in pairs(self.SAMSites) do
-							for _, controllingEWR in pairs(SAM.ControlledBy) do
-								if controllingEWR.Name == EWR.Name then
-									SAM.ControlledBy[EWR.Name] = nil
-								end
-							end
-						end
-						self.EWRSites[EWR.Name] = nil
+	end
+
+	local EWR = self.EWRSites[grpname]
+	if EWR and eventUnit:hasAttribute("EWR") then
+		EWR.numEWRRadars = EWR.numEWRRadars - 1
+		if EWR.numEWRRadars < 1 then
+			for _, SAM in pairs(self.SAMSites) do
+				for _, controllingEWR in pairs(SAM.ControlledBy) do
+					if controllingEWR.Name == EWR.Name then
+						SAM.ControlledBy[EWR.Name] = nil
 					end
 				end
 			end
-			for _, AWACS in pairs(self.AewAC) do
-				if eventGroup:getName() == EWR.Name then
-					if eventUnit:hasAttribute("AWACS") then
-						AWACS.numAWACS = AWACS.numAWACS - 1
-						if AWACS.numAWACS < 1 then
-							self.AewAC[AWACS.Name] = nil
-						end
-					end
-				end
-			end
+			self.EWRSites[EWR.Name] = nil
+		end
+	end
+
+	local AWACS = self.AewAC[grpname]
+	if AWACS and eventUnit:hasAttribute("AWACS") then
+		AWACS.numAWACS = AWACS.numAWACS - 1
+		if AWACS.numAWACS < 1 then
+			self.AewAC[AWACS.Name] = nil
 		end
 	end
 end
@@ -549,7 +531,6 @@ function IADS:monitortrks()
 			if ((timer.getAbsTime() - trk.LastDetected) > trkMem or
 				(not trk.Object:isExist()) or (not trk.Object:inAir())) then
 				EWR.trkFiles[trk.Name] = nil
-				trkFiles.EWR[trk.Name] = nil
 			end
 		end
 	end
@@ -558,7 +539,6 @@ function IADS:monitortrks()
 			if ((timer.getAbsTime() - trk.LastDetected) > trkMem or
 				(not trk.Object:isExist()) or (not trk.Object:inAir())) then
 				SAM.trkFiles[trk.Name] = nil
-				trkFiles.SAM[trk.Name] = nil
 			end
 		end
 	end
@@ -567,7 +547,6 @@ function IADS:monitortrks()
 			if ((timer.getAbsTime() - trk.LastDetected) > trkMem or
 				(not trk.Object:isExist()) or (not trk.Object:inAir())) then
 				AWACS.trkFiles[trk.Name] = nil
-				trkFiles.AWACS[trk.Name] = nil
 			end
 		end
 	end
