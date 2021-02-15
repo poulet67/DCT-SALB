@@ -29,23 +29,6 @@ function AssetManager:__init(theater)
 	-- Means Asset names must be globally unique.
 	self._assetset = {}
 
-	-- The per side lists to maintain "short-cuts" to assets that
-	-- belong to a given side and are alive or dead.
-	-- These lists are simply asset names as keys with values of
-	-- asset type. To get the actual asset object we need to lookup
-	-- the name in a master asset list.
-	self._sideassets = {
-		[coalition.side.NEUTRAL] = {
-			["assets"] = {},
-		},
-		[coalition.side.RED]     = {
-			["assets"] = {},
-		},
-		[coalition.side.BLUE]    = {
-			["assets"] = {},
-		},
-	}
-
 	-- keeps track of static/unit/group names to asset objects,
 	-- remember all spawned Asset classes will need to register the names
 	-- of their DCS objects with 'something', this will be the something.
@@ -82,9 +65,6 @@ function AssetManager:remove(asset)
 	asset:removeObserver(self)
 	self._assetset[asset.name] = nil
 
-	-- remove asset name from per-side asset list
-	self._sideassets[asset.owner].assets[asset.name] = nil
-
 	-- remove asset object names from name list
 	for _, objname in pairs(asset:getObjectNames()) do
 		self._object2asset[objname] = nil
@@ -104,15 +84,6 @@ function AssetManager:add(asset)
 
 	self._assetset[asset.name] = asset
 	asset:addObserver(self.onDCSEvent, self, "AssetManager.onDCSEvent")
-
-	-- add asset to approperate side lists
-	if asset.type == enum.assetType.AIRSPACE then
-		for _, side in pairs(coalition.side) do
-			self._sideassets[side].assets[asset.name] = asset.type
-		end
-	else
-		self._sideassets[asset.owner].assets[asset.name] = asset.type
-	end
 
 	self._logger:debug("Adding object names for '"..asset.name.."'")
 	-- read Asset's object names and setup object to asset mapping
@@ -157,45 +128,6 @@ function AssetManager:filterAssets(filter)
 	return list
 end
 
---[[
--- getTargets - returns the names of the assets conforming to the asset
---   type filter list, the caller must use AssetManager:get() to obtain
---   the actual asset object.
--- assettypelist - a list of asset types wanted to be included
--- requestingside - the coalition requesting the target list, thus
---     we need to return their enemy asset list
--- Return: return a table that lists the asset names that fit the
---    filter list requested
---]]
-function AssetManager:getTargets(requestingside, assettypelist)
-	local enemy = dctutils.getenemy(requestingside)
-	local tgtlist = {}
-	local filterlist
-
-	-- some sides may not have enemies, return an empty target list
-	-- in this case
-	if enemy == false then
-		return {}
-	end
-
-	if type(assettypelist) == "table" then
-		filterlist = assettypelist
-	elseif type(assettypelist) == "number" then
-		filterlist = {}
-		filterlist[assettypelist] = true
-	else
-		assert(false, "value error: assettypelist must be a number or table")
-	end
-
-	for tgtname, tgttype in pairs(self._sideassets[enemy].assets) do
-		if filterlist[tgttype] ~= nil and
-		   not self._assetset[tgtname].ignore then
-			tgtlist[tgtname] = tgttype
-		end
-	end
-	return tgtlist
-end
-
 function AssetManager:update()
 	local deletionq = {}
 	for _, asset in pairs(self._assetset) do
@@ -220,6 +152,7 @@ local function handleAssetDeath(_ --[[self]], event)
 	local asset = event.initiator
 	dct.Theater.singleton():getTickets():loss(asset.owner,
 		asset.cost, false)
+	self:notify(event)
 end
 
 local handlers = {
