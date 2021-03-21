@@ -250,7 +250,8 @@ function Mission:abort(asset)
 	self:removeAssigned(asset)
 	if next(self.assigned) == nil then
 		self.cmdr:removeMission(self.id)
-		local tgt = self.cmdr:getAsset(self.target)
+		local tgt =
+			dct.Theater.singleton():getAssetMgr():getAsset(self.target)
 		if tgt then
 			tgt:setTargeted(self.cmdr.owner, false)
 		end
@@ -328,7 +329,7 @@ function Mission:addTime(time)
 end
 
 function Mission:getDescription(fmt)
-	local tgt = self.cmdr:getAsset(self.target)
+	local tgt = dct.Theater.singleton():getAssetMgr():getAsset(self.target)
 	if tgt == nil then
 		return "Target destroyed abort mission"
 	end

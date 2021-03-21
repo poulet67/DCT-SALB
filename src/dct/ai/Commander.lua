@@ -72,6 +72,12 @@ function Commander:__init(theater, side)
 	self.missions     = {}
 	self.tgtlist      = {}
 	self.aifreq       = 2*60 -- 2 minutes in seconds
+	--[[
+	self.tactical     = {
+		[squadrons] = {},
+		[airspaces] = {},
+	}
+	--]]
 
 	theater:queueCommand(120, Command(
 		"Commander("..tostring(self.owner)..").startIADS",
@@ -306,11 +312,6 @@ function Commander:getAssigned(asset)
 		return nil
 	end
 	return msn
-end
-
--- TODO: marked for removal
-function Commander:getAsset(name)
-	return require("dct.Theater").singleton():getAssetMgr():getAsset(name)
 end
 
 return Commander
