@@ -32,6 +32,7 @@ local uicmds   = require("dct.ui.cmds")
 local State    = require("dct.libs.State")
 local Timer    = require("dct.libs.Timer")
 local Logger   = require("dct.libs.Logger").getByName("Mission")
+local uimenu   = require("dct.ui.groupmenu")
 
 local MISSION_LIMIT = 60*60*3  -- 3 hours in seconds
 local PREP_LIMIT    = 60*90    -- 90 minutes in seconds
@@ -167,6 +168,40 @@ function PrepState:timeextend(addtime)
 	self.timer:extend(addtime)
 end
 
+local msnmenu = {
+	{
+		type  = uimenu.ItemTypes.CMD,
+		title = "Briefing",
+		path  = uimenu.IDs.MISSION,
+		data  = {
+			["type"] = enum.uiRequestType.MISSIONBRIEF,
+		},
+	}, {
+		type  = uimenu.ItemTypes.CMD,
+		title = "Status",
+		path  = uimenu.IDs.MISSION,
+		data  = {
+			type = enum.uiRequestType.MISSIONSTATUS,
+		},
+	}, {
+		type  = uimenu.ItemTypes.CMD,
+		title = "Rolex +30",
+		path  = uimenu.IDs.MISSION,
+		data  = {
+			["type"] = enum.uiRequestType.MISSIONROLEX,
+			["value"] = 30*60,  -- 30 minutes in seconds
+		},
+	}, {
+		type  = uimenu.ItemTypes.CMD,
+		title = "Abort",
+		path  = uimenu.IDs.MISSION,
+		data  = {
+			["type"] = enum.uiRequestType.MISSIONABORT,
+			["value"] = enum.missionAbortType.ABORT,
+		},
+	},
+}
+
 local function composeBriefing(_, tgt, start_time)
 	local briefing = tgt.briefing
 	local interptbl = {
@@ -197,6 +232,7 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 	self:_setComplete(false)
 	self.state = PrepState()
 	self.state:enter(self)
+	self.menu = utils.deepcopy(msnmenu)
 
 	-- compose the briefing at mission creation to represent
 	-- known intel the pilots were given before departing
@@ -230,12 +266,20 @@ function Mission:getAssigned()
 	return utils.shallowclone(self.assigned)
 end
 
+local function add_mission_menu(msn, asset)
+	for _, item in ipairs(msn.menu) do
+		asset:addMenuItem(item)
+	end
+end
+
 function Mission:addAssigned(asset)
 	if self:isMember(asset.name) then
 		return
 	end
 	table.insert(self.assigned, asset.name)
 	asset.missionid = self:getID()
+	asset:resetMenu(uimenu.IDs.MISSION)
+	add_mission_menu(self, asset)
 end
 
 function Mission:removeAssigned(asset)
@@ -245,6 +289,8 @@ function Mission:removeAssigned(asset)
 	end
 	table.remove(self.assigned, i)
 	asset.missionid = enum.misisonInvalidID
+	asset:resetMenu(uimenu.IDs.MISSION)
+	asset:setDefaultMissionItems()
 end
 
 --[[

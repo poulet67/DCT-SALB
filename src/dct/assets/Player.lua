@@ -33,6 +33,7 @@
 --]]
 
 require("math")
+local check   = require("libs.check")
 local class   = require("libs.namedclass")
 local dctenum = require("dct.enum")
 local dctutils= require("dct.utils")
@@ -40,7 +41,7 @@ local AssetBase = require("dct.assets.AssetBase")
 local uimenu  = require("dct.ui.groupmenu")
 local loadout = require("dct.systems.loadouts")
 local State   = require("dct.libs.State")
-local settings = _G.dct.settings
+local settings = dct.settings
 
 local notifymsg =
 	"Please read the loadout limits in the briefing and "..
@@ -276,6 +277,7 @@ function Player:__init(template)
 	self.inair = false
 	self._operstate = false
 	self.missionid = dctenum.missionInvalidID
+	self.uimenus = nil
 	trigger.action.setUserFlag(self.name, false)
 	trigger.action.setUserFlag(build_kick_flagname(self.name),
 		dctenum.kickCode.NOKICK)
@@ -429,6 +431,127 @@ function Player:kick(kickcode)
 	local flagname = build_kick_flagname(self.name)
 	trigger.action.setUserFlag(flagname, kickcode)
 	self._logger:debug(string.format("requesting kick: %s", flagname))
+end
+
+------------ Menus ------------
+
+local functbl = {
+	[uimenu.ItemTypes.CMD]  = uimenu.buildcmd,
+	[uimenu.ItemTypes.MENU] = uimenu.buildmenu,
+}
+
+function Player:addMenuItem(tbl)
+	check.table(tbl)
+
+	local func = functbl[tbl.type]
+	if func == nil then
+		self._logger:warn("invalid menu type requested: "..
+			require("libs.json"):encode_pretty(tbl))
+		return
+	end
+
+	local path = func(self, tbl)
+	if type(tbl.path) == "number" and self.uimenus[tbl.path] then
+		table.insert(self.uimenus[tbl.path].items, path)
+	end
+	return path
+end
+
+function Player:getMenuPath(menuid)
+	local path
+	if type(menuid) == "number" then
+		local menu = self.uimenus[menuid]
+		if menu then
+			path = menu.path
+		else
+			path = nil
+		end
+	else
+		path = menuid
+	end
+	return path
+end
+
+--[[
+-- menuid - remove the entire menu identified by menuid
+--
+-- A well known menu is stored as a table
+--
+--     player.uimenus = {
+--         [MENUID] = {
+--             path = <menu path returned by DCS>,
+--             items = {
+--                 ...<list of paths for the sub items -
+--                       so we can delete later>,
+--             },
+--         },
+--     }
+--]]
+function Player:resetMenu(menuid)
+	if self.uimenus[menuid] then
+		for _, path in pairs(self.uimenus[menuid].items) do
+			uimenu.removeitem(self.groupId, path)
+		end
+	else
+		local mpath = uimenu.addmenu(self.groupId, uimenu.TitleMap[menuid])
+		self.uimenus[menuid] = {
+			["path"] = mpath,
+			["items"] = {},
+		}
+	end
+end
+
+function Player:setDefaultMissionItems()
+	local rqstmenu = self:addMenuItem({
+		type = uimenu.ItemTypes.MENU,
+		title = "Request",
+		path = uimenu.IDs.MISSION,
+	})
+
+	for k, v in pairs(self.ato) do
+		self.addMenuItem({
+			type = uimenu.ItemTypes.CMD,
+			title = k,
+			path = rqstmenu,
+			data = {
+				["type"] = dctenum.uiRequestType.MISSIONREQUEST,
+				["value"] = v,
+			},
+		})
+	end
+
+	self:addMenuItem({
+		type = uimenu.ItemTypes.CMD,
+		title = "Join",
+		path = rqstmenu,
+		data = {
+			["type"] = dctenum.uiRequestType.MISSIONJOIN,
+		},
+	})
+end
+
+function Player:request(data)
+	if data == nil then
+		self._logger:error("playerRequest(); value error: data must be "..
+			"provided; "..debug.traceback())
+		return
+	end
+
+	self._logger:debug("playerRequest(); Received player request: "..
+		require("libs.json"):encode_pretty(data))
+
+	local playerasset = self:getAssetMgr():getAsset(data.name)
+
+	if playerasset.cmdpending == true then
+		self._logger:debug("playerRequest(); request pending, ignoring")
+		trigger.action.outTextForGroup(playerasset.groupId,
+			"F10 request already pending, please wait.", 20, true)
+		return
+	end
+
+	local cmd = uicmds[data.type](self, data)
+	self:queueCommand(self.uicmddelay, cmd)
+	playerasset.cmdpending = true
 end
 
 return Player

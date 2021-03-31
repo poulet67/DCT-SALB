@@ -12,7 +12,6 @@ local json        = require("libs.json")
 local enum        = require("dct.enum")
 local dctutils    = require("dct.utils")
 local Observable  = require("dct.libs.Observable")
-local uicmds      = require("dct.ui.cmds")
 local STM         = require("dct.templates.STM")
 local Template    = require("dct.templates.Template")
 local AssetManager= require("dct.assets.AssetManager")
@@ -364,31 +363,6 @@ end
 
 function Theater:getTickets()
 	return self:getSystem("dct.systems.tickets")
-end
-
-function Theater.playerRequest(data)
-	local self = Theater.singleton()
-	if data == nil then
-		Logger:error("playerRequest(); value error: data must be "..
-			"provided; "..debug.traceback())
-		return
-	end
-
-	Logger:debug("playerRequest(); Received player request: "..
-		json:encode_pretty(data))
-
-	local playerasset = self:getAssetMgr():getAsset(data.name)
-
-	if playerasset.cmdpending == true then
-		Logger:debug("playerRequest(); request pending, ignoring")
-		trigger.action.outTextForGroup(playerasset.groupId,
-			"F10 request already pending, please wait.", 20, true)
-		return
-	end
-
-	local cmd = uicmds[data.type](self, data)
-	self:queueCommand(self.uicmddelay, cmd)
-	playerasset.cmdpending = true
 end
 
 --[[
