@@ -9,6 +9,18 @@
 -- TODO:
 --  * have a joinable flag in the mission class only let
 --    assets join when the flag is true
+--  * convert to a world state representation
+--    example: kill target
+--      - player WS: target=dead
+--      - AI WS: target=dead, inair=true, rtb=true
+--    example: CAP
+--      - player WS: onstation=90mins
+--      - AI WS: onstation=90mins, attack=air,
+--          inair=true, rtb=true
+--    example: CAS
+--      - player WS: onstation=30mins, target=alive
+--      - AI WS: onstation=30mins, target=alive, attack=ground,
+--          inair=true, rtb=true
 
 require("os")
 require("math")
