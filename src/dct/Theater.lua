@@ -160,7 +160,7 @@ function Theater:loadSystems()
 		"dct.systems.blasteffects",
 	}
 
-	for _, syspath in pairs(systems) do
+	for _, syspath in ipairs(systems) do
 		self:addSystem(syspath)
 	end
 end
