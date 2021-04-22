@@ -1,0 +1,527 @@
+world representation
+
+WorldProperty = {
+	id = <finite set of properties>,
+	subject = <asset name>,
+	value = <well known value type based on id>,
+}
+
+Other Attributes of an Agent:
+ - target=<asset> (assigned target to agent)
+ - node=<asset>
+ - threat=<number>
+
+World States:
+ - inAir=<bool> (agent is in the air)
+ - isArmed=<bool> (agent has weapons)
+ - hasFuel=<bool> (agent has enough fuel)
+ - hasCargo=<bool> (has cargo on board)
+ - stationTime=<time>
+ - targetDead=<bool> (target is dead)
+ - atTarget=<bool>
+ - atNode=<bool>
+ - stance=<relax|defend|attack|search|flee|idle>
+
+
+Goal API
+  class Goal:
+    int  relevance()
+    bool complete()
+
+Goals:
+ * General Plane:
+   - Idle
+     (stance=idle)
+   - RTB
+     (inAir=false)
+   - Refuel
+     (hasFuel=true)
+   - Flee
+     (stance=flee)
+
+ * Mission Goals:
+   - Patrol
+     (hasFuel=true, stance=relax, stationTime=<time>)
+   - Defend
+     (hasFuel=true, isArmed=true, stance=defend, stationTime=<time>)
+   - Search
+     (hasFuel=true, stance=search, stationTime=<time>)
+   - Escort
+     (atTarget=true, targetDead=false)
+   - Intercept
+     (atTarget=true)
+   - Attack
+     (targetDead=true)
+   - Pickup
+     (hasCargo=true)
+   - Dropoff
+     (hasCargo=false)
+
+
+Action API
+  class Action:
+    preconditions = {}
+    effects = {}
+    bool checkProceduralPreconditions()
+    void ActivateAction() -- activate action
+    int  complete() -- <0 problem with action replan
+                    -- =0 action continues
+                    -- >0 action complete, do next action
+
+Actions:
+ - OnStation
+   (precond: atNode=true; effects: stationTime=60mins)
+ - FlyToNode
+   (precond: inAir=true; effects: atNode=true)
+ - FlyToTarget
+   (precond: inAir=true; effects: atTarget=true)
+ - Takeoff (possibly needs to activate the AI,
+            Group.activate(), if the group is spawned
+            uncontrolled)
+   (precond: none; effects: inAir=true)
+ - Land
+   (precond: atTarget=true; effects: inAir=false)
+ - Refuel
+   (precond: atTarget=true; effects: hasFuel=true)
+ - CAP (orients racetrack in accordiance with DCA)
+   (precond: atTarget=true; effects: stance=defend)
+ - Tanker
+   (precond: atTarget=true; effects: stance=relax)
+ - AWACS
+   (precond: atTarget=true; effects: stance=search)
+
+
+ - EnableRadar
+ - PatrolHuman (adds commands to let players set the
+             onstation state)
+ - Racetrack
+ - Hold
+ - Pickup
+ - DropOff
+
+FSM:
+ - goto
+ - doAction
+
+
+Scenario:
+
+CAP at location x,y for 1 hour
+
+Goal: (hasFuel=true, stance=defend, stationTime=60mins)
+
+Current WorldState:
+ - inAir=false
+ - isArmed=true
+ - hasFuel=true
+ - stationTime=0
+ - targetDead=false
+ - atTarget=false
+ - target="airspace 1234"
+ - stance=idle
+
+Plan:
+ - Wait
+   (precond: none; effects: stationTime=60mins)
+ - CAP
+   (precond: atTarget=true; effects: stance=defend)
+ - GotoTarget
+   (precond: inAir=true; effects: atTarget=true)
+ - Takeoff
+   (precond: none; effects: inAir=true)
+
+           current   goal
+hasFuel     true     true     Y
+stance      idle     defend   N
+station      0       60       N
+   A: Wait
+hasFuel     true     true     Y
+station      0       60       Y
+stance      idle     defend   N
+   A: CAP
+hasFuel     true     true     Y
+station      0       60       Y
+stance      defend   defend   Y
+atTarget    false    true     N
+   A: GotoTarget
+hasFuel     true     true     Y
+station      0       60       Y
+stance      defend   defend   Y
+atTarget    true     true     Y
+inAir       false    true     N
+   A: Takeoff
+hasFuel     true     true     Y
+station      0       60       Y
+stance      defend   defend   Y
+atTarget    true     true     Y
+inAir       true     true     Y
+
+Other stuff
+============================
+
+Director (Theater):
+* Manages the overall flow of the theater, spawning only the number of
+  regions that have been specified along with spawning other supporting
+  assets; airbases, SAMs, etc.
+* Determins which regions will be spawned and are of key focus. Accepts
+  input from commanders on region weighting.
+* Requires regions to define connections so a graph can be created
+* Regions can calculate their ownership by listening to the AssetManager
+  for asset adds and listen to each asset for when they die.
+* What determines region ownership?
+
+
+* region swapping sides
+* navmesh - make campaign designer create the navmesh
+* mission class, change to represent a desired world state
+
+
+CAP example:
+  world state:
+   - on-station for 1.5hrs
+   - airspace remains uncontrolled by enemy
+
+  target: the airspace asset
+
+
+CAS example (escort/route clearance/etc):
+  world state:
+   - on-station
+   - target remains alive
+
+  target: friendly JTAC
+
+
+Transport example:
+  world state:
+   - pickup at X
+   - drop-off at Y
+   - assigned alive
+
+  target: n/a
+
+
+Support example (tanker/awacs/etc.):
+  world state:
+   - on-station
+   - tanker
+
+  target: orbit location
+   
+
+Strike example (same for Sea/SEAD/etc strikes):
+  world state:
+   - target is dead
+
+  target: enemy strike target
+
+
+
+## Mission Selection
+
+Taking into account requestor capabilities:
+
+  * combat radius
+  * enemy size
+  * enemy threats
+
+===================================
+Flights Possible (available resources):
+ F_possible = sum[i = 1,S](current_i / flightsize_i)
+   where 'S' is the number of squadrons on a side
+
+flight utilization:
+ F_allowed = F_possible * clamp(P_opposing/P_opposingmax,
+	U_min, U_max)
+ U_min - utilization min percentage of F_possible
+ U_max - utilization max percentage of F_possible
+
+Expected AI flights:
+ F_expected = F_allowed - P_current
+
+
+how to handle mission selection and planning?
+A: possibly through utility and planning
+
+Mission Types:
+ M_p = Union(S_i.ato)
+   The union of all possible missions all squadrons can fly
+
+world state for mission selection:
+ * friendly fighter strength - raw number of flights assigned to CAP/ALERT +
+      players
+ * enemy fighter strength
+ * friendly sam strength - average sam strength over all regions
+      sum[i=1,R](SAM_r)/R - more or less represents coverage
+ * enemy sam strength
+ * friendly infrastructure strength
+ * enemy infrastructure strength
+ * friendly sea strength
+ * enemy sea strength
+ * friendly supply
+ * enemy supply
+ * friendly pilot rescue needed
+ * friendly ewr strength
+ * enemy ewr strength
+ * friendly land tactical strength
+ * enemy land tactical strength
+
+Mission Types:
+CAS   - decreases enemy ground tactical strength
+CAP   - increases friendly fighter strength
+ALERT - increases friendly fighter strength, has a higher cost
+        because the a/c are on the ground
+STRIKE- decreases enemy infrastructure
+SEAD  - decreases enemy sam strength
+BAI   - decreases enemy supply
+OCA   - decreases enemy fighter strength
+TRANSPORT - increases friendly supply
+ROUTERECON - as requested??
+CSAR  - ??
+
+
+==========================================
+# AI Commander
+
+The strategic AI commander per side.
+
+Responsible for:
+ * _strategic planning_
+ * _mission planning & scheduling_
+ * _theater analysis_
+
+
+
+Enemy AI will be grouped into 'squadrons' with some squadrons existing on-map
+and some off-map.
+
+Squadrons will have the following attributes:
+	* home airbase or spawn location if no airbase
+	* squadron size or unlimited
+	* moral
+	* type of aircraft flown, each squadron flies only a single airframe
+	* payload definition
+	* destroyed state description; if any of the states become true
+		the squadron becomes destroyed.
+
+Priority Sort Order
+
+sorting order used to sort targets
+
+critera to consider:
+- distance to target - not sure distance should matter
+- priority of target
+
+
+Q: How should selection work?
+A: Selection of a target should be based on the "priority" of that target and its
+   relative threat level compared to the
+
+
+(regionprio + (-10*ismissionassigned) + assigned)*65536 + tgtprio
+
+
+## Region & Theater Threat Reports
+
+ * SEA
+ * AIR
+ * ELINT
+ * SAM
+ * SHORAD
+
+Measure these items based on a threat point system. The threat reported
+is only for the assets detected, this can mean threats not detected
+will not be reported or the threat be under reported.
+
+For example the threat calculation for SAMs would be:
+
+    threat = sum(SAM.threat, 0, i)
+
+For calculation of air threat the calculation would be:
+
+    threat = sum(AIR.enemy.threat,0,i) - sum(AIR.friendly.threat,0,x)
+
+This means we do not need to know how many assets were originally
+spawned. Making it easier to dynamically figure out threats without
+having to keep individual counts of everything all the time.
+
+The region threat for each item can be periodically calculated along
+with the commander's theater view.
+
+Note: the threat for each asset will need to be a 3 tuple to cover
+air, land, and sea threat capability of the asset.
+
+
+## Mission Assignment
+
+# mission assignment: assign missions based on a region
+
+## Summary
+
+Given 5 regions choose the highest priority region. Select missions from this region until a fixed maximum number of missions are assigned.
+
+ * What triggers a reselection?
+   - on mission limit reached
+ * What happens if there are no more assets of the type requested in the active region?
+   - the next region in priority order should be looked at
+ * How does the reselection keep from selecting the currently "full" region?
+
+Upon reselection of a new region
+
+ question, starting the design of the new mission assignment system. When a player requests a mission what should happen? A scenario; The current active region is islands and a CAP mission is already assigned to islands (thus CAP is full for islands). A new player requests CAP, what should happen?
+
+Currently the next CAP station would be assigned in the list until there are no more possible CAP stations. This is actually the case for all mission types.
+
+What I understood from past discussions, is it seems like the new CAP player should get the message of "no CAP missions available". Would this be correct?
+
+Or should a hybrid based on the number of players scale the available mission slots. In this case should the jask region be selected for the CAP assignment, if there are 15+ players on the server. Even if the maximum number of missions in islands has not been reached?
+
+Another alternative, should certain mission types be allowed to "spill-over" into other regions, thus "unlocking" the region for other mission types. For example; at the beginning of a new server, should only SEAD and CAP missions be assignable until until the strategic SAMs are taken out in islands? Then CAP and SEAD can be assigned in jask (assuming it was next) but no strike targets in jask until the SAM is taken out.
+
+Final alternative, should current active missions influence what is assigned next and what happens when there is available mission of the requested type?
+
+
+# Mission Tasking
+
+ and mission tasking being support more than just determining if an asset is dead or not allow different types of taskings have different goal criteria. For example a CAP tasking would be based on station time
+
+mission tasking is supporting other types of missions beyond "go blow something up"  like "go hang-out here for a while and kill aircraft/tanks" or "transport box-x to position y" or many other types of taskings.
+
+
+============================================
+	-- kinds of states
+	--   * tactical states
+	--      - losses taken
+	--      - target dead
+	--      - joker
+	--      - bingo
+	--      - winchester
+	--      - goto location
+	--
+	--   * mission states
+	--      - target dead
+	--      - station time > #
+	--      - mission active for > X time
+	--      - assigned dead
+	--
+	--   * theater states
+	--      - tickets <= 0
+	--      - primary targets destroyed > %
+	--      - secondary targets destroyed > %
+
+defend
+escort
+attack
+intercept
+moveto
+
+
+
+states:
+- at location
+- inair
+- target = bool (true is alive)
+- in-range; this is really just a variation of "at location"
+- has-weapon; this could be a bit field specifying a set of weapons that would
+    satify the test
+
+
+goals:  goals describe desired states
+* goal; move to
+  - at location
+
+* goal; hold area, defend area
+  - at location
+  - !target
+
+* goal; stealth hold area
+  - at location
+  - ROE == weapons hold
+  - !detected
+
+* goal; attack target
+  - in-range
+  - has weapon
+  - target == dead
+
+* goal; CAP, hold area, defend area
+  - at location
+  - !target
+  - inair
+
+
+For various ancillary settings like; formation, ROE setting, alarm state, AB usage, etc
+ use utility to determine their settings.
+
+
+CAP flight lead goals:
+- investigate
+   -
+- intercept
+   -
+- attack
+   - commit criteria
+- persue
+- disengage
+- refuel
+- rtb
+- race-track on-station hold
+
+actions setup per flight
+- set reaction to threat
+- use flare
+- use ecm
+
+
+flight lead actions:
+- use radar
+- set freq
+- set ROE
+- prohibit ab
+- land
+- takeoff
+
+
+CAP flight lead actions:
+- goto waypoint
+- race-track hold (idle state until fuel low)
+- refuel
+- engageTargets
+- missile attack range
+
+
+flight lead attributes monitored:
+- fuel state
+- Friendly and Enemy SAM threat
+- Friendly & enemy airbourne threats
+- damage taken
+- mission specific
+  - cap station orbit size
+  - ground targets
+
+
+flight lead personalities:
+- aggressiness
+- emission awareness
+- positioning (altitude & aspect)
+- dcs skill level
+
+
+squadron:
+- skill range of pilot
+- define airframe
+- number of airframes available
+- define airfield operating out of
+- weapons loadouts; interceptor a/c vs. CAP a/c
+- squadrons should be able to scramble a certian amount of jets
+- allow designer to define the maintaince rate for given states of a/c returning
+
+
+air defense commander:
+- morphable border, determined by presence of ground assets in a given area
+- select automatically CAP stations based on priority and threat
+- assign sqdns to CAP stations based on distance
+- be able to scramble alerts a/c
+- critera for scrambling alert a/c
+   * alerts are only used when all airborne CAP car committed
+   * alert a/c RTB once a threat has been dewlt with

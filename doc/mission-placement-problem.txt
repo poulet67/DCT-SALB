@@ -1,0 +1,65 @@
+## Goal:
+
+Have a strategic AI determine where X missions need to be placed. Then
+using a tactical AI execute those X missions.
+
+Where X is a CAP, AWACS or Tanker mission.
+
+
+## Questions:
+
+1. How does a strategic AI determine if it needs more(or less) of X?
+[incentive]
+A1. The incentitive could likely be based on different factors given the
+    type of mission being considered, example;
+
+    * A CAP mission would reduce estimated threat of the opposition, at
+      the same time there might be a maximum number of CAP flights we can
+      sortie
+
+2. Once more(or less) of X has been determined what determines placement?
+[placement]
+A2. So we have used a utility priority table to determine what the next mission
+    sortie is. (Another Q1 issue, what desire do we need to be over before we
+    trigger another mission? Otherwise we will always continue triggering
+    missions which we do not want.)
+
+    We now need to know where to place the mission.
+
+3. Given N squadrons that could do the job, how do we determine assignment?
+[scheduling]
+
+4. How is a flight's end state (completion/failure) communicated back to the
+  strategic AI to trigger recalculation of incentive?
+[feedback/scheduling]
+
+
+## Strategic AI
+
+
+
+airspace
+  * slots(number) - how many total aircraft groups can be assigned to this airspace
+  * surv(boolean) - if the airspace should allow AWACS tracks if deemed safe enough
+  * tanker(boolean) - if the airspace should allow tanker tracks if deemed safe enough
+  * links(list) - list of airspace names that this airspace is connected to
+
+region
+  * 
+
+Change Airspace assets to "NavPoint" and associate them with a domain table.
+This table contains the following:
+
+  * neighbor links - a list of other region names
+  * slots - maximum available missions that can be assigned
+  * types - types of assets that can be assigned
+
+thus;
+
+domain = {
+  ["air"] = {
+    ["neighbors"] = {},
+    ["slots"] = 3,
+    ["types"] = {"tanker","surv",},
+  },
+}

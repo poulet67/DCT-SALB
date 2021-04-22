@@ -1,0 +1,18 @@
+A binary search tree for determining
+which section of runway was hit
+
+                        R
+                   /         \
+                 Rl           Rr
+                / \           / \
+              Ra   Rb       Rc   Rd
+             / \   / \     / \   / \
+            R1 R2 R3 R4   R5 R6 R7 R8
+
+
+R = A,B,C and len(AB) < len(BC)
+O(n) = 1 + log2(n)
+
+We can take advantage of the geometry of the problem and simply use a
+binary search over an array of subsections of the runway. We simply need
+to be able to know if the point is to the left or right of the short end.

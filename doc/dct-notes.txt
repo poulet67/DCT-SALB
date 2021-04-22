@@ -1,0 +1,52 @@
+# finding a front based on priority
+
+if we assign a priority to each region and then order regions based on
+priority; the front is defined as all regions where the ownership changes.
+
+    N1 -- N5
+     B    R
+
+This assumes however that all regions are connected and doesn't take into
+account another type of ordering, such as geographical order. Meaning we
+calculate a front but because of how the regions are physically laid out blue
+fighters are flying over red regions.
+
+# Traditional ways of finding a front
+
+Regions state their connections.
+
+We can still find the front by traversing the graph and looking for ownership
+change. The question becomes which vertices on the graph do we pick to travers
+to and from?
+
+## For PvP
+
+In the PvP case we simply pick the regions in which player spawn points exist
+and are active. Since slots usually originate from an airbase we will use the
+airbase's region as the slot's region.
+
+Note: We would have to require that all slots be airbase starts, no air
+starts.  There is a way to support air starts by using an "off map" airbase
+which would then be associated with a region but this seems needless at this
+point.
+
+## For PvE
+
+This is a little more unclear, we could use a bredth-first search, starting
+from the player's spawn region. This method is even applicable in the PvP
+case. The search would end when each branch of the search finds a change in
+ownership.
+
+## Determining Region Ownership
+
+Region ownership, this could be determined by the number of tickets that exist
+in each region. We can even determine this when we generate all the regions.
+
+There are 4 states for ownership;
+ * blue (only blue tickets exist in the region)
+ * red (only red tickets exist in the region)
+ * neutral (no tickets exist in the region)
+ * contested (tickets from each side exist) - we have found our front
+
+What about cases where there are no tickets but assets from opposing
+sides exist?

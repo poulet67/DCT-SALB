@@ -17,6 +17,29 @@ created in the Mission Editor and configuration files. There is an initial
 learning curve but it is no more difficult than initially learning the DCS
 Mission Editor.
 
+## Features and Capabilities
+
+* Mission Creation
+  - uses static templates for quicker asset creation
+  - no large .miz to manage just place player slots
+  - theater and region organization to control spawning
+    and placement
+  - settings to customize how you want your campaign to
+    play
+
+* Game Play
+  - Focus on more goal based gameplay vs. "air quake"
+  - mission system used by AI and players
+  - ticket system to track win/loss critera
+  - Integrated Air Defense per faction
+  - Weapon point buy system for players to limit kinds and
+    types of payloads
+  - Bomb blast effects enhancement and weapon impact system
+
+* Technical
+  - Built for large scale scenarios
+  - Designed by professional engineers
+
 ## Installation
 
 See installation instructions in the [Administrators' guide](doc/02-administrators.md).
