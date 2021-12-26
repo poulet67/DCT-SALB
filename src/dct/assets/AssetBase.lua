@@ -1,4 +1,4 @@
---[[
+ --[[
 -- SPDX-License-Identifier: LGPL-3.0
 --
 -- Provides the base class for Assets.
@@ -7,13 +7,13 @@
 --
 Class Hierarchy:
 
-            AssetBase----Airspace
-                |
-   Airbase------+------Squadron
-				|
-			  Static-----IAgent-----Player
+							                       AssetBase----Airspace
+								                       |
+	  Base---------------------------------------------+
+		|											   |
+ FOB----+-- Airbase							  Static-----IAgent-----Player
 
-An AIAgent is an Asset that is movable.
+
 --]]
 
 require("math")
@@ -28,7 +28,6 @@ local Logger   = require("dct.libs.Logger")
 local settings = _G.dct.settings
 
 local norenametype = {
-	[dctenum.assetType.SQUADRONPLAYER] = true,
 	[dctenum.assetType.PLAYERGROUP]    = true,
 	[dctenum.assetType.AIRBASE]        = true,
 }
@@ -116,7 +115,6 @@ function AssetBase:__init(template)
 		"_dead",
 		"_intel",
 		"_priority",
-		"_location",
 		"type",
 		"briefing",
 		"owner",
@@ -151,7 +149,7 @@ function AssetBase:__init(template)
 	self.assettypes = nil
 end
 
-function AssetBase:_completeinit(template)
+function AssetBase:_completeinit(template) -- NOTE: Add any new template keys here!
 	self.type     = template.objtype
 	if template.desc then
 		self.briefing = dctutils.interp(template.desc, {
@@ -161,14 +159,15 @@ function AssetBase:_completeinit(template)
 		print(string.format("Template(%s) has nil 'desc' field",
 			template.name))
 	end
-	self._location = template.location
+	
 	self.regenerate = template.regenerate
 	self.ignore   = template.ignore
 	self.owner    = template.coalition
 	self.rgnname  = template.regionname
 	self.tplname  = template.name
-	self.cost     = math.abs(template.cost)
-	if norenametype[self.type] == true then
+
+	
+	if norenametype[self.type] == true or self.spawnable then
 		self.name = self.tplname
 	else
 		self.name = self.rgnname.."_"..self.owner.."_"..template.name
@@ -302,7 +301,7 @@ end
 -- Returns: nil - if not supported otherwise a DCS Vec3
 --]]
 function AssetBase:getLocation()
-	return assert(self._location, "asset location is nil")
+	return self._location
 end
 
 --[[

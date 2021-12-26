@@ -57,15 +57,16 @@ function menus.createMenu(asset)
 		})
 
 	local msnmenu = addmenu(gid, "Mission", nil)
-	local rqstmenu = addmenu(gid, "Request", msnmenu)
-	for k, v in pairs(asset.ato) do
+	
+	--local rqstmenu = addmenu(gid, "Request", msnmenu)
+	--[[for k, v in pairs(asset.ato) do
 		addcmd(gid, k, rqstmenu, Theater.playerRequest,
 			{
 				["name"]   = name,
 				["type"]   = enum.uiRequestType.MISSIONREQUEST,
 				["value"]  = v,
 			})
-	end
+	end--]]
 
 	addcmd(gid, "Join", msnmenu, Theater.playerRequest,
 		{
@@ -89,13 +90,40 @@ function menus.createMenu(asset)
 			["type"]   = enum.uiRequestType.MISSIONABORT,
 			["value"]  = enum.missionAbortType.ABORT,
 		})
-	addcmd(gid, "Rolex +30", msnmenu, Theater.playerRequest,
-		{
-			["name"]   = name,
-			["type"]   = enum.uiRequestType.MISSIONROLEX,
-			["value"]  = 30*60,  -- seconds
-		})
+	--addcmd(gid, "Rolex +30", msnmenu, Theater.playerRequest,
+	--	{
+	--		["name"]   = name,
+	--		["type"]   = enum.uiRequestType.MISSIONROLEX,
+	--		["value"]  = 30*60,  -- seconds
+	--	})
 	loadout.addmenu(asset, nil, Theater.playerRequest)
+	--]]
+	
+	--Logger:debug("------ SPAWNABLES MENU START--------------")
+	--Logger:debug(tostring(Theater.singleton().spawnables))
+
+	--spawnables = require("dct.systems.spawnable")
+	
+	
+		-- old implementation - 
+	
+	--if(spawnables:getUnitTable()) then
+			
+		--Logger:debug("------ SPAWNABLES MENU --------------")
+		
+		--local spawnableMenu = addmenu(gid, "Spawn", nil)	
+		
+		--for k, v in pairs(Theater.singleton().spawnables) do
+			--addcmd(gid, k, spawnableMenu, Theater.playerRequest,
+				--{
+				--	["name"]   = name,
+				--	["type"]   = enum.uiRequestType.SPAWN,
+				--	["value"]  = k,
+				--})
+		--end
+
+	--end
+	
 end
 
 return menus

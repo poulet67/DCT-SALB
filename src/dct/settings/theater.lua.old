@@ -155,22 +155,19 @@ local function theatercfgs(config)
 					["category"] = enum.weaponCategory.AG,
 				},
 			},
-		},
-		{
+		}, {
 			["name"] = "payloadlimits",
 			["file"] = config.server.theaterpath..utils.sep.."settings"..
 				utils.sep.."payloadlimits.cfg",
 			["validate"] = validate_payload_limits,
 			["default"] = defaultpayload,
-		}, 
-		{
+		}, {
 			["name"] = "codenamedb",
 			["file"] = config.server.theaterpath..utils.sep.."settings"..
 				utils.sep.."codenamedb.cfg",
 			["validate"] = validate_codenamedb,
 			["default"] = require("dct.data.codenamedb"),
-		}, 
-		{
+		}, {
 			["name"] = "ui",
 			["file"] = config.server.theaterpath..utils.sep.."settings"..
 				utils.sep.."ui.cfg",
@@ -193,40 +190,7 @@ local function theatercfgs(config)
 				},
 				["ato"] = {},
 			},
-		},
-		-- START POULET CHANGES
-		-- To be completed
-		--[[ 
-		{
-			["name"] = "gameplay",
-			["file"] = config.server.theaterpath..utils.sep.."settings"..
-				utils.sep.."gameplay.cfg",
-			["validate"] = validate_gameplay_configs,
-			["default"] = {},
-		}, 
-		{
-			["name"] = "radios",
-			["file"] = config.server.theaterpath..utils.sep.."settings"..
-				utils.sep.."radios.cfg",
-			["validate"] = validate_radio_settings,
-			["default"] = {
-
-						["UHF MAX"] = 275.000,
-						["UHF MIN"] = 265.000,
-						["VHF MAX"] = 128.000,
-						["VHF MIN"] = 118.000,
-						["FM MAX"] = 30.000,
-						["FM MIN"] = 20.000,
-						
-						["FREQ STEPS"] = 0.250,
-						["REBROADCAST"] = true, -- enforces 'mirrored' channels from UHF to VHF. UHF max - UHF min / freq steps must be the same as VHF max - VHF min / freq steps or else VHF min will be ignored
-												-- this will allow SRS users to rebroadcast frequencies 1 for 1 easier
-						["FREQ UNAVAILABLE"] =  {121.500, 243.000, 249.500, 250.000,  } --Frequencies not available for use. Will select a different one for mission planning
-
-			},
-		},
---]]
-		{
+		}, {
 			["name"] = "blasteffects",
 			["file"] = config.server.theaterpath..utils.sep.."settings"..
 				utils.sep.."blasteffects.cfg",
@@ -234,7 +198,7 @@ local function theatercfgs(config)
 			["default"] = require("dct.data.blasteffects"),
 		},
 	}
-	
+
 	utils.readconfigs(cfgs, config)
 	return config
 end

@@ -9,21 +9,22 @@ local utils    = require("libs.utils")
 local enum     = require("dct.enum")
 local dctutils = require("dct.utils")
 local Command  = require("dct.Command")
+local Logger   = dct.Logger.getByName("AssetManager")
 local Observable = require("dct.libs.Observable")
 
 local assetpaths = {
+	"dct.assets.MobileAsset",
 	"dct.assets.Airbase",
 	"dct.assets.Airspace",
 	"dct.assets.Player",
-	"dct.assets.Squadron",
 	"dct.assets.StaticAsset",
 }
 
-local AssetManager = require("libs.namedclass")("AssetManager",
-	Observable)
+local AssetManager = require("libs.namedclass")("AssetManager", Observable)
 function AssetManager:__init(theater)
 	Observable.__init(self,
 		require("dct.libs.Logger").getByName("AssetManager"))
+	self.updaterate = 120
 	self.updaterate = 120
 	-- The master list of assets, regardless of side, indexed by name.
 	-- Means Asset names must be globally unique.
@@ -79,6 +80,7 @@ function AssetManager:remove(asset)
 		return
 	end
 
+	self._logger:debug("Removing asset: %s", asset.name)
 	asset:removeObserver(self)
 	self._assetset[asset.name] = nil
 
@@ -91,21 +93,25 @@ function AssetManager:remove(asset)
 	end
 end
 
+local CapturableAsset = {
+	[enum.assetType.AIRSPACE] = true,
+	[enum.assetType.AIRBASE]  = true,
+}
 function AssetManager:add(asset)
 	assert(asset ~= nil, "value error: asset object must be provided")
 	assert(self._assetset[asset.name] == nil, "asset name ('"..
 		asset.name.."') already exists")
 
 	if asset:isDead() then
-		self._logger:debug("AssetManager:add - not adding dead asset:"..
-			asset.name)
+		self._logger:debug("AssetManager:add - not adding dead asset: %s", asset.name)
+
 		return
 	end
 
 	self._assetset[asset.name] = asset
 	asset:addObserver(self.onDCSEvent, self, "AssetManager.onDCSEvent")
 
-	-- add asset to approperate side lists
+	-- add asset to appropriate side lists
 	if asset.type == enum.assetType.AIRSPACE then
 		for _, side in pairs(coalition.side) do
 			self._sideassets[side].assets[asset.name] = asset.type
@@ -114,20 +120,19 @@ function AssetManager:add(asset)
 		self._sideassets[asset.owner].assets[asset.name] = asset.type
 	end
 
-	self._logger:debug("Adding object names for '"..asset.name.."'")
+	Logger:debug("Adding object names for '%s'", asset.name)
 	-- read Asset's object names and setup object to asset mapping
 	-- to be used in handling DCS events and other uses
 	for _, objname in pairs(asset:getObjectNames()) do
-		self._logger:debug("    + "..objname)
+		self._logger:debug("    + %s", objname)
 		self._object2asset[objname] = asset.name
 	end
-
-	self:notify(dctutils.buildevent.addasset(asset))
 end
 
 function AssetManager:getAsset(name)
 	return self._assetset[name]
 end
+
 
 function AssetManager:iterate()
 	if next(self._assetset) == nil then
@@ -144,7 +149,6 @@ function AssetManager:getAssetByDCSObject(dcsObjName)
 	end
 	return self._assetset[assetname]
 end
-
 --[[
 -- filterAssets - return all asset names matching `filter`
 -- filter(asset)
@@ -158,11 +162,12 @@ function AssetManager:filterAssets(filter)
 	local list = {}
 	for name, asset in pairs(self._assetset) do
 		if filter(asset) then
-			list[name] = true
+			list[name] = asset
 		end
 	end
 	return list
 end
+
 
 --[[
 -- getTargets - returns the names of the assets conforming to the asset
@@ -203,13 +208,29 @@ function AssetManager:getTargets(requestingside, assettypelist)
 	return tgtlist
 end
 
+function AssetManager:getKnownTargets(requestingside)
+	local enemy = dctutils.getenemy(requestingside)
+	local knownlist = {}
+
+	-- some sides may not have enemies, return an empty target list
+	-- in this case
+	if enemy == false then
+		return {}
+	end
+
+	for tgtname, tgttype in pairs(self._sideassets[enemy].assets) do
+		knownlist[tgtname] = tgttype
+	end
+	return knownlist
+end
+
 function AssetManager:update()
 	local deletionq = {}
 	for _, asset in pairs(self._assetset) do
 		if type(asset.update) == "function" then
 			asset:update()
 		end
-		if asset:isDead() then
+		if asset:isDead() and not asset:isSpawned() then
 			deletionq[asset.name] = true
 		end
 	end
@@ -225,8 +246,12 @@ end
 
 local function handleAssetDeath(_ --[[self]], event)
 	local asset = event.initiator
-	dct.Theater.singleton():getTickets():loss(asset.owner,
-		asset.cost, false)
+	
+	--poulet: will change this to record losses in a loss table (for stats card at ending and theater update)
+	
+	--dct.Theater.singleton():getTickets():loss(asset.owner,
+	--	asset.cost, false)
+	
 end
 
 local handlers = {
@@ -246,8 +271,9 @@ function AssetManager:doOneObject(obj, event)
 	end
 
 	local asset = self:getAssetByDCSObject(name)
+						 
 	if asset == nil then
-		self._logger:debug("onDCSEvent - asset doesn't exist, name: "..name)
+		Logger:debug("onDCSEvent - asset doesn't exist, name: %s", name)
 		self._object2asset[name] = nil
 		return
 	end
@@ -267,6 +293,7 @@ function AssetManager:onDCSEvent(event)
 		[world.event.S_EVENT_EJECTION]        = true,
 		[world.event.S_EVENT_HIT]             = true,
 		[world.event.S_EVENT_DEAD]            = true,
+		[world.event.S_EVENT_BASE_CAPTURED]   = true,														  
 		[enum.event.DCT_EVENT_DEAD]           = true,
 		--[world.event.S_EVENT_UNIT_LOST]     = true,
 	}
@@ -275,11 +302,12 @@ function AssetManager:onDCSEvent(event)
 		[world.event.S_EVENT_KILL] = "target", -- type: Unit
 		[world.event.S_EVENT_LAND] = "place", -- type: Object
 		[world.event.S_EVENT_TAKEOFF] = "place", -- type: Object
+		[world.event.S_EVENT_BASE_CAPTURED] = "place", -- type: Airbase	   
 	}
 
 	if not relevents[event.id] then
-		self._logger:debug("onDCSEvent - not relevent event: "..
-			tostring(event.id))
+		self._logger:debug("onDCSEvent - not relevant event: %s", tostring(event.id))
+		
 		return
 	end
 
@@ -322,6 +350,10 @@ function AssetManager:unmarshal(data)
 			self._spawnq[asset.name] = true
 		end
 	end
+
+	for assetname, _ in pairs(spawnq) do
+		self:getAsset(assetname):spawn(true)
+	end
 end
 
 function AssetManager:postinit()
@@ -329,6 +361,23 @@ function AssetManager:postinit()
 		self:getAsset(assetname):spawn(true)
 	end
 	self._spawnq = {}
+end
+	
+
+function AssetManager:get_dist(point)
+--returns the distance from the asset's current coordinate to the point passed in as an argument
+
+
+end
+
+function AssetManager:in_region(region)
+--returns whether or not the asset is inside the region defined by the verticies
+	
+	isInside = false;
+	
+	return isInside;
+	
+
 end
 
 return AssetManager

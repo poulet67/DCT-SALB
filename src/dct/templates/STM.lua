@@ -122,6 +122,10 @@ end
 --    }}}
 --]]
 
+-- This is the most spaghetti piece of spaghetti made to unspaghetti spaghetti
+-- This is the jenga piece that will bring the whole tower down 
+-- push and prod at your own risk
+
 function STM.transform(stmdata, file)
 	local template   = {}
 	local lookupname =  function(name)

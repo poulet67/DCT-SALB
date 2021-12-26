@@ -187,6 +187,13 @@ local function checkside(keydata, tbl)
 	return false
 end
 
+local function checkstage(keydata, tbl)
+	if tbl[keydata.name] >= 1 then
+		return true
+	end
+	return false
+end
+
 local function checktakeoff(keydata, tpl)
 	local allowed = {
 		["inair"]   = AI.Task.WaypointType.TURNING_POINT,
@@ -229,23 +236,6 @@ local function checkmsntype(keydata, tbl)
 	return true
 end
 
-local function checklocation(keydata, tbl)
-	local loc = tbl[keydata.name]
-	if next(tbl[keydata.name]) == nil then
-		tbl[keydata.name] = nil
-		return true
-	end
-	for _, val in pairs({"x", "y"}) do
-		if loc[val] == nil or type(loc[val]) ~= "number" then
-			return false
-		end
-	end
-	local vec2 = vector.Vector2D(tbl[keydata.name])
-	tbl[keydata.name] =
-		vector.Vector3D(vec2, land.getHeight(vec2:raw())):raw()
-	return true
-end
-
 local function check_payload_limits(keydata, tbl)
 	local newlimits = {}
 	for wpncat, val in pairs(tbl[keydata.name]) do
@@ -259,11 +249,11 @@ local function check_payload_limits(keydata, tbl)
 	return true
 end
 
+
 local function getkeys(objtype)
 	local notpldata = {
 		[enum.assetType.AIRSPACE]       = true,
 		[enum.assetType.AIRBASE]        = true,
-		[enum.assetType.SQUADRONPLAYER] = true,
 	}
 	local defaultintel = 0
 	if objtype == enum.assetType.AIRBASE then
@@ -293,14 +283,7 @@ local function getkeys(objtype)
 			["name"]    = "regenerate",
 			["type"]    = "boolean",
 			["default"] = false,
-		}, {
-			["name"]    = "priority",
-			["type"]    = "number",
-			["default"] = enum.assetTypePriority[objtype] or 1000,
-		}, {
-			["name"]    = "regionprio",
-			["type"]    = "number",
-		}, {
+		},{
 			["name"]    = "intel",
 			["type"]    = "number",
 			["default"] = defaultintel,
@@ -309,21 +292,25 @@ local function getkeys(objtype)
 			["type"]    = "boolean",
 			["default"] = false,
 		}, {
-			["name"]    = "cost",
+			["name"]    = "spawnable", -- can spawn from f10 menu
+			["type"]    = "boolean",
+			["default"] = false,
+		}, {
+			["name"]    = "reward",
 			["type"]    = "number",
-			["default"] = 0,
+			["default"] = 500,
 		}, {
 			["name"]    = "desc",
 			["type"]    = "string",
 			["default"] = "false",
-		}, {
+		},{
 			["name"]    = "codename",
 			["type"]    = "string",
 			["default"] = "default codename",
-		}, {
-			["name"]    = "theater",
-			["type"]    = "string",
-			["default"] = env.mission.theatre,
+		},{
+			["name"]    = "stage",
+			["type"]    = "number",
+			["default"] = 1,
 		},
 	}
 
@@ -342,18 +329,10 @@ local function getkeys(objtype)
 	if objtype == enum.assetType.AIRSPACE then
 		table.insert(keys, {
 			["name"]  = "location",
-			["type"]  = "table",
-			["check"] = checklocation,})
+			["type"]  = "table",})
 		table.insert(keys, {
-			["name"]  = "radius",
-			["type"]  = "number",
-			["default"] = 55560,})
-	else
-		table.insert(keys, {
-			["name"]    = "location",
-			["type"]    = "table",
-			["default"] = {},
-			["check"]   = checklocation,})
+			["name"]  = "volume",
+			["type"]  = "table", })
 	end
 
 	if objtype == enum.assetType.AIRBASE then
@@ -372,30 +351,6 @@ local function getkeys(objtype)
 			["check"]   = checkrecovery,})
 	end
 
-	if objtype == enum.assetType.SQUADRONPLAYER then
-		table.insert(keys, {
-			["name"]    = "ato",
-			["type"]    = "table",
-			["check"]   = checkmsntype,
-			["default"] = enum.missionType,
-		})
-
-		table.insert(keys, {
-			["name"]    = "payloadlimits",
-			["type"]    = "table",
-			["check"]   = check_payload_limits,
-			["default"] = dct.settings.payloadlimits,
-		})
-	end
-
-	if objtype == enum.assetType.SQUADRONPLAYER or
-	   objtype == enum.assetType.AIRBASE then
-		table.insert(keys, {
-			["name"]  = "players",
-			["type"]  = "table",
-			["default"] = {},
-		})
-   end
 	return keys
 end
 
@@ -408,8 +363,8 @@ end
 --    ----------
 --      * objtype   - represents an abstract type of asset
 --      * name      - name of the template
---      * region    - the region name the template belongs too
---      * coalition - which coalition the template belongs too
+--      * region    - the region name the template belongs to
+--      * coalition - which coalition the template belongs to
 --                    templates can only belong to one side and
 --                    one side only
 --      * desc      - description of the template, used to generate
@@ -436,26 +391,35 @@ end
 --              unit names a guaranteed to be unique if true
 --
 --]]
+
 local Template = class()
 function Template:__init(data)
 	assert(data and type(data) == "table", "value error: data required")
 	self.hasDeathGoals = false
 	utils.mergetables(self, utils.deepcopy(data))
 	self:validate()
-	self.checklocation = nil
 	self.fromFile = nil
 end
 
-Template.checklocation = checklocation
-
 function Template:validate()
-	utils.checkkeys({ [1] = {
-		["name"]  = "objtype",
-		["type"]  = "string",
-		["check"] = checkobjtype,
-	},}, self)
+
+	keytable = { [1] = {
+					["name"]  = "objtype",
+					["type"]  = "string",
+					["check"] = checkobjtype,
+					},
+				 [2] = {
+					["name"]  = "stage",
+					["type"]  = "number",
+					["check"] = checkstage,
+					["default"] = 1
+					},
+				}
+
+	utils.checkkeys(keytable, self)
 
 	utils.checkkeys(getkeys(self.objtype), self)
+	
 end
 
 -- PUBLIC INTERFACE
@@ -475,18 +439,54 @@ function Template.fromFile(region, dctfile, stmfile)
 	if template.metadata then
 		template = template.metadata
 	end
+
 	template.regionname = region.name
 	template.regionprio = region.priority
+	
+	if(template.stage) then
+		trigger.action.outText("STAGE: "..template.stage, 30)	
+	else
+		trigger.action.outText("no stage!", 30)	
+	end
+	
 	template.path = dctfile
+	
+	
+	
 	if template.desc == "false" then
+	
 		template.desc = nil
+		
 	end
+	
 	if stmfile ~= nil then
-		template = utils.mergetables(
-			STM.transform(utils.readlua(stmfile, "staticTemplate")),
-			template)
+	
+		template = utils.mergetables(STM.transform(utils.readlua(stmfile, "staticTemplate")), template)
+	
 	end
+	
+	--local settings = dct.settings.server
+	--utils.savetable(template, "C:\Users\ian\Saved Games\DCS\Mods\tech\DCT\debug\table.dump")
+	
 	return Template(template)
+	
 end
 
+
+--[[
+function Template.notfromFile(region, desc)
+
+	local template = utils.readlua(dctfile)
+	if template.metadata then
+		template = template.metadata
+	end
+	template.regionname = region.name;
+	template.regionprio = region.priority;
+	template.path = nil;
+	template.desc = desc;
+	end
+
+	return Template(template)
+end
+]]--
 return Template

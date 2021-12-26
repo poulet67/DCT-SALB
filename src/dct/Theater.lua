@@ -24,7 +24,6 @@ local STATE_VERSION = "3"
  Component system. Defines a generic way for initializing components
  of the system without directly tying the two systems together.
  A system can provide the following methods:
-
  @function __init initialization
  @function marshal all the system's data for serialization
  @function unmarshal initializes the system from the saved data
@@ -40,11 +39,14 @@ function Systems:__init()
 	local systems = {
 		"dct.assets.AssetManager",
 		"dct.ui.scratchpad",
-		"dct.systems.tickets",
 		"dct.systems.bldgPersist",
 		"dct.systems.weaponstracking",
 		"dct.systems.blasteffects",
 		"dct.systems.playerslots",
+		"dct.systems.Victory",
+		"dct.systems.spawnable",
+		"dct.systems.decision",
+		"dct.systems.stages",
 		"dct.templates.RegionManager",
 	}
 
@@ -77,7 +79,7 @@ end
 function Systems:_runsys(methodname, ...)
 	for sysname, sys in pairs(self._systems) do
 		if type(sys[methodname]) == "function" then
-			Logger:info("system calling "..sysname..":"..methodname)
+			Logger:info("system calling %s:%s", sysname, methodname)
 			sys[methodname](sys, ...)
 		end
 	end
@@ -113,15 +115,15 @@ local function isStateValid(state)
 	end
 
 	if state.theater ~= env.mission.theatre then
-		Logger:warn(string.format("isStateValid(); wrong theater; "..
-			"state: '%s'; mission: '%s'", state.theater, env.mission.theatre))
+		Logger:warn("isStateValid(); wrong theater; "..
+			"state: '%s'; mission: '%s'", state.theater, env.mission.theatre)
 		return false
 	end
 
 	if state.sortie ~= env.getValueDictByKey(env.mission.sortie) then
-		Logger:warn(string.format("isStateValid(); wrong sortie; "..
+		Logger:warn("isStateValid(); wrong sortie; "..
 			"state: '%s'; mission: '%s'", state.sortie,
-			env.getValueDictByKey(env.mission.sortie)))
+			env.getValueDictByKey(env.mission.sortie))
 		return false
 	end
 
@@ -148,15 +150,14 @@ function Theater:__init()
 	self.cmdrs     = {}
 	self.startdate = os.date("!*t")
 	self.namecntr  = 1000
+	self.stage = 1 --initial value
 
 	Systems.__init(self)
-	for _, val in pairs(coalition.side) do
-		self.cmdrs[val] = Commander(self, val)
-	end
+	
 
 	self:queueCommand(5, Command(self.__clsname..".delayedInit",
 		self.delayedInit, self))
-	self:queueCommand(100, Command(self.__clsname..".export",
+	self:queueCommand(100000, Command(self.__clsname..".export", -- for debugging, put back for something reasonable
 		self.export, self))
 	self.singleton = nil
 	self.playerRequest = nil
@@ -189,26 +190,32 @@ function Theater:loadOrGenerate()
 	end
 
 	if isStateValid(statetbl) then
-		Logger:info("restoring saved state")
+		Logger:info("--------DCT------- LOAD state")
 		self.statef = true
 		self.startdate = statetbl.startdate
 		self.namecntr  = statetbl.namecntr
 		self:unmarshal(statetbl.systems)
 	else
-		Logger:info("generating new theater")
+		Logger:info("--------DCT------- NEW state")
 		self:_runsys("generate", self)
 	end
 end
 
 function Theater:delayedInit()
 	self:loadOrGenerate()
+	Logger:debug("at post init")
 	self:_runsys("postinit", self)
-
+	Logger:debug("after post init")
 	-- TODO: temporary, spawn all generated assets
 	-- eventually we will want to spawn only a set of assets
+	
+	for _, val in pairs(coalition.side) do
+		self.cmdrs[val] = Commander(self, val)
+	end
+	
+	
 	for _, asset in self:getAssetMgr():iterate() do
-		if asset.type ~= enum.assetType.PLAYERGROUP and
-		   not asset:isSpawned() then
+		if asset.type ~= enum.assetType.PLAYERGROUP and not asset:isSpawned() then
 			asset:spawn()
 		end
 	end
@@ -220,9 +227,7 @@ local airbase_cats = {
 }
 
 local function handlefarps(airbase, event)
-	if event.place ~= nil or
-	   airbase:getCategory() ~= Object.Category.BASE or
-	   airbase_cats[airbase:getDesc().category] == nil then
+	if event.place ~= nil or airbase:getCategory() ~= Object.Category.BASE or airbase_cats[airbase:getDesc().category] == nil then
 		return
 	end
 	event.place = airbase
@@ -280,7 +285,7 @@ function Theater:onEvent(event)
 		-- Only delete the state if there is an end mission event
 		-- and tickets are complete, otherwise when a server is
 		-- shutdown gracefully the state will be deleted.
-		if self:getTickets():isComplete() then
+		if self:getVictory():isComplete() then
 			local ok, err = os.remove(settings.statepath)
 			if not ok then
 				Logger:error("unable to remove statefile; "..err)
@@ -303,7 +308,7 @@ function Theater:export(_)
 
 	local exporttbl = {
 		["version"]  = STATE_VERSION,
-		["complete"] = self:getTickets():isComplete(),
+		["complete"] = self:getVictory():isComplete(),
 		["date"]     = os.date("*t", dctutils.zulutime(timer.getAbsTime())),
 		["theater"]  = env.mission.theatre,
 		["sortie"]   = env.getValueDictByKey(env.mission.sortie),
@@ -326,6 +331,10 @@ function Theater:getAssetMgr()
 	return self:getSystem("dct.assets.AssetManager")
 end
 
+function Theater:getVictory()
+	return self:getSystem("dct.systems.Victory")
+end
+
 function Theater:getCommander(side)
 	return self.cmdrs[side]
 end
@@ -335,19 +344,15 @@ function Theater:getcntr()
 	return self.namecntr
 end
 
-function Theater:getTickets()
-	return self:getSystem("dct.systems.tickets")
-end
-
 function Theater.playerRequest(data)
 	local self = Theater.singleton()
 	if data == nil then
-		Logger:error("playerRequest(); value error: data must be "..
-			"provided; "..debug.traceback())
+		Logger:error("playerRequest(); value error: data must be provided; %s",
+			debug.traceback())
 		return
 	end
 
-	Logger:debug("playerRequest(); Received player request: "..
+	Logger:debug("playerRequest(); Received player request: %s",
 		json:encode_pretty(data))
 
 	local playerasset = self:getAssetMgr():getAsset(data.name)
@@ -381,14 +386,39 @@ end
 --]]
 function Theater:queueCommand(delay, cmd)
 	if delay < self.cmdmindelay then
-		Logger:warn(string.format("queueCommand(); delay(%2.2f) less than "..
+		Logger:warn("queueCommand(); delay(%2.2f) less than "..
 			"schedular minimum(%2.2f), setting to schedular minumum",
-			delay, self.cmdmindelay))
+			delay, self.cmdmindelay)
 		delay = self.cmdmindelay
 	end
 	self.cmdq:push(timer.getTime() + delay, cmd)
-	Logger:debug(string.format("queueCommand(); cmd(%s) cmdq size: %d",
-		cmd.name, self.cmdq:size()))
+	Logger:debug("queueCommand(); cmd(%s), delay: %d, cmdq size: %d",
+		cmd.name, delay, self.cmdq:size())
+end
+
+function Theater:nextStage()
+
+	self.Stage = self.Stage + 1
+	
+	--do other stuff
+	
+end
+
+function Theater:stageTransition(n)
+
+	self.Stage = n;
+	
+	
+	--do other stuff
+	
+end
+
+function Theater:getStage()
+
+	return self.stage
+	
+	--do other stuff
+	
 end
 
 function Theater:exec(time)
@@ -412,15 +442,15 @@ function Theater:exec(time)
 		cmdctr = cmdctr + 1
 		self.qtimer:update()
 		if self.qtimer:expired() then
-			Logger:debug(
-				string.format("exec(); quanta reached, quanta: %5.2fms",
-					self.quanta*1000))
+			Logger:debug("exec(); quanta reached, quanta: %5.2fms", self.quanta*1000)
 			break
 		end
 	end
 	self.qtimer:update()
-	Logger:debug(string.format("exec(); time taken: %4.2fms;"..
-		" cmds executed: %d", self.qtimer.timeout*1000, cmdctr))
+	if settings.profile then
+		Logger:debug("exec(); time taken: %4.2fms; cmds executed: %d",
+			self.qtimer.timeout*1000, cmdctr)
+	end
 	return time + self.cmdqdelay
 end
 

@@ -8,7 +8,6 @@ require("os")
 require("math")
 local check = require("libs.check")
 local enum  = require("dct.enum")
-local vector = require("dct.libs.vector")
 local utils = {}
 
 local enemymap = {
@@ -66,7 +65,7 @@ function utils.time(dcsabstime)
 		["hour"]  = 0,
 		["min"]   = 0,
 		["sec"]   = 0,
-		["isdst"] = false,
+		--["isdst"] = false,
 	})
 	return time + dcsabstime
 end
@@ -85,18 +84,25 @@ function utils.zulutime(abstime)
 	return (utils.time(abstime) + correction)
 end
 
-function utils.centroid2D(point, pcentroid, n)
+function utils.centroid(point, pcentroid, n)
 	if pcentroid == nil or n == nil then
-		return vector.Vector2D(point), 1
+		return {["x"] = point.x, ["y"] = point.y, ["z"] = point.z,}, 1
 	end
 
+	local centroid = {}
 	local n1 = n + 1
-	local p = vector.Vector2D(point)
-	local pc = vector.Vector2D(pcentroid)
-	local c = {}
-	c.x = (p.x + (n * pc.x))/n1
-	c.y = (p.y + (n * pc.y))/n1
-	return vector.Vector2D(c), n1
+	local x = point.x or 0
+	local y = point.y or 0
+	local z = point.z or point.alt or 0
+	pcentroid = {
+		["x"] = pcentroid.x or 0,
+		["y"] = pcentroid.y or 0,
+		["z"] = pcentroid.z or 0,
+	}
+	centroid.x = (x + (n * pcentroid.x))/n1
+	centroid.y = (y + (n * pcentroid.y))/n1
+	centroid.z = (z + (n * pcentroid.z))/n1
+	return centroid, n1
 end
 
 -- returns a value guaranteed to be between min and max, inclusive.
@@ -231,9 +237,7 @@ function utils.fmtposition(position, precision, fmt)
 end
 
 function utils.trimTypeName(typename)
-	if typename ~= nil then
-		return string.match(typename, "[^.]-$")
-	end
+	return string.match(typename, "[^.]-$")
 end
 
 utils.buildevent = {}
@@ -271,14 +275,6 @@ function utils.buildevent.impact(wpn)
 	event.id = enum.event.DCT_EVENT_IMPACT
 	event.initiator = wpn
 	event.point = wpn:getImpactPoint()
-	return event
-end
-
-function utils.buildevent.addasset(asset)
-	check.table(asset)
-	local event = {}
-	event.id = enum.event.DCT_EVENT_ADD_ASSET
-	event.initiator = asset
 	return event
 end
 

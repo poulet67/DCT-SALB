@@ -10,20 +10,8 @@ local enum     = require("dct.enum")
 local dctutils = require("dct.utils")
 local settings = _G.dct.settings
 
-local isAAMissile = {
-	[Weapon.MissileCategory.AAM] = true,
-	[Weapon.MissileCategory.SAM] = true,
-}
-
-local function defaultCategory(weapon)
-	if isAAMissile[weapon.desc.missileCategory] then
-		return enum.weaponCategory.AA
-	elseif weapon.desc.category ~= Weapon.Category.SHELL then
-		return enum.weaponCategory.AG
-	end
-end
-
--- returns totals for all weapon types, or nil if the group does not exist
+-- returns totals for all weapon types, returns nil if the group
+-- does not exist
 local function totalPayload(grp, limits)
 	local unit = grp:getUnit(1)
 	local restrictedWeapons = settings.restrictedweapons
@@ -32,28 +20,20 @@ local function totalPayload(grp, limits)
 	for _, v in pairs(enum.weaponCategory) do
 		total[v] = {
 			["current"] = 0,
-			["max"]     = limits[v] or 0,
-			["payload"] = {}
+			["max"]     = limits[v],
 		}
 	end
 
-	-- tally weapon costs
+	-- tally restricted weapon cost
 	for _, wpn in ipairs(payload or {}) do
 		local wpnname = dctutils.trimTypeName(wpn.desc.typeName)
 		local wpncnt  = wpn.count
-		local restriction = restrictedWeapons[wpnname] or {}
-		local category = restriction.category or defaultCategory(wpn)
-		local cost = restriction.cost or 0
+		local restricted = restrictedWeapons[wpnname]
 
-		if category ~= nil then
-			total[category].current =
-				total[category].current + (wpncnt * cost)
-
-			table.insert(total[category].payload, {
-				["name"] = wpn.desc.displayName,
-				["count"] = wpncnt,
-				["cost"] = cost,
-			})
+		if restricted then
+			total[restricted.category].current =
+				total[restricted.category].current +
+				(wpncnt * restricted.cost)
 		end
 	end
 	return total

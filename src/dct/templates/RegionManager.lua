@@ -28,14 +28,15 @@ end
 function RegionManager:loadRegions()
 	for filename in lfs.dir(settings.theaterpath) do
 		if filename ~= "." and filename ~= ".." and
-			filename ~= ".git" and filename ~= "settings" then
+			filename ~= ".git" and filename ~= "settings" and string.match(filename, "region") ~= nil then
 			local fpath = settings.theaterpath..utils.sep..filename
-			local fattr = lfs.attributes(fpath)
+			local fattr = lfs.attributes(fpath)			
 			if fattr.mode == "directory" then
+				trigger.action.outText(fpath, 30)	
 				local r = Region(fpath)
-				assert(self.regions[r.name] == nil, "duplicate regions " ..
-					"defined for theater: " .. settings.theaterpath)
+				assert(self.regions[r.name] == nil, "duplicate regions " ..	"defined for theater: " .. settings.theaterpath)
 				self.regions[r.name] = r
+				trigger.action.outText(r.name, 30)	
 			end
 		end
 	end
@@ -49,27 +50,18 @@ local function cost(thisrgn, otherrgn)
 		vector.Vector2D(otherrgn:getPoint()))
 end
 
-function RegionManager:validateEdges()
-	for _, thisrgn in pairs(self.regions) do
-		local links = {}
-		for domain, lnks in pairs(thisrgn.links) do
-			links[domain] = {}
-			for _, rgnname in pairs(lnks) do
-				if rgnname ~= thisrgn.name then
-					links[domain][rgnname] =
-						cost(thisrgn, self.regions[rgnname])
-				end
-			end
-		end
-		thisrgn.links = links
-	end
-end
-
 function RegionManager:generate()
 	for _, r in pairs(self.regions) do
 		r:generate()
 	end
-	self:validateEdges()
+	--self:validateEdges()
+end
+
+function RegionManager:generateStagedTemplates()
+	for _, r in pairs(self.regions) do
+		r:generateStagedTemplates()
+	end
+	--self:validateEdges()
 end
 
 function RegionManager:marshal()

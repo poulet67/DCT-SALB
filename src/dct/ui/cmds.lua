@@ -13,6 +13,7 @@ local human    = require("dct.ui.human")
 local Command  = require("dct.Command")
 local Logger   = dct.Logger.getByName("UI")
 local loadout  = require("dct.systems.loadouts")
+local AssetManager= require("dct.assets.AssetManager")
 
 local UICmd = class(Command)
 function UICmd:__init(theater, data)
@@ -95,31 +96,60 @@ function TheaterUpdateCmd:__init(theater, data)
 	self.name = "TheaterUpdateCmd:"..data.name
 end
 
+local ShowMissionBoard = class(UICmd)
+function ShowMissionBoard:__init(theater, data)
+	UICmd.__init(self, theater, data)
+	self.name = "ShowMissionBoard:"..data.name
+end
+
 function TheaterUpdateCmd:_execute(_, cmdr)
 	local update = cmdr:getTheaterUpdate()
 	local msg =
-		string.format("== Theater Threat Status ==\n") ..
-		string.format("  Force Str: %s\n",
-			human.strength(update.enemy.str))..
-		string.format("  Sea:    %s\n", human.threat(update.enemy.sea)) ..
-		string.format("  Air:    %s\n", human.airthreat(update.enemy.air)) ..
-		string.format("  ELINT:  %s\n", human.threat(update.enemy.elint))..
-		string.format("  SAM:    %s\n", human.threat(update.enemy.sam)) ..
-		string.format("\n== Friendly Force Info ==\n")..
-		string.format("  Force Str: %s\n",
-			human.strength(update.friendly.str))..
-		string.format("\n== Current Active Air Missions ==\n")
+		string.format("== Theater Status ==\n")..		
+		string.format("Enemy losses: %s\n", update.enemy_losses)..
+		string.format("Friendly losses: %s\n", update.friendly_losses)..
+		string.format("Friendly regions controlled: %s\n", update.nregions_friendly)..
+		string.format("Enemy regions controlled: %s\n", update.nregions_enemy)..		
+		string.format("Friendly Command Points: %s\n", update.friendly_CP)..		
+		string.format("Victory condition: %s\n", update.victory_condition_readable)..
+		string.format("===================\n")	
+		--string.format("  Sea:    %s\n", human.threat(update.enemy.sea)) ..
+		--string.format("  Air:    %s\n", human.airthreat(update.enemy.air)) ..
+		--string.format("  ELINT:  %s\n", human.threat(update.enemy.elint))..
+		--string.format("  SAM:    %s\n", human.threat(update.enemy.sam)) ..
+		--string.format("\n== Friendly Force Info ==\n")..
+		--string.format("  Force Str: %s\n",
+		--	human.strength(update.friendly.str))..
+		
+	return msg
+	
+end
+
+function ShowMissionBoard:_execute(_, cmdr)
+
+	local mb = cmdr:getMissionBoard()
+	
+	--assigned = string.format("%d/%d", mb)
+	
+	
+	
+	
+	local msg =	
+		string.format("\n== Current Active Air Missions ==\n")..
+		string.format("ID		TYPE 		Assets Assgn.	Priority		\n")
+	
 	if next(update.missions) ~= nil then
 		for k,v in pairs(update.missions) do
-			msg = msg .. string.format("  %6s:  %2d\n", k, v)
+			--assigned = string.format("%d/%d", v.n_assigned, v.n_max)
+			--msg = msg .. string.format("%4d		 %4s		%s		%d", k, utils.getkey(enum.missionType, v.type), assigned, v.priority)
+			msg = msg .. string.format("%4d		 %4s		%s		%d", k, utils.getkey(enum.missionType, v.type), v.n_assigned, v.priority)
 		end
 	else
 		msg = msg .. "  No Active Missions\n"
 	end
-	msg = msg .. string.format("\nRecommended Mission Type: %s\n",
-		utils.getkey(enum.missionType,
-			cmdr:recommendMissionType(self.asset.ato)) or "None")
+	
 	return msg
+	
 end
 
 local CheckPayloadCmd = class(UICmd)
@@ -128,51 +158,26 @@ function CheckPayloadCmd:__init(theater, data)
 	self.name = "CheckPayloadCmd:"..data.name
 end
 
-function CheckPayloadCmd.buildSummary(costs)
-	-- print cost summary at the top
-	local msg = "== Loadout Summary:"
-	for desc, cat in pairs(enum.weaponCategory) do
-		if costs[cat].current < enum.WPNINFCOST then
-			msg = string.format("%s\n  %s cost: %.4g / %d",
-				msg, desc, costs[cat].current, costs[cat].max)
-		else
-			msg = string.format("%s\n  %s cost: -- / %d",
-				msg, desc, costs[cat].max)
-		end
+function CheckPayloadCmd:_execute(_ --[[time]], _ --[[cmdr]])
+	local msg
+	local ok, costs = loadout.check(self.asset)
+	if ok then
+		msg = "Valid loadout, you may depart. Good luck!"
+	else
+		msg = "You are over budget! Re-arm before departing, or "..
+			"you will be kicked to spectator!"
 	end
 
-	-- group weapons by category
-	for desc, cat in pairs(enum.weaponCategory) do
-		if next(costs[cat].payload) ~= nil then
-			msg = msg..string.format("\n\n== %s Weapons:", desc)
-			for _, wpn in pairs(costs[cat].payload) do
-				msg = string.format("%s\n  %s\n    ↳ ", msg, wpn.name)
-				if wpn.cost == 0 then
-					msg = msg..string.format("%d × unrestricted (0 pts)", wpn.count)
-				elseif wpn.cost < enum.WPNINFCOST then
-					msg = msg..string.format("%d × %.4g pts = %.4g pts",
-						wpn.count, wpn.cost, wpn.count * wpn.cost)
-				else
-					msg = msg.."Weapon cannot be used in this theater [!]"
-				end
-			end
-		end
+	-- print cost summary
+	msg = msg.."\n== Loadout Summary:"
+	for cat, val in pairs(enum.weaponCategory) do
+		msg = msg ..string.format("\n\t%s cost: %d / %d",
+			cat, costs[val].current, costs[val].max)
 	end
 
 	return msg
 end
 
-function CheckPayloadCmd:_execute(_ --[[time]], _ --[[cmdr]])
-	local ok, totals = loadout.check(self.asset)
-	if ok then
-		return "Valid loadout, you may depart. Good luck!\n\n"
-			..self.buildSummary(totals)
-	else
-		return "You are over budget! Re-arm before departing, or "..
-			"you will be punished!\n\n"
-			..self.buildSummary(totals)
-	end
-end
 
 local MissionCmd = class(UICmd)
 function MissionCmd:__init(theater, data)
@@ -195,8 +200,21 @@ function MissionCmd:_execute(time, cmdr)
 end
 
 
+local function composeBriefing(_, tgt, start_time)
+	local briefing = tgt.briefing
+	local interptbl = {
+		["TOT"] = os.date("%F %Rz",
+			dctutils.zulutime(start_time + MISSION_LIMIT * 0.6)),
+	}
+	return dctutils.interp(briefing, interptbl)
+end
+
+
 local function briefingmsg(msn, asset)
+	local start_time = msn.starttime
+	local timeontarget = msn.timeontarget
 	local tgtinfo = msn:getTargetInfo()
+	local packagecomms = msn.packagecomms
 	local msg = string.format("Package: #%s\n", msn:getID())..
 		string.format("IFF Codes: M1(%02o), M3(%04o)\n",
 			msn.iffcodes.m1, msn.iffcodes.m3)..
@@ -206,7 +224,10 @@ local function briefingmsg(msn, asset)
 				tgtinfo.location,
 				tgtinfo.intellvl,
 				asset.gridfmt),
-			tgtinfo.callsign)..
+			tgtinfo.callsign)..		
+		string.format("TOT: %s\n", os.date("%F %Rz",
+			dctutils.zulutime(start_time + timeontarget))).. -- yeah I don't know why it's off by an hour
+		string.format("Package Comms: %s\n", packagecomms)..
 		"Briefing:\n"..msn:getDescription(asset.gridfmt)
 	return msg
 end
@@ -242,6 +263,43 @@ function MissionJoinCmd:_execute(_, cmdr)
 	return msg
 end
 
+
+-- DCT-GroundWar0.67 change:
+-- No more requesting of missions
+
+-- A mission board is available showing all available missions. They are assigned a priority 1 - 10 (1 being highest priority)
+-- Player-Commander (or AI-commander, in a future release) can modify these values at will to communicate which should be completed. 
+-- They will have default values depending on the mission type
+
+-- Missions are created as the Commander 'learns' or 'discovers' or 'spots' the asset. This is done using the Recon systems
+-- Some mission sets are always available:
+
+-- Air Recon
+-- Recon Transport
+-- Logistics
+-- CAP
+
+-- Recon works like a grid over the region's geographical area:
+
+--		0---0---0---0---0---0---0---0---0
+--		0---0---0---0---0---0---0---0---0-
+--		0---0---0---0---0---0---0---0---0
+--		0---0---0---0---0---0---0---0---0-
+--
+--	It is defined from the center outward.
+--	
+--  When a recon team is placed X distance from a node, the node will be active. A recon team has a configurable detection radius. Any units in that range are garunteed to be spotted.
+--	As well, the number of active recon nodes in a region will increase the region Recon Level. This increases the chance for an enemy unit in the region to be detected for a given y period of time.
+--  When a unit is detected a corresponding mission (Strike for infrastructure, BAI for others) will be created.
+--
+--
+--	
+--
+--
+--
+
+
+--[[
 local MissionRqstCmd = class(MissionCmd)
 function MissionRqstCmd:__init(theater, data)
 	MissionCmd.__init(self, theater, data)
@@ -254,25 +312,47 @@ function MissionRqstCmd:_execute(_, cmdr)
 	local msn = cmdr:getAssigned(self.asset)
 	local msg
 
-	if msn then
+	if msn then -- already assigned
 		msg = string.format("You have mission %s already assigned, "..
 			"use the F10 Menu to abort first.", msn:getID())
 		return msg
 	end
-
-	msn = cmdr:requestMission(self.asset.name, self.missiontype)
-	if msn == nil then
-		msg = string.format("No %s missions available.",
-			human.missiontype(self.missiontype))
+	
+	if enum.availableMissions[self.missiontype] then --Is this mission type available?	
+		
+		if enum.periodicMissions[self.missiontype] then --if this is a periodic or triggered mission
+		
+			msg = string.format("Please join public mission from theater update")
+			return msg
+		
+		end
+			
+		msn = cmdr:requestMission(self.asset.name, self.missiontype)
+		
+		if msn == nil then
+			msg = string.format("No %s missions available.",
+				human.missiontype(self.missiontype))
+		else
+			msg = string.format("Mission %s assigned, use F10 menu "..
+				"to see this briefing again\n", msn:getID())
+			msg = msg..briefingmsg(msn, self.asset)
+			human.drawTargetIntel(msn, self.asset.groupId, false)
+		end
+		
+		return msg
+	
 	else
-		msg = string.format("Mission %s assigned, use F10 menu "..
-			"to see this briefing again\n", msn:getID())
-		msg = msg..briefingmsg(msn, self.asset)
-		human.drawTargetIntel(msn, self.asset.groupId, false)
+		
+		msg = string.format("No %s missions available.",
+		human.missiontype(self.missiontype))
+		return msg
+	
+	
 	end
-	return msg
+	
 end
 
+--]]
 
 local MissionBriefCmd = class(MissionCmd)
 function MissionBriefCmd:__init(theater, data)
@@ -377,9 +457,33 @@ function MissionCheckoutCmd:_mission(time, _, msn)
 		msn:checkout(time))
 end
 
+local SpawnCmd = class(UICmd)
+function SpawnCmd:__init(theater, data)
+	UICmd.__init(self, theater, data)
+	self.name = "SpawnCmd:"..data.name
+	self.spawningAsset = theater:getAssetMgr():getAsset(data.value)
+
+	Logger:debug("------ SPAWN INIT --------------")
+	Logger:debug(tostring(self.spawningAsset))
+
+	
+end
+
+function SpawnCmd:_execute(_ --[[time]], _ --[[cmdr]])
+	local msg
+	
+	msg = "SPAWN EXECUTE"
+	
+	Logger:debug("------ SPAWN EXECUTE --------------")
+	
+	self.spawningAsset:spawn()	
+
+	return msg
+	
+end
+
 local cmds = {
 	[enum.uiRequestType.THEATERSTATUS]   = TheaterUpdateCmd,
-	[enum.uiRequestType.MISSIONREQUEST]  = MissionRqstCmd,
 	[enum.uiRequestType.MISSIONBRIEF]    = MissionBriefCmd,
 	[enum.uiRequestType.MISSIONSTATUS]   = MissionStatusCmd,
 	[enum.uiRequestType.MISSIONABORT]    = MissionAbortCmd,
@@ -390,6 +494,7 @@ local cmds = {
 	[enum.uiRequestType.SCRATCHPADSET]   = ScratchPadSet,
 	[enum.uiRequestType.CHECKPAYLOAD]    = CheckPayloadCmd,
 	[enum.uiRequestType.MISSIONJOIN]     = MissionJoinCmd,
+	[enum.uiRequestType.SPAWN]     = SpawnCmd,
 }
 
 return cmds

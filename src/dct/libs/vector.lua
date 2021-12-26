@@ -37,16 +37,16 @@ function mt2d.__sub(vec, rhs)
 	return Vector2D(v)
 end
 
-function mt2d.__mul(lhs, vec)
-	assert(type(lhs) == "number", "value error: __mul lhs not a number")
+function mt2d.__mul(vec, rhs)
+	assert(type(rhs) == "number", "value error: rhs not a number")
 	local v = {}
-	v.x = lhs * vec.x
-	v.y = lhs * vec.y
+	v.x = vec.x * rhs
+	v.y = vec.y * rhs
 	return Vector2D(v)
 end
 
 function mt2d.__div(vec, rhs)
-	assert(type(rhs) == "number", "value error: __div rhs not a number")
+	assert(type(rhs) == "number", "value error: rhs not a number")
 	local v = {}
 	v.x = vec.x / rhs
 	v.y = vec.y / rhs
@@ -58,14 +58,13 @@ function mt2d.__eq(vec, rhs)
 end
 
 function Vector2D:__init(obj)
-	self.x = obj.x or 0
+	self.x = obj.x
 	if obj.z then
 		self.y = obj.z
 	else
-		self.y = obj.y or 0
+		self.y = obj.y
 	end
 	override_ops(self, mt2d)
-	self.create = nil
 end
 
 function Vector2D.create(x, y)
@@ -106,12 +105,12 @@ function mt3d.__sub(vec, rhs)
 	return Vector3D(v)
 end
 
-function mt3d.__mul(lhs, vec)
-	assert(type(lhs) == "number", "value error: __mul lhs not a number")
+function mt3d.__mul(vec, rhs)
+	assert(type(rhs) == "number", "value error: rhs not a number")
 	local v = {}
-	v.x = lhs * vec.x
-	v.y = lhs * vec.y
-	v.z = lhs * vec.z
+	v.x = vec.x * rhs
+	v.y = vec.y * rhs
+	v.z = vec.z * rhs
 	return Vector3D(v)
 end
 
@@ -129,17 +128,16 @@ function mt3d.__eq(vec, rhs)
 end
 
 function Vector3D:__init(obj, height)
-	self.x = obj.x or 0
+	self.x = obj.x
 
 	if obj.z then
-		self.y = height or obj.y or 0
+		self.y = obj.y
 		self.z = obj.z
 	else
 		self.y = height or obj.alt or 0
-		self.z = obj.y or 0
+		self.z = obj.y
 	end
 	override_ops(self, mt3d)
-	self.create = nil
 end
 
 function Vector3D.create(x, y, height)

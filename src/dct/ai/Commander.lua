@@ -13,6 +13,8 @@ local Stats      = require("dct.libs.Stats")
 local Command    = require("dct.Command")
 local Logger     = dct.Logger.getByName("Commander")
 
+
+
 local function heapsort_tgtlist(assetmgr, owner, filterlist)
 	local tgtlist = assetmgr:getTargets(owner, filterlist)
 	local pq = containers.PriorityQueue()
@@ -28,7 +30,7 @@ local function heapsort_tgtlist(assetmgr, owner, filterlist)
 	return pq
 end
 
-local function genstatids()
+local function genStatIds()
 	local tbl = {}
 
 	for k,v in pairs(enum.missionType) do
@@ -44,64 +46,132 @@ local Commander = require("libs.namedclass")("Commander")
 
 function Commander:__init(theater, side)
 	self.owner        = side
-	self.missionstats = Stats(genstatids())
+	self.missionstats = Stats(genStatIds())
 	self.missions     = {}
-	self.aifreq       = 2*60 -- 2 minutes in seconds
+	self.aifreq       = 15  -- 2 minutes in seconds
+	
+	self.CommandPoints = 0;
+	self.known 			= {}; -- A table for assets that the Commander 'knows' exists
+	
+	self:initKnownTable()
+	
 
 	theater:queueCommand(120, Command(
 		"Commander.startIADS:"..tostring(self.owner),
 		self.startIADS, self))
+--	theater:queueCommand(0, Command( 
+--		"Commander.startperiodicMission:"..tostring(self.owner),
+--		self.startperiodicMission, self, theater))
 	theater:queueCommand(self.aifreq, Command(
 		"Commander.update:"..tostring(self.owner),
 		self.update, self))
+end
+
+function Commander:initKnownTable()
+
+	known = dct.Theater.singleton():getAssetMgr():getKnownTables()
+	 
+	for k,v in pairs(known) do
+	
+		
+
+	end
+	
 end
 
 function Commander:startIADS()
 	self.IADS = require("dct.systems.IADS")(self)
 end
 
+--[[
+function Commander:startperiodicMission(theater)
+	
+	Logger:debug("INSIDE INIT") 
+	test = enum.missionType["NAVAL STRIKE"]
+	Logger:debug("enum: "..test) 	
+	local periodicMission = require("dct.systems.periodicMission")
+	missionid = periodicMission["startperiodicMission"](self, self.owner, enum.missionType["NAVAL STRIKE"])	
+	
+	theater:queueCommand(1800, Command( -- 1800s = 30 mins
+		"Commander.endperiodicMission:"..tostring(self.owner),
+		self.endperiodicMission, self, missionid))
+	
+	return 1800 --will re-run this command in 1800s (30 mins)
+	
+end
+--]]
+
+--[[
+function Commander:endperiodicMission(id)
+	
+	local mission = self.missions[id]
+	mission:forceEnd()
+	
+end
+--]]
 function Commander:update(time)
 	for _, mission in pairs(self.missions) do
 		mission:update(time)
 	end
+	
+	self:assignMissionsToTargets()
+	
 	return self.aifreq
 end
 
 --[[
--- TODO: complete this, the enemy information is missing
--- What does a commander need to track for theater status?
---   * the UI currently defines these items that need to be "tracked":
---     - Sea - representation of the opponent's sea control
---     - Air - representation of the opponent's air control
---     - ELINT - representation of the opponent's ability to detect
---     - SAM - representation of the opponent's ability to defend
---     - current active air mission types
+-- TODO: complete this
+-- see UI command for required table fields
 --]]
+
+
 function Commander:getTheaterUpdate()
 	local theater = dct.Theater.singleton()
 	local theaterUpdate = {}
-	local tks, start
-
-	theaterUpdate.friendly = {}
-	tks, start = theater:getTickets():get(self.owner)
-	theaterUpdate.friendly.str = math.floor((tks / start)*100)
-	theaterUpdate.enemy = {}
-	theaterUpdate.enemy.sea = 50
-	theaterUpdate.enemy.air = 50
-	theaterUpdate.enemy.elint = 50
-	theaterUpdate.enemy.sam = 50
-	tks, start = theater:getTickets():get(dctutils.getenemy(self.owner))
-	theaterUpdate.enemy.str = math.floor((tks / start)*100)
-	theaterUpdate.missions = self.missionstats:getStats()
-	for k,v in pairs(theaterUpdate.missions) do
-		if v == 0 then
-			theaterUpdate.missions[k] = nil
-		end
-	end
+ 
+	-- Need to rethink this function entirely for 0.67
+	
+	--theaterUpdate.friendly = {}
+	--tks, start = theater:getTickets():get(self.owner)
+	--theaterUpdate.friendly.str = math.floor((tks / start)*100)
+	--theaterUpdate.enemy = {}
+	--theaterUpdate.enemy.sea = 50
+	--theaterUpdate.enemy.air = 50
+	--theaterUpdate.enemy.elint = 50
+	--theaterUpdate.enemy.sam = 50
+	--tks, start = theater:getTickets():get(dctutils.getenemy(self.owner))
+	--theaterUpdate.enemy.str = math.floor((tks / start)*100)
+	--theaterUpdate.missions = self.missionstats:getStats()
+	
+	theaterUpdate.enemy_losses = 0;
+	theaterUpdate.friendly_losses = 0;
+	theaterUpdate.nregions_friendly = 0;
+	theaterUpdate.nregions_enemy = 0;
+	theaterUpdate.friendly_CP = 0;
+	theaterUpdate.enemy_losses = 0;
+	theaterUpdate.victory_condition_readable = "Capture: "; -- finish these
+	
 	return theaterUpdate
+	
 end
 
-local MISSION_ID = math.random(1,63)
+function Commander:getMissionBoard()
+	local theater = dct.Theater.singleton()
+	local mtable = {}
+ 
+	for k,v in pairs(self.missions) do
+	
+		mtable.missions[k] = v.type 
+		theaterUpdate.missions[k].n_assigned = #self.assigned		
+		--theaterUpdate.missions[k].n_max = self.max_assigned -- may add this functionality later on
+		theaterUpdate.missions[k].priority = 0 -- still need to deal with this
+	end
+	
+	return theaterUpdate
+	
+end
+
+local MISSION_ID = math.random(1,63) 
 local invalidXpdrTbl = {
 	["7700"] = true,
 	["7600"] = true,
@@ -164,6 +234,9 @@ end
 -- unittype - (string) the type of unit making request requesting
 -- return: mission type value
 --]]
+
+--[[
+
 function Commander:recommendMissionType(allowedmissions)
 	local assetfilter = {}
 
@@ -182,6 +255,8 @@ function Commander:recommendMissionType(allowedmissions)
 	return dctutils.assettype2mission(tgt.type)
 end
 
+]]--
+
 --[[
 -- requestMission - get a new mission
 --
@@ -198,10 +273,13 @@ end
 -- return: a Mission object or nil if no target can be found which
 --   meets the mission criteria
 --]]
+
+
+--from old DCT, can be removed
+
 function Commander:requestMission(grpname, missiontype)
-	local assetmgr = require("dct.Theater").singleton():getAssetMgr()
-	local pq = heapsort_tgtlist(assetmgr, self.owner,
-		enum.missionTypeMap[missiontype])
+	local assetmgr = dct.Theater.singleton():getAssetMgr()
+	local pq = heapsort_tgtlist(assetmgr, self.owner, enum.missionTypeMap[missiontype])
 
 	-- if no target, there is no mission to assign so return back
 	-- a nil object
@@ -217,6 +295,27 @@ function Commander:requestMission(grpname, missiontype)
 	mission:addAssigned(assetmgr:getAsset(grpname))
 	self:addMission(mission)
 	return mission
+end
+
+
+-- Go through known table, create appropriate mission type
+function Commander:assignMissionsToTargets()
+
+	if(self.known ~= nil) then
+		
+		for k, v in pairs(self.known) do
+			
+			target = v
+			
+			Logger:debug("COMMANDER ==== DISCOVERY ====")
+			local plan = { require("dct.ai.actions.KillTarget")(target) }		
+			local mission = Mission(self, missiontype, target, plan)
+			self:addMission(mission)
+			
+		end
+	end
+
+	
 end
 
 --[[

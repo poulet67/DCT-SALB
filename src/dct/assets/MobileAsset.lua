@@ -1,9 +1,9 @@
 --[[
 -- SPDX-License-Identifier: LGPL-3.0
 --
--- Static asset, represents assets that do not move.
+-- Mobile asset, represents assets that can move.
 --
--- StaticAsset<AssetBase>:
+-- MobileAsset<AssetBase>:
 --   has associated DCS objects, has death goals related to the
 --   state of the DCS objects, the asset does not move
 --]]
@@ -16,8 +16,8 @@ local vector   = require("dct.libs.vector")
 local Goal     = require("dct.Goal")
 local AssetBase= require("dct.assets.AssetBase")
 
-local StaticAsset = require("libs.namedclass")("StaticAsset", AssetBase)
-function StaticAsset:__init(template)
+local MobileAsset = require("libs.namedclass")("", AssetBase)
+function MobileAsset:__init(template)
 	self._maxdeathgoals = 0
 	self._curdeathgoals = 0
 	self._deathgoals    = {}
@@ -32,33 +32,16 @@ function StaticAsset:__init(template)
 	})
 end
 
-function StaticAsset.assettypes() --note add any new assettypes here
+function MobileAsset.assettypes() --note add any new assetTypes here as well as in enums
 	return {
-		enum.assetType.OCA,
-		enum.assetType.BASEDEFENSE,
-		enum.assetType.SHORAD,
-		enum.assetType.SPECIALFORCES,
-		enum.assetType.AMMODUMP,
-		enum.assetType.FUELDUMP,
-		enum.assetType.C2,
-		enum.assetType.EWR,
-		enum.assetType.MISSILE,
-		enum.assetType.PORT,
-		enum.assetType.SAM,
-		enum.assetType.FACILITY,
-		enum.assetType.BUNKER,
-		enum.assetType.CHECKPOINT,
-		enum.assetType.FACTORY,
-		enum.assetType.FOB,
-		enum.assetType.LOGISTICS,
-		enum.assetType.SEA,
-		enum.assetType.NOMISSION,
-		enum.assetType.FRIENDLY,	
+		enum.assetType.NAVAL,
+		enum.assetType.CONVOY,
+		enum.assetType.MOBILE,	
 		
 	}
 end
 
-function StaticAsset:_completeinit(template)
+function MobileAsset:_completeinit(template)
 	AssetBase._completeinit(self, template)
 	self._hasDeathGoals = template.hasDeathGoals
 	self._tpldata       = template:copyData()
@@ -68,7 +51,7 @@ end
 -- ignore all but primary targets when it comes to determining
 -- if we are "dead"
 --]]
-function StaticAsset:_addDeathGoal(name, goalspec)
+function MobileAsset:_addDeathGoal(name, goalspec)
 	assert(name ~= nil and type(name) == "string",
 		"value error: name must be provided")
 	assert(goalspec ~= nil, "value error: goalspec must be provided")
@@ -89,7 +72,7 @@ end
 --   remove deathgoal entry
 --   upon no more deathgoals set dead
 --]]
-function StaticAsset:_removeDeathGoal(name, goal)
+function MobileAsset:_removeDeathGoal(name, goal)
 	assert(name ~= nil and type(name) == "string",
 		"value error: name must be provided")
 	assert(goal ~= nil, "value error: goal must be provided")
@@ -127,7 +110,7 @@ end
 -- If no death goals have been defined a default of 90%
 -- damaged for all objects in the Asset is used.
 --]]
-function StaticAsset:_setupDeathGoal(grpdata, category)
+function MobileAsset:_setupDeathGoal(grpdata, category)
 	if self._hasDeathGoals then
 		if grpdata.dct_deathgoal ~= nil then
 			self:_addDeathGoal(grpdata.name, grpdata.dct_deathgoal)
@@ -149,7 +132,7 @@ end
 -- Adds an object (group or static) to the monitored list for this
 -- asset. This list will be needed later to save state.
 --]]
-function StaticAsset:_setup()
+function MobileAsset:_setup()
 	for _, grp in ipairs(self._tpldata) do
 		self:_setupDeathGoal(grp.data, grp.category)
 		self._assets[grp.data.name] = grp
@@ -160,7 +143,7 @@ function StaticAsset:_setup()
 	end
 end
 
-function StaticAsset:getLocation()
+function MobileAsset:getLocation()
 	if self._location == nil then
 		local vec2, n
 		for _, grp in pairs(self._assets) do
@@ -172,11 +155,11 @@ function StaticAsset:getLocation()
 	return self._location
 end
 
-function StaticAsset:getStatus()
+function MobileAsset:getStatus()
 	return math.floor((1 - (self._curdeathgoals / self._maxdeathgoals)) * 100)
 end
 
-function StaticAsset:getObjectNames()
+function MobileAsset:getObjectNames()
 	local keyset = {}
 	local n      = 0
 	for k,_ in pairs(self._assets) do
@@ -186,7 +169,7 @@ function StaticAsset:getObjectNames()
 	return keyset
 end
 
-function StaticAsset:update()
+function MobileAsset:update()
 	if not self:isSpawned() then
 		return
 	end
@@ -203,7 +186,7 @@ function StaticAsset:update()
 		self._maxdeathgoals, self._curdeathgoals, cnt))
 end
 
-function StaticAsset:handleDead(event)
+function MobileAsset:handleDead(event)
 	local obj = event.initiator
 
 	-- mark the unit/group/static as dead in the template, dct_dead
@@ -273,26 +256,13 @@ local function removeDCTKeys(grp)
 end
 
 local function __spawn(grp)
+	
+	coalition.addGroup(grp.countryid, grp.category, grp.data)
 
-	if grp.category == enum.UNIT_CAT_SCENERY then
-	
-		return
-		
-	end
-	
-	if grp.category == Unit.Category.STRUCTURE then
-	
-		coalition.addStaticObject(grp.countryid, grp.data)
-		
-	else
-	
-		coalition.addGroup(grp.countryid, grp.category, grp.data)
-		
-	end
 	
 end
 
-function StaticAsset:_spawn()
+function MobileAsset:_spawn()
 
 	for _, grp in ipairs(self._tpldata) do
 	
@@ -309,7 +279,7 @@ function StaticAsset:_spawn()
 	end
 end
 
-function StaticAsset:spawn(ignore)
+function MobileAsset:spawn(ignore)
 
 	if not ignore and self:isSpawned() then
 	
@@ -323,14 +293,10 @@ function StaticAsset:spawn(ignore)
 	
 end
 
-function StaticAsset:despawn()
+function MobileAsset:despawn()
 	for name, grp in pairs(self._assets) do
-		local object
-		if grp.category == Unit.Category.STRUCTURE then
-			object = StaticObject.getByName(name)
-		else
-			object = Group.getByName(name)
-		end
+		local object = Group.getByName(name)
+	
 		if object then
 			object:destroy()
 		end
@@ -373,7 +339,7 @@ local function filterTemplateData(tpldata)
 	return cpytbl
 end
 
-function StaticAsset:marshal()
+function MobileAsset:marshal()
 	local tbl = AssetBase.marshal(self)
 	if tbl == nil then
 		return nil
@@ -389,4 +355,4 @@ function StaticAsset:marshal()
 	return tbl
 end
 
-return StaticAsset
+return MobileAsset

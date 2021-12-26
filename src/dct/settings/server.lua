@@ -125,9 +125,7 @@ local function servercfgs(config)
 				["statepath"]   =
 					lfs.writedir()..utils.sep..vars.theater.."_"..
 					vars.sortie..".state",
-				["theaterpath"] = lfs.writedir()..utils.sep.."DCT"..
-					utils.sep.."theaters"..utils.sep..
-					vars.theater.."_"..vars.sortie,
+				["theaterpath"] = lfs.tempdir()..utils.sep.."theater",
 				["schedfreq"] = 2, -- hertz
 				["tgtfps"] = 75,
 				["percentTimeAllowed"] = .3,

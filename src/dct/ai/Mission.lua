@@ -6,10 +6,6 @@
 -- completing the Objective.
 --]]
 
--- TODO:
---  * have a joinable flag in the mission class only let
---    assets join when the flag is true
-
 require("os")
 require("math")
 local utils    = require("libs.utils")
@@ -44,11 +40,8 @@ end
 local SuccessState = class("Success", BaseMissionState)
 function SuccessState:enter(msn)
 	Logger:debug(self.__clsname..":enter()")
-	-- TODO: we could convert to emitting a DCT event to handle rewarding
-	-- tickets, this would require a little more than just emitting an
-	-- event here. Would require changing Tickets class a little too.
-	dct.Theater.singleton():getTickets():reward(msn.cmdr.owner,
-		msn.reward, true)
+	
+	dct.Theater.singleton():missionComplete()
 	msn:queueabort(enum.missionAbortType.COMPLETE)
 end
 
@@ -153,6 +146,7 @@ function PrepState:timeextend(addtime)
 	self.timer:extend(addtime)
 end
 
+
 local function composeBriefing(_, tgt, start_time)
 	local briefing = tgt.briefing
 	local interptbl = {
@@ -171,7 +165,7 @@ local function createPlanQ(plan)
 end
 
 local Mission = class("Mission")
-function Mission:__init(cmdr, missiontype, tgt, plan)
+function Mission:__init(cmdr, missiontype, tgt, plan, persistent, custombriefing, timeontarget, packagecomms, next_stage) --Poulet change
 	self.cmdr      = cmdr
 	self.type      = missiontype
 	self.target    = tgt.name
@@ -179,6 +173,37 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 	self.plan      = createPlanQ(plan)
 	self.iffcodes  = cmdr:genMissionCodes(missiontype)
 	self.id        = self.iffcodes.id
+	self.next_stage = next_stage --A successful completion will trigger a stage transition in Theater
+	
+	if(persistent) then
+		self.persistent = true --Mission will persist
+	else
+		self.persistent = false
+	end
+	
+	
+	self.custombriefing = custombriefing -- Poulet change
+	self.timeontarget = timeontarget --value in seconds from start time
+	self.starttime = timer.getAbsTime()
+	
+	
+	Logger:debug("-- KUKIRIC HERE IS THE TIME --")	-- there have been issues with DST
+	Logger:debug(tostring(timer.getAbsTime()))			
+	Logger:debug(os.date("%R", timer.getAbsTime()))
+	Logger:debug(os.date("%H:%M", timer.getAbsTime()))
+	
+	
+	if(packagecomms) then -- a package comms has been defined
+		
+		self.packagecomms = packagecomms -- string representing the frequency that joining players should tune for package comms
+
+		
+	else
+	
+		self.packagecomms = "N/A (Pilot discretion)"
+
+	end
+	
 	self.assigned  = {}
 	self:_setComplete(false)
 	self.state = PrepState()
@@ -186,7 +211,7 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 
 	-- compose the briefing at mission creation to represent
 	-- known intel the pilots were given before departing
-	self.briefing  = composeBriefing(self, tgt, timer.getAbsTime())
+	self.briefing  = composeBriefing(self, tgt, self.starttime)
 	tgt:setTargeted(self.cmdr.owner, true)
 
 	self.tgtinfo = {}
@@ -248,14 +273,47 @@ end
 function Mission:abort(asset)
 	Logger:debug(self.__clsname..":abort()")
 	self:removeAssigned(asset)
-	if next(self.assigned) == nil then
-		self.cmdr:removeMission(self.id)
-		local tgt = self.cmdr:getAsset(self.target)
-		if tgt then
-			tgt:setTargeted(self.cmdr.owner, false)
+	
+	if(not self.persistent)	then
+		if next(self.assigned) == nil then
+			self.cmdr:removeMission(self.id)
+			local tgt = self.cmdr:getAsset(self.target)
+			if tgt then
+				tgt:setTargeted(self.cmdr.owner, false)
+			end
 		end
 	end
+
 	return self.id
+end
+
+--[[
+-- forceEnd - terminates the mission regardless of whether there are players assigned to it or not
+--   
+-- primarily used by periodicMission
+--]]
+
+function Mission:forceEnd()
+	Logger:debug(self.__clsname..":forceEnd()")
+
+	playerTable = self.assigned
+
+	for k,v in pairs(playerTable) do
+	
+		self:removeAssigned(v)
+	
+	end
+	
+	self.cmdr:removeMission(self.id)
+	
+	local tgt = self.cmdr:getAsset(self.target)
+	if tgt then
+		tgt:setTargeted(self.cmdr.owner, false)
+	end
+
+
+	return self.id
+	
 end
 
 function Mission:queueabort(reason)
@@ -328,17 +386,26 @@ function Mission:addTime(time)
 end
 
 function Mission:getDescription(fmt)
-	local tgt = self.cmdr:getAsset(self.target)
-	if tgt == nil then
-		return "Target destroyed abort mission"
+
+	if self.custombriefing == nil then --Poulet change: standard dct mission
+
+		local tgt = self.cmdr:getAsset(self.target)
+		if tgt == nil then
+			return "Target destroyed abort mission"
+		end
+		local interptbl = {
+			["LOCATION"] = dctutils.fmtposition(
+				tgt:getLocation(),
+				tgt:getIntel(self.cmdr.owner),
+				fmt)
+		}
+		return dctutils.interp(self.briefing, interptbl)
+		
+	else --Poulet change: mission with custom breifing
+	
+		return self.custombriefing
+		
 	end
-	local interptbl = {
-		["LOCATION"] = dctutils.fmtposition(
-			tgt:getLocation(),
-			tgt:getIntel(self.cmdr.owner),
-			fmt)
-	}
-	return dctutils.interp(self.briefing, interptbl)
 end
 
 return Mission

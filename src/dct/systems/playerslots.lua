@@ -45,7 +45,6 @@ function PlayerSlots:__init(theater)
 				["regionname"]= "theater",
 				["regionprio"]= 1000,
 				["coalition"] = side,
-				["cost"]      = theater:getTickets():getPlayerCost(side),
 				["desc"]      = "Player group",
 				["tpldata"]   = grp,
 			}))

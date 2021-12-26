@@ -1,3 +1,35 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@poulet67 
+jtoppins
+/
+dct
+Public
+Code
+Issues
+28
+Pull requests
+Actions
+Projects
+3
+Wiki
+Security
+Insights
+dct/src/dct/templates/Region.lua
+@jtoppins
+jtoppins region: detect the radius of the region
+…
+Latest commit 8d319d9 on May 30
+ History
+ 2 contributors
+@jtoppins@Terrificfool
+420 lines (376 sloc)  10.1 KB
+   
 --[[
 -- SPDX-License-Identifier: LGPL-3.0
 --
@@ -9,12 +41,10 @@ require("math")
 local class      = require("libs.namedclass")
 local utils      = require("libs.utils")
 local dctenums   = require("dct.enum")
-local dctutils   = require("dct.utils")
-local Marshallable = require("dct.libs.Marshallable")											 
+local vector     = require("dct.libs.vector")
+local Marshallable = require("dct.libs.Marshallable")
 local Template   = require("dct.templates.Template")
 local Logger     = dct.Logger.getByName("Region")
-local Command     = require("dct.Command")
-local settings    = _G.dct.settings.server
 
 local tplkind = {
 	["TEMPLATE"]  = 1,
@@ -39,9 +69,11 @@ local function processlimits(_, tbl)
 	-- their numerical equivalents.
 	local limits = {}
 	for key, data in pairs(tbl.limits) do
-		local typenum = dctenums.assetType[string.upper(key)] --to make case insensitive
+		local typenum = dctenums.assetType[string.upper(key)]
 		if typenum == nil then
-			Logger:warn("invalid asset type '"..key.."' found in limits definition in file: "..	tbl.defpath or "nil")
+			Logger:warn("invalid asset type '"..key..
+				"' found in limits definition in file: "..
+				tbl.defpath or "nil")
 		else
 			limits[typenum] = data
 		end
@@ -50,93 +82,59 @@ local function processlimits(_, tbl)
 	return true
 end
 
+local function processlinks(keydata, tbl)
+	local links = {}
+	for k, v in pairs(tbl[keydata.name]) do
+		local d = string.upper(k)
+		if DOMAIN[d] ~= nil then
+			links[DOMAIN[d]] = v
+		end
+	end
+	tbl[keydata.name] = links
+	return true
+end
+
 local function loadMetadata(self, regiondefpath)
 	Logger:debug("=> regiondefpath: "..regiondefpath)
-	
 	local keys = {
-		[1] = {
+		{
 			["name"] = "name",
 			["type"] = "string",
-		},
-		[2] = {
+		}, {
 			["name"] = "priority",
 			["type"] = "number",
-		},
-		[4] = {
+		}, {
+			["name"] = "location",
+			["type"] = "table",
+			["check"] = Template.checklocation
+		}, {
 			["name"] = "limits",
 			["type"] = "table",
 			["default"] = {},
 			["check"] = processlimits,
-		},
-		[5] = {
-			["name"] = "airspace",
-			["type"] = "boolean",
-			["default"] = true,
-		},
+		}, {
+			["name"] = "altitude_floor",
+			["type"] = "number",
+			["default"] = 914.4, -- meters; 3000ft msl
+		}, {
+			["name"] = "links",
+			["type"] = "table",
+			["check"] = processlinks,
+			["default"] = {},
+		}
 	}
 
 	local region = utils.readlua(regiondefpath)
 	if region.region then
 		region = region.region
 	end
-	--Logger:debug("REGION --- "..region.name)
-	
 	region.defpath = regiondefpath
+	region.path = regiondefpath
 	utils.checkkeys(keys, region)
+	region.path = nil
 	utils.mergetables(self, region)
-	
 end
 
-local function loadGeoData(self)
-		
-	---- Poulet changes
-	---- Load region geo data	
-	
-	
-	geopath = settings.theaterpath..utils.sep.."RegionGeo.def"
-	region_table = utils.loadtable(geopath)
-	
-	
-	--for k, v in pairs(region_table) do
-	
-	--	trigger.action.outText("Key: "..k, 30)	
-	--	trigger.action.outText("Type:"..type(k), 30)	
-	
-	--end
-	
-	--trigger.action.outText("Self ID: "..self.name, 30)	
-	--trigger.action.outText(type(self.name), 30)	
-	
-	--trigger.action.outText(settings.theaterpath, 30)	
-	--trigger.action.outText(utils.sep, 30)		
-	--trigger.action.outText(settings.theaterpath, 30)	
-	--trigger.action.outText(utils.sep, 30)		
-	
-	--trigger.action.outText("Self ID: "..self.name, 30)	
-	--trigger.action.outText(type(self.name), 30)	
-	
-
-	--tprint(region_table)
-	
-	self.Vertices = region_table[self.name].Verts
-	
-end
---[[
-function tprint (tbl, indent) --okay I need to keep this...
-  if not indent then indent = 0 end
-  for k, v in pairs(tbl) do
-    formatting = string.rep("  ", indent) .. k .. ": "
-    if type(v) == "table" then
-      trigger.action.outText(formatting, 30)
-      tprint(v, indent+1)
-    elseif type(v) == 'boolean' then
-      trigger.action.outText(formatting .. tostring(v))		
-    else
-      trigger.action.outText(formatting .. v, 30)
-    end
-  end
-end
---]]
 local function getTemplates(self, basepath)
 	local ignorepaths = {
 		["."] = true,
@@ -146,29 +144,19 @@ local function getTemplates(self, basepath)
 
 	Logger:debug("=> basepath: "..basepath)
 	for filename in lfs.dir(basepath) do
-	
 		if ignorepaths[filename] == nil then
-		
 			local fpath = basepath..utils.sep..filename
 			local fattr = lfs.attributes(fpath)
-			
 			if fattr.mode == "directory" then
-			
 				getTemplates(self, basepath..utils.sep..filename)
-				
 			elseif string.find(fpath, ".dct", -4, true) ~= nil then
-			
 				Logger:debug("=> process template: "..fpath)
-				
 				local stmpath = string.gsub(fpath, "[.]dct", ".stm")
-				
 				if lfs.attributes(stmpath) == nil then
-				
 					stmpath = nil
-					
 				end
-
-				self:addTemplate(Template.fromFile(self, fpath, stmpath))
+				self:addTemplate(
+					Template.fromFile(self, fpath, stmpath))
 			end
 		end
 	end
@@ -201,11 +189,7 @@ local function registerType(self, kind, ttype, name)
 	table.insert(self._tpltypes[ttype], entry)
 end
 
--- This is where DCT spawns everthing
--- I will have to hack this apart
-
 local function addAndSpawnAsset(self, name, assetmgr)
-	centroid = centroid or {}
 	if name == nil then
 		return nil
 	end
@@ -219,12 +203,9 @@ local function addAndSpawnAsset(self, name, assetmgr)
 	local asset = mgr:factory(tpl.objtype)(tpl, self)
 	assetmgr:add(asset)
 	asset:generate(assetmgr, self)
-	local location = asset:getLocation()
-	
-	if location then
-		centroid.point, centroid.n = dctutils.centroid(location,
-			centroid.point, centroid.n)
-	end
+	local d = vector.distance(vector.Vector2D(self:getPoint()),
+		vector.Vector2D(asset:getLocation()))
+	self.radius = math.max(self.radius, d)
 	return asset
 end
 
@@ -271,33 +252,37 @@ end
 --              assets to spawn from a given asset type
 --              [<objtype>] = { ["min"] = <num>, ["max"] = <num>, }
 --]]
-
 local Region = class("Region", Marshallable)
-
 function Region:__init(regionpath)
 	Marshallable.__init(self)
-	self:_addMarshalNames({ 
+	self:_addMarshalNames({
 		"location",
 		"links",
-		"radius",})
+		"radius",
+	})
+
 	self.path          = regionpath
-	self.Vertices 	   = {} -- A set of vertices defining a polygon
-	self.Airbase 	   = nil -- Airbase inside this region
-	self.Frontline 	   = {}	-- Frontlines associated with this region
 	self._templates    = {}
 	self._tpltypes     = {}
 	self._exclusions   = {}
-	self.Staged = {} -- for staged templates
-	
+	self.centroid      = {}
+	self.weight        = {}
+	for _, side in pairs(coalition.side) do
+		self.weight[side] = 0
+	end
+	self.owner         = STATUS.NEUTRAL
+	self.radius        = 25
+	self.DOMAIN        = nil
+	self.STATUS        = nil
+
 	Logger:debug("=> regionpath: "..regionpath)
 	loadMetadata(self, regionpath..utils.sep.."region.def")
-	loadGeoData(self) -- load in geographical data
 	getTemplates(self, self.path)
 	Logger:debug("'"..self.name.."' Loaded")
-	
 end
 
---[[
+Region.DOMAIN = DOMAIN
+Region.STATUS = STATUS
 
 function Region:addTemplate(tpl)
 	assert(self._templates[tpl.name] == nil,
@@ -315,78 +300,27 @@ function Region:addTemplate(tpl)
 	if tpl.exclusion ~= nil then
 		if self._exclusions[tpl.exclusion] == nil then
 			createExclusion(self, tpl)
-			registerType(self, tplkind.EXCLUSION, tpl.objtype, tpl.exclusion)
+			registerType(self, tplkind.EXCLUSION,
+				tpl.objtype, tpl.exclusion)
 		end
 		registerExclusion(self, tpl)
-		
 	else
-	
 		registerType(self, tplkind.TEMPLATE, tpl.objtype, tpl.name)
 	end
 end
-
---]]
-
-
-
-function Region:addTemplate(tpl) --note: we can not use this method to add staged templates, as the theater singleton doesn't exist yet (so we have no way of knowing what stage it is at.)
-								 --due to the definition of "stage" we can assume it starts at 1 always, and call :addStaged template after this
-								 --when I figure out a more elegant solution to this problem I will probably hack the DCT codebase apart with a rusty cleaver
-								 
-	assert(self._templates[tpl.name] == nil,
-		"duplicate template '"..tpl.name.."' defined; "..tostring(tpl.path))
-		
-	if tpl.theater ~= env.mission.theatre then
-		Logger:warn(string.format("Region(%s):Template(%s) not for map(%s):template(%s)".." - ignoring",	self.name, tpl.name, env.mission.theatre, tpl.theater))
-		return
-	end	
-				
-	if(tpl.stage ~= 1) then
-		Logger:debug("  + add stage template: "..tpl.name.."Stage: "..tpl.stage)
-		
-		if(self.Staged[tpl.stage] == nil) then
-			self.Staged[tpl.stage] = {}--initialize it
-		end
-		
-		table.insert(self.Staged[tpl.stage], tpl)
-		
-	else
-		Logger:debug("  + add template: "..tpl.name)
-		self._templates[tpl.name] = tpl
-		if tpl.exclusion ~= nil then
-			if self._exclusions[tpl.exclusion] == nil then
-				createExclusion(self, tpl)
-				registerType(self, tplkind.EXCLUSION, tpl.objtype, tpl.exclusion)
-			end
-			registerExclusion(self, tpl)			
-		else
-			registerType(self, tplkind.TEMPLATE, tpl.objtype, tpl.name)
-		end	
-	end
-
-	
-end
-
-function Region:addStagedTemplate(tpl) 
-
-	
-end
-
 
 function Region:getTemplateByName(name)
 	return self._templates[name]
 end
 
--- I will have to also hack this apart
-
-function Region:_generate(assetmgr, objtype, names, centroid)
+function Region:_generate(assetmgr, objtype, names)
 	local limits = {
 		["min"]     = #names,
 		["max"]     = #names,
 		["limit"]   = #names,
 		["current"] = 0,
 	}
-	
+
 	if self.limits and self.limits[objtype] then
 		limits.min   = self.limits[objtype].min
 		limits.max   = self.limits[objtype].max
@@ -394,14 +328,14 @@ function Region:_generate(assetmgr, objtype, names, centroid)
 	end
 
 	for i, tpl in ipairs(names) do
-		willSpawn = tpl.kind ~= tplkind.EXCLUSION and self._templates[tpl.name].spawnalways == true
-		if willSpawn then
+		if tpl.kind ~= tplkind.EXCLUSION and
+			self._templates[tpl.name].spawnalways == true then
 			addAndSpawnAsset(self, tpl.name, assetmgr)
 			table.remove(names, i)
 			limits.current = 1 + limits.current
 		end
 	end
-	
+
 	while #names >= 1 and limits.current < limits.limit do
 		local idx  = math.random(1, #names)
 		local name = names[idx].name
@@ -420,12 +354,9 @@ end
 -- that asset with the asset manager (provided) and spawn
 -- the asset into the game world. Region generation should
 -- be limited to mission startup.
-
 function Region:generate()
-
 	local assetmgr = dct.Theater.singleton():getAssetMgr()
-	local tpltypes = utils.deepcopy(self._tpltypes) -- this is such a bizaare way to do this
-	local centroid = {}								-- I am gonna see if I can rip it out
+	local tpltypes = utils.deepcopy(self._tpltypes)
 
 	for objtype, _ in pairs(dctenums.assetClass.INITIALIZE) do
 		local names = tpltypes[objtype]
@@ -433,47 +364,89 @@ function Region:generate()
 			self:_generate(assetmgr, objtype, names)
 		end
 	end
+end
 
-	-- do not create an airspace object if not wanted
-	if self.airspace == true then
-	
-		-- create airspace asset based on the centroid of this region
-		if centroid.point == nil then
-			centroid.point = { ["x"] = 0, ["y"] = 0, ["z"] = 0, }
-		end
-		self.location = centroid.point
-		local airspacetpl = Template({
-			["objtype"]    = "airspace",
-			["name"]       = "airspace",
-			["regionname"] = self.name,
-			["regionprio"] = 1000,
-			["desc"]       = "airspace",
-			["coalition"]  = coalition.side.NEUTRAL,
-			["location"]   = self.location,
-			["volume"]     = {
-				["point"]  = self.location,
-				["radius"] = 55560,  -- 30NM
-			},
-		})
-		self:addTemplate(airspacetpl)
-		addAndSpawnAsset(self, airspacetpl.name, assetmgr)	
-		
+function Region:getWeight(side)
+	return self.weight[side]
+end
+
+function Region:getPoint()
+	return self.location
+end
+
+function Region:getEdges(domain)
+	assert(utils.getkey(Region.DOMAIN, domain),
+		"value error: invalid domain")
+	return utils.deepcopy(self.links[domain])
+end
+
+local function get_asset_weight(asset)
+	local weight = asset.cost
+	if weight == 0 then
+		weight = 1
 	end
-	
+	Logger:debug("asset weight("..asset.name.."): "..tostring(weight))
+	return weight
 end
 
---all templates that are marked with different stage numbers will be generated later
-
-function Region:generateStagedTemplates(assetmgr, stagenum)
-	--Generates templates _after_ DCT has been initialized and stage transition has
-	--occured
-	
-	
+local function handleDead(region, event)
+	local asset = event.initiator
+	region.weight[asset.owner] = region.weight[asset.owner] -
+		get_asset_weight(asset)
+	if region.weight[asset.owner] < 0 then
+		region.weight[asset.owner] = 0
+	end
+	Logger:debug("Region("..region.name..").handleDead - "..
+		"new weight: "..tostring(region.weight[asset.owner]))
 end
 
-function Region:createReconGrid()
---Creates an array of points that span the region. These are nodes that are used for the recon system
+local function handleAddAsset(region, event)
+	local asset = event.initiator
+	region.weight[asset.owner] = region.weight[asset.owner] +
+		get_asset_weight(asset)
+	Logger:debug("Region("..region.name..").handleAddAsset - "..
+		"new weight: "..tostring(region.weight[asset.owner]))
+end
 
+local handlers = {
+	[dctenums.event.DCT_EVENT_DEAD] = handleDead,
+	[dctenums.event.DCT_EVENT_ADD_ASSET] = handleAddAsset,
+}
+
+function Region:onDCTEvent(event)
+	local side = coalition.side
+	local handler = handlers[event.id]
+
+	if handler == nil or
+	   dctenums.assetClass.STRATEGIC[event.initiator.type] == nil then
+		return
+	end
+
+	handler(self, event)
+
+	if self.weight[side.RED] == 0 or self.weight[side.BLUE] == 0 then
+		if self.weight[side.RED] - self.weight[side.BLUE] == 0 then
+			self.owner = STATUS.NEUTRAL
+		else
+			if self.weight[side.RED] > self.weight[side.BLUE] then
+				self.owner = STATUS.RED
+			else
+				self.owner = STATUS.BLUE
+			end
+		end
+		return
+	end
+
+	local c = 2
+	local ratioB = self.weight[side.BLUE] / self.weight[side.RED]
+
+	if ratioB > c then
+		self.owner = STATUS.BLUE
+	elseif ratioB < 1/c then
+		self.owner = STATUS.RED
+	else
+		self.owner = STATUS.CONTESTED
+	end
 end
 
 return Region

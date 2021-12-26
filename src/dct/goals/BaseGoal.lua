@@ -41,6 +41,7 @@ end
 --
 -- We don't need the group information until the unit is spawned anyway.
 --]]
+
 function BaseGoal:onSpawn()
 	if self.objtype == enums.objtype.UNIT then
 		self.groupname = Unit.getByName(self.name):getGroup():getName()

@@ -8,9 +8,9 @@ local enum = {}
 
 enum.assetType = {
 	-- control zones
-	["KEEPOUT"]     = 1,
+	["KEEPOUT"]     = 1, 
 
-	-- strategic types
+	-- "Objectives" 
 	["AMMODUMP"]    = 2,
 	["FUELDUMP"]    = 3,
 	["C2"]          = 4,
@@ -19,57 +19,78 @@ enum.assetType = {
 	["OCA"]         = 7,
 	["PORT"]        = 8,
 	["SAM"]         = 9,
-	["FACILITY"]    = 10,
+	["BUNKER"]      = 10,
+	["CHECKPOINT"]  = 11,
 
-	-- bases
-	["BASEDEFENSE"] = 11,
-
+	-- "Infrastructure"
+	["SEA"]         = 12, --Static naval like oil platforms and the like	
+	["FACILITY"]    = 13,
+	["FACTORY"]     = 14,
+	
+	-- Bases
+	["BASEDEFENSE"] = 15,
+	["FOB"] = 16,
+	["FARP"] = 17,
+	["FIREBASE"] = 18,
+	["FOB"] = 19,
+	["AIRBASE"]  = 20,
+	
 	-- tactical
-	["JTAC"]        = 12,
-	["LOGISTICS"]   = 13,
-	["SEA"]         = 14,
+	["JTAC"]        = 21,
+	-- mobile
+	--logistical	
+	["LOGISTICS"]   = 22,	
+	["CONVOY"]         = 23,
+	["NAVAL"]         = 24,
+	["MOBILE"]         = 25,
 
 	-- extended type set
-	["BUNKER"]      = 15,
-	["CHECKPOINT"]  = 16,
-	["FACTORY"]     = 17,
-	["AIRSPACE"]    = 18,
-	["SHORAD"]      = 19,
-	["AIRBASE"]     = 20,
-	["PLAYERGROUP"] = 21,
-	["SPECIALFORCES"] = 22,
-	["FOB"]           = 23,
-	["SQUADRONPLAYER"]= 24,
+	["AIRSPACE"]    = 26,
+	["SHORAD"]      = 27,
+	["PLAYERGROUP"] = 28,
+	["SPECIALFORCES"] = 29,
+	
+	-- Mission not assigned to an asset
+	["NOMISSION"] = 31,
+	["FRIENDLY"] = 32,
+	
 }
 
 --[[
 -- We use a min-heap so priority is in reverse numerical order,
 -- a higher number is lower priority
 --]]
+
+
+--POULET: My version of DCT will create missions for assets as they are "discovered" or "spotted"
+--This means that the priority system is no longer needed.
+--This may result in a massive mission board, but that is okay
+--[[
 enum.assetTypePriority = {
 	[enum.assetType.AIRSPACE]    = 10,
-	[enum.assetType.JTAC]        = 10,
-	[enum.assetType.EWR]         = 20,
-	[enum.assetType.SAM]         = 20,
-	[enum.assetType.C2]          = 30,
-	[enum.assetType.AMMODUMP]    = 40,
-	[enum.assetType.FUELDUMP]    = 40,
-	[enum.assetType.MISSILE]     = 50,
-	[enum.assetType.SEA]         = 50,
+	[enum.assetType.JTAC]        = 3,
+	[enum.assetType.EWR]         = 4,
+	[enum.assetType.SAM]         = 3,
+	[enum.assetType.C2]          = 3,
+	[enum.assetType.AMMODUMP]    = 5,
+	[enum.assetType.FUELDUMP]    = 5,
+	[enum.assetType.MISSILE]     = 5,
+	[enum.assetType.SEA]         = 1,
 	[enum.assetType.BASEDEFENSE] = 60,
 	[enum.assetType.OCA]         = 70,
 	[enum.assetType.PORT]        = 70,
 	[enum.assetType.LOGISTICS]   = 70,
 	[enum.assetType.AIRBASE]     = 70,
-	[enum.assetType.SHORAD]      = 100,
-	[enum.assetType.FACILITY]    = 100,
-	[enum.assetType.BUNKER]      = 100,
-	[enum.assetType.CHECKPOINT]  = 100,
-	[enum.assetType.SPECIALFORCES] = 100,
-	[enum.assetType.FOB]         = 100,
-	[enum.assetType.FACTORY]     = 100,
+	[enum.assetType.SHORAD]      = 5,
+	[enum.assetType.FACILITY]    = 5,
+	[enum.assetType.BUNKER]      = 5,
+	[enum.assetType.CHECKPOINT]  = 5,
+	[enum.assetType.SPECIALFORCES] = 5,
+	[enum.assetType.FOB]         = 10,
+	[enum.assetType.FACTORY]     = 5,
 	[enum.assetType.KEEPOUT]     = 10000,
 }
+--]]
 
 enum.missionInvalidID = 0
 
@@ -80,8 +101,59 @@ enum.missionType = {
 	["SEAD"]     = 4,
 	["BAI"]      = 5,
 	["OCA"]      = 6,
-	["ARMEDRECON"] = 7,
+	["RECON"] = 7,
+	["RECON TRANSPORT"] = 8,
+	["ANTI SHIP"] = 9,	
+	["ESCORT"] = 10,	
+	["INTERCEPT"] = 11,	
+	["CONVOY RAID"] = 12,	
+	["LOGISTICS"] = 13,
+	["CSAR"] = 14,		
 }
+
+enum.missionTypePriority = {
+	["CAS"]      = 2,
+	["CAP"]      = 2,
+	["STRIKE"]   = 2,
+	["SEAD"]     = 2,
+	["BAI"]      = 2,
+	["OCA"]      = 3,
+	["RECON"] = 2,
+	["RECON TRANSPORT"] = 2,
+	["ANTI SHIP"] = 1,	
+	["ESCORT"] = 2,	
+	["INTERCEPT"] = 1,	
+	["CONVOY RAID"] = 4,	
+	["CSAR"] = 2,		
+}
+
+--This is from an old implementation, I must delete
+--[[
+enum.periodicMissions = { 
+	[enum.missionType.CAS]     = false,
+	[enum.missionType.CAP]      = false,
+	[enum.missionType.STRIKE]   = false,
+	[enum.missionType.SEAD]     = false,
+	[enum.missionType.BAI]      = false,
+	[enum.missionType.OCA]      = false,
+	[enum.missionType["ANTI SHIP"]]--[[ = true,
+	[enum.missionType.ESCORT] = false,
+	[enum.missionType.INTERCEPT] = false,	
+}
+
+enum.availableMissions = {
+	[enum.missionType.CAS]     = false,
+	[enum.missionType.CAP]      = true,
+	[enum.missionType.STRIKE]   = false,
+	[enum.missionType.SEAD]     = false,
+	[enum.missionType.BAI]      = false,
+	[enum.missionType.OCA]      = false,
+	[enum.missionType["ANTI SHIP"]]--[[ = true,
+	[enum.missionType.ESCORT] = false,
+	[enum.missionType.INTERCEPT] = false,	
+}
+--]]
+
 
 enum.assetClass = {
 	["INITIALIZE"] = {
@@ -100,9 +172,12 @@ enum.assetClass = {
 		[enum.assetType.SHORAD]      = true,
 		[enum.assetType.AIRBASE]     = true,
 		[enum.assetType.SPECIALFORCES] = true,
-		[enum.assetType.FOB]           = true,
 		[enum.assetType.AIRSPACE]      = true,
 		[enum.assetType.LOGISTICS]     = true,
+		[enum.assetType.SEA]      		= true,
+		[enum.assetType.NAVAL]      		= true,
+		[enum.assetType.NOMISSION]      = true,
+		[enum.assetType.FRIENDLY]     = true,
 	},
 	-- strategic list is used in calculating ownership of a region
 	-- among other things
@@ -119,7 +194,6 @@ enum.assetClass = {
 		[enum.assetType.CHECKPOINT]  = true,
 		[enum.assetType.FACTORY]     = true,
 		[enum.assetType.AIRBASE]     = true,
-		[enum.assetType.FOB]         = true,
 	},
 	-- agents never get serialized to the state file
 	["AGENTS"] = {
@@ -137,7 +211,8 @@ enum.missionTypeMap = {
 		[enum.assetType.FACILITY]   = true,
 		[enum.assetType.BUNKER]     = true,
 		[enum.assetType.CHECKPOINT] = true,
-		[enum.assetType.FACTORY]    = true,
+		[enum.assetType.FACTORY]    = true,		
+		[enum.assetType.SEA]       = true,
 	},
 	[enum.missionType.SEAD] = {
 		[enum.assetType.EWR]        = true,
@@ -153,12 +228,11 @@ enum.missionTypeMap = {
 	[enum.missionType.CAS] = {
 		[enum.assetType.JTAC]       = true,
 	},
+	[enum.missionType["ANTI SHIP"]] = {
+		[enum.assetType.NAVAL]       = true,
+	},
 	[enum.missionType.CAP] = {
 		[enum.assetType.AIRSPACE]   = true,
-	},
-	[enum.missionType.ARMEDRECON] = {
-		[enum.assetType.SPECIALFORCES] = true,
-		[enum.assetType.FOB]           = true,
 	},
 }
 
@@ -166,21 +240,23 @@ enum.missionAbortType = {
 	["ABORT"]    = 0,
 	["COMPLETE"] = 1,
 	["TIMEOUT"]  = 2,
+	["PERIODIC"]  = 3, -- 
 }
 
-enum.uiRequestType = {
+enum.uiRequestType = { -- GONE: mission request
 	["THEATERSTATUS"]   = 1,
-	["MISSIONREQUEST"]  = 2,
-	["MISSIONBRIEF"]    = 3,
-	["MISSIONSTATUS"]   = 4,
-	["MISSIONABORT"]    = 5,
-	["MISSIONROLEX"]    = 6,
-	["MISSIONCHECKIN"]  = 7,
-	["MISSIONCHECKOUT"] = 8,
-	["SCRATCHPADGET"]   = 9,
-	["SCRATCHPADSET"]   = 10,
-	["CHECKPAYLOAD"]    = 11,
-	["MISSIONJOIN"]     = 12,
+	["MISSIONBRIEF"]    = 2,
+	["MISSIONSTATUS"]   = 3,
+	["MISSIONABORT"]    = 4,
+	["MISSIONROLEX"]    = 5,
+	["MISSIONCHECKIN"]  = 6,
+	["MISSIONCHECKOUT"] = 7,
+	["SCRATCHPADGET"]   = 8,
+	["SCRATCHPADSET"]   = 9,
+	["CHECKPAYLOAD"]    = 10,
+	["MISSIONJOIN"]     = 1,
+	["SPAWN"]     = 12,
+
 }
 
 enum.weaponCategory = {
@@ -233,7 +309,8 @@ enum.event = {
 		--  A new asset was added to the asset manager.
 		--   id = id of this event
 		--   initiator = asset being added
-		--]]
+		--]]		
+
 }
 
 enum.kickCode = require("dct.libs.kickinfo").kickCode

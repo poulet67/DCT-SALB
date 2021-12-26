@@ -5,8 +5,7 @@
 --
 -- Player<AssetBase>
 -- A player asset doesn't die (the assetmanager prevents this), never
--- reduces status, and is always associated with a squadron.
--- Optionally the player can be associated with an airbase.
+-- reduces status, the player is associated with their departing (home) airbase.
 --
 -- ## Ticket Consumption
 -- Players only consume a ticket when a when they die or otherwise
@@ -63,7 +62,7 @@ end
 
 local function reset_slot(asset)
 	local theater = dct.Theater.singleton()
-	if asset.squadron then
+	--[[if asset.squadron then
 		asset._logger:debug("squadron set: "..asset.squadron)
 		local sqdn = theater:getAssetMgr():getAsset(asset.squadron)
 		if sqdn then
@@ -75,7 +74,7 @@ local function reset_slot(asset)
 			asset._logger:debug("ato: "..
 				require("libs.json"):encode_pretty(asset.ato))
 		end
-	end
+	end--]]
 	uimenu.createMenu(asset)
 	local cmdr = theater:getCommander(asset.owner)
 	local msn  = cmdr:getAssigned(asset)
@@ -164,11 +163,11 @@ end
 
 function OccupiedState:_bleed(asset)
 	local theater = dct.Theater.singleton()
-	local tickets = theater:getTickets()
-	if not (tickets:getConfig(asset.owner).bleed and
-		self.inair == true) then
-		return nil
-	end
+	--local tickets = theater:getTickets()
+	--if not (tickets:getConfig(asset.owner).bleed and
+	--	self.inair == true) then
+	--	return nil
+	--end
 
 	local cmdr = theater:getCommander(asset.owner)
 	local msn  = cmdr:getAssigned(asset)
@@ -250,7 +249,7 @@ function OccupiedState:handleLand(asset, event)
 		self.inair = false
 		trigger.action.outTextForGroup(asset.groupId,
 			"Welcome home. You are able to safely disconnect"..
-			" without costing your side tickets.",
+			"without costing your team an airframe and pilot.",
 			20, true)
 	end
 	return nil
@@ -318,7 +317,7 @@ function Player:_completeinit(template)
 	self.unittype   = self._tpldata.data.units[1].type
 	self.cmdpending = false
 	self.groupId    = self._tpldata.data.groupId
-	self.squadron   = self.name:match("(%w+)(.+)")
+	--self.squadron   = self.name:match("(%w+)(.+)")
 	self.airbase    = dctutils.airbaseId2Name(airbaseId(self._tpldata))
 	self.parking    = airbaseParkingId(self._tpldata)
 	self.ato        = settings.ui.ato[self.unittype] or
@@ -356,7 +355,7 @@ end
 function Player:getLocation()
 	local p = Group.getByName(self.name)
 	self._location = p:getUnit(1):getPoint()
-	return AssetBase.getLocation(self)
+	return self._location
 end
 
 function Player:isEnabled()
