@@ -165,7 +165,14 @@ function AssetBase:_completeinit(template) -- NOTE: Add any new template keys he
 	self.owner    = template.coalition
 	self.rgnname  = template.regionname
 	self.tplname  = template.name
-
+	self.known  = template.known
+	self.cp_reward  = template.cp_reward -- command points awarded for succesful mission
+	
+	if(template.period) then
+				
+		self.period  = template.period  
+	
+	end
 	
 	if norenametype[self.type] == true or self.spawnable then
 		self.name = self.tplname

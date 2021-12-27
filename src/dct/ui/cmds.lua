@@ -127,7 +127,7 @@ end
 
 function ShowMissionBoard:_execute(_, cmdr)
 
-	local mb = cmdr:getMissionBoard()
+	local missiontable = cmdr:getMissionBoard()
 	
 	--assigned = string.format("%d/%d", mb)
 	
@@ -136,13 +136,16 @@ function ShowMissionBoard:_execute(_, cmdr)
 	
 	local msg =	
 		string.format("\n== Current Active Air Missions ==\n")..
-		string.format("ID		TYPE 		Assets Assgn.	Priority		\n")
+		string.format("ID      TYPE     Num. Assgn.    Priority         \n")
 	
-	if next(update.missions) ~= nil then
-		for k,v in pairs(update.missions) do
+	if next(missiontable) ~= nil then
+		for k,v in pairs(missiontable) do
+			Logger:debug("------ Mission Board --------------")
+			Logger:debug("------ key:"..k)
+			Logger:debug("------type:"..v.type)			
 			--assigned = string.format("%d/%d", v.n_assigned, v.n_max)
 			--msg = msg .. string.format("%4d		 %4s		%s		%d", k, utils.getkey(enum.missionType, v.type), assigned, v.priority)
-			msg = msg .. string.format("%4d		 %4s		%s		%d", k, utils.getkey(enum.missionType, v.type), v.n_assigned, v.priority)
+			msg = msg .. string.format("%4d     %4s     %d     %d\n", k, utils.getkey(enum.missionType, v.type), #v.assigned, v.priority)
 		end
 	else
 		msg = msg .. "  No Active Missions\n"
@@ -490,6 +493,7 @@ local cmds = {
 	[enum.uiRequestType.MISSIONROLEX]    = MissionRolexCmd,
 	[enum.uiRequestType.MISSIONCHECKIN]  = MissionCheckinCmd,
 	[enum.uiRequestType.MISSIONCHECKOUT] = MissionCheckoutCmd,
+	[enum.uiRequestType.MISSIONBOARD]   = ShowMissionBoard,
 	[enum.uiRequestType.SCRATCHPADGET]   = ScratchPadDisplay,
 	[enum.uiRequestType.SCRATCHPADSET]   = ScratchPadSet,
 	[enum.uiRequestType.CHECKPAYLOAD]    = CheckPayloadCmd,

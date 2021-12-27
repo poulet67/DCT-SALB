@@ -58,7 +58,7 @@ function menus.createMenu(asset)
 
 	local msnmenu = addmenu(gid, "Mission", nil)
 	
-	--local rqstmenu = addmenu(gid, "Request", msnmenu)
+	--local rqstmenu = addmenu(gid, "View All", msnmenu)
 	--[[for k, v in pairs(asset.ato) do
 		addcmd(gid, k, rqstmenu, Theater.playerRequest,
 			{
@@ -68,6 +68,12 @@ function menus.createMenu(asset)
 			})
 	end--]]
 
+	addcmd(gid, "Mission Board", msnmenu, Theater.playerRequest,
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.MISSIONBOARD,
+		})
+		
 	addcmd(gid, "Join", msnmenu, Theater.playerRequest,
 		{
 			["name"]   = name,

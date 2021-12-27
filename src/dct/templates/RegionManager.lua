@@ -32,7 +32,6 @@ function RegionManager:loadRegions()
 			local fpath = settings.theaterpath..utils.sep..filename
 			local fattr = lfs.attributes(fpath)			
 			if fattr.mode == "directory" then
-				trigger.action.outText(fpath, 30)	
 				local r = Region(fpath)
 				assert(self.regions[r.name] == nil, "duplicate regions " ..	"defined for theater: " .. settings.theaterpath)
 				self.regions[r.name] = r

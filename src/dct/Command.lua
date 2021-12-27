@@ -43,8 +43,7 @@ if dct.settings and dct.settings.server and
 	function TimedCommand:execute(time)
 		local tstart = os.clock()
 		local rc = Command.execute(self, time)
-		Logger:warn(string.format("'%s' exec time: %5.2fms",
-			self.name, (os.clock()-tstart)*1000))
+		Logger:warn(string.format("'%s' exec time: %5.2fms", self.name, (os.clock()-tstart)*1000))
 		return rc
 	end
 	TimedCommand.PRIORITY = cmdpriority

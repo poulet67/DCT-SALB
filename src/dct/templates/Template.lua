@@ -163,6 +163,14 @@ local function checkbldgdata(keydata, tpl)
 	return true
 end
 
+local function checkbriefing(keydata, tbl)
+	if (type(tbl[keydata.name]) == "string" or tbl[keydata.name] == nil) then
+		return true
+	else
+		return false
+	end
+end
+
 local function checkobjtype(keydata, tbl)
 	if type(tbl[keydata.name]) == "number" and
 		utils.getkey(enum.assetType, tbl[keydata.name]) ~= nil then
@@ -192,6 +200,23 @@ local function checkstage(keydata, tbl)
 		return true
 	end
 	return false
+end
+
+local function check_cp_reward(keydata, tbl)
+	if tbl[keydata.name] >= 0 then
+		return true
+	end
+	return false
+end
+
+local function checkperiod(keydata, tbl)
+	if tbl[keydata.name] == nil then
+		return true
+	elseif tbl[keydata.name] >= 300 then  --5 minutes TODO: make this a dct setting
+		return true
+	else
+		return false
+	end
 end
 
 local function checktakeoff(keydata, tpl)
@@ -249,6 +274,34 @@ local function check_payload_limits(keydata, tbl)
 	return true
 end
 
+local function check_marshalpoint(keydata, tbl) -- permits nil values
+	local loc = tbl[keydata.name]
+	
+	if tbl[keydata.name] == nil then
+		return true
+	end
+	
+	if(type(tbl[keydata.name]) == "table") then
+		
+		for _, val in pairs({"x", "y"}) do
+			if loc[val] == nil or type(loc[val]) ~= "number" then
+				return false
+			end
+		end
+		
+		local vec2 = vector.Vector2D(tbl[keydata.name])                                 --thanks to eagle dynamics and their complete inability to do anything consistently 
+		tbl[keydata.name] =	vector.Vector3D(vec2, land.getHeight(vec2:raw())):raw()     --  land.getHeight is specifed as X, Y (where Y is actually Z, according to their broken coordinate system)
+																					-- have fun
+		return true	
+	
+	else
+		
+		
+		
+	end
+	
+
+end
 
 local function getkeys(objtype)
 	local notpldata = {
@@ -296,9 +349,10 @@ local function getkeys(objtype)
 			["type"]    = "boolean",
 			["default"] = false,
 		}, {
-			["name"]    = "reward",
+			["name"]    = "cp_reward",
 			["type"]    = "number",
 			["default"] = 500,
+			["check"] = check_cp_reward,
 		}, {
 			["name"]    = "desc",
 			["type"]    = "string",
@@ -311,6 +365,24 @@ local function getkeys(objtype)
 			["name"]    = "stage",
 			["type"]    = "number",
 			["default"] = 1,
+			["check"] = checkstage,
+		},{
+			["name"]    = "known",
+			["type"]    = "boolean",
+			["default"] = false,
+		},{
+			["name"]    = "next_stage",
+			["type"]    = "boolean",
+			["default"] = false,
+		},{
+			["name"]    = "period", -- how often a mission for this asset will be created and re-created
+			["check"] = checkperiod,
+		},{
+			["name"]    = "custom_briefing", -- how often a mission for this asset will be created and re-created
+			["check"] = checkbriefing,
+		},{
+			["name"]    = "marshal_point", -- where players should marshal to strike at the same time once
+			["check"] = check_marshalpoint,
 		},
 	}
 
@@ -398,25 +470,17 @@ function Template:__init(data)
 	self.hasDeathGoals = false
 	utils.mergetables(self, utils.deepcopy(data))
 	self:validate()
+	self.checklocation = nil
 	self.fromFile = nil
 end
 
 function Template:validate()
 
-	keytable = { [1] = {
-					["name"]  = "objtype",
-					["type"]  = "string",
-					["check"] = checkobjtype,
-					},
-				 [2] = {
-					["name"]  = "stage",
-					["type"]  = "number",
-					["check"] = checkstage,
-					["default"] = 1
-					},
-				}
-
-	utils.checkkeys(keytable, self)
+	utils.checkkeys({ [1] = {
+		["name"]  = "objtype",
+		["type"]  = "string",
+		["check"] = checkobjtype,
+	},}, self)
 
 	utils.checkkeys(getkeys(self.objtype), self)
 	
@@ -442,12 +506,6 @@ function Template.fromFile(region, dctfile, stmfile)
 
 	template.regionname = region.name
 	template.regionprio = region.priority
-	
-	if(template.stage) then
-		trigger.action.outText("STAGE: "..template.stage, 30)	
-	else
-		trigger.action.outText("no stage!", 30)	
-	end
 	
 	template.path = dctfile
 	

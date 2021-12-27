@@ -25,7 +25,6 @@ function AssetManager:__init(theater)
 	Observable.__init(self,
 		require("dct.libs.Logger").getByName("AssetManager"))
 	self.updaterate = 120
-	self.updaterate = 120
 	-- The master list of assets, regardless of side, indexed by name.
 	-- Means Asset names must be globally unique.
 	self._assetset = {}
@@ -107,7 +106,7 @@ function AssetManager:add(asset)
 
 		return
 	end
-
+	self._logger:debug("AssetManager: add ", asset.name)
 	self._assetset[asset.name] = asset
 	asset:addObserver(self.onDCSEvent, self, "AssetManager.onDCSEvent")
 
@@ -208,19 +207,45 @@ function AssetManager:getTargets(requestingside, assettypelist)
 	return tgtlist
 end
 
-function AssetManager:getKnownTargets(requestingside)
+function AssetManager:getKnownTables(requestingside)
 	local enemy = dctutils.getenemy(requestingside)
 	local knownlist = {}
 
+	Logger:debug("getKnownTargets -- ")
+	
 	-- some sides may not have enemies, return an empty target list
 	-- in this case
 	if enemy == false then
 		return {}
 	end
-
-	for tgtname, tgttype in pairs(self._sideassets[enemy].assets) do
-		knownlist[tgtname] = tgttype
+	
+	Logger:debug("getKnownTargets start-- ")
+	
+	--if(self._sideassets[enemy].assets ~= nil) then --no enemy assets
+	
+	for name, _ in pairs(self._sideassets[enemy].assets) do
+	 
+		--for lol, kek in pairs(self:getAsset(name)) do    -- Good way to see all keys of an asset
+		
+		--	Logger:debug("getKnownTargets -- "..lol)
+		
+		--end
+		asset = self:getAsset(name)
+		if (asset.known) then
+			knownlist[name] = true
+			Logger:debug("getKnownTargets -- known found: "..name)
+			asset.known = nil -- to prevent recurrent accesses
+		end
 	end
+	
+--	else
+	
+--		Logger:debug("getKnownTargets -- nil")
+		
+--	
+	
+	--Logger:debug("getKnownTargets -- done ")
+	
 	return knownlist
 end
 
@@ -249,8 +274,7 @@ local function handleAssetDeath(_ --[[self]], event)
 	
 	--poulet: will change this to record losses in a loss table (for stats card at ending and theater update)
 	
-	--dct.Theater.singleton():getTickets():loss(asset.owner,
-	--	asset.cost, false)
+	--dct.Theater.singleton():getTickets():loss(asset.owner, asset.cost, false)
 	
 end
 
@@ -267,7 +291,7 @@ function AssetManager:doOneObject(obj, event)
 	local name = tostring(obj:getName())
 	if obj.className_ ~= "Airbase" and
 	   obj:getCategory() == Object.Category.UNIT then
-		name = obj:getGroup():getName()
+	   name = obj:getGroup():getName()
 	end
 
 	local asset = self:getAssetByDCSObject(name)

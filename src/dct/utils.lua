@@ -27,7 +27,7 @@ function utils.isalive(grpname)
 	return (grp and grp:isExist() and grp:getSize() > 0)
 end
 
-
+-- I hate this so much
 function utils.interp(s, tab)
 	return (s:gsub('(%b%%)', function(w) return tab[w:sub(2,-2)] or w end))
 end

@@ -48,13 +48,13 @@ function Commander:__init(theater, side)
 	self.owner        = side
 	self.missionstats = Stats(genStatIds())
 	self.missions     = {}
+	self.freqs_in_use = {} --frequencies currently assigned to a mission
 	self.aifreq       = 15  -- 2 minutes in seconds
 	
-	self.CommandPoints = 0;
-	self.known 			= {}; -- A table for assets that the Commander 'knows' exists
+	self.CommandPoints = 0
+	self:getKnownTables(theater) -- A table for assets that the Commander 'knows' exists
 	
-	self:initKnownTable()
-	
+	self:init_persistent_missions()
 
 	theater:queueCommand(120, Command(
 		"Commander.startIADS:"..tostring(self.owner),
@@ -67,21 +67,21 @@ function Commander:__init(theater, side)
 		self.update, self))
 end
 
-function Commander:initKnownTable()
-
-	known = dct.Theater.singleton():getAssetMgr():getKnownTables()
-	 
-	for k,v in pairs(known) do
+function Commander:getKnownTables(theater)
+	self.known = theater:getAssetMgr():getKnownTables(self.owner)
 	
-		
+end
 
-	end
-	
+function Commander:init_persistent_missions()
+
 end
 
 function Commander:startIADS()
 	self.IADS = require("dct.systems.IADS")(self)
 end
+
+
+
 
 --[[
 function Commander:startperiodicMission(theater)
@@ -156,18 +156,8 @@ function Commander:getTheaterUpdate()
 end
 
 function Commander:getMissionBoard()
-	local theater = dct.Theater.singleton()
-	local mtable = {}
- 
-	for k,v in pairs(self.missions) do
-	
-		mtable.missions[k] = v.type 
-		theaterUpdate.missions[k].n_assigned = #self.assigned		
-		--theaterUpdate.missions[k].n_max = self.max_assigned -- may add this functionality later on
-		theaterUpdate.missions[k].priority = 0 -- still need to deal with this
-	end
-	
-	return theaterUpdate
+
+	return self.missions
 	
 end
 
@@ -277,6 +267,7 @@ end
 
 --from old DCT, can be removed
 
+--[[
 function Commander:requestMission(grpname, missiontype)
 	local assetmgr = dct.Theater.singleton():getAssetMgr()
 	local pq = heapsort_tgtlist(assetmgr, self.owner, enum.missionTypeMap[missiontype])
@@ -296,22 +287,28 @@ function Commander:requestMission(grpname, missiontype)
 	self:addMission(mission)
 	return mission
 end
-
+--]]
 
 -- Go through known table, create appropriate mission type
 function Commander:assignMissionsToTargets()
 
 	if(self.known ~= nil) then
-		
+		--Self.known is in form:
+		--"NAME" = true,
+		--"NAME" = true,
+		--"NAME" = true,
+		--"NAME" = true,
+		--
 		for k, v in pairs(self.known) do
 			
-			target = v
-			
-			Logger:debug("COMMANDER ==== DISCOVERY ====")
+			target = self:getAsset(k)		
+			missiontype = dctutils.assettype2mission(target.type)
+			Logger:debug("COMMANDER ==== ASSIGN MISSION ====  :"..k)
 			local plan = { require("dct.ai.actions.KillTarget")(target) }		
 			local mission = Mission(self, missiontype, target, plan)
-			self:addMission(mission)
-			
+			self:addMission(mission)			
+			Logger:debug("COMMANDER ==== DONE ====  :"..mission.id)
+			self.known[k] = nil;
 		end
 	end
 

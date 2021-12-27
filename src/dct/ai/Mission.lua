@@ -23,12 +23,14 @@ local PREP_LIMIT    = 60*90    -- 90 minutes in seconds
 
 ---------------- STATES ----------------
 
+--[[
+
 local BaseMissionState = class("BaseMissionState", State)
 function BaseMissionState:timeremain()
 	return 0, 0
 end
 
-function BaseMissionState:timeextend(--[[addtime]])
+function BaseMissionState:timeextend(--addtime)
 end
 
 local TimeoutState = class("Timeout", BaseMissionState)
@@ -45,12 +47,16 @@ function SuccessState:enter(msn)
 	msn:queueabort(enum.missionAbortType.COMPLETE)
 end
 
+--]]
+
 --[[
 -- ActiveState - mission is active and executing the plan
 --  Critera:
 --    * on plan completion, mission success
 --    * on timer expired, mission timed out
 --]]
+
+
 local ActiveState  = class("Active",  BaseMissionState)
 function ActiveState:__init()
 	Logger:debug(self.__clsname..":_init()")
@@ -100,12 +106,15 @@ function ActiveState:timeextend(addtime)
 	self.timer:extend(addtime)
 end
 
+
 --[[
 -- PrepState - mission is being planned
 --  Maintains a timer and once the timer expires the mission expires.
 --]]
 -- TODO: find some way to remove players from mission if they de-slot
 -- and mission in prep state
+
+
 local PrepState = class("Preparing", State)
 function PrepState:__init()
 	self.timer = Timer(PREP_LIMIT)
@@ -146,15 +155,15 @@ function PrepState:timeextend(addtime)
 	self.timer:extend(addtime)
 end
 
-
 local function composeBriefing(_, tgt, start_time)
 	local briefing = tgt.briefing
 	local interptbl = {
-		["TOT"] = os.date("%F %Rz",
-			dctutils.zulutime(start_time + MISSION_LIMIT * 0.6)),
+		["TOT"] = os.date("%F %Rz",	dctutils.zulutime(start_time + MISSION_LIMIT * 0.6)),
 	}
+	-- this is way too goddamned complicated
 	return dctutils.interp(briefing, interptbl)
 end
+
 
 local function createPlanQ(plan)
 	local Q = require("libs.containers.queue")()
@@ -164,45 +173,54 @@ local function createPlanQ(plan)
 	return Q
 end
 
+
 local Mission = class("Mission")
-function Mission:__init(cmdr, missiontype, tgt, plan, persistent, custombriefing, timeontarget, packagecomms, next_stage) --Poulet change
+function Mission:__init(cmdr, missiontype, tgt, plan) 
 	self.cmdr      = cmdr
 	self.type      = missiontype
 	self.target    = tgt.name
-	self.reward    = tgt.cost
-	self.plan      = createPlanQ(plan)
+	self.cp_reward = tgt.cp_reward
+	self.plan      = createPlanQ(plan) -- if no plan is passed this will just be an empty queue
 	self.iffcodes  = cmdr:genMissionCodes(missiontype)
+	--self.packagecomms  = cmdr:assignPackageComms(missiontype)
 	self.id        = self.iffcodes.id
-	self.next_stage = next_stage --A successful completion will trigger a stage transition in Theater
+	self.next_stage = tgt.next_stage --A successful completion will trigger a stage transition in Theater
+	self.priority = enum.missionTypePriority[utils.getkey(enum.missionType, missiontype)] -- need to assign defaults...
+
+	-- all optional mission parameters:
+
+	if(tgt.custombriefing) then -- custom briefing
+		self.custombriefing = tgt.custombriefing 
+	end
+		
+	if(tgt.marshal_point) then -- marshal point
+		self.marshal_point = tgt.marshal_point 
+	end
 	
-	if(persistent) then
-		self.persistent = true --Mission will persist
-	else
-		self.persistent = false
+	if(tgt.period) then -- periodic mission
+		self.period = tgt.period 
 	end
 	
 	
-	self.custombriefing = custombriefing -- Poulet change
-	self.timeontarget = timeontarget --value in seconds from start time
 	self.starttime = timer.getAbsTime()
 	
 	
-	Logger:debug("-- KUKIRIC HERE IS THE TIME --")	-- there have been issues with DST
-	Logger:debug(tostring(timer.getAbsTime()))			
-	Logger:debug(os.date("%R", timer.getAbsTime()))
-	Logger:debug(os.date("%H:%M", timer.getAbsTime()))
+	--Logger:debug("-- KUKIRIC HERE IS THE TIME --")	-- there have been issues with DST
+	--Logger:debug(tostring(timer.getAbsTime()))			
+	--Logger:debug(os.date("%R", timer.getAbsTime()))
+	--Logger:debug(os.date("%H:%M", timer.getAbsTime()))
 	
 	
-	if(packagecomms) then -- a package comms has been defined
-		
-		self.packagecomms = packagecomms -- string representing the frequency that joining players should tune for package comms
-
-		
-	else
-	
-		self.packagecomms = "N/A (Pilot discretion)"
-
-	end
+	--if(packagecomms) then -- a package comms has been defined
+	--	
+	--	self.packagecomms = packagecomms -- string representing the frequency that joining players should tune for package comms
+	--
+	--	
+	--else
+	--
+	--	self.packagecomms = "N/A (Pilot discretion)"
+	--
+	--end
 	
 	self.assigned  = {}
 	self:_setComplete(false)

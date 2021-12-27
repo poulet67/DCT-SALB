@@ -127,6 +127,13 @@ enum.missionTypePriority = {
 	["CSAR"] = 2,		
 }
 
+enum.persistentMissions = {
+	["CAP"]      = true,
+	["RECON"] = true,
+	["RECON TRANSPORT"] = true,
+	["INTERCEPT"] = true,
+}
+
 --This is from an old implementation, I must delete
 --[[
 enum.periodicMissions = { 
@@ -243,19 +250,20 @@ enum.missionAbortType = {
 	["PERIODIC"]  = 3, -- 
 }
 
-enum.uiRequestType = { -- GONE: mission request
+enum.uiRequestType = { 
 	["THEATERSTATUS"]   = 1,
 	["MISSIONBRIEF"]    = 2,
-	["MISSIONSTATUS"]   = 3,
-	["MISSIONABORT"]    = 4,
-	["MISSIONROLEX"]    = 5,
-	["MISSIONCHECKIN"]  = 6,
-	["MISSIONCHECKOUT"] = 7,
-	["SCRATCHPADGET"]   = 8,
-	["SCRATCHPADSET"]   = 9,
-	["CHECKPAYLOAD"]    = 10,
-	["MISSIONJOIN"]     = 1,
-	["SPAWN"]     = 12,
+	["MISSIONBOARD"]   = 3,
+	["MISSIONSTATUS"]   = 4,
+	["MISSIONABORT"]    = 5,
+	["MISSIONROLEX"]    = 6,
+	["MISSIONCHECKIN"]  = 7,
+	["MISSIONCHECKOUT"] = 8,
+	["SCRATCHPADGET"]   = 9,
+	["SCRATCHPADSET"]   = 10,
+	["CHECKPAYLOAD"]    = 11,
+	["MISSIONJOIN"]     = 12,
+	["SPAWN"]     = 13,
 
 }
 

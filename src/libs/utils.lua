@@ -181,6 +181,30 @@ local function errorhandler(key, m, path)
 	error(msg, 2)
 end
 
+function utils.checkkeys(keys, tbl)
+	for _, keydata in ipairs(keys) do
+		if keydata.default == nil and tbl[keydata.name] == nil
+		   and type(keydata.check) ~= "function" then
+			errorhandler(keydata.name, "missing required key", tbl.path)
+		elseif keydata.default ~= nil and tbl[keydata.name] == nil then
+			tbl[keydata.name] = keydata.default
+		else
+			if keydata.type ~= nil and type(tbl[keydata.name]) ~= keydata.type then
+				errorhandler(keydata.name, "invalid key value", tbl.path)
+			end
+
+			if type(keydata.check) == "function" then
+				local valid, msg = keydata.check(keydata, tbl)
+				if not valid then
+					errorhandler(keydata.name, tostring(msg or "invalid key value"), tbl.path)
+				end
+			end
+		end
+	end
+end
+
+--[[
+-- old
 function utils.checkkeys(keys, tbl) -- LUA TABLES ARE PASS BY REFERENCE BECAUSE IT IS A BEAUTIFUL LANGUAGE
 	for _, keydata in ipairs(keys) do
 		if keydata.default == nil and tbl[keydata.name] == nil then
@@ -199,7 +223,7 @@ function utils.checkkeys(keys, tbl) -- LUA TABLES ARE PASS BY REFERENCE BECAUSE 
 		end
 	end
 end
-
+--]]
 -- return the directory seperator used for the given OS
 utils.sep = package.config:sub(1,1)
 
