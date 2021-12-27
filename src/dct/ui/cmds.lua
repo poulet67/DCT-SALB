@@ -129,28 +129,48 @@ function ShowMissionBoard:_execute(_, cmdr)
 
 	local missiontable = cmdr:getMissionBoard()
 	
+	--todo: Have the commander generate this when new missions are added.
+	
 	--assigned = string.format("%d/%d", mb)
 	
+	console_width = 65 -- changes based on resolution TODO: make this a setting
 	
+	titlestr = dctutils.printTabular("Current Active Air Missions", console_width, "=").."\n"
+
+	headertable = {
+				"ID",
+				"TYPE",
+				"# ASSGN.",
+				"PRIORITY",
+				}
 	
+	headerstring = string.rep("%s",console_width).."\n" -- Spaces, lines -, _ or . are also a good candidate
 	
-	local msg =	
-		string.format("\n== Current Active Air Missions ==\n")..
-		string.format("ID      TYPE     Num. Assgn.    Priority         \n")
+	headerstring = dctutils.printTabular(headertable, console_width, " ")
 	
+	local msg =	titlestr..headerstring.."\n"
+		
 	if next(missiontable) ~= nil then
+	
 		for k,v in pairs(missiontable) do
-			Logger:debug("------ Mission Board --------------")
-			Logger:debug("------ key:"..k)
-			Logger:debug("------type:"..v.type)			
-			--assigned = string.format("%d/%d", v.n_assigned, v.n_max)
-			--msg = msg .. string.format("%4d		 %4s		%s		%d", k, utils.getkey(enum.missionType, v.type), assigned, v.priority)
-			msg = msg .. string.format("%4d     %4s     %d     %d\n", k, utils.getkey(enum.missionType, v.type), #v.assigned, v.priority)
+			outtable = {
+						 tostring(k),
+						 tostring(utils.getkey(enum.missionType, v.type)),
+						 tostring(#v.assigned),
+						 tostring(v.priority)
+						}
+						
+			bodystring = dctutils.printTabular(outtable, console_width, " ")
+			
+			msg = msg .. bodystring .. "\n"
 		end
+		
+		msg = msg .."\n\n\n"
+		
 	else
 		msg = msg .. "  No Active Missions\n"
-	end
-	
+	end	
+		
 	return msg
 	
 end

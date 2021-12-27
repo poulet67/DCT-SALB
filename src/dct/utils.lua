@@ -259,6 +259,131 @@ function utils.buildevent.hit(asset, weapon)
 	return event
 end
 
+function utils.printTabular(out_table, total_width, delimiter, border, offset) 
+	--Outputs a string that is formated all pretty and tabular that can be outputed to the DCS console
+	--Eg. 100-----------200---------String---------D <--- each string will be started at the same character position, so when printed consecutively it will be tabular
+	--out table is a table with the strings to be printed as keys 
+	--out table = { "string","number", "blah","bleep bloop" }
+	--width is the max width
+	--col space is the column spacing
+	--offset allows one to specify where exactly the "first" column starts and will squeeze the columns in to accomodate
+	--so one can have borders:
+	--   ==INFO       INFO       INFO==
+	--   ==
+	
+	-- N.B: I haven't really tested different values of offset
+	-- This thing is held together by glue, and can break very easily
+	
+	if(delimiter == nil)then 
+		delimiter = " "
+	end
+	
+	if(offset == nil and border == nil) then
+		offset = 0
+	elseif(offset == nil and border) then
+		offset = 2;
+	end
+	
+	assert((type(out_table) == "table" or type(out_table) == "string") and total_width ~= nil, "invalid type - out table input, or total width not specified")
+			
+	env.info("------ inside printTabular --------------", 30)
+	
+	if(border and offset) then
+		env.info("------ AAAA --------------", 30)
+		linestring =  border..string.rep(delimiter, total_width-2)..border
+		
+	else
+	
+		env.info("------ CCCC --------------", 30)
+		linestring = string.rep(delimiter, total_width)
+		
+	end
+	
+	env.info(linestring, 30)
+	env.info("num outtable" .. #out_table, 30)
+	
+	if(type(out_table) == "string") then
+		
+		local col_width = math.floor((total_width/2))
+		local start_pos = col_width-(math.floor(string.len(out_table)/2))   ----- if only 1 item, center it
+		
+		if(offset) then
+			local start_pos = start_pos+offset
+		end
+		
+		return utils.stringInsert(linestring, out_table, start_pos)		
+		
+		
+	elseif(type(out_table) == "table") then		
+		
+		if(offset) then		
+			start_pos = offset			
+			env.info("DDDDDDDDD", 30)
+		else		
+			env.info("EEEEEEEEE", 30)
+			offset = 0
+			start_pos = 0
+		end
+
+		local col_width = math.floor((total_width/(#out_table)-1))-offset
+		
+		local col_ind = 1 -- starting position
+		
+	
+		for k,v in pairs(out_table) do		
+			env.info("------ inside for -------------- Start Pos: "..start_pos, 30)
+			env.info("------ inside for -------------- Val: "..tostring(v), 30)
+			env.info("------ inside for -------------- col_width: "..col_width, 30)
+			linestring = utils.stringInsert(linestring, tostring(v), start_pos)		
+			env.info("back in printTabular"..linestring, 30)
+			col_ind = col_ind + 1
+			start_pos = start_pos+col_width
+		
+		end
+	
+		return linestring
+	end
+			
+	
+	
+end
+
+
+-- inserts and overwrites string "ins" into string s at location loc without changing length.
+-- thanks Grimes/MrSkortch
+function utils.stringInsert(s, ins, loc) -- WHY DO YOU HAVE TO MESS WITH THE FORMATTING? DAMN YOU. DAMN YOU ALL TO HELL!
+        --net.log('insert')
+        --net.log(s)
+        --net.log(ins)
+		
+		env.info("------ inside stringInsert --------------", 30)		
+		env.info("s".. s, 30)		
+		env.info("ins".. ins, 30)		
+		env.info("loc" .. loc, 30)
+		
+        local sBefore
+        if loc > 1 then
+            sBefore = s:sub(1, loc-1)
+        else
+            sBefore = ''
+        end
+        local sAfter
+        if (loc + ins:len() + 1) <= s:len() then
+            sAfter = s:sub(loc + ins:len() + 1)
+            
+        else
+            sAfter = ''
+        end
+        --net.log(table.concat({sBefore, ins, sAfter}))
+		env.info("sBefore" .. sBefore, 30)
+		env.info("ins" .. ins, 30)
+		env.info("sAfter" .. sAfter, 30)
+		env.info("returning", 30)
+		env.info(sBefore .. ins .. sAfter, 30)
+		
+        return (sBefore .. ins .. sAfter)
+end
+
 function utils.buildevent.operational(base, state)
 	check.table(base)
 	check.bool(state)

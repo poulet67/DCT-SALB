@@ -48,6 +48,7 @@ function Commander:__init(theater, side)
 	self.owner        = side
 	self.missionstats = Stats(genStatIds())
 	self.missions     = {}
+	self.missionboard     = {} --a printable board displaying all missions
 	self.freqs_in_use = {} --frequencies currently assigned to a mission
 	self.aifreq       = 15  -- 2 minutes in seconds
 	
