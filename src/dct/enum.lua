@@ -37,21 +37,23 @@ enum.assetType = {
 	
 	-- tactical
 	["JTAC"]        = 21,
-	-- mobile
+	-- mobile &
 	--logistical	
 	["LOGISTICS"]   = 22,	
 	["CONVOY"]         = 23,
+	-- mobile
 	["NAVAL"]         = 24,
 	["MOBILE"]         = 25,
 
 	-- extended type set
 	["AIRSPACE"]    = 26,
-	["SHORAD"]      = 27,
-	["PLAYERGROUP"] = 28,
-	["SPECIALFORCES"] = 29,
+	["WAYPOINT"]    = 27,
+	["SHORAD"]      = 28,
+	["PLAYERGROUP"] = 29,
+	["SPECIALFORCES"] = 30,
 	
 	-- Mission not assigned to an asset
-	["NOMISSION"] = 31,
+	["NOMISSION"] = 31, -- not actually implemented at the moment
 	["FRIENDLY"] = 32,
 	
 }

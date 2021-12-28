@@ -178,6 +178,8 @@ end
 -- Return: return a table that lists the asset names that fit the
 --    filter list requested
 --]]
+
+
 function AssetManager:getTargets(requestingside, assettypelist)
 	local enemy = dctutils.getenemy(requestingside)
 	local tgtlist = {}
@@ -206,6 +208,7 @@ function AssetManager:getTargets(requestingside, assettypelist)
 	end
 	return tgtlist
 end
+
 
 function AssetManager:getKnownTables(requestingside)
 	local enemy = dctutils.getenemy(requestingside)

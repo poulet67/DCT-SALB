@@ -11,7 +11,10 @@ local dctutils   = require("dct.utils")
 local Mission    = require("dct.ai.Mission")
 local Stats      = require("dct.libs.Stats")
 local Command    = require("dct.Command")
+local Template    = require("dct.templates.Template")
 local Logger     = dct.Logger.getByName("Commander")
+local settings    = _G.dct.settings
+--local settings = _G.dct.settings.server
 
 
 
@@ -49,7 +52,7 @@ function Commander:__init(theater, side)
 	self.missionstats = Stats(genStatIds())
 	self.missions     = {}
 	self.missionboard     = {} --a printable board displaying all missions
-	self.freqs_in_use = {} --frequencies currently assigned to a mission
+	self.freqs_in_use = self:init_freqs() --frequencies currently assigned to a mission
 	self.aifreq       = 15  -- 2 minutes in seconds
 	self.known = {}
 	self.CommandPoints = 0
@@ -78,20 +81,47 @@ function Commander:getKnownTables(theater)
 	
 end
 
+function Commander:init_freqs()
+
+	for k, v in pairs(settings.radios[FREQ_UNAVAILABLE]) do
+	
+		Logger:debug("COMMANDER: FREQ_ INIT:" .. k) 
+		Logger:debug("COMMANDER: FREQ_ INIT:" .. v) 
+		self.freqs_in_use["UNAVAILABLE"].v = true -- makes this a nice table instead of the default array format
+				
+	end
+	
+end
+
 function Commander:init_persistent_missions()
 
-	--for k,v in enum.persistentMissions do
-	--
-	--
-	--end
+	for k,v in pairs(enum.persistentMissions) do
+	
+		local tTable = Template(
+		{
+			["objtype"]    = "WAYPOINT",
+			["name"]       = k, -- needs to be unique ?
+			["desc"]       = k,
+			["coalition"]  = self.owner,
+			["location"]   = { ["x"] = 0, ["y"] = 0, ["z"] = 0, },
+		}
+		)
+		
+		ass_manager = require("dct.Theater").singleton():getAssetMgr()
+		asset = ass_manager:factory(dummyTable.objtype)(tTable)
+		ass_manager:add(asset)
+		
+		mission = Mission(self, k, asset, {})
+		self:addMission(mission)			
+		Logger:debug("COMMANDER ==== PERSISTENT DONE ====  :"..mission.id)
+		
+	end
 	
 end
 
 function Commander:startIADS()
 	self.IADS = require("dct.systems.IADS")(self)
 end
-
-
 
 
 --[[
@@ -230,6 +260,136 @@ function Commander:genMissionCodes(msntype)
 	return { ["id"] = id, ["m1"] = m1, ["m3"] = m3, }
 end
 
+function checkFreqInUse(f_band, channel)
+
+	if self.freqs_in_use[f_band][channel] and self.freqs_in_use["UNAVAILABLE"].channel then
+		return true
+	else
+		return false
+	end
+
+end
+
+function Commander:select_channel(f_band, band_start,band_end,step_size,band_start)
+
+	band_width = settings.radios[UHF_MAX] - settings.radios[UHF_MIN]
+	num_channels = U_band_width/step_size	
+	selected_channel_index = math.random(0, num_channels)
+	
+	channel = string.format("%.3f",selected_channel_index*num_channels+band_start)
+		
+	Logger:debug("INSIDE pkg comms channel selected:" .. channel) 
+	
+	isInUse = self:checkFreqInUse(f_band, channel)
+	
+	if(isInUse) then
+	
+		return
+		
+	else 
+	
+		return channel, selected_channel_index
+	
+	end
+	
+end
+
+
+function Commander:assignPackageComms(msntype)
+	
+	-- Probably a more elegant solution to this, but so long as enough bandwidth is provided this should work for most users
+	
+	Logger:debug("INSIDE pkg comms") 
+	Logger:debug(settings.radios[UHF_MAX]) 
+	Logger:debug("INSIDE pkg comms") 
+
+	
+	if(settings.radios[REBROADCAST]) then
+							
+		tries = 0
+		
+		while(package_comms == nil or tries < 20) do -- might make this a setting
+		
+			UHF, index = Commander:select_channel("UHF", settings.radios[UHF_MAX], settings.radios[UHF_MIN], settings.radios[FREQ_STEPS])
+			Logger:debug("UHF ASSIGNED: " .. UHF) 
+			
+			if(UHF) then
+				
+				n_channels = (settings.radios[VHF_MAX]-settings.radios[VHF_MIN])/settings.radios[FREQ_STEPS]
+				VHF = string.format("%.3f",index*n_channels+settings.radios[VHF_MIN])							
+				Logger:debug("VHF ASSIGNED: " .. UHF) 
+				
+				if(self:checkFreqInUse("VHF", VHF)) then
+				
+					
+					FM = string.format("%.3f",index*n_channels+settings.radios[FM_MIN])
+					Logger:debug("FM ASSIGNED: " .. UHF) 
+					
+					if(self:checkFreqInUse("FM", FM)) then
+						
+						package_comms = {["UHF"] = UHF, 
+										 ["VHF"] = VHF,
+										 ["FM"] = FM
+										 }				 
+						self.freqs_in_use["UHF"][UHF] = true
+						self.freqs_in_use["VHF"][VHF] = true
+						self.freqs_in_use["FM"][FM] = true
+						
+					end
+				end
+				
+			end
+						
+			tries = tries + 1		
+			
+		end
+		
+		if(package_comms == nil) then -- couldn't find an available channel
+		
+			Logger:warn("Not enough comms bandwidth alloted for mission size! This can be configured in theater/settings/radios.cfg") 
+			return "Comms over-crowded, frequency at pilot discretion"
+		
+		end
+		
+	else
+	
+		while(package_comms == nil or tries < 20) do -- might make this a setting
+		
+			UHF, _ = Commander:select_channel("UHF", settings.radios[UHF_MAX], settings.radios[UHF_MIN], settings.radios[FREQ_STEPS])
+		
+			if(UHF) then
+				
+				VHF, _ = Commander:select_channel("VHF", settings.radios[VHF_MAX], settings.radios[VHF_MIN], settings.radios[FREQ_STEPS])
+				
+				if(VHF) then
+				
+					FM, _ = Commander:select_channel("FM", settings.radios[FM_MIN], settings.radios[FM_MAX], settings.radios[FREQ_STEPS])
+					
+					if(FM) then
+					
+						package_comms = {["UHF"] = UHF, 
+										 ["VHF"] = VHF,
+										 ["FM"] = FM
+										 }
+						self.freqs_in_use["UHF"][UHF] = true
+						self.freqs_in_use["VHF"][VHF] = true
+						self.freqs_in_use["FM"][FM] = true
+					
+					end
+				
+				
+				end
+				
+			end
+			
+		end
+		
+	end
+	
+	return package_comms
+	
+end
+
 --[[
 -- recommendMission - recommend a mission type given a unit type
 -- unittype - (string) the type of unit making request requesting
@@ -315,7 +475,8 @@ function Commander:assignMissionsToTargets()
 			target = self:getAsset(k)		
 			missiontype = dctutils.assettype2mission(target.type)
 			Logger:debug("COMMANDER ==== ASSIGN MISSION ====  :"..k)
-			local plan = { require("dct.ai.actions.KillTarget")(target) }		
+			local plan = { require("dct.ai.actions.KillTarget")(target) }
+			
 			local mission = Mission(self, missiontype, target, plan)
 			self:addMission(mission)			
 			Logger:debug("COMMANDER ==== DONE ====  :"..mission.id)

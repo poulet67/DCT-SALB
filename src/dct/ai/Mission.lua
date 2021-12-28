@@ -17,6 +17,7 @@ local State    = require("dct.libs.State")
 local Timer    = require("dct.libs.Timer")
 local Logger   = require("dct.libs.Logger").getByName("Mission")
 
+
 local MISSION_LIMIT = 60*60*3  -- 3 hours in seconds
 local PREP_LIMIT    = 60*90    -- 90 minutes in seconds
 
@@ -182,7 +183,7 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 	self.cp_reward = tgt.cp_reward
 	self.plan      = createPlanQ(plan) -- if no plan is passed this will just be an empty queue
 	self.iffcodes  = cmdr:genMissionCodes(missiontype)
-	--self.packagecomms  = cmdr:assignPackageComms(missiontype)
+	self.packagecomms  = cmdr:assignPackageComms()
 	self.id        = self.iffcodes.id
 	self.next_stage = tgt.next_stage --A successful completion will trigger a stage transition in Theater
 	self.priority = enum.missionTypePriority[utils.getkey(enum.missionType, missiontype)] -- need to assign defaults...
