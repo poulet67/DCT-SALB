@@ -18,6 +18,7 @@ local assetpaths = {
 	"dct.assets.Airspace",
 	"dct.assets.Player",
 	"dct.assets.StaticAsset",
+	"dct.assets.Waypoint",
 }
 
 local AssetManager = require("libs.namedclass")("AssetManager", Observable)

@@ -72,7 +72,7 @@ function Commander:__init(theater, side)
 		self.update, self))
 	theater:queueCommand(7, Command(
 		"Commander.init_persistent_missions:"..tostring(self.owner),
-		self.init_persistent_missions))
+		self.init_persistent_missions, self))
 end
 
 function Commander:getKnownTables(theater)
@@ -81,13 +81,26 @@ function Commander:getKnownTables(theater)
 	
 end
 
-function Commander:init_freqs()
+function freq_num_to_string(freqnum)
 
-	for k, v in pairs(settings.radios[FREQ_UNAVAILABLE]) do
+	return string.format("%.3f",freqnum)	
+	
+end
+
+function Commander:init_freqs()
+	
+	--Frequencies shall be stored as numbers when value and string when key
+	
+	self.freqs_in_use = {["UHF"] = {},
+						 ["VHF"] = {},
+						 ["FM"] = {},
+						 ["UNAVAILABLE"] = {},}
+	
+	for k, v in pairs(settings.radios["FREQ_UNAVAILABLE"]) do
 	
 		Logger:debug("COMMANDER: FREQ_ INIT:" .. k) 
 		Logger:debug("COMMANDER: FREQ_ INIT:" .. v) 
-		self.freqs_in_use["UNAVAILABLE"].v = true -- makes this a nice table instead of the default array format
+		table.insert(self.freqs_in_use["UNAVAILABLE"], {[freq_num_to_string(v)] = true})
 				
 	end
 	
@@ -101,6 +114,7 @@ function Commander:init_persistent_missions()
 		{
 			["objtype"]    = "WAYPOINT",
 			["name"]       = k, -- needs to be unique ?
+			["regionname"] = "WAYPOINT",
 			["desc"]       = k,
 			["coalition"]  = self.owner,
 			["location"]   = { ["x"] = 0, ["y"] = 0, ["z"] = 0, },
@@ -108,7 +122,7 @@ function Commander:init_persistent_missions()
 		)
 		
 		ass_manager = require("dct.Theater").singleton():getAssetMgr()
-		asset = ass_manager:factory(dummyTable.objtype)(tTable)
+		asset = ass_manager:factory(tTable.objtype)(tTable)
 		ass_manager:add(asset)
 		
 		mission = Mission(self, k, asset, {})
@@ -272,7 +286,12 @@ end
 
 function Commander:select_channel(f_band, band_start,band_end,step_size,band_start)
 
-	band_width = settings.radios[UHF_MAX] - settings.radios[UHF_MIN]
+	-- TODO: only now just realized that these will need to be unique between commanders as well... 
+	-- if the enemy commander is AI, we don't really need to do this.
+	-- Could also expand the setting for both commanders (i.e require different blocks for blue and red)
+	--
+
+	band_width = settings.radios["UHF_MAX"] - settings.radios["UHF_MIN"]
 	num_channels = U_band_width/step_size	
 	selected_channel_index = math.random(0, num_channels)
 	
@@ -282,7 +301,7 @@ function Commander:select_channel(f_band, band_start,band_end,step_size,band_sta
 	
 	isInUse = self:checkFreqInUse(f_band, channel)
 	
-	if(isInUse) then
+	if(isInUse) then --AKA unavailable
 	
 		return
 		
@@ -298,31 +317,42 @@ end
 function Commander:assignPackageComms(msntype)
 	
 	-- Probably a more elegant solution to this, but so long as enough bandwidth is provided this should work for most users
+	-- One possible optimization is to keep a list of "tried" frequencies/indexes and skip if 
 	
 	Logger:debug("INSIDE pkg comms") 
-	Logger:debug(settings.radios[UHF_MAX]) 
+	Logger:debug(settings.radios["UHF_MAX"]) 
 	Logger:debug("INSIDE pkg comms") 
 
 	
-	if(settings.radios[REBROADCAST]) then
+	if(settings.radios["REBROADCAST"]) then -- channels must mirror 1 for 1 with their VHF and FM counterparts (and not collide with any frequencies already in use)
 							
 		tries = 0
+		tried_indexes = {["n"] = 0} -- number of tried (thanks for not having any way of determining the number of keys in a table lua!
+		n_channels = (settings.radios["VHF_MAX"]-settings.radios["VHF_MIN"])/settings.radios["FREQ_STEPS"]
 		
-		while(package_comms == nil or tries < 20) do -- might make this a setting
-		
-			UHF, index = Commander:select_channel("UHF", settings.radios[UHF_MAX], settings.radios[UHF_MIN], settings.radios[FREQ_STEPS])
+		while(package_comms == nil or tries < n_channels*1.2) do 
+
+			UHF, index = Commander:select_channel("UHF", settings.radios["UHF_MAX"], settings.radios["UHF_MIN"], settings.radios["FREQ_STEPS"])
+			
+			if(index == nil) then
+				tried_indexes[index] = true --tried UHF and it was in use
+				tried_indexes["n"] = tried_indexes["n"]+1 
+			end
+						
 			Logger:debug("UHF ASSIGNED: " .. UHF) 
 			
-			if(UHF) then
+			if(UHF and tried_indexes[index] == nil) then
 				
-				n_channels = (settings.radios[VHF_MAX]-settings.radios[VHF_MIN])/settings.radios[FREQ_STEPS]
-				VHF = string.format("%.3f",index*n_channels+settings.radios[VHF_MIN])							
+				tried_indexes[index] = true	-- now we try the rest of the bands
+				tried_indexes["n"] = tried_indexes["n"]+1	-- now we try the rest of the bands
+				
+				VHF = string.format("%.3f",index*n_channels+settings.radios["VHF_MIN"])							
 				Logger:debug("VHF ASSIGNED: " .. UHF) 
 				
 				if(self:checkFreqInUse("VHF", VHF)) then
 				
 					
-					FM = string.format("%.3f",index*n_channels+settings.radios[FM_MIN])
+					FM = string.format("%.3f",index*n_channels+settings.radios["FM_MIN"])
 					Logger:debug("FM ASSIGNED: " .. UHF) 
 					
 					if(self:checkFreqInUse("FM", FM)) then
@@ -337,21 +367,34 @@ function Commander:assignPackageComms(msntype)
 						
 					end
 				end
+			
+			else
+				
+				if(tried_indexes["n"] == n_channels*0.8) then -- something else that can be a setting
+				
+					tries = tries + 1 --80% of the bandwidth has been tried
+				
+				else
+				
+					tries = tries - 1 -- don't count this one (n.b - may result in huge execution times if comms channels crowded...)
+					
+				end
+				
 				
 			end
 						
-			tries = tries + 1		
+			tries = tries + 1
 			
 		end
 		
 		if(package_comms == nil) then -- couldn't find an available channel
 		
 			Logger:warn("Not enough comms bandwidth alloted for mission size! This can be configured in theater/settings/radios.cfg") 
-			return "Comms over-crowded, frequency at pilot discretion"
+			return "Comms channels crowded, frequency at pilot discretion"
 		
 		end
 		
-	else
+	else -- channels assigned pseudo randomly
 	
 		while(package_comms == nil or tries < 20) do -- might make this a setting
 		
@@ -383,6 +426,14 @@ function Commander:assignPackageComms(msntype)
 			end
 			
 		end
+		
+		if(package_comms == nil) then -- couldn't find an available channel
+		
+			Logger:warn("Not enough comms bandwidth alloted for mission size! This can be configured in theater/settings/radios.cfg") 
+			return "Comms channels crowded, frequency at pilot discretion"
+		
+		end
+		
 		
 	end
 	

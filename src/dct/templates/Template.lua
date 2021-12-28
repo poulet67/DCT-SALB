@@ -307,6 +307,7 @@ local function getkeys(objtype)
 	local notpldata = {
 		[enum.assetType.AIRSPACE]       = true,
 		[enum.assetType.AIRBASE]        = true,
+		[enum.assetType.WAYPOINT]        = true,
 	}
 	local defaultintel = 0
 	if objtype == enum.assetType.AIRBASE then
@@ -405,6 +406,12 @@ local function getkeys(objtype)
 		table.insert(keys, {
 			["name"]  = "volume",
 			["type"]  = "table", })
+	end
+	
+	if objtype == enum.assetType.WAYPOINT then
+		table.insert(keys, {
+			["name"]  = "location",
+			["type"]  = "table",})
 	end
 
 	if objtype == enum.assetType.AIRBASE then

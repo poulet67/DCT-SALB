@@ -7,7 +7,7 @@
 --
 Class Hierarchy:
 
-							                       AssetBase----Airspace
+							                       AssetBase----Airspace-----Waypoint
 								                       |
 	  Base---------------------------------------------+
 		|											   |

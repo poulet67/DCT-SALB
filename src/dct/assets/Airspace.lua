@@ -20,8 +20,7 @@ end
 
 function Airspace.assettypes()
 	return {
-		require("dct.enum").assetType.AIRSPACE,
-		require("dct.enum").assetType.WAYPOINT,
+		require("dct.enum").assetType.AIRSPACE
 	}
 end
 
