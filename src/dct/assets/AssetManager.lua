@@ -211,7 +211,7 @@ function AssetManager:getKnownTables(requestingside)
 	local enemy = dctutils.getenemy(requestingside)
 	local knownlist = {}
 
-	Logger:debug("getKnownTargets -- ")
+	--Logger:debug("getKnownTables -- ")
 	
 	-- some sides may not have enemies, return an empty target list
 	-- in this case
@@ -219,7 +219,7 @@ function AssetManager:getKnownTables(requestingside)
 		return {}
 	end
 	
-	Logger:debug("getKnownTargets start-- ")
+	--Logger:debug("getKnownTables start-- ")
 	
 	--if(self._sideassets[enemy].assets ~= nil) then --no enemy assets
 	
@@ -228,18 +228,25 @@ function AssetManager:getKnownTables(requestingside)
 		--for lol, kek in pairs(self:getAsset(name)) do    -- Good way to see all keys of an asset
 		
 		--	Logger:debug("getKnownTargets -- "..lol)
+			
+			--if(lol == "known") then
+			
+			--	Logger:debug("KNOWN FOUND -- ".. tostring(kek))
+			--	Logger:debug("KNOWN FOUND -- ".. name)
+				
+				
+			--end
 		
 		--end
 		asset = self:getAsset(name)
 		if (asset.known) then
 			knownlist[name] = true
-			Logger:debug("getKnownTargets -- known found: "..name)
+			Logger:debug("getKnownTables -- known found: "..name)
 			asset.known = nil -- to prevent recurrent accesses
 		end
 	end
 	
---	else
-	
+
 --		Logger:debug("getKnownTargets -- nil")
 		
 --	

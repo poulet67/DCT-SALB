@@ -36,6 +36,343 @@ local function validate_weapon_restrictions(cfgdata, tbl)
 	return tbl
 end
 
+local function checkgreaterthanzero(keydata, t)
+
+	if t[keydata.name] > 0 then	
+	
+		return true 
+	
+	else
+		
+		return false 
+	end 
+
+end
+
+local function checkpercentage(keydata, t)
+
+	if t[keydata.name] >= 0 and t[keydata.name] <= 1 then	
+	
+		return true 
+	
+	else
+		
+		return false 
+	end 
+
+end
+
+local function checkfreqsteps(keydata, t)
+
+	if (t[keydata.name] % 0.250) == 0 then	
+	
+		return true 
+	
+	else
+		
+		return false 
+	end 
+
+end
+
+local function checkrebroadcast(keydata, t)
+	
+	if(t[keydata.name]) then
+		
+		UHF_Band = t.UHF_MAX - t.UHF_MIN
+		VHF_Band = t.VHF_MAX - t.VHF_MIN
+		FM_Band = t.FM_MAX - t.FM_MIN
+		
+		res1 = UHF_Band == VHF_Band 
+		res2 = VHF_Band == FM_Band 
+		
+		if(res1 and res2) then
+			return true
+		else
+			return false
+		end
+	
+	else
+		
+		return true
+	
+	end
+
+end
+
+local function checkfreqtable(keydata, t)
+	
+	for k,v in pairs(t[keydata.name]) do
+	
+		env.info("freq table v: "..v)
+		env.info("freq table k: "..k)
+		
+		if(type(v) ~= "number") then
+		
+			return false
+			
+		elseif(v < 0) then
+		
+			return false
+			
+		end	
+
+	end
+	
+	return true
+
+end
+
+local function validate_gameplay_configs(cfgdata, tbl)
+
+	if tbl == nil then
+		return {}
+	end
+	
+	local path = cfgdata.file
+	local keys = {
+		[1] = {
+			["name"] = "MAX_MOVING_CONVOYS",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 3
+		},
+		[2] = {
+			["name"] = "BATTLE_SIZE_BASE",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 50
+		},
+		[3] = {
+			["name"] = "MAX_FOBS_TOTAL",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 20
+		},
+		[4] = {
+			["name"] = "BATTLE_NUMBER_OF_ROUNDS",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 2
+		},
+		[5] = {
+			["name"] = "VOTE_TIME",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 120
+		},
+		[6] = {
+			["name"] = "VOTE_PLAYER_COOLDOWN",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 300
+		},
+		[7] = {
+			["name"] = "VOTE_PERCENTAGE_REQUIRED",
+			["type"] = "number",
+			["check"] = checkpercentage,
+			["default"] = 0.75 
+		},
+		[8] = {
+			["name"] = "RECON_COVERAGE_RADIUS",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 300
+		},
+		[9] = {
+			["name"] = "RECOND_RADIUS_DETECTION",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 300
+		},
+		[10] = {
+			["name"] = "RECON_MISSION_ALTITUDE",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 300
+		},
+		[11] = {
+			["name"] = "RECON_MISSION_ALLOWABLE_ALTITUDE_ERROR",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 300
+		},
+		[12] = {
+			["name"] = "RECON_MISSION_RANGE",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 300
+		},
+		[13] = {
+			["name"] = "RECON_MISSION_DETECTION",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 300
+		},
+		[14] = {
+			["name"] = "FOBS_PER_REGION_BASE",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 3
+		},
+		[15] = {
+			["name"] = "FOBS_PER_REGION_MAX",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 6
+		},
+		[16] = {
+			["name"] = "CHALLENEGE_TIMER",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 30
+		},
+		[17] = {
+			["name"] = "OFF_MAP_DELIVERY_DELAY",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 15
+		},
+		[18] = {
+			["name"] = "AIRBASE_INVENTORY_TRANSFER_ON_CAPTURE",
+			["type"] = "boolean",
+			["default"] = false
+		},
+		[19] = {
+			["name"] = "CP_RED_START",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 100000
+		},
+		[20] = {
+			["name"] = "CP_BLUE_START",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 100000
+		},
+		[21] = {
+			["name"] = "CP_COST_MORE_FOBS",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 5000
+		},
+		[22] = {
+			["name"] = "CP_COST_INTEL_REPORT",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 5000
+		},
+		[23] = {
+			["name"] = "CP_COST_TARGET_PRECISION",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 5000
+		},
+		[24] = {
+			["name"] = "TARGET_PRECISION_TIMER",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 3600
+		},
+		[25] = {
+			["name"] = "CP_COST_TACTICAL_RETREAT",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 5000
+		},
+		[26] = {
+			["name"] = "CP_COST_CREATE_BATTLE_PLANS",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 5000
+		},
+		[27] = {
+			["name"] = "CP_COST_PREPARE_OFFENSIVE",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 5000
+		},
+	}
+	
+	tbl.path = path
+	utils.checkkeys(keys, tbl)
+	tbl.path = nil
+	
+	return tbl
+end
+
+local function validate_radio_settings(cfgdata, tbl)
+
+	if tbl == nil then
+		return {}
+	end
+	
+	local path = cfgdata.file
+	local keys = 
+	{
+		[1] = {
+			["name"] = "UHF_MAX",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 275.000
+		},
+		[2] = {
+			["name"] = "UHF_MIN",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 265.000
+		},
+		[3] = {
+			["name"] = "VHF_MAX",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 128.000
+		},
+		[4] = {
+			["name"] = "VHF_MIN",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 118.000
+		},
+		[5] = {
+			["name"] = "FM_MAX",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 30.000
+		},
+		[6] = {
+			["name"] = "FM_MIN",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 20.000
+		},
+		[7] = {
+			["name"] = "FREQ_STEPS",
+			["type"] = "number",
+			["check"] = checkfreqsteps,
+			["default"] = 0.250
+		},
+		[8] = {
+			["name"] = "REBROADCAST",
+			["type"] = "boolean",
+			["check"] = checkrebroadcast,
+			["default"] = true
+		},
+		[9] = {
+			["name"] = "FREQ_UNAVAILABLE",
+			["type"] = "table",
+			["check"] = checkfreqtable,
+			["default"] = {121.500, 243.000, 249.500, 250.000,}
+		},
+	}
+						
+	tbl.path = path
+	utils.checkkeys(keys, tbl)
+	tbl.path = nil
+	
+	return tbl
+end
+
 local function validate_payload_limits(cfgdata, tbl)
 	local newlimits = {}
 	for wpncat, val in pairs(tbl) do
@@ -194,15 +531,14 @@ local function theatercfgs(config)
 				["ato"] = {},
 			},
 		},
-		-- START POULET CHANGES
-		-- To be completed
-		--[[ 
+
+		
 		{
 			["name"] = "gameplay",
 			["file"] = config.server.theaterpath..utils.sep.."settings"..
 				utils.sep.."gameplay.cfg",
 			["validate"] = validate_gameplay_configs,
-			["default"] = {},
+			["default"] = require("dct.data.gameplay_settings"),
 		}, 
 		{
 			["name"] = "radios",
@@ -225,7 +561,7 @@ local function theatercfgs(config)
 
 			},
 		},
---]]
+
 		{
 			["name"] = "blasteffects",
 			["file"] = config.server.theaterpath..utils.sep.."settings"..
@@ -236,6 +572,7 @@ local function theatercfgs(config)
 	}
 	
 	utils.readconfigs(cfgs, config)
+	
 	return config
 end
 

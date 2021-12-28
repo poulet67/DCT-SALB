@@ -102,7 +102,7 @@ enum.missionType = {
 	["BAI"]      = 5,
 	["OCA"]      = 6,
 	["RECON"] = 7,
-	["RECON TRANSPORT"] = 8,
+	["TRANSPORT"] = 8,
 	["ANTI SHIP"] = 9,	
 	["ESCORT"] = 10,	
 	["INTERCEPT"] = 11,	
@@ -119,7 +119,7 @@ enum.missionTypePriority = {
 	["BAI"]      = 2,
 	["OCA"]      = 3,
 	["RECON"] = 2,
-	["RECON TRANSPORT"] = 2,
+	["TRANSPORT"] = 2,
 	["ANTI SHIP"] = 1,	
 	["ESCORT"] = 2,	
 	["INTERCEPT"] = 1,	
@@ -128,10 +128,10 @@ enum.missionTypePriority = {
 }
 
 enum.persistentMissions = {
-	["CAP"]      = true,
-	["RECON"] = true,
-	["RECON TRANSPORT"] = true,
-	["INTERCEPT"] = true,
+	["CAP"]      = 1,
+	["RECON"] = 2,
+	["TRANSPORT"] = 3,
+	["INTERCEPT"] = 4,
 }
 
 --This is from an old implementation, I must delete

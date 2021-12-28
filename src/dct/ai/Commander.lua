@@ -51,11 +51,9 @@ function Commander:__init(theater, side)
 	self.missionboard     = {} --a printable board displaying all missions
 	self.freqs_in_use = {} --frequencies currently assigned to a mission
 	self.aifreq       = 15  -- 2 minutes in seconds
-	
+	self.known = {}
 	self.CommandPoints = 0
-	self:getKnownTables(theater) -- A table for assets that the Commander 'knows' exists
 	
-	self:init_persistent_missions()
 
 	theater:queueCommand(120, Command(
 		"Commander.startIADS:"..tostring(self.owner),
@@ -63,18 +61,30 @@ function Commander:__init(theater, side)
 --	theater:queueCommand(0, Command( 
 --		"Commander.startperiodicMission:"..tostring(self.owner),
 --		self.startperiodicMission, self, theater))
+	theater:queueCommand(8, Command(                        --- WARNING: this must be larger than the time (first argument) specified in theater's delayed init!
+		"Commander.getKnownTables:"..tostring(self.owner),
+		self.getKnownTables, self, theater))
 	theater:queueCommand(self.aifreq, Command(
 		"Commander.update:"..tostring(self.owner),
 		self.update, self))
+	theater:queueCommand(7, Command(
+		"Commander.init_persistent_missions:"..tostring(self.owner),
+		self.init_persistent_missions))
 end
 
 function Commander:getKnownTables(theater)
+
 	self.known = theater:getAssetMgr():getKnownTables(self.owner)
 	
 end
 
 function Commander:init_persistent_missions()
 
+	--for k,v in enum.persistentMissions do
+	--
+	--
+	--end
+	
 end
 
 function Commander:startIADS()

@@ -154,6 +154,9 @@ function Theater:__init()
 
 	Systems.__init(self)
 	
+	for _, val in pairs(coalition.side) do  
+		self.cmdrs[val] = Commander(self, val)
+	end
 
 	self:queueCommand(5, Command(self.__clsname..".delayedInit",
 		self.delayedInit, self))
@@ -216,10 +219,6 @@ function Theater:delayedInit()
 		if asset.type ~= enum.assetType.PLAYERGROUP and not asset:isSpawned() then
 			asset:spawn() -- DCT does not actually add the
 		end
-	end
-
-	for _, val in pairs(coalition.side) do   -- We can do this, but it will throw a hard error if someone slots in before this finishes
-		self.cmdrs[val] = Commander(self, val)
 	end
 	
 end

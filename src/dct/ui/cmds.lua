@@ -99,6 +99,7 @@ end
 local ShowMissionBoard = class(UICmd)
 function ShowMissionBoard:__init(theater, data)
 	UICmd.__init(self, theater, data)
+	self.displaytime  = 60
 	self.name = "ShowMissionBoard:"..data.name
 end
 

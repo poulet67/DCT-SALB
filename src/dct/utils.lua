@@ -286,21 +286,21 @@ function utils.printTabular(out_table, total_width, delimiter, border, offset)
 	
 	assert((type(out_table) == "table" or type(out_table) == "string") and total_width ~= nil, "invalid type - out table input, or total width not specified")
 			
-	env.info("------ inside printTabular --------------", 30)
+	--env.info("------ inside printTabular --------------", 30)
 	
 	if(border and offset) then
-		env.info("------ AAAA --------------", 30)
+		--env.info("------ AAAA --------------", 30)
 		linestring =  border..string.rep(delimiter, total_width-2)..border
 		
 	else
 	
-		env.info("------ CCCC --------------", 30)
+		--env.info("------ CCCC --------------", 30)
 		linestring = string.rep(delimiter, total_width)
 		
 	end
 	
-	env.info(linestring, 30)
-	env.info("num outtable" .. #out_table, 30)
+	--env.info(linestring, 30)
+	--env.info("num outtable" .. #out_table, 30)
 	
 	if(type(out_table) == "string") then
 		
@@ -318,9 +318,9 @@ function utils.printTabular(out_table, total_width, delimiter, border, offset)
 		
 		if(offset) then		
 			start_pos = offset			
-			env.info("DDDDDDDDD", 30)
+			--env.info("DDDDDDDDD", 30)
 		else		
-			env.info("EEEEEEEEE", 30)
+			--env.info("EEEEEEEEE", 30)
 			offset = 0
 			start_pos = 0
 		end
@@ -331,11 +331,11 @@ function utils.printTabular(out_table, total_width, delimiter, border, offset)
 		
 	
 		for k,v in pairs(out_table) do		
-			env.info("------ inside for -------------- Start Pos: "..start_pos, 30)
-			env.info("------ inside for -------------- Val: "..tostring(v), 30)
-			env.info("------ inside for -------------- col_width: "..col_width, 30)
+			--env.info("------ inside for -------------- Start Pos: "..start_pos, 30)
+			--env.info("------ inside for -------------- Val: "..tostring(v), 30)
+			--env.info("------ inside for -------------- col_width: "..col_width, 30)
 			linestring = utils.stringInsert(linestring, tostring(v), start_pos)		
-			env.info("back in printTabular"..linestring, 30)
+			--env.info("back in printTabular"..linestring, 30)
 			col_ind = col_ind + 1
 			start_pos = start_pos+col_width
 		
@@ -356,10 +356,10 @@ function utils.stringInsert(s, ins, loc) -- WHY DO YOU HAVE TO MESS WITH THE FOR
         --net.log(s)
         --net.log(ins)
 		
-		env.info("------ inside stringInsert --------------", 30)		
-		env.info("s".. s, 30)		
-		env.info("ins".. ins, 30)		
-		env.info("loc" .. loc, 30)
+		--env.info("------ inside stringInsert --------------", 30)		
+		--env.info("s".. s, 30)		
+		--env.info("ins".. ins, 30)		
+		--env.info("loc" .. loc, 30)
 		
         local sBefore
         if loc > 1 then
@@ -375,11 +375,11 @@ function utils.stringInsert(s, ins, loc) -- WHY DO YOU HAVE TO MESS WITH THE FOR
             sAfter = ''
         end
         --net.log(table.concat({sBefore, ins, sAfter}))
-		env.info("sBefore" .. sBefore, 30)
-		env.info("ins" .. ins, 30)
-		env.info("sAfter" .. sAfter, 30)
-		env.info("returning", 30)
-		env.info(sBefore .. ins .. sAfter, 30)
+		--env.info("sBefore" .. sBefore, 30)
+		--env.info("ins" .. ins, 30)
+		--env.info("sAfter" .. sAfter, 30)
+		--env.info("returning", 30)
+		--env.info(sBefore .. ins .. sAfter, 30)
 		
         return (sBefore .. ins .. sAfter)
 end
