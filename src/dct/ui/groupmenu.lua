@@ -50,85 +50,52 @@ function menus.createMenu(asset)
 			})
 	end
 
-	addcmd(gid, "Theater Update", nil, Theater.playerRequest,
+
+
+	local thtrmenu = addmenu(gid, "Theater", nil)
+	
+	addcmd(gid, "Theater Update", thtrmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.THEATERSTATUS,
+		})	
+	addcmd(gid, "Mission Type Info", thtrmenu, Theater.playerRequest,
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.MISSIONTYPEINFO,
 		})
-
-	local msnmenu = addmenu(gid, "Mission", nil)
-	
-	--local rqstmenu = addmenu(gid, "View All", msnmenu)
-	--[[for k, v in pairs(asset.ato) do
-		addcmd(gid, k, rqstmenu, Theater.playerRequest,
-			{
-				["name"]   = name,
-				["type"]   = enum.uiRequestType.MISSIONREQUEST,
-				["value"]  = v,
-			})
-	end--]]
-
-	addcmd(gid, "Mission Board", msnmenu, Theater.playerRequest,
+		
+	addcmd(gid, "Mission Board", thtrmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONBOARD,
 		})
 		
-	addcmd(gid, "Join", msnmenu, Theater.playerRequest,
+	addcmd(gid, "Join Mission", thtrmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONJOIN,
 		})
 
-	addcmd(gid, "Briefing", msnmenu, Theater.playerRequest,
+	addcmd(gid, "Mission Briefing", thtrmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONBRIEF,
 		})
-	addcmd(gid, "Status", msnmenu, Theater.playerRequest,
+	addcmd(gid, "Mission Status", thtrmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONSTATUS,
 		})
-	addcmd(gid, "Abort", msnmenu, Theater.playerRequest,
+	addcmd(gid, "Abort Mission", thtrmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONABORT,
 			["value"]  = enum.missionAbortType.ABORT,
 		})
-	--addcmd(gid, "Rolex +30", msnmenu, Theater.playerRequest,
-	--	{
-	--		["name"]   = name,
-	--		["type"]   = enum.uiRequestType.MISSIONROLEX,
-	--		["value"]  = 30*60,  -- seconds
-	--	})
+
 	loadout.addmenu(asset, nil, Theater.playerRequest)
-	--]]
-	
-	--Logger:debug("------ SPAWNABLES MENU START--------------")
-	--Logger:debug(tostring(Theater.singleton().spawnables))
 
-	--spawnables = require("dct.systems.spawnable")
-	
-	
-		-- old implementation - 
-	
-	--if(spawnables:getUnitTable()) then
-			
-		--Logger:debug("------ SPAWNABLES MENU --------------")
-		
-		--local spawnableMenu = addmenu(gid, "Spawn", nil)	
-		
-		--for k, v in pairs(Theater.singleton().spawnables) do
-			--addcmd(gid, k, spawnableMenu, Theater.playerRequest,
-				--{
-				--	["name"]   = name,
-				--	["type"]   = enum.uiRequestType.SPAWN,
-				--	["value"]  = k,
-				--})
-		--end
-
-	--end
 	
 end
 

@@ -309,7 +309,7 @@ local function getkeys(objtype)
 		[enum.assetType.AIRBASE]        = true,
 		[enum.assetType.WAYPOINT]        = true,
 	}
-	local defaultintel = 0
+	local defaultintel = 1
 	if objtype == enum.assetType.AIRBASE then
 		defaultintel = 5
 	end

@@ -74,7 +74,7 @@ local function checkfreqsteps(keydata, t)
 	end 
 
 end
-
+--[[
 local function checkrebroadcast(keydata, t)
 	
 	if(t[keydata.name]) then
@@ -99,13 +99,13 @@ local function checkrebroadcast(keydata, t)
 	end
 
 end
-
-local function checkfreqtable(keydata, t)
+--]]
+local function checkfreqarray(keydata, t)
 	
 	for k,v in pairs(t[keydata.name]) do
 	
-		env.info("freq table v: "..v)
-		env.info("freq table k: "..k)
+		--env.info("freq table v: "..v)
+		--env.info("freq table k: "..k)
 		
 		if(type(v) ~= "number") then
 		
@@ -292,6 +292,16 @@ local function validate_gameplay_configs(cfgdata, tbl)
 			["check"] = checkgreaterthanzero,
 			["default"] = 5000
 		},
+		[28] = {
+			["name"] = "BLUE_AI",
+			["type"] = "boolean",
+			["default"] = false
+		},
+		[29] = {
+			["name"] = "RED_AI",
+			["type"] = "boolean",
+			["default"] = false
+		},
 	}
 	
 	tbl.path = path
@@ -311,58 +321,45 @@ local function validate_radio_settings(cfgdata, tbl)
 	local keys = 
 	{
 		[1] = {
-			["name"] = "UHF_MAX",
-			["type"] = "number",
-			["check"] = checkgreaterthanzero,
-			["default"] = 275.000
+			["name"] = "ASSIGN_TO_AI",
+			["type"] = "boolean",
+			["default"] = false
 		},
 		[2] = {
-			["name"] = "UHF_MIN",
-			["type"] = "number",
-			["check"] = checkgreaterthanzero,
-			["default"] = 265.000
+			["name"] = "BLUE_FREQS",
+			["type"] = "table",
+			["check"] = checkfreqtable,
+			["default"] = {}
 		},
 		[3] = {
-			["name"] = "VHF_MAX",
-			["type"] = "number",
-			["check"] = checkgreaterthanzero,
-			["default"] = 128.000
+			["name"] = "RED_FREQS",
+			["type"] = "table",
+			["check"] = checkfreqtable,
+			["default"] = {}
 		},
 		[4] = {
-			["name"] = "VHF_MIN",
-			["type"] = "number",
-			["check"] = checkgreaterthanzero,
-			["default"] = 118.000
-		},
-		[5] = {
-			["name"] = "FM_MAX",
-			["type"] = "number",
-			["check"] = checkgreaterthanzero,
-			["default"] = 30.000
-		},
-		[6] = {
-			["name"] = "FM_MIN",
-			["type"] = "number",
-			["check"] = checkgreaterthanzero,
-			["default"] = 20.000
-		},
-		[7] = {
 			["name"] = "FREQ_STEPS",
 			["type"] = "number",
 			["check"] = checkfreqsteps,
 			["default"] = 0.250
 		},
-		[8] = {
+		[5] = {
+			["name"] = "FREQ_UNAVAILABLE",
+			["type"] = "table",
+			["check"] = checkfreqarray,
+			["default"] = {121.500, 243.000, 249.500, 250.000,}
+		},
+		[6] = {
 			["name"] = "REBROADCAST",
 			["type"] = "boolean",
 			["check"] = checkrebroadcast,
 			["default"] = true
 		},
-		[9] = {
-			["name"] = "FREQ_UNAVAILABLE",
+		[7] = {
+			["name"] = "COMMS_PLAN",
 			["type"] = "table",
-			["check"] = checkfreqtable,
-			["default"] = {121.500, 243.000, 249.500, 250.000,}
+			["check"] = checkcommsplan,
+			["default"] = {}
 		},
 	}
 						
@@ -371,6 +368,94 @@ local function validate_radio_settings(cfgdata, tbl)
 	tbl.path = nil
 	
 	return tbl
+end
+
+local function checkrebroadcast(keydata, t)
+	
+	-- requires exactly equal bandwidth in UHF VHF AND FM
+	if t[keydata.name] then
+	
+		bluebandwidth = t["BLUE_FREQS"]["UHF_Max"]-t["BLUE_FREQS"]["UHF_Min"]
+		
+		areEqual1 = bluebandwidth == (t["BLUE_FREQS"]["VHF_Max"]-t["BLUE_FREQS"]["VHF_Min"]) == (t["BLUE_FREQS"]["FM_Max"]-t["BLUE_FREQS"]["FM_Min"])
+		
+		redbandwidth = t["RED_FREQS"]["UHF_Max"]-t["RED_FREQS"]["UHF_Min"]
+		
+		areEqual2 = redbandwidth == (t["RED_FREQS"]["VHF_Max"]-t["RED_FREQS"]["VHF_Min"]) == (t["RED_FREQS"]["FM_Max"]-t["RED_FREQS"]["FM_Min"])
+		
+		assert(areEqual1 and areEqual2, "Rebroadcast option requires all channels be of equal bandwidth for a given coalition")
+		
+		if(areEqual1 and areEqual2) then
+		
+			return true
+			
+		else
+		
+			return false
+			
+		end	
+		
+
+
+	else
+	
+		return true
+	
+	end
+
+end
+
+local function checkfreqtable(keydata, t)
+	
+	local validkeys = {["UHF_MAX"] = true,
+				       ["UHF_MIN"] = true,
+					   ["VHF_MAX"] = true,
+					   ["VHF_MIN"] = true,
+					   ["FM_MAX"] = true,
+					   ["FM_MIN"] = true,
+					  }
+	
+	local isValid = true
+	
+	
+	for k,v in pairs(t[keydata.name]) do
+		
+		if(validkeys[k] == nil or type(v) ~= "number" or v <0 or v > 400) then
+			
+			return false
+					
+		end	
+
+	end
+	
+	
+	local UHF_Start = t[keydata.name].UHF_MAX
+	local UHF_End = t[keydata.name].UHF_MIN
+	local UHF_Start = t[keydata.name].UHF_MAX
+	local UHF_Start = t[keydata.name].UHF_MAX
+	local UHF_Start = t[keydata.name].UHF_MAX
+	local UHF_Start = t[keydata.name].UHF_MAX
+	
+	return true
+
+
+end
+
+local function checkcommsplan(keydata, t)
+	
+	for k,v in pairs(t[keydata.name]) do
+		
+		if(tonumber(k) == nil or type(v) ~= "string") then
+			
+			return false
+					
+		end	
+
+	end
+	
+	return true
+
+
 end
 
 local function validate_payload_limits(cfgdata, tbl)
@@ -545,21 +630,7 @@ local function theatercfgs(config)
 			["file"] = config.server.theaterpath..utils.sep.."settings"..
 				utils.sep.."radios.cfg",
 			["validate"] = validate_radio_settings,
-			["default"] = {
-
-						["UHF MAX"] = 275.000,
-						["UHF MIN"] = 265.000,
-						["VHF MAX"] = 128.000,
-						["VHF MIN"] = 118.000,
-						["FM MAX"] = 30.000,
-						["FM MIN"] = 20.000,
-						
-						["FREQ STEPS"] = 0.250,
-						["REBROADCAST"] = true, -- enforces 'mirrored' channels from UHF to VHF. UHF max - UHF min / freq steps must be the same as VHF max - VHF min / freq steps or else VHF min will be ignored
-												-- this will allow SRS users to rebroadcast frequencies 1 for 1 easier
-						["FREQ UNAVAILABLE"] =  {121.500, 243.000, 249.500, 250.000,  } --Frequencies not available for use. Will select a different one for mission planning
-
-			},
+			["default"] = require("dct.data.radio_defaults"),
 		},
 
 		{

@@ -41,7 +41,6 @@ local function genStatIds()
 	end
 	return tbl
 end
-
 --[[
 -- For now the commander is only concerned with flight missions
 --]]
@@ -53,6 +52,7 @@ function Commander:__init(theater, side)
 	self.missions     = {}
 	self.missionboard     = {} --a printable board displaying all missions
 	self.freqs_in_use = self:init_freqs() --frequencies currently assigned to a mission
+	self.isAI = self:getAIstatus()
 	self.aifreq       = 15  -- 2 minutes in seconds
 	self.known = {}
 	self.CommandPoints = 0
@@ -81,6 +81,14 @@ function Commander:getKnownTables(theater)
 	
 end
 
+function Commander:getAIstatus()
+	
+	keyval = enum.coalitionMap[self.owner] .. "_AI"
+	
+	return settings.gameplay[keyval]
+
+end
+
 function freq_num_to_string(freqnum)
 
 	return string.format("%.3f",freqnum)	
@@ -88,47 +96,70 @@ function freq_num_to_string(freqnum)
 end
 
 function Commander:init_freqs()
+
+	
+	Logger:debug("COMMANDER ==== SIDE ====  :"..self.owner)
+	Logger:debug("COMMANDER ==== ENUM ====  :"..enum.coalitionMap[self.owner])
+	
+	coalition_string = enum.coalitionMap[self.owner]
+	
+	if(coalition_string == "NEUTRAL") then -- don't bother for neutral commander
+	  
+		return {}
+		
+	end
+	
+	Logger:debug("COMMANDER ==== COAL STRING ====  :"..coalition_string)
+	
+	freq_settings_tbl = settings.radios["_FREQS"]
 	
 	--Frequencies shall be stored as numbers when value and string when key
 	
-	self.freqs_in_use = {["UHF"] = {},
+	freq_table = {["UHF"] = {},
 						 ["VHF"] = {},
 						 ["FM"] = {},
 						 ["UNAVAILABLE"] = {},}
 	
 	for k, v in pairs(settings.radios["FREQ_UNAVAILABLE"]) do
 	
-		Logger:debug("COMMANDER: FREQ_ INIT:" .. k) 
-		Logger:debug("COMMANDER: FREQ_ INIT:" .. v) 
-		table.insert(self.freqs_in_use["UNAVAILABLE"], {[freq_num_to_string(v)] = true})
-				
+		--Logger:debug("COMMANDER: FREQ_ INIT:" .. k) 
+		--Logger:debug("COMMANDER: FREQ_ INIT:" .. v) 
+		table.insert(freq_table["UNAVAILABLE"], {[freq_num_to_string(v)] = true})
+		
+		
+		
 	end
+	
+	return freq_table
 	
 end
 
 function Commander:init_persistent_missions()
 
-	for k,v in pairs(enum.persistentMissions) do
-	
-		local tTable = Template(
-		{
-			["objtype"]    = "WAYPOINT",
-			["name"]       = k, -- needs to be unique ?
-			["regionname"] = "WAYPOINT",
-			["desc"]       = k,
-			["coalition"]  = self.owner,
-			["location"]   = { ["x"] = 0, ["y"] = 0, ["z"] = 0, },
-		}
-		)
+	if(self.owner ~= coalition.side.NEUTRAL) then -- don't bother for neutral commander
 		
-		ass_manager = require("dct.Theater").singleton():getAssetMgr()
-		asset = ass_manager:factory(tTable.objtype)(tTable)
-		ass_manager:add(asset)
+		for k,v in pairs(enum.persistentMissions) do
 		
-		mission = Mission(self, k, asset, {})
-		self:addMission(mission)			
-		Logger:debug("COMMANDER ==== PERSISTENT DONE ====  :"..mission.id)
-		
+			local tTable = Template(
+			{
+				["objtype"]    = "WAYPOINT",
+				["name"]       = k, -- needs to be unique ?
+				["regionname"] = "WAYPOINT",
+				["desc"]       = k,
+				["coalition"]  = self.owner,
+				["location"]   = { ["x"] = 0, ["y"] = 0, ["z"] = 0, },
+			}
+			)
+			
+			ass_manager = require("dct.Theater").singleton():getAssetMgr()
+			asset = ass_manager:factory(tTable.objtype)(tTable)
+			ass_manager:add(asset)
+			
+			mission = Mission(self, enum.missionType[k], asset, {})
+			self:addMission(mission)			
+			Logger:debug("COMMANDER ==== PERSISTENT DONE ====  :"..mission.id)
+			
+		end	
 	end
 	
 end
@@ -137,33 +168,6 @@ function Commander:startIADS()
 	self.IADS = require("dct.systems.IADS")(self)
 end
 
-
---[[
-function Commander:startperiodicMission(theater)
-	
-	Logger:debug("INSIDE INIT") 
-	test = enum.missionType["NAVAL STRIKE"]
-	Logger:debug("enum: "..test) 	
-	local periodicMission = require("dct.systems.periodicMission")
-	missionid = periodicMission["startperiodicMission"](self, self.owner, enum.missionType["NAVAL STRIKE"])	
-	
-	theater:queueCommand(1800, Command( -- 1800s = 30 mins
-		"Commander.endperiodicMission:"..tostring(self.owner),
-		self.endperiodicMission, self, missionid))
-	
-	return 1800 --will re-run this command in 1800s (30 mins)
-	
-end
---]]
-
---[[
-function Commander:endperiodicMission(id)
-	
-	local mission = self.missions[id]
-	mission:forceEnd()
-	
-end
---]]
 function Commander:update(time)
 	for _, mission in pairs(self.missions) do
 		mission:update(time)
@@ -183,20 +187,8 @@ end
 function Commander:getTheaterUpdate()
 	local theater = dct.Theater.singleton()
 	local theaterUpdate = {}
- 
-	-- Need to rethink this function entirely for 0.67
-	
-	--theaterUpdate.friendly = {}
-	--tks, start = theater:getTickets():get(self.owner)
-	--theaterUpdate.friendly.str = math.floor((tks / start)*100)
-	--theaterUpdate.enemy = {}
-	--theaterUpdate.enemy.sea = 50
-	--theaterUpdate.enemy.air = 50
-	--theaterUpdate.enemy.elint = 50
-	--theaterUpdate.enemy.sam = 50
-	--tks, start = theater:getTickets():get(dctutils.getenemy(self.owner))
-	--theaterUpdate.enemy.str = math.floor((tks / start)*100)
-	--theaterUpdate.missions = self.missionstats:getStats()
+		
+	-- TODO
 	
 	theaterUpdate.enemy_losses = 0;
 	theaterUpdate.friendly_losses = 0;
@@ -274,9 +266,12 @@ function Commander:genMissionCodes(msntype)
 	return { ["id"] = id, ["m1"] = m1, ["m3"] = m3, }
 end
 
-function checkFreqInUse(f_band, channel)
+function Commander:checkFreqInUse(f_band, channel)
 
-	if self.freqs_in_use[f_band][channel] and self.freqs_in_use["UNAVAILABLE"].channel then
+	Logger:debug("CHECKING:" .. f_band) 
+	Logger:debug("CHECKING:" .. channel) 
+	
+	if self.freqs_in_use[f_band][channel] and self.freqs_in_use["UNAVAILABLE"][channel] then
 		return true
 	else
 		return false
@@ -284,18 +279,21 @@ function checkFreqInUse(f_band, channel)
 
 end
 
-function Commander:select_channel(f_band, band_start,band_end,step_size,band_start)
+function Commander:select_channel(f_band, band_start, band_end, step_size)
 
 	-- TODO: only now just realized that these will need to be unique between commanders as well... 
 	-- if the enemy commander is AI, we don't really need to do this.
 	-- Could also expand the setting for both commanders (i.e require different blocks for blue and red)
 	--
 
-	band_width = settings.radios["UHF_MAX"] - settings.radios["UHF_MIN"]
-	num_channels = U_band_width/step_size	
+	band_width = band_start - band_end
+	num_channels = band_width/step_size	
 	selected_channel_index = math.random(0, num_channels)
 	
-	channel = string.format("%.3f",selected_channel_index*num_channels+band_start)
+	Logger:debug("INSIDE pkg comms channel index:" .. selected_channel_index) 
+	Logger:debug("INSIDE pkg comms channel:" .. num_channels) 
+	
+	channel = string.format("%.3f",selected_channel_index*step_size+band_start)
 		
 	Logger:debug("INSIDE pkg comms channel selected:" .. channel) 
 	
@@ -303,10 +301,14 @@ function Commander:select_channel(f_band, band_start,band_end,step_size,band_sta
 	
 	if(isInUse) then --AKA unavailable
 	
+		Logger:debug("IN USE") 
+		
 		return
 		
 	else 
 	
+		Logger:debug("RETURNING"..channel) 
+		
 		return channel, selected_channel_index
 	
 	end
@@ -317,199 +319,159 @@ end
 function Commander:assignPackageComms(msntype)
 	
 	-- Probably a more elegant solution to this, but so long as enough bandwidth is provided this should work for most users
-	-- One possible optimization is to keep a list of "tried" frequencies/indexes and skip if 
+	
+	if(self.owner == coalition.side.NEUTRAL) then -- shouldn't be assigning missions to neutral anyhow...
+	
+		return
+	
+	end
+	
+	
+	coalition_string = enum.coalitionMap[self.owner]	
+	freq_settings_tbl = settings.radios[coalition_string.."_FREQS"]
+	freq_steps = settings.radios["FREQ_STEPS"]
+	rebroadcast = settings.radios["REBROADCAST"]
+	
 	
 	Logger:debug("INSIDE pkg comms") 
-	Logger:debug(settings.radios["UHF_MAX"]) 
+	Logger:debug(coalition_string) 
+	Logger:debug(freq_settings_tbl["UHF_MAX"]) 
+	Logger:debug("AI " .. tostring(self.isAI)) 
 	Logger:debug("INSIDE pkg comms") 
-
 	
-	if(settings.radios["REBROADCAST"]) then -- channels must mirror 1 for 1 with their VHF and FM counterparts (and not collide with any frequencies already in use)
-							
-		tries = 0
-		tried_indexes = {["n"] = 0} -- number of tried (thanks for not having any way of determining the number of keys in a table lua!
-		n_channels = (settings.radios["VHF_MAX"]-settings.radios["VHF_MIN"])/settings.radios["FREQ_STEPS"]
+	if(not self.isAI or settings.radios["ASSIGN_TO_AI"]) then
 		
-		while(package_comms == nil or tries < n_channels*1.2) do 
-
-			UHF, index = Commander:select_channel("UHF", settings.radios["UHF_MAX"], settings.radios["UHF_MIN"], settings.radios["FREQ_STEPS"])
+		Logger:debug("aaaaa") 
+		tries = 0
+		if(rebroadcast) then -- channels must mirror 1 for 1 with their VHF and FM counterparts (and not collide with any frequencies already in use)
+							
+			Logger:debug("bbbbb") 
 			
-			if(index == nil) then
-				tried_indexes[index] = true --tried UHF and it was in use
-				tried_indexes["n"] = tried_indexes["n"]+1 
-			end
-						
-			Logger:debug("UHF ASSIGNED: " .. UHF) 
+			n_channels = (freq_settings_tbl["VHF_MAX"]-freq_settings_tbl["VHF_MIN"])/freq_steps
 			
-			if(UHF and tried_indexes[index] == nil) then
+			while(package_comms == nil or tries < 40) do 
+				tries = tries + 1
+				Logger:debug("ccccc") 	
+				Logger:debug(tries) 	
 				
-				tried_indexes[index] = true	-- now we try the rest of the bands
-				tried_indexes["n"] = tried_indexes["n"]+1	-- now we try the rest of the bands
+				UHF, index = self:select_channel("UHF", freq_settings_tbl["UHF_MAX"], freq_settings_tbl["UHF_MIN"], freq_steps)
+									
+				Logger:debug("UHF ASSIGNED: " .. UHF) 
 				
-				VHF = string.format("%.3f",index*n_channels+settings.radios["VHF_MIN"])							
-				Logger:debug("VHF ASSIGNED: " .. UHF) 
+				if(UHF) then
 				
-				if(self:checkFreqInUse("VHF", VHF)) then
-				
+					Logger:debug("dddddd") 						
 					
-					FM = string.format("%.3f",index*n_channels+settings.radios["FM_MIN"])
-					Logger:debug("FM ASSIGNED: " .. UHF) 
+					VHF = string.format("%.3f",index*freq_steps+freq_settings_tbl["VHF_MIN"])							
+					Logger:debug("VHF ASSIGNED: " .. VHF) 
 					
-					if(self:checkFreqInUse("FM", FM)) then
+					if(not self:checkFreqInUse("VHF", VHF)) then
+					
 						
-						package_comms = {["UHF"] = UHF, 
-										 ["VHF"] = VHF,
-										 ["FM"] = FM
-										 }				 
-						self.freqs_in_use["UHF"][UHF] = true
-						self.freqs_in_use["VHF"][VHF] = true
-						self.freqs_in_use["FM"][FM] = true
+						FM = string.format("%.3f",index*freq_steps+freq_settings_tbl["FM_MIN"])
+						Logger:debug("FM ASSIGNED: " .. UHF) 
 						
-					end
+						if(not self:checkFreqInUse("FM", FM)) then
+							
+							package_comms = {["UHF"] = UHF, 
+											 ["VHF"] = VHF,
+											 ["FM"] = FM
+											 }				 
+							self.freqs_in_use["UHF"][UHF] = true
+							self.freqs_in_use["VHF"][VHF] = true
+							self.freqs_in_use["FM"][FM] = true
+							
+						end
+					end						
 				end
+							
+				
+				
+			end
+			
+			if(package_comms == nil) then -- couldn't find an available channel
+			
+				Logger:warn("Not enough comms bandwidth alloted for mission size! This can be configured in theater/settings/radios.cfg") 
+				return "Comms channels crowded, frequency at pilot discretion"
+				
+			else
+				
+				enemy_cmdr = require("dct.Theater").singleton():getCommander(dctutils.getenemy(self.owner)) -- MORE ONELINERS FOR THE ONELINER GOD
+				
+				if((enemy_cmdr.isAI and settings.radios["ASSIGN_TO_AI"]) or not enemy_cmdr.isAI) then
+				
+					table.insert(enemy_cmdr.freqs_in_use["UNAVAILABLE"], {[package_comms.UHF] = true})
+					table.insert(enemy_cmdr.freqs_in_use["UNAVAILABLE"], {[package_comms.VHF] = true})
+					table.insert(enemy_cmdr.freqs_in_use["UNAVAILABLE"], {[package_comms.FM] = true})
+				
+				end
+				
+			end
+			
+		else -- channels assigned pseudo randomly
+		
+			while(package_comms == nil or tries < 40) do -- might make this a setting
+				tries = tries + 1
+				
+				Logger:debug("why am I here? Just to suffer?") 
+				
+				UHF, _ = self:select_channel("UHF", freq_settings_tbl["UHF_MAX"], freq_settings_tbl["UHF_MIN"], freq_steps)
+			
+				if(UHF) then
+					
+					VHF, _ = self:select_channel("VHF", freq_settings_tbl["VHF_MAX"], freq_settings_tbl["VHF_MIN"], freq_steps)
+					
+					if(VHF) then
+					
+						FM, _ = self:select_channel("FM", freq_settings_tbl["FM_MIN"], freq_settings_tbl["FM_MAX"], freq_steps)
+						
+						if(FM) then
+							
+							package_comms = {["UHF"] = UHF, 
+											 ["VHF"] = VHF,
+											 ["FM"] = FM
+											 }
+							self.freqs_in_use["UHF"][UHF] = true
+							self.freqs_in_use["VHF"][VHF] = true
+							self.freqs_in_use["FM"][FM] = true
+						
+						end
+					
+					
+					end
+					
+				end
+				
+				
+				
+			end
+			
+			if(package_comms == nil) then -- couldn't find an available channel
+			
+				Logger:warn("Not enough comms bandwidth alloted for mission size! This can be configured in theater/settings/radios.cfg") 
+				return "Comms channels crowded, frequency at pilot discretion"
 			
 			else
 				
-				if(tried_indexes["n"] == n_channels*0.8) then -- something else that can be a setting
+				enemy_cmdr = require("dct.Theater").singleton():getCommander(dctutils.getenemy(self.owner)) -- MORE ONELINERS FOR THE ONELINER GOD
 				
-					tries = tries + 1 --80% of the bandwidth has been tried
+				if((enemy_cmdr.isAI and settings.radios["ASSIGN_TO_AI"]) or not enemy_cmdr.isAI) then
 				
-				else
-				
-					tries = tries - 1 -- don't count this one (n.b - may result in huge execution times if comms channels crowded...)
-					
-				end
-				
-				
-			end
-						
-			tries = tries + 1
-			
-		end
-		
-		if(package_comms == nil) then -- couldn't find an available channel
-		
-			Logger:warn("Not enough comms bandwidth alloted for mission size! This can be configured in theater/settings/radios.cfg") 
-			return "Comms channels crowded, frequency at pilot discretion"
-		
-		end
-		
-	else -- channels assigned pseudo randomly
-	
-		while(package_comms == nil or tries < 20) do -- might make this a setting
-		
-			UHF, _ = Commander:select_channel("UHF", settings.radios[UHF_MAX], settings.radios[UHF_MIN], settings.radios[FREQ_STEPS])
-		
-			if(UHF) then
-				
-				VHF, _ = Commander:select_channel("VHF", settings.radios[VHF_MAX], settings.radios[VHF_MIN], settings.radios[FREQ_STEPS])
-				
-				if(VHF) then
-				
-					FM, _ = Commander:select_channel("FM", settings.radios[FM_MIN], settings.radios[FM_MAX], settings.radios[FREQ_STEPS])
-					
-					if(FM) then
-					
-						package_comms = {["UHF"] = UHF, 
-										 ["VHF"] = VHF,
-										 ["FM"] = FM
-										 }
-						self.freqs_in_use["UHF"][UHF] = true
-						self.freqs_in_use["VHF"][VHF] = true
-						self.freqs_in_use["FM"][FM] = true
-					
-					end
-				
+					table.insert(enemy_cmdr.freqs_in_use["UNAVAILABLE"], {[package_comms.UHF] = true})
+					table.insert(enemy_cmdr.freqs_in_use["UNAVAILABLE"], {[package_comms.VHF] = true})
+					table.insert(enemy_cmdr.freqs_in_use["UNAVAILABLE"], {[package_comms.FM] = true})
 				
 				end
 				
 			end
 			
 		end
-		
-		if(package_comms == nil) then -- couldn't find an available channel
-		
-			Logger:warn("Not enough comms bandwidth alloted for mission size! This can be configured in theater/settings/radios.cfg") 
-			return "Comms channels crowded, frequency at pilot discretion"
-		
-		end
-		
 		
 	end
-	
+	Logger:debug("RETURNING PACKAGE COMMS") 
 	return package_comms
 	
 end
-
---[[
--- recommendMission - recommend a mission type given a unit type
--- unittype - (string) the type of unit making request requesting
--- return: mission type value
---]]
-
---[[
-
-function Commander:recommendMissionType(allowedmissions)
-	local assetfilter = {}
-
-	for _, v in pairs(allowedmissions) do
-		utils.mergetables(assetfilter, enum.missionTypeMap[v])
-	end
-
-	local pq = heapsort_tgtlist(
-		require("dct.Theater").singleton():getAssetMgr(),
-		self.owner, assetfilter)
-
-	local tgt = pq:pop()
-	if tgt == nil then
-		return nil
-	end
-	return dctutils.assettype2mission(tgt.type)
-end
-
-]]--
-
---[[
--- requestMission - get a new mission
---
--- Creates a new mission where the target conforms to the mission type
--- specified and is of the highest priority. The Commander will track
--- the mission and handling tracking which asset is assigned to the
--- mission.
---
--- grpname - the name of the commander's asset that is assigned to take
---   out the target.
--- missiontype - the type of mission which defines the type of target
---   that will be looked for.
---
--- return: a Mission object or nil if no target can be found which
---   meets the mission criteria
---]]
-
-
---from old DCT, can be removed
-
---[[
-function Commander:requestMission(grpname, missiontype)
-	local assetmgr = dct.Theater.singleton():getAssetMgr()
-	local pq = heapsort_tgtlist(assetmgr, self.owner, enum.missionTypeMap[missiontype])
-
-	-- if no target, there is no mission to assign so return back
-	-- a nil object
-	local tgt = pq:pop()
-	if tgt == nil then
-		return nil
-	end
-	Logger:debug(string.format("requestMission() - tgt name: '%s'; "..
-		"isTargeted: %s", tgt.name, tostring(tgt:isTargeted())))
-
-	local plan = { require("dct.ai.actions.KillTarget")(tgt) }
-	local mission = Mission(self, missiontype, tgt, plan)
-	mission:addAssigned(assetmgr:getAsset(grpname))
-	self:addMission(mission)
-	return mission
-end
---]]
 
 -- Go through known table, create appropriate mission type
 function Commander:assignMissionsToTargets()

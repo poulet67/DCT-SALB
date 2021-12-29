@@ -17,8 +17,6 @@ local State    = require("dct.libs.State")
 local Timer    = require("dct.libs.Timer")
 local Logger   = require("dct.libs.Logger").getByName("Mission")
 
-
-local MISSION_LIMIT = 60*60*3  -- 3 hours in seconds
 local PREP_LIMIT    = 60*90    -- 90 minutes in seconds
 
 
@@ -61,7 +59,6 @@ end
 local ActiveState  = class("Active",  BaseMissionState)
 function ActiveState:__init()
 	Logger:debug(self.__clsname..":_init()")
-	self.timer = Timer(MISSION_LIMIT)
 	self.action = nil
 end
 
@@ -159,8 +156,9 @@ end
 local function composeBriefing(_, tgt, start_time)
 	local briefing = tgt.briefing
 	local interptbl = {
-		["TOT"] = os.date("%F %Rz",	dctutils.zulutime(start_time + MISSION_LIMIT * 0.6)),
+		["TOT"] = os.date("%F %Rz",	dctutils.zulutime(start_time + 1800)), -- 30 minutes... not sure if ther is really any smart way to do this that will give an acceptable result in all circumstances... Unless true coordination is achieved it really is just more of a suggestion anyways
 	}
+	
 	-- this is way too goddamned complicated
 	return dctutils.interp(briefing, interptbl)
 end
@@ -187,21 +185,20 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 	self.id        = self.iffcodes.id
 	self.next_stage = tgt.next_stage --A successful completion will trigger a stage transition in Theater
 	self.priority = enum.missionTypePriority[utils.getkey(enum.missionType, missiontype)] -- need to assign defaults...
-
+	
 	-- all optional mission parameters:
-
-	if(tgt.custombriefing) then -- custom briefing
-		self.custombriefing = tgt.custombriefing 
-	end
 		
 	if(tgt.marshal_point) then -- marshal point
 		self.marshal_point = tgt.marshal_point 
+		Logger:debug("-- MARSHAL POINT FOUND --")
 	end
 	
 	if(tgt.period) then -- periodic mission
 		self.period = tgt.period 
+		--theater:queueCommand(120, Command(
+		--	"Mission.resetPeriodic:"..tostring(self.id),
+		--	self.startIADS, self))
 	end
-	
 	
 	self.starttime = timer.getAbsTime()
 	
@@ -275,6 +272,13 @@ function Mission:removeAssigned(asset)
 	end
 	table.remove(self.assigned, i)
 	asset.missionid = enum.misisonInvalidID
+end
+
+function Mission:restartPeriod()
+
+-- to do
+
+
 end
 
 --[[

@@ -82,9 +82,9 @@ function ScratchPadSet:_execute(_, _)
 	self.theater:getSystem("dct.ui.scratchpad"):set(mrkid, self.asset.name)
 	trigger.action.markToGroup(mrkid, "edit me", pos,
 		self.asset.groupId, false)
-	local msg = "Look on F10 MAP for user mark with title: "..
-		title.."\n"..
-		"Edit body with your scratchpad information. "..
+	local msg = 
+		"Look on F10 MAP for marker ontop of you \n"..
+		"Edit text with your mission ID or command. "..
 		"Click off the mark when finished. "..
 		"The mark will automatically be deleted."
 	return msg
@@ -92,6 +92,12 @@ end
 
 local TheaterUpdateCmd = class(UICmd)
 function TheaterUpdateCmd:__init(theater, data)
+	UICmd.__init(self, theater, data)
+	self.name = "TheaterUpdateCmd:"..data.name
+end
+
+local ShowMissionTypeInfo = class(UICmd)
+function ShowMissionTypeInfo:__init(theater, data)
 	UICmd.__init(self, theater, data)
 	self.name = "TheaterUpdateCmd:"..data.name
 end
@@ -121,6 +127,29 @@ function TheaterUpdateCmd:_execute(_, cmdr)
 		--string.format("\n== Friendly Force Info ==\n")..
 		--string.format("  Force Str: %s\n",
 		--	human.strength(update.friendly.str))..
+		
+	return msg
+	
+end
+
+function ShowMissionTypeInfo:_execute()
+
+	local msg =
+		string.format("========== MISSION TYPES: =========\n")..
+		string.format("CAS: Close Air Support - Air to Ground\n")..
+		string.format("CAP: Combat Air Patrol - Air to Air \n")..
+		string.format("STRIKE: Air Strike - Air to Ground \n")..
+		string.format("SEAD: Suppression of Enemy Air Defences - Air to Ground \n")..
+		string.format("BAI: Battlefield Air Interdiction - Air to Ground \n")..
+		string.format("OCA: Offensive Counter Air - Air to Ground \n")..
+		string.format("RECON: Reconnaisance - No target \n")..
+		string.format("TRANSPORT: Transportation - No target \n")..
+		string.format("ASuW: Anti Surface Warfare - Anti-ship \n")..
+		string.format("ESCORT: Escort assets - Air to Air or Air to Ground \n")..
+		string.format("INTERCEPT: Interception - Air to Air\n")..
+		string.format("CONVOY RAID: Convoy Raid - Air to Ground\n")..
+		string.format("LOGISTICS: Logistics - No target \n")..
+		string.format("CSAR: Combat Search and Rescue - No target \n")
 		
 	return msg
 	
@@ -195,7 +224,7 @@ function CheckPayloadCmd:_execute(_ --[[time]], _ --[[cmdr]])
 	-- print cost summary
 	msg = msg.."\n== Loadout Summary:"
 	for cat, val in pairs(enum.weaponCategory) do
-		msg = msg ..string.format("\n\t%s cost: %d / %d",
+		msg = msg ..string.format("\n%s cost: %d / %d",
 			cat, costs[val].current, costs[val].max)
 	end
 
@@ -236,23 +265,43 @@ end
 
 local function briefingmsg(msn, asset)
 	local start_time = msn.starttime
-	local timeontarget = msn.timeontarget
+	local divider = "\n"..string.rep('-',60).."\n"
 	local tgtinfo = msn:getTargetInfo()
-	local packagecomms = msn.packagecomms
-	local msg = string.format("Package: #%s\n", msn:getID())..
-		string.format("IFF Codes: M1(%02o), M3(%04o)\n",
-			msn.iffcodes.m1, msn.iffcodes.m3)..
-		string.format("%s: %s (%s)\n",
-			human.locationhdr(msn.type),
-			dctutils.fmtposition(
-				tgtinfo.location,
-				tgtinfo.intellvl,
-				asset.gridfmt),
-			tgtinfo.callsign)..		
-		string.format("TOT: %s\n", os.date("%F %Rz",
-			dctutils.zulutime(start_time + timeontarget))).. -- yeah I don't know why it's off by an hour
-		string.format("Package Comms: %s\n", packagecomms)..
-		"Briefing:\n"..msn:getDescription(asset.gridfmt)
+	local packagecomms = "UHF: "..msn.packagecomms["UHF"].."/ VHF: "..msn.packagecomms["VHF"].." / FM: " .. msn.packagecomms["FM"]
+		
+	local msg = divider..
+				"Package:\n"..			
+				string.format("#%s", msn:getID()).."\n"..
+				divider..
+				"IFF Codes: \n"..
+				string.format("M1(%02o), M3(%04o)", msn.iffcodes.m1, msn.iffcodes.m3).."\n"..
+				divider..
+				"Package Comms: \n"..
+				packagecomms.."\n"..
+				divider
+			
+	if(msn.marshal_point) then
+	
+		msg = msg .. "Marshal Point\n"..
+					 string.format("%s", dctutils.fmtposition(msn.marshal_point, 1)).."\n"..
+					 divider
+		
+	end
+	
+	if(msn.period > 0) then
+	
+		 msg = msg .. "Start Time:\n"..
+					   string.format("%s", os.date("%F %Rz", dctutils.zulutime(start_time + msn.period))).."\n".. -- yeah I don't know why it's off by an hour (DST issues have occured)
+					   divider
+	end
+	
+	msg = msg .. 	string.format("%s: \n %s (%s)", human.locationhdr(msn.type), dctutils.fmtposition(tgtinfo.location, tgtinfo.intellvl, asset.gridfmt),	tgtinfo.callsign) ..
+					"\n"..
+					divider ..
+					"Briefing:\n" .. 
+					msn:getDescription(asset.gridfmt).."\n"..
+					divider
+	
 	return msg
 end
 
@@ -276,7 +325,7 @@ function MissionJoinCmd:_execute(_, cmdr)
 	msn = cmdr:getMission(missioncode)
 	if msn == nil then
 		msg = string.format("No mission of ID(%s) available, use"..
-			" scratch pad to set id.", tostring(missioncode))
+			" scratch pad to set ID of mission you'd wish to join.", tostring(missioncode))
 	else
 		msn:addAssigned(self.asset)
 		msg = string.format("Mission %s assigned, use F10 menu "..
@@ -511,10 +560,10 @@ local cmds = {
 	[enum.uiRequestType.MISSIONBRIEF]    = MissionBriefCmd,
 	[enum.uiRequestType.MISSIONSTATUS]   = MissionStatusCmd,
 	[enum.uiRequestType.MISSIONABORT]    = MissionAbortCmd,
-	[enum.uiRequestType.MISSIONROLEX]    = MissionRolexCmd,
 	[enum.uiRequestType.MISSIONCHECKIN]  = MissionCheckinCmd,
 	[enum.uiRequestType.MISSIONCHECKOUT] = MissionCheckoutCmd,
 	[enum.uiRequestType.MISSIONBOARD]   = ShowMissionBoard,
+	[enum.uiRequestType.MISSIONTYPEINFO]   = ShowMissionTypeInfo,
 	[enum.uiRequestType.SCRATCHPADGET]   = ScratchPadDisplay,
 	[enum.uiRequestType.SCRATCHPADSET]   = ScratchPadSet,
 	[enum.uiRequestType.CHECKPAYLOAD]    = CheckPayloadCmd,

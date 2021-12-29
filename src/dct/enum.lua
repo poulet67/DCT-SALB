@@ -105,7 +105,7 @@ enum.missionType = {
 	["OCA"]      = 6,
 	["RECON"] = 7,
 	["TRANSPORT"] = 8,
-	["ANTI SHIP"] = 9,	
+	["ASUW"] = 9,	
 	["ESCORT"] = 10,	
 	["INTERCEPT"] = 11,	
 	["CONVOY RAID"] = 12,	
@@ -116,24 +116,25 @@ enum.missionType = {
 enum.missionTypePriority = {
 	["CAS"]      = 2,
 	["CAP"]      = 2,
-	["STRIKE"]   = 2,
-	["SEAD"]     = 2,
+	["STRIKE"]   = 4,
+	["SEAD"]     = 3,
 	["BAI"]      = 2,
 	["OCA"]      = 3,
-	["RECON"] = 2,
+	["RECON"] = 3,
 	["TRANSPORT"] = 2,
-	["ANTI SHIP"] = 1,	
+	["ASUW"] = 1,	
 	["ESCORT"] = 2,	
 	["INTERCEPT"] = 1,	
 	["CONVOY RAID"] = 4,	
 	["CSAR"] = 2,		
+	["LOGISTICS"] = 2,		
 }
 
 enum.persistentMissions = {
 	["CAP"]      = 1,
 	["RECON"] = 2,
 	["TRANSPORT"] = 3,
-	["INTERCEPT"] = 4,
+	["LOGISTICS"] = 4,
 }
 
 --This is from an old implementation, I must delete
@@ -145,7 +146,7 @@ enum.periodicMissions = {
 	[enum.missionType.SEAD]     = false,
 	[enum.missionType.BAI]      = false,
 	[enum.missionType.OCA]      = false,
-	[enum.missionType["ANTI SHIP"]]--[[ = true,
+	[enum.missionType["ASuW"]]--[[ = true,
 	[enum.missionType.ESCORT] = false,
 	[enum.missionType.INTERCEPT] = false,	
 }
@@ -157,7 +158,7 @@ enum.availableMissions = {
 	[enum.missionType.SEAD]     = false,
 	[enum.missionType.BAI]      = false,
 	[enum.missionType.OCA]      = false,
-	[enum.missionType["ANTI SHIP"]]--[[ = true,
+	[enum.missionType["ASuW"]]--[[ = true,
 	[enum.missionType.ESCORT] = false,
 	[enum.missionType.INTERCEPT] = false,	
 }
@@ -237,7 +238,7 @@ enum.missionTypeMap = {
 	[enum.missionType.CAS] = {
 		[enum.assetType.JTAC]       = true,
 	},
-	[enum.missionType["ANTI SHIP"]] = {
+	[enum.missionType["ASUW"]] = {
 		[enum.assetType.NAVAL]       = true,
 	},
 	[enum.missionType.CAP] = {
@@ -254,24 +255,31 @@ enum.missionAbortType = {
 
 enum.uiRequestType = { 
 	["THEATERSTATUS"]   = 1,
-	["MISSIONBRIEF"]    = 2,
-	["MISSIONBOARD"]   = 3,
-	["MISSIONSTATUS"]   = 4,
-	["MISSIONABORT"]    = 5,
-	["MISSIONROLEX"]    = 6,
-	["MISSIONCHECKIN"]  = 7,
-	["MISSIONCHECKOUT"] = 8,
-	["SCRATCHPADGET"]   = 9,
-	["SCRATCHPADSET"]   = 10,
-	["CHECKPAYLOAD"]    = 11,
-	["MISSIONJOIN"]     = 12,
-	["SPAWN"]     = 13,
+	["MISSIONTYPEINFO"]    = 2,
+	["MISSIONBRIEF"]    = 3,
+	["MISSIONBOARD"]   = 4,
+	["MISSIONSTATUS"]   = 5,
+	["MISSIONABORT"]    = 6,
+	["MISSIONROLEX"]    = 7,
+	["MISSIONCHECKIN"]  = 8,
+	["MISSIONCHECKOUT"] = 9,
+	["SCRATCHPADGET"]   = 10,
+	["SCRATCHPADSET"]   = 11,
+	["CHECKPAYLOAD"]    = 12,
+	["MISSIONJOIN"]     = 13,
+	["SPAWN"]     = 14,
 
 }
 
 enum.weaponCategory = {
 	["AA"] = 1,
 	["AG"] = 2,
+}
+
+enum.coalitionMap = {
+	[coalition.side.NEUTRAL] = "NEUTRAL",
+	[coalition.side.RED] = "RED",
+	[coalition.side.BLUE] = "BLUE",
 }
 
 enum.WPNINFCOST = 5000
