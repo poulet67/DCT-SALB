@@ -35,7 +35,7 @@ function RegionManager:loadRegions()
 				local r = Region(fpath)
 				assert(self.regions[r.name] == nil, "duplicate regions " ..	"defined for theater: " .. settings.theaterpath)
 				self.regions[r.name] = r
-				trigger.action.outText(r.name, 30)	
+				--trigger.action.outText(r.name, 30)	
 			end
 		end
 	end

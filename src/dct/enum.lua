@@ -111,6 +111,7 @@ enum.missionType = {
 	["CONVOY RAID"] = 12,	
 	["LOGISTICS"] = 13,
 	["CSAR"] = 14,		
+	["FERRY"] = 15,	
 }
 
 enum.missionTypePriority = {
@@ -127,7 +128,8 @@ enum.missionTypePriority = {
 	["INTERCEPT"] = 1,	
 	["CONVOY RAID"] = 4,	
 	["CSAR"] = 2,		
-	["LOGISTICS"] = 2,		
+	["LOGISTICS"] = 2,
+	["FERRY"] = 10,		
 }
 
 enum.persistentMissions = {
@@ -135,6 +137,7 @@ enum.persistentMissions = {
 	["RECON"] = 2,
 	["TRANSPORT"] = 3,
 	["LOGISTICS"] = 4,
+	["FERRY"] = 5,
 }
 
 --This is from an old implementation, I must delete
@@ -260,11 +263,11 @@ enum.uiRequestType = {
 	["MISSIONBOARD"]   = 4,
 	["MISSIONSTATUS"]   = 5,
 	["MISSIONABORT"]    = 6,
-	["MISSIONROLEX"]    = 7,
+--	["MISSIONROLEX"]    = 7,
 	["MISSIONCHECKIN"]  = 8,
 	["MISSIONCHECKOUT"] = 9,
-	["SCRATCHPADGET"]   = 10,
-	["SCRATCHPADSET"]   = 11,
+--	["SCRATCHPADGET"]   = 10,
+--	["SCRATCHPADSET"]   = 11,
 	["CHECKPAYLOAD"]    = 12,
 	["MISSIONJOIN"]     = 13,
 	["SPAWN"]     = 14,

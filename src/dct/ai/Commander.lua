@@ -50,7 +50,7 @@ function Commander:__init(theater, side)
 	self.owner        = side
 	self.missionstats = Stats(genStatIds())
 	self.missions     = {}
-	self.missionboard     = {} --a printable board displaying all missions
+	self.missionorder     = {} -- just an array like table, so we can sort by priority
 	self.freqs_in_use = self:init_freqs() --frequencies currently assigned to a mission
 	self.isAI = self:getAIstatus()
 	self.aifreq       = 15  -- 2 minutes in seconds
@@ -169,6 +169,7 @@ function Commander:startIADS()
 end
 
 function Commander:update(time)
+
 	for _, mission in pairs(self.missions) do
 		mission:update(time)
 	end
@@ -176,6 +177,7 @@ function Commander:update(time)
 	self:assignMissionsToTargets()
 	
 	return self.aifreq
+	
 end
 
 --[[
@@ -204,7 +206,7 @@ end
 
 function Commander:getMissionBoard()
 
-	return self.missions
+	return self.missions, self.missionorder
 	
 end
 
@@ -508,7 +510,8 @@ function Commander:getMission(id)
 end
 
 function Commander:addMission(mission)
-	self.missions[mission:getID()] = mission
+	self.missions[mission:getID()] = mission	
+	table.insert(self.missionorder, {["id"] = mission.id, ["priority"] = mission.priority} ) -- so we can sort by priority
 	self.missionstats:inc(mission.type)
 end
 

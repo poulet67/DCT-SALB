@@ -56,6 +56,8 @@ function UICmd:uicmd(time)
 	return nil
 end
 
+--[[
+
 local ScratchPadDisplay = class(UICmd)
 function ScratchPadDisplay:__init(theater, data)
 	UICmd.__init(self, theater, data)
@@ -77,7 +79,7 @@ end
 function ScratchPadSet:_execute(_, _)
 	local mrkid = human.getMarkID()
 	local pos   = Group.getByName(self.asset.name):getUnit(1):getPoint()
-	local title = "SCRATCHPAD "..tostring(self.asset.groupId)
+	--local title = "SCRATCHPAD "..tostring(self.asset.groupId)
 
 	self.theater:getSystem("dct.ui.scratchpad"):set(mrkid, self.asset.name)
 	trigger.action.markToGroup(mrkid, "edit me", pos,
@@ -89,24 +91,11 @@ function ScratchPadSet:_execute(_, _)
 		"The mark will automatically be deleted."
 	return msg
 end
-
+--]]
 local TheaterUpdateCmd = class(UICmd)
 function TheaterUpdateCmd:__init(theater, data)
 	UICmd.__init(self, theater, data)
 	self.name = "TheaterUpdateCmd:"..data.name
-end
-
-local ShowMissionTypeInfo = class(UICmd)
-function ShowMissionTypeInfo:__init(theater, data)
-	UICmd.__init(self, theater, data)
-	self.name = "TheaterUpdateCmd:"..data.name
-end
-
-local ShowMissionBoard = class(UICmd)
-function ShowMissionBoard:__init(theater, data)
-	UICmd.__init(self, theater, data)
-	self.displaytime  = 60
-	self.name = "ShowMissionBoard:"..data.name
 end
 
 function TheaterUpdateCmd:_execute(_, cmdr)
@@ -132,6 +121,12 @@ function TheaterUpdateCmd:_execute(_, cmdr)
 	
 end
 
+local ShowMissionTypeInfo = class(UICmd)
+function ShowMissionTypeInfo:__init(theater, data)
+	UICmd.__init(self, theater, data)
+	self.name = "TheaterUpdateCmd:"..data.name
+end
+
 function ShowMissionTypeInfo:_execute()
 
 	local msg =
@@ -155,39 +150,57 @@ function ShowMissionTypeInfo:_execute()
 	
 end
 
+local ShowMissionBoard = class(UICmd)
+function ShowMissionBoard:__init(theater, data)
+	UICmd.__init(self, theater, data)
+	self.displaytime  = 60
+	self.name = "ShowMissionBoard:"..data.name
+end
+
 function ShowMissionBoard:_execute(_, cmdr)
 
-	local missiontable = cmdr:getMissionBoard()
+	local missiontable, missionorder = cmdr:getMissionBoard()
 	
 	--todo: Have the commander generate this when new missions are added.
-	
+	--TODO: sort by priority
 	--assigned = string.format("%d/%d", mb)
+	
+	missionorder = {} -- missiontable is an associative table, so it can not be sorted
+	
+	for id, _ in pairs(missiontable) do 
+		table.insert(missionorder, id) --so we will do this thing
+	end
+	
+	table.sort(missionorder, function(a,b) return missiontable[a].priority < missiontable[b].priority end)
 	
 	console_width = 65 -- changes based on resolution TODO: make this a setting
 	
-	titlestr = dctutils.printTabular("Current Active Air Missions", console_width, "=").."\n"
+	divider = "\n"..string.rep("-", console_width).."\n"	
+	
+	titlestr = dctutils.printTabular("MISSIONS", console_width, "-").."\n"
 
 	headertable = {
-				"ID",
-				"TYPE",
+				"ID",				
+				"PRIO.",
 				"# ASSGN.",
-				"PRIORITY",
+				"TYPE",
 				}
 	
-	headerstring = string.rep("%s",console_width).."\n" -- Spaces, lines -, _ or . are also a good candidate
+	
+	headerstring = string.rep("%s", console_width) -- Spaces, lines -, _ or . are also a good candidate
 	
 	headerstring = dctutils.printTabular(headertable, console_width, " ")
 	
-	local msg =	titlestr..headerstring.."\n"
+	local msg =	titlestr..headerstring..divider
 		
-	if next(missiontable) ~= nil then
+	if next(missionorder) ~= nil then
 	
-		for k,v in pairs(missiontable) do
+		for k,v in pairs(missionorder) do
 			outtable = {
-						 tostring(k),
-						 tostring(utils.getkey(enum.missionType, v.type)),
-						 tostring(#v.assigned),
-						 tostring(v.priority)
+						 tostring(v),
+						 tostring(missiontable[v].priority),
+						 tostring(#missiontable[v].assigned),
+						 tostring(utils.getkey(enum.missionType, missiontable[v]["type"])),
 						}
 						
 			bodystring = dctutils.printTabular(outtable, console_width, " ")
@@ -269,9 +282,10 @@ local function briefingmsg(msn, asset)
 	local tgtinfo = msn:getTargetInfo()
 	local packagecomms = "UHF: "..msn.packagecomms["UHF"].."/ VHF: "..msn.packagecomms["VHF"].." / FM: " .. msn.packagecomms["FM"]
 		
-	local msg = divider..
-				"Package:\n"..			
-				string.format("#%s", msn:getID()).."\n"..
+	local msg = 
+				"Package:\n"..		
+				divider..				
+				string.format("#%s", msn:getID())..
 				divider..
 				"IFF Codes: \n"..
 				string.format("M1(%02o), M3(%04o)", msn.iffcodes.m1, msn.iffcodes.m3).."\n"..
@@ -282,7 +296,7 @@ local function briefingmsg(msn, asset)
 			
 	if(msn.marshal_point) then
 	
-		msg = msg .. "Marshal Point\n"..
+		msg = msg .. "Marshal Point:\n"..
 					 string.format("%s", dctutils.fmtposition(msn.marshal_point, 1)).."\n"..
 					 divider
 		
@@ -290,8 +304,8 @@ local function briefingmsg(msn, asset)
 	
 	if(msn.period > 0) then
 	
-		 msg = msg .. "Start Time:\n"..
-					   string.format("%s", os.date("%F %Rz", dctutils.zulutime(start_time + msn.period))).."\n".. -- yeah I don't know why it's off by an hour (DST issues have occured)
+		 msg = msg .. "Push Time:\n"..
+					   string.format("%s", os.date("%Rz", dctutils.zulutime(start_time + msn.period))).."\n".. -- yeah I don't know why it's off by an hour (DST issues have occured)
 					   divider
 	end
 	
@@ -303,6 +317,7 @@ local function briefingmsg(msn, asset)
 					divider
 	
 	return msg
+	
 end
 
 local MissionJoinCmd = class(MissionCmd)
@@ -323,15 +338,33 @@ function MissionJoinCmd:_execute(_, cmdr)
 	end
 
 	msn = cmdr:getMission(missioncode)
+	
 	if msn == nil then
-		msg = string.format("No mission of ID(%s) available, use"..
-			" scratch pad to set ID of mission you'd wish to join.", tostring(missioncode))
+	
+		local mrkid = human.getMarkID() -- dunno if this is required anymore?
+		local pos   = Group.getByName(self.asset.name):getUnit(1):getPoint()
+
+		self.theater:getSystem("dct.ui.scratchpad"):set(mrkid, self.asset.name)
+		trigger.action.markToGroup(mrkid, "####", pos, self.asset.groupId, false)
+			
+		local msg = 
+			"To join a mission:\n\n"..
+			"1. Look on F10 MAP for marker on your position \n"..
+			"2. Edit text to the ID of the mission you wish to join \n"..
+			"3. Click off the mark when finished. \n"..
+			"NOTE: You can always join a mission this way - no F10 menu required"
+		
+		
+		return msg
+		
 	else
+	
 		msn:addAssigned(self.asset)
 		msg = string.format("Mission %s assigned, use F10 menu "..
 			"to see this briefing again\n", msn:getID())
 		msg = msg..briefingmsg(msn, self.asset)
 		human.drawTargetIntel(msn, self.asset.groupId, false)
+		
 	end
 	return msg
 end
@@ -344,11 +377,11 @@ end
 -- Player-Commander (or AI-commander, in a future release) can modify these values at will to communicate which should be completed. 
 -- They will have default values depending on the mission type
 
--- Missions are created as the Commander 'learns' or 'discovers' or 'spots' the asset. This is done using the Recon systems
+-- Missions are created as the Commander 'learns' or 'discovers' or 'spots' the asset. This is done using the Recon system
 -- Some mission sets are always available:
 
--- Air Recon
--- Recon Transport
+-- (Aerial) Recon
+-- Transport
 -- Logistics
 -- CAP
 
@@ -564,8 +597,8 @@ local cmds = {
 	[enum.uiRequestType.MISSIONCHECKOUT] = MissionCheckoutCmd,
 	[enum.uiRequestType.MISSIONBOARD]   = ShowMissionBoard,
 	[enum.uiRequestType.MISSIONTYPEINFO]   = ShowMissionTypeInfo,
-	[enum.uiRequestType.SCRATCHPADGET]   = ScratchPadDisplay,
-	[enum.uiRequestType.SCRATCHPADSET]   = ScratchPadSet,
+	--[enum.uiRequestType.SCRATCHPADGET]   = ScratchPadDisplay,
+	--[enum.uiRequestType.SCRATCHPADSET]   = ScratchPadSet,
 	[enum.uiRequestType.CHECKPAYLOAD]    = CheckPayloadCmd,
 	[enum.uiRequestType.MISSIONJOIN]     = MissionJoinCmd,
 	[enum.uiRequestType.SPAWN]     = SpawnCmd,

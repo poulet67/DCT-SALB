@@ -17,7 +17,7 @@ local State    = require("dct.libs.State")
 local Timer    = require("dct.libs.Timer")
 local Logger   = require("dct.libs.Logger").getByName("Mission")
 
-local PREP_LIMIT    = 60*90    -- 90 minutes in seconds
+-- local PREP_LIMIT    = 60*90    -- 90 minutes in seconds
 
 
 ---------------- STATES ----------------
@@ -222,11 +222,15 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 	
 	self.assigned  = {}
 	self:_setComplete(false)
+	
+	--[[
 	self.state = PrepState()
 	self.state:enter(self)
-
+	--]]
+	
 	-- compose the briefing at mission creation to represent
 	-- known intel the pilots were given before departing
+	
 	self.briefing  = composeBriefing(self, tgt, self.starttime)
 	tgt:setTargeted(self.cmdr.owner, true)
 
@@ -237,9 +241,12 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 	self.tgtinfo.intellvl = tgt:getIntel(self.cmdr.owner)
 end
 
+
+--[[
 function Mission:getStateName()
 	return self.state.__clsname
 end
+--]]
 
 function Mission:getID()
 	return self.id
@@ -294,18 +301,10 @@ end
 --      bit
 --]]
 function Mission:abort(asset)
+
 	Logger:debug(self.__clsname..":abort()")
-	self:removeAssigned(asset)
 	
-	if(not self.persistent)	then
-		if next(self.assigned) == nil then
-			self.cmdr:removeMission(self.id)
-			local tgt = self.cmdr:getAsset(self.target)
-			if tgt then
-				tgt:setTargeted(self.cmdr.owner, false)
-			end
-		end
-	end
+	self:removeAssigned(asset)
 
 	return self.id
 end
@@ -315,6 +314,8 @@ end
 --   
 -- primarily used by periodicMission
 --]]
+
+--[[
 
 function Mission:forceEnd()
 	Logger:debug(self.__clsname..":forceEnd()")
@@ -339,6 +340,8 @@ function Mission:forceEnd()
 	
 end
 
+--]]
+
 function Mission:queueabort(reason)
 	Logger:debug(self.__clsname..":queueabort()")
 	self:_setComplete(true)
@@ -355,16 +358,27 @@ function Mission:queueabort(reason)
 	end
 end
 
+
+
 function Mission:update()
-	Logger:debug("update() called for state: "..self.state.__clsname)
-	local newstate = self.state:update(self)
-	if newstate ~= nil then
-		Logger:debug("update() new state: "..newstate.__clsname)
-		self.state:exit(self)
-		self.state = newstate
-		self.state:enter(self)
+		Logger:debug("update() called") --for state: "..self.state.__clsname)
+		
+		
+			
+		--should update target location
+		
+		--old stuff, will probably remove
+		
+	--local newstate = self.state:update(self)
+	--	if newstate ~= nil then
+	--	Logger:debug("update() new state: "..newstate.__clsname)
+	--	self.state:exit(self)
+	--	self.state = newstate
+	--	self.state:enter(self)
 	end
 end
+
+-
 
 function Mission:_setComplete(val)
 	self._complete = val
@@ -388,6 +402,7 @@ end
 --       gathered on the asset, dictates targeting coordinates
 --       precision too
 --]]
+
 function Mission:getTargetInfo()
 	local asset = dct.Theater.singleton():getAssetMgr():getAsset(self.target)
 	if asset == nil then
@@ -398,15 +413,20 @@ function Mission:getTargetInfo()
 	return utils.deepcopy(self.tgtinfo)
 end
 
+--[[
 function Mission:getTimeout()
 	local remain, ctime = self.state:timeremain()
 	return ctime + remain
 end
+--]]
 
+--[[
 function Mission:addTime(time)
 	self.state:timeextend(time)
 	return time
 end
+--]]
+
 
 function Mission:getDescription(fmt)
 

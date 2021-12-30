@@ -12,6 +12,7 @@ local dctutils = require("dct.utils")
 local human = {}
 
 local markindex = 10
+
 function human.getMarkID()
 	markindex = markindex + 1
 	return markindex

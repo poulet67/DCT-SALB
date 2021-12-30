@@ -223,7 +223,7 @@ function Theater:delayedInit()
 	
 end
 
-local airbase_cats = {
+local airbase_cats = { --meow
 	[Airbase.Category.HELIPAD] = true,
 	[Airbase.Category.SHIP]    = true,
 }
@@ -354,8 +354,8 @@ function Theater.playerRequest(data)
 		return
 	end
 
-	Logger:debug("playerRequest(); Received player request: %s",
-		json:encode_pretty(data))
+	Logger:debug("playerRequest(); Received player request: "..
+		data.name .. data.type)
 
 	local playerasset = self:getAssetMgr():getAsset(data.name)
 

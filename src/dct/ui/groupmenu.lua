@@ -39,62 +39,89 @@ function menus.createMenu(asset)
 
 	asset.uimenus = {}
 
-	local padmenu = addmenu(gid, "Scratch Pad", nil)
-	for k, v in pairs({
-		["DISPLAY"] = enum.uiRequestType.SCRATCHPADGET,
-		["SET"] = enum.uiRequestType.SCRATCHPADSET}) do
-		addcmd(gid, k, padmenu, Theater.playerRequest,
-			{
-				["name"]   = name,
-				["type"]   = v,
-			})
-	end
-
-
-
-	local thtrmenu = addmenu(gid, "Theater", nil)
+	local msnmenu = addmenu(gid, "Info & Mission Control", nil)
 	
-	addcmd(gid, "Theater Update", thtrmenu, Theater.playerRequest,
+	addcmd(gid, "Theater Update", msnmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.THEATERSTATUS,
 		})	
-	addcmd(gid, "Mission Type Info", thtrmenu, Theater.playerRequest,
+	addcmd(gid, "Mission Type Info", msnmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONTYPEINFO,
 		})
 		
-	addcmd(gid, "Mission Board", thtrmenu, Theater.playerRequest,
+	addcmd(gid, "Mission Board", msnmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONBOARD,
 		})
 		
-	addcmd(gid, "Join Mission", thtrmenu, Theater.playerRequest,
+	addcmd(gid, "Join Mission", msnmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONJOIN,
 		})
 
-	addcmd(gid, "Mission Briefing", thtrmenu, Theater.playerRequest,
+	addcmd(gid, "Mission Briefing", msnmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONBRIEF,
 		})
-	addcmd(gid, "Mission Status", thtrmenu, Theater.playerRequest,
+	addcmd(gid, "Mission Status", msnmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONSTATUS,
 		})
-	addcmd(gid, "Abort Mission", thtrmenu, Theater.playerRequest,
+	addcmd(gid, "Abort Mission", msnmenu, Theater.playerRequest,     --<------------- still need to make sure this works within the new schema
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONABORT,
 			["value"]  = enum.missionAbortType.ABORT,
 		})
-
+	
+	
+--	local padmenu = addmenu(gid, "Scratch Pad", nil)
+--	for k, v in pairs({
+--		["DISPLAY"] = enum.uiRequestType.SCRATCHPADGET,
+--		["SET"] = enum.uiRequestType.SCRATCHPADSET}) do
+--		addcmd(gid, k, padmenu, Theater.playerRequest,
+--			{
+--				["name"]   = name,
+--				["type"]   = v,
+--			})
+--	end
+	
 	loadout.addmenu(asset, nil, Theater.playerRequest)
+	
+-- Copied from OD design doc:
+	
+--------------------------------------------------
+-- F10 Menus:
+--------------------------------------------------
+--
+--
+--
+-- Theater Info & Mission Control   -- Show Mission Board
+--																	   -- 
+--
+-- Base Command -- FOB ---> Create, Select ---> Delete, View Invenvory, Recall, Fire mission, Deploy, Dispatch, Next, Previous ----  Units, SAM, 
+--				   Airbase	  			      		 
+--	   (the same as FOB, except for Delete)
+--				  Logistics -- Air, Ground --> Dispatch Convoy, View , Info, ? --- From --- To --- Type --- Size --- Cargo (if appplicable) (yeah this could be complicated)
+--															 		   --  Essentials --> (Manpower, Amenities, Ammo) <-- Add x Kg, Add y Kg, Add...		
+--				
+-- Region Info -- Info, Next, Prev, Frontlines ---> Info, Next, Prev, Command Options ---> Change Posture, Tactical retreat, Create battle plans, Coordinate offensive
+--
+-- 
+-- Load/Unload - (have to get this stuff on the helos somehow)
+--			
+-- 
+-- Commander --> Store ---> Print Price list --> Airframes, Aircraft Weaponry, Essentials, Ground Units, Logi Vehicles, etc,
+--				 Intelligence		   	Buy --> Aircraft Weaponry, Essentials, Ground Units, Logi Vehicles --> Buy 1, 2, x
+-- 
+--
 
 	
 end
