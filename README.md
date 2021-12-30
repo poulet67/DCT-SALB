@@ -1,10 +1,13 @@
-# Dynamic Campaign Tools (DCT)
+# Dynamic Campaign Tools (DCT) - SALB:Strategic Air Land Battle
 
-Mission scripting framework for persistent DCS missions.
+A fork of the popular DCT framework.
 
-Provide a set of tools to allow mission designers to easily create scenarios
-for persistent dynamic campaigns within the Digital Combat Simulator (DCS)
-game world.
+SALB is focused on improving the gameplay experience from a strategic perspective.
+
+Several new features have been added and are planned. Some core functionality has been completely revamped.
+
+More to come..
+
 
 ## Description
 
