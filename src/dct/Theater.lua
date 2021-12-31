@@ -38,7 +38,8 @@ function Systems:__init()
 
 	local systems = {
 		"dct.assets.AssetManager",
-		"dct.ui.scratchpad",
+		--"dct.ui.scratchpad",
+		"dct.ui.markerget",
 		"dct.systems.bldgPersist",
 		"dct.systems.weaponstracking",
 		"dct.systems.blasteffects",

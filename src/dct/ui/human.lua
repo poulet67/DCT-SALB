@@ -69,10 +69,10 @@ function human.missiontype(mtype)
 end
 
 function human.locationhdr(msntype)
-	local hdr = "Target AO"
+	local hdr = "Target AO:\n"
 	if msntype == enum.missionType.CAS or
 		msntype == enum.missionType.CAP then
-		hdr = "Station AO"
+		hdr = "Station AO:\n"
 	end
 	return hdr
 end

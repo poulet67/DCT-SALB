@@ -273,6 +273,7 @@ local Player = class("Player", AssetBase)
 function Player:__init(template)
 	AssetBase.__init(self, template)
 	self.inair = false
+	self.cmddata = {} -- data for commands to be run
 	self._operstate = false
 	self.missionid = dctenum.missionInvalidID
 	trigger.action.setUserFlag(self.name, false)

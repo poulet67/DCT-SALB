@@ -29,7 +29,7 @@ end
 
 -- I hate this so much
 function utils.interp(s, tab)
-	return (s:gsub('(%b%%)', function(w) return tab[w:sub(2,-2)] or w end))
+	return (s:gsub('(%b%%)', function(w) return tab[w:sub(2,-2)] or w end)) -- looks for %STRING% (string is in table tab["STRING"] in string s (not confusing at all) 
 end
 
 function utils.assettype2mission(assettype)

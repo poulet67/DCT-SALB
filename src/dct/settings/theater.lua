@@ -373,6 +373,7 @@ end
 local function checkrebroadcast(keydata, t)
 	
 	-- requires exactly equal bandwidth in UHF VHF AND FM
+	
 	if t[keydata.name] then
 	
 		bluebandwidth = t["BLUE_FREQS"]["UHF_Max"]-t["BLUE_FREQS"]["UHF_Min"]

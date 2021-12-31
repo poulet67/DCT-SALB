@@ -54,6 +54,7 @@ function Commander:__init(theater, side)
 	self.freqs_in_use = self:init_freqs() --frequencies currently assigned to a mission
 	self.isAI = self:getAIstatus()
 	self.aifreq       = 15  -- 2 minutes in seconds
+	--we have known knowns and known unknowns -- Dick Cheney
 	self.known = {}
 	self.CommandPoints = 0
 	
@@ -206,7 +207,7 @@ end
 
 function Commander:getMissionBoard()
 
-	return self.missions, self.missionorder
+	return self.missions
 	
 end
 
@@ -334,44 +335,32 @@ function Commander:assignPackageComms(msntype)
 	freq_steps = settings.radios["FREQ_STEPS"]
 	rebroadcast = settings.radios["REBROADCAST"]
 	
-	
-	Logger:debug("INSIDE pkg comms") 
-	Logger:debug(coalition_string) 
-	Logger:debug(freq_settings_tbl["UHF_MAX"]) 
-	Logger:debug("AI " .. tostring(self.isAI)) 
-	Logger:debug("INSIDE pkg comms") 
+	--Logger:debug("INSIDE pkg comms") 
 	
 	if(not self.isAI or settings.radios["ASSIGN_TO_AI"]) then
-		
-		Logger:debug("aaaaa") 
+
 		tries = 0
 		if(rebroadcast) then -- channels must mirror 1 for 1 with their VHF and FM counterparts (and not collide with any frequencies already in use)
-							
-			Logger:debug("bbbbb") 
 			
 			n_channels = (freq_settings_tbl["VHF_MAX"]-freq_settings_tbl["VHF_MIN"])/freq_steps
 			
 			while(package_comms == nil or tries < 40) do 
 				tries = tries + 1
-				Logger:debug("ccccc") 	
-				Logger:debug(tries) 	
-				
+			
 				UHF, index = self:select_channel("UHF", freq_settings_tbl["UHF_MAX"], freq_settings_tbl["UHF_MIN"], freq_steps)
 									
-				Logger:debug("UHF ASSIGNED: " .. UHF) 
+				--Logger:debug("UHF ASSIGNED: " .. UHF) 
 				
 				if(UHF) then
-				
-					Logger:debug("dddddd") 						
 					
 					VHF = string.format("%.3f",index*freq_steps+freq_settings_tbl["VHF_MIN"])							
-					Logger:debug("VHF ASSIGNED: " .. VHF) 
+					--Logger:debug("VHF ASSIGNED: " .. VHF) 
 					
 					if(not self:checkFreqInUse("VHF", VHF)) then
 					
 						
 						FM = string.format("%.3f",index*freq_steps+freq_settings_tbl["FM_MIN"])
-						Logger:debug("FM ASSIGNED: " .. UHF) 
+						--Logger:debug("FM ASSIGNED: " .. UHF) 
 						
 						if(not self:checkFreqInUse("FM", FM)) then
 							
@@ -415,7 +404,7 @@ function Commander:assignPackageComms(msntype)
 			while(package_comms == nil or tries < 40) do -- might make this a setting
 				tries = tries + 1
 				
-				Logger:debug("why am I here? Just to suffer?") 
+				--Logger:debug("why am I here? Just to suffer?") 
 				
 				UHF, _ = self:select_channel("UHF", freq_settings_tbl["UHF_MAX"], freq_settings_tbl["UHF_MIN"], freq_steps)
 			
@@ -470,7 +459,9 @@ function Commander:assignPackageComms(msntype)
 		end
 		
 	end
-	Logger:debug("RETURNING PACKAGE COMMS") 
+	
+	--Logger:debug("RETURNING PACKAGE COMMS") 
+	
 	return package_comms
 	
 end
@@ -509,9 +500,16 @@ function Commander:getMission(id)
 	return self.missions[id]
 end
 
+function Commander:newPeriodic(mission)
+	
+	newmiss = Mission(self, mission.type, mission.tgt, mission.plan)
+	self.missions[newmiss:getID()] = newmiss
+	self.missionstats:inc(mission.type)
+	
+end
+
 function Commander:addMission(mission)
-	self.missions[mission:getID()] = mission	
-	table.insert(self.missionorder, {["id"] = mission.id, ["priority"] = mission.priority} ) -- so we can sort by priority
+	self.missions[mission:getID()] = mission		
 	self.missionstats:inc(mission.type)
 end
 
@@ -519,9 +517,13 @@ end
 -- remove the mission identified by id from the commander's tracking
 --]]
 function Commander:removeMission(id)
+	period = self.missions[id].period
 	local mission = self.missions[id]
 	self.missions[id] = nil
-	self.missionstats:dec(mission.type)
+	
+	if(period == 0) then
+		self.missionstats:dec(mission.type)
+	end
 end
 
 function Commander:getAssigned(asset)

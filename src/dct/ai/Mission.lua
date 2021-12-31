@@ -16,153 +16,8 @@ local uicmds   = require("dct.ui.cmds")
 local State    = require("dct.libs.State")
 local Timer    = require("dct.libs.Timer")
 local Logger   = require("dct.libs.Logger").getByName("Mission")
-
--- local PREP_LIMIT    = 60*90    -- 90 minutes in seconds
-
-
----------------- STATES ----------------
-
---[[
-
-local BaseMissionState = class("BaseMissionState", State)
-function BaseMissionState:timeremain()
-	return 0, 0
-end
-
-function BaseMissionState:timeextend(--addtime)
-end
-
-local TimeoutState = class("Timeout", BaseMissionState)
-function TimeoutState:enter(msn)
-	Logger:debug(self.__clsname..":enter()")
-	msn:queueabort(enum.missionAbortType.TIMEOUT)
-end
-
-local SuccessState = class("Success", BaseMissionState)
-function SuccessState:enter(msn)
-	Logger:debug(self.__clsname..":enter()")
-	
-	dct.Theater.singleton():missionComplete()
-	msn:queueabort(enum.missionAbortType.COMPLETE)
-end
-
---]]
-
---[[
--- ActiveState - mission is active and executing the plan
---  Critera:
---    * on plan completion, mission success
---    * on timer expired, mission timed out
---]]
-
-
-local ActiveState  = class("Active",  BaseMissionState)
-function ActiveState:__init()
-	Logger:debug(self.__clsname..":_init()")
-	self.action = nil
-end
-
-function ActiveState:enter(msn)
-	Logger:debug(self.__clsname..":enter()")
-	self.timer:reset()
-	self.action = msn.plan:pophead()
-end
-
-function ActiveState:update(msn)
-	Logger:debug(self.__clsname..":update()")
-	self.timer:update()
-	if self.timer:expired() then
-		Logger:debug(self.__clsname..":update() - transition timeout")
-		return TimeoutState()
-	end
-
-	if self.action == nil then
-		Logger:debug(self.__clsname..":update() - transition success")
-		return SuccessState()
-	end
-	if self.action:complete(msn) then
-		Logger:debug(self.__clsname..":update() - pop new action")
-		local newaction = msn.plan:pophead()
-		self.action:exit(msn)
-		self.action = newaction
-		if self.action == nil then
-			Logger:debug(self.__clsname..":update() - transition success")
-			return SuccessState()
-		end
-		self.action:enter(msn)
-	end
-	return nil
-end
-
-function ActiveState:timeremain()
-	Logger:debug(self.__clsname..":timeremain()")
-	return self.timer:remain()
-end
-
-function ActiveState:timeextend(addtime)
-	Logger:debug(self.__clsname..":timeextend()")
-	self.timer:extend(addtime)
-end
-
-
---[[
--- PrepState - mission is being planned
---  Maintains a timer and once the timer expires the mission expires.
---]]
--- TODO: find some way to remove players from mission if they de-slot
--- and mission in prep state
-
-
-local PrepState = class("Preparing", State)
-function PrepState:__init()
-	self.timer = Timer(PREP_LIMIT)
-end
-
-function PrepState:enter()
-	Logger:debug(self.__clsname..":enter()")
-	self.timer:reset()
-end
-
-function PrepState:update(msn)
-	Logger:debug(self.__clsname..":update()")
-	self.timer:update()
-	if self.timer:expired() then
-		Logger:debug(self.__clsname..":enter() - timeout")
-		return TimeoutState()
-	end
-
-	for _, v in pairs(msn:getAssigned()) do
-		local asset =
-			dct.Theater.singleton():getAssetMgr():getAsset(v)
-		if asset.type == enum.assetType.PLAYERGROUP and
-		   asset:inAir() then
-			Logger:debug(self.__clsname..":enter() - to active state")
-			return ActiveState()
-		end
-	end
-	return nil
-end
-
-function PrepState:timeremain()
-	Logger:debug(self.__clsname..":timeremain()")
-	return self.timer:remain()
-end
-
-function PrepState:timeextend(addtime)
-	Logger:debug(self.__clsname..":timeextend()")
-	self.timer:extend(addtime)
-end
-
-local function composeBriefing(_, tgt, start_time)
-	local briefing = tgt.briefing
-	local interptbl = {
-		["TOT"] = os.date("%F %Rz",	dctutils.zulutime(start_time + 1800)), -- 30 minutes... not sure if ther is really any smart way to do this that will give an acceptable result in all circumstances... Unless true coordination is achieved it really is just more of a suggestion anyways
-	}
-	
-	-- this is way too goddamned complicated
-	return dctutils.interp(briefing, interptbl)
-end
-
+local human    = require("dct.ui.human")
+local Command    = require("dct.Command")
 
 local function createPlanQ(plan)
 	local Q = require("libs.containers.queue")()
@@ -185,7 +40,7 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 	self.id        = self.iffcodes.id
 	self.next_stage = tgt.next_stage --A successful completion will trigger a stage transition in Theater
 	self.priority = enum.missionTypePriority[utils.getkey(enum.missionType, missiontype)] -- need to assign defaults...
-	
+	self.starttime = timer.getAbsTime()
 	-- all optional mission parameters:
 		
 	if(tgt.marshal_point) then -- marshal point
@@ -194,51 +49,35 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 	end
 	
 	if(tgt.period) then -- periodic mission
-		self.period = tgt.period 
-		--theater:queueCommand(120, Command(
-		--	"Mission.resetPeriodic:"..tostring(self.id),
-		--	self.startIADS, self))
+		Logger:debug("-- DING --")
+		self.period = tgt.period
+		self.pushtime = os.date("%Rz", dctutils.zulutime(self.starttime + self.period))
+		dormanttime = 900 -- how long the mission will stay alive after period has been reached (15 minutes seems reasonable, could make this a setting) (TODO)
+		Logger:debug("-- queueing --")
+		dct.Theater.singleton():queueCommand(self.period, Command("COMMANDER--- RESETTING PERIODIC MISSION : "..self.id, cmdr.newPeriodic, cmdr, self))
+		dct.Theater.singleton():queueCommand(self.period+dormanttime, Command("COMMANDER--- CLOSING PERIODIC MISSION: "..self.id, cmdr.removeMission, cmdr, self, id))
 	end
-	
-	self.starttime = timer.getAbsTime()
-	
-	
-	--Logger:debug("-- KUKIRIC HERE IS THE TIME --")	-- there have been issues with DST
-	--Logger:debug(tostring(timer.getAbsTime()))			
-	--Logger:debug(os.date("%R", timer.getAbsTime()))
-	--Logger:debug(os.date("%H:%M", timer.getAbsTime()))
-	
-	
-	--if(packagecomms) then -- a package comms has been defined
-	--	
-	--	self.packagecomms = packagecomms -- string representing the frequency that joining players should tune for package comms
-	--
-	--	
-	--else
-	--
-	--	self.packagecomms = "N/A (Pilot discretion)"
-	--
-	--end
-	
+
+
 	self.assigned  = {}
 	self:_setComplete(false)
-	
-	--[[
-	self.state = PrepState()
-	self.state:enter(self)
-	--]]
+
 	
 	-- compose the briefing at mission creation to represent
 	-- known intel the pilots were given before departing
-	
-	self.briefing  = composeBriefing(self, tgt, self.starttime)
+		
+	self.orders  = "No current orders" -- Commander can set this field to communicate priorities
 	tgt:setTargeted(self.cmdr.owner, true)
-
+	
+	self.briefing = tgt.briefing
+	
 	self.tgtinfo = {}
 	self.tgtinfo.location = tgt:getLocation()
 	self.tgtinfo.callsign = tgt.codename
 	self.tgtinfo.status   = tgt:getStatus()
 	self.tgtinfo.intellvl = tgt:getIntel(self.cmdr.owner)
+	self:init_readable() -- human readable table to be printed on F10 map (minus location info, which is calculated when briefing is called)
+	
 end
 
 
@@ -281,13 +120,6 @@ function Mission:removeAssigned(asset)
 	asset.missionid = enum.misisonInvalidID
 end
 
-function Mission:restartPeriod()
-
--- to do
-
-
-end
-
 --[[
 -- Abort - aborts a mission for etiher a single group or
 --   completely terminating the mission for everyone assigned.
@@ -309,39 +141,6 @@ function Mission:abort(asset)
 	return self.id
 end
 
---[[
--- forceEnd - terminates the mission regardless of whether there are players assigned to it or not
---   
--- primarily used by periodicMission
---]]
-
---[[
-
-function Mission:forceEnd()
-	Logger:debug(self.__clsname..":forceEnd()")
-
-	playerTable = self.assigned
-
-	for k,v in pairs(playerTable) do
-	
-		self:removeAssigned(v)
-	
-	end
-	
-	self.cmdr:removeMission(self.id)
-	
-	local tgt = self.cmdr:getAsset(self.target)
-	if tgt then
-		tgt:setTargeted(self.cmdr.owner, false)
-	end
-
-
-	return self.id
-	
-end
-
---]]
-
 function Mission:queueabort(reason)
 	Logger:debug(self.__clsname..":queueabort()")
 	self:_setComplete(true)
@@ -361,7 +160,8 @@ end
 
 
 function Mission:update()
-		Logger:debug("update() called") --for state: "..self.state.__clsname)
+	
+	Logger:debug("update() called") --for state: "..self.state.__clsname)
 		
 		
 			
@@ -369,16 +169,7 @@ function Mission:update()
 		
 		--old stuff, will probably remove
 		
-	--local newstate = self.state:update(self)
-	--	if newstate ~= nil then
-	--	Logger:debug("update() new state: "..newstate.__clsname)
-	--	self.state:exit(self)
-	--	self.state = newstate
-	--	self.state:enter(self)
-	end
 end
-
--
 
 function Mission:_setComplete(val)
 	self._complete = val
@@ -413,42 +204,129 @@ function Mission:getTargetInfo()
 	return utils.deepcopy(self.tgtinfo)
 end
 
---[[
-function Mission:getTimeout()
-	local remain, ctime = self.state:timeremain()
-	return ctime + remain
-end
---]]
+function Mission:init_readable()
 
---[[
-function Mission:addTime(time)
-	self.state:timeextend(time)
-	return time
-end
---]]
-
-
-function Mission:getDescription(fmt)
-
-	if self.custombriefing == nil then --Poulet change: standard dct mission
-
-		local tgt = self.cmdr:getAsset(self.target)
-		if tgt == nil then
-			return "Target destroyed abort mission"
-		end
-		local interptbl = {
-			["LOCATION"] = dctutils.fmtposition(
-				tgt:getLocation(),
-				tgt:getIntel(self.cmdr.owner),
-				fmt)
-		}
-		return dctutils.interp(self.briefing, interptbl)
+	divider = "\n"..string.rep('-',60).."\n"
 		
-	else --Poulet change: mission with custom breifing
+	Logger:debug("-- MISSION: INIT READABLE --")
+		
+	-- this may seem extremely complicated but:
+	-- A) It is more efficient
+	-- B) It allows us to modify the briefing even while the mission is in progress
+		
+	self.readable = {}
 	
-		return self.custombriefing
-		
+	self.readable["PackageHeader"] = {[1] = "Package:\n",
+								 [2] = divider,
+								 [3] = self.id,
+								 [4] = divider
+								}
+	self.readable["IFF"] = 			{[1] = "IFF Codes: \n",
+								 [2] = string.format("M1(%02o), M3(%04o)", self.iffcodes.m1, self.iffcodes.m3),
+								 [3] = divider
+								}
+	self.readable["PackageComms"] = 	{[1] = "Package Comms: \n",
+								 [2] = "UHF: "..self.packagecomms["UHF"].."/ VHF: "..self.packagecomms["VHF"].." / FM: " .. self.packagecomms["FM"] .."",
+								 [3] = divider
+								}
+	if(self.marshal_point) then	
+	
+		self.readable["MarshalPoint"] = 	{[1] = "Marshal Point:\n",
+									 [2] = "LOCATION",
+									 [3] = divider
+									}			
 	end
+	
+	if(self.pushtime) then
+	
+		self.readable["PushTime"] = 		{[1] = "Push Time:\n",
+									 [2] = self.pushtime,
+									 [3] = divider
+									}			
+
+	end		
+	
+	if(self.ToT) then--not implemented
+	
+		self.readable["TimeOnTarget"] = 	{[1] = "Time on Target:\n",
+									 [2] = "", --not implemented
+									 [3] = divider
+									}			
+
+	end
+	
+	if(enum.briefingType["STANDARD"][self.type]) then -- standard briefing or not
+	
+		self.readable["TargetLocation"] = 	{[1] = human.locationhdr(self.type),
+										[2] = "LOCATION", --we leave this one blank so we can fill in with whatever format the player requesting takes
+										[3] = divider
+										}
+											
+		self.readable["Briefing"] = 		{[1] = "Briefing:\n",
+									 [2] = self.briefing, --we leave this one blank so we can fill in with whatever format the player requesting takes
+									 [3] = divider
+									}
+	
+	elseif(enum.briefingType["NONCOMBAT"][self.type]) then
+	
+		self.readable["Orders"] = 		{[1] = "Orders from Commander:\n",
+									 [2] = "No current orders", -- default state
+									 [3] = divider
+									}
+	
+	elseif(enum.briefingType["RECON"][self.type]) then
+	
+		self.readable["Information"] = 	{[1] = "Info:\n",
+									 [2] = "Plot your flight plan on the F10 map.\n", -- default state
+									 [3] = "Each waypoint should be named RECON:# where number", -- default state
+									 [4] = "indicates the waypoint of your flight plan\n", -- default state
+									 [5] = "The waypoints should snap to a point.\n", -- default state
+									 [6] = "You must fly an orbit around each waypoint at"..dct.settings.gameplay["RECON_MISSION_ALTITUDE"].. " m altitude for X seconds \n", -- TODO: add this setting
+									 [7] = "to detect any enemy units nearby\n", -- default state
+									 [8] = divider
+									}
+	
+	end		
+		
+	
+	Logger:debug("-- MISSION: DONE READABLE --")	
+	Logger:debug("%s", self.readable["PackageHeader"][1])	
+		
+end
+
+function Mission:getFullBriefing(player)
+
+	Logger:debug("-- INSIDE GET FULL BRIEFING --")	
+	Logger:debug("-- ID: %s", self.id)
+	
+	local output = {}
+	
+	for k,v in ipairs(enum.briefingKeys) do
+	
+		if(self.readable[v]) then
+		
+
+			for index, outline in ipairs(self.readable[v]) do
+				
+				--input any location info				
+				if(k == 4  and  index == 2) then		--k = ["MarshalPoin"t]
+					outline = string.format("%s", dctutils.fmtposition(self.marshal_point, 5, player.gridfmt)) --default LL
+				end
+				
+				if(k == 7 and  index == 2) then -- k = ["TargetLocation"]				
+					outline =  string.format("%s (%s)", dctutils.fmtposition(self.tgtinfo.location, self.tgtinfo.intellvl, player.gridfmt),	self.tgtinfo.callsign)
+				end
+				
+				output[#output+1]  = outline
+
+			end
+			
+		end	
+	
+	end	
+	
+	return table.concat(output)
+	
 end
 
 return Mission

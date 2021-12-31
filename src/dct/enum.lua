@@ -132,12 +132,62 @@ enum.missionTypePriority = {
 	["FERRY"] = 10,		
 }
 
+enum.locationMethod = {
+	["GENERIC1"]      = "Reconnaissance elements have located",
+	["GENERIC2"]      = "Intelligence has informed us that there is",
+	["GENERIC3"]   = "We have reason to believe there is",
+	["SATELLITE"]     = "Satellite imaging has found",
+	["GROUNDSPOT"] = "Ground units operating in the area have informed us of",
+	["RECONFLIGHT"] = "A recon flight earlier today discovered",
+	["PLAYERSPOT"] = "A friendly unit spotted",
+}
+
 enum.persistentMissions = {
 	["CAP"]      = 1,
 	["RECON"] = 2,
 	["TRANSPORT"] = 3,
 	["LOGISTICS"] = 4,
 	["FERRY"] = 5,
+}
+
+enum.briefingType = { -- some missions don't fit the "standard" mould. we will deal with them seperately
+	["STANDARD"] = {
+		[enum.missionType.CAS] = true,
+		[enum.missionType.CAP] = true,
+		[enum.missionType.STRIKE] = true,
+		[enum.missionType.SEAD] = true,
+		[enum.missionType.BAI] = true,
+		[enum.missionType.OCA] = true,
+		[enum.missionType.ASUW] = true,
+		[enum.missionType.ESCORT] = true,
+		[enum.missionType.INTERCEPT] = true,
+		[enum.missionType["CONVOY RAID"]] = true,
+		[enum.missionType.CSAR] = true,
+	},	
+	["RECON"] = {
+		[enum.missionType.RECON] = true,
+	},
+	["NONCOMBAT"] = {	
+		[enum.missionType.TRANSPORT] = true,
+		[enum.missionType.FERRY] = true,
+		[enum.missionType.LOGISTICS] = true,
+
+	}
+}
+
+enum.briefingKeys = { --so we can iterate through the briefing (order matters here)
+
+	[1] = "PackageHeader",
+	[2] = "IFF",
+	[3] = "PackageComms",
+	[4] = "MarshalPoint",
+	[5] = "PushTime",
+	[6] = "TimeOnTarget",
+	[7] = "TargetLocation",
+	[8] = "Briefing",
+	[9] = "Orders",
+	[10] = "Information",	
+	
 }
 
 --This is from an old implementation, I must delete

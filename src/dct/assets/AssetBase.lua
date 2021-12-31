@@ -50,16 +50,21 @@ end
 
 
 local function genLocationMethod()
-	local txt = {
-		"Reconnaissance elements have located",
-		"A recon flight earlier today discovered",
-		"We have reason to believe there is",
-		"Aerial photography shows that there is",
-		"Satellite imaging has found",
-		"Ground units operating in the area have informed us of",
-	}
-	local idx = math.random(1,#txt)
-	return txt[idx]
+
+--	
+	local keytable = {}
+	
+    for key, value in pairs(dctenum.locationMethod) do
+	--	debugLogger:debug("key 1"..key)
+        keytable[#keytable+1] = key		
+	--	debugLogger:debug("key 1"..keytable[#keytable])
+    end
+	
+    randkey = keytable[math.random(1, #keytable)]
+--	debugLogger:debug("index"..randkey )
+--	debugLogger:debug("location method found: "..dctenum.locationMethod[randkey] )
+    return dctenum.locationMethod[randkey]
+
 end
 
 local AssetLogger = namedclass("AssetLogger", Logger)
@@ -151,10 +156,17 @@ end
 
 function AssetBase:_completeinit(template) -- NOTE: Add any new template keys here!
 	self.type     = template.objtype
-	if template.desc then
+	
+	local debugLogger = Logger.getByName("interp")
+	
+	if template.desc then	
+		debugLogger:debug("ASSETbase -- desc found: %s", template.desc)
+		
 		self.briefing = dctutils.interp(template.desc, {
 			["LOCATIONMETHOD"] = genLocationMethod(),
 		})
+		debugLogger:debug("BRIEFING MADE: "..self.briefing)
+		
 	else
 		print(string.format("Template(%s) has nil 'desc' field",
 			template.name))

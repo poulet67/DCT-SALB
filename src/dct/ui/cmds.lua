@@ -266,59 +266,12 @@ function MissionCmd:_execute(time, cmdr)
 end
 
 
-local function composeBriefing(_, tgt, start_time)
-	local briefing = tgt.briefing
-	local interptbl = {
-		["TOT"] = os.date("%F %Rz",
-			dctutils.zulutime(start_time + MISSION_LIMIT * 0.6)),
-	}
-	return dctutils.interp(briefing, interptbl)
-end
 
+--local function briefingmsg(msn, asset)
 
-local function briefingmsg(msn, asset)
-	local start_time = msn.starttime
-	local divider = "\n"..string.rep('-',60).."\n"
-	local tgtinfo = msn:getTargetInfo()
-	local packagecomms = "UHF: "..msn.packagecomms["UHF"].."/ VHF: "..msn.packagecomms["VHF"].." / FM: " .. msn.packagecomms["FM"]
-		
-	local msg = 
-				"Package:\n"..		
-				divider..				
-				string.format("#%s", msn:getID())..
-				divider..
-				"IFF Codes: \n"..
-				string.format("M1(%02o), M3(%04o)", msn.iffcodes.m1, msn.iffcodes.m3).."\n"..
-				divider..
-				"Package Comms: \n"..
-				packagecomms.."\n"..
-				divider
-			
-	if(msn.marshal_point) then
+--	return msn:getFullBriefing()
 	
-		msg = msg .. "Marshal Point:\n"..
-					 string.format("%s", dctutils.fmtposition(msn.marshal_point, 1)).."\n"..
-					 divider
-		
-	end
-	
-	if(msn.period > 0) then
-	
-		 msg = msg .. "Push Time:\n"..
-					   string.format("%s", os.date("%Rz", dctutils.zulutime(start_time + msn.period))).."\n".. -- yeah I don't know why it's off by an hour (DST issues have occured)
-					   divider
-	end
-	
-	msg = msg .. 	string.format("%s: \n %s (%s)", human.locationhdr(msn.type), dctutils.fmtposition(tgtinfo.location, tgtinfo.intellvl, asset.gridfmt),	tgtinfo.callsign) ..
-					"\n"..
-					divider ..
-					"Briefing:\n" .. 
-					msn:getDescription(asset.gridfmt).."\n"..
-					divider
-	
-	return msg
-	
-end
+--end
 
 local MissionJoinCmd = class(MissionCmd)
 function MissionJoinCmd:__init(theater, data)
@@ -327,7 +280,7 @@ function MissionJoinCmd:__init(theater, data)
 end
 
 function MissionJoinCmd:_execute(_, cmdr)
-	local missioncode = self.asset.scratchpad or 0
+	local missioncode = self.asset.cmddata["MSN"]
 	local msn = cmdr:getAssigned(self.asset)
 	local msg
 
@@ -336,15 +289,14 @@ function MissionJoinCmd:_execute(_, cmdr)
 			"use the F10 Menu to abort first.", msn:getID())
 		return msg
 	end
-
-	msn = cmdr:getMission(missioncode)
 	
-	if msn == nil then
+	if missioncode == nil then	
 	
 		local mrkid = human.getMarkID() -- dunno if this is required anymore?
 		local pos   = Group.getByName(self.asset.name):getUnit(1):getPoint()
 
-		self.theater:getSystem("dct.ui.scratchpad"):set(mrkid, self.asset.name)
+		--self.theater:getSystem("dct.ui.scratchpad"):set(mrkid, self.asset.name)
+		
 		trigger.action.markToGroup(mrkid, "####", pos, self.asset.groupId, false)
 			
 		local msg = 
@@ -354,19 +306,29 @@ function MissionJoinCmd:_execute(_, cmdr)
 			"3. Click off the mark when finished. \n"..
 			"NOTE: You can always join a mission this way - no F10 menu required"
 		
-		
 		return msg
+		
+	end
+	
+		msn = cmdr:getMission(missioncode)
+	
+	if(msn ~= nil) then
+	
+		msn:addAssigned(self.asset)
+		briefing = msn:getFullBriefing(self.asset)
+		msg = string.format("Mission %s assigned, use F10 menu "..
+			"to see this briefing again\n", msn:getID())
+		msg = msg..briefing
+		human.drawTargetIntel(msn, self.asset.groupId, false)
 		
 	else
 	
-		msn:addAssigned(self.asset)
-		msg = string.format("Mission %s assigned, use F10 menu "..
-			"to see this briefing again\n", msn:getID())
-		msg = msg..briefingmsg(msn, self.asset)
-		human.drawTargetIntel(msn, self.asset.groupId, false)
+		msg = string.format("INVALID MISSION ID: %s", missioncode)
 		
 	end
+	
 	return msg
+	
 end
 
 
@@ -468,7 +430,8 @@ function MissionBriefCmd:__init(theater, data)
 end
 
 function MissionBriefCmd:_mission(_, _, msn)
-	return briefingmsg(msn, self.asset)
+	local msn = cmdr:getAssigned(self.asset)
+	return msn:getFullBriefing(self.asset)
 end
 
 

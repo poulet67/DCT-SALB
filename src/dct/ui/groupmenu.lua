@@ -39,7 +39,7 @@ function menus.createMenu(asset)
 
 	asset.uimenus = {}
 
-	local msnmenu = addmenu(gid, "Info & Mission Control", nil)
+	local msnmenu = addmenu(gid, "Missions", nil)
 	
 	addcmd(gid, "Theater Update", msnmenu, Theater.playerRequest,
 		{
@@ -51,7 +51,7 @@ function menus.createMenu(asset)
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONTYPEINFO,
 		})
-		
+		-- TO DO: Add comms plan
 	addcmd(gid, "Mission Board", msnmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
@@ -102,8 +102,15 @@ function menus.createMenu(asset)
 --------------------------------------------------
 --
 --
+
+-- If I have enough menus:
 --
--- Theater Info & Mission Control   -- Show Mission Board
+-- Theater - Theater Update (in it's own)
+-- Communications -- Comms Plan 
+--
+--
+--
+-- Missions   -- Theater Update, Show Mission Board, Join, Abort, Briefing, Status, Type Info, Comms Plan
 --																	   -- 
 --
 -- Base Command -- FOB ---> Create, Select ---> Delete, View Invenvory, Recall, Fire mission, Deploy, Dispatch, Next, Previous ----  Units, SAM, 
@@ -120,7 +127,17 @@ function menus.createMenu(asset)
 -- 
 -- Commander --> Store ---> Print Price list --> Airframes, Aircraft Weaponry, Essentials, Ground Units, Logi Vehicles, etc,
 --				 Intelligence		   	Buy --> Aircraft Weaponry, Essentials, Ground Units, Logi Vehicles --> Buy 1, 2, x
--- 
+-- 				 Request Command
+--				 Vote kick Commander
+--
+-- Votes    ---> Current Vote --> (info)
+--               Vote yes 
+--               Vote no 
+--
+--
+--
+--
+--
 --
 
 	

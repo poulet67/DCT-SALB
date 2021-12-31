@@ -379,9 +379,6 @@ local function getkeys(objtype)
 			["name"]    = "period", -- how often a mission for this asset will be created and re-created
 			["check"] = checkperiod,
 		},{
-			["name"]    = "custom_briefing", -- how often a mission for this asset will be created and re-created
-			["check"] = checkbriefing,
-		},{
 			["name"]    = "marshal_point", -- where players should marshal to strike at the same time once
 			["check"] = check_marshalpoint,
 		},
@@ -516,7 +513,12 @@ function Template.fromFile(region, dctfile, stmfile)
 	
 	template.path = dctfile
 	
+	if(template.desc) then
+ 		
+		Logger	= dct.Logger.getByName("Template")
+		Logger:debug("TEMPLATE -- desc found: %s", template.desc)
 	
+	end
 	
 	if template.desc == "false" then
 	
