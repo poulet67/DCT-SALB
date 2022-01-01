@@ -159,7 +159,7 @@ end
 
 function ShowMissionBoard:_execute(_, cmdr)
 
-	local missiontable, missionorder = cmdr:getMissionBoard()
+	local missiontable = cmdr:getMissionBoard()
 	
 	--todo: Have the commander generate this when new missions are added.
 	--TODO: sort by priority
@@ -171,9 +171,9 @@ function ShowMissionBoard:_execute(_, cmdr)
 		table.insert(missionorder, id) --so we will do this thing
 	end
 	
-	table.sort(missionorder, function(a,b) return missiontable[a].priority < missiontable[b].priority end)
+	table.sort(missionorder, function(a,b) return missiontable[a].priority < missiontable[b].priority end) -- and it works
 	
-	console_width = 65 -- changes based on resolution TODO: make this a setting
+	console_width = 65 -- changes based on resolution (?) TODO: make this a setting
 	
 	divider = "\n"..string.rep("-", console_width).."\n"	
 	

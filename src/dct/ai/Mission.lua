@@ -29,7 +29,7 @@ end
 
 
 local Mission = class("Mission")
-function Mission:__init(cmdr, missiontype, tgt, plan) 
+function Mission:__init(cmdr, missiontype, tgt, plan)
 	self.cmdr      = cmdr
 	self.type      = missiontype
 	self.target    = tgt.name
@@ -41,6 +41,7 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 	self.next_stage = tgt.next_stage --A successful completion will trigger a stage transition in Theater
 	self.priority = enum.missionTypePriority[utils.getkey(enum.missionType, missiontype)] -- need to assign defaults...
 	self.starttime = timer.getAbsTime()
+	self.rolex = 0 -- commander can optionally increase or decrease push time 
 	-- all optional mission parameters:
 		
 	if(tgt.marshal_point) then -- marshal point
@@ -52,21 +53,18 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 		Logger:debug("-- DING --")
 		self.period = tgt.period
 		self.pushtime = os.date("%Rz", dctutils.zulutime(self.starttime + self.period))
-		dormanttime = 900 -- how long the mission will stay alive after period has been reached (15 minutes seems reasonable, could make this a setting) (TODO)
+		self.dormanttime = 900 -- how long the mission will stay alive after period has been reached (15 minutes seems reasonable, could make this a setting) (TODO)
 		Logger:debug("-- queueing --")
 		dct.Theater.singleton():queueCommand(self.period, Command("COMMANDER--- RESETTING PERIODIC MISSION : "..self.id, cmdr.newPeriodic, cmdr, self))
-		dct.Theater.singleton():queueCommand(self.period+dormanttime, Command("COMMANDER--- CLOSING PERIODIC MISSION: "..self.id, cmdr.removeMission, cmdr, self, id))
+		dct.Theater.singleton():queueCommand(self.period+self.dormanttime, Command("COMMANDER--- CLOSING PERIODIC MISSION: "..self.id, cmdr.removeMission, cmdr, self.id))
 	end
 
 
 	self.assigned  = {}
 	self:_setComplete(false)
 
-	
-	-- compose the briefing at mission creation to represent
-	-- known intel the pilots were given before departing
-		
-	self.orders  = "No current orders" -- Commander can set this field to communicate priorities
+			
+	self.orders  = "No current orders" -- Commander can set this field to communicate priorities (for non-standard missions)
 	tgt:setTargeted(self.cmdr.owner, true)
 	
 	self.briefing = tgt.briefing

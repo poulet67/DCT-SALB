@@ -108,6 +108,13 @@ function Commander:getKnownTables(theater)
 	
 end
 
+function Commander:rolex(value)
+	
+	
+
+	
+end
+
 function Commander:getAIstatus()
 	
 	keyval = enum.coalitionMap[self.owner] .. "_AI"
@@ -527,10 +534,11 @@ function Commander:getMission(id)
 end
 
 function Commander:newPeriodic(mission)
-	
-	newmiss = Mission(self, mission.type, mission.tgt, mission.plan)
-	self.missions[newmiss:getID()] = newmiss
-	self.missionstats:inc(mission.type)
+	Logger:debug("COMMANDER ==== RESETTING PERIODIC ====  :"..mission.id)
+	local targetasset = self:getAsset(mission.target)
+	local plan = { require("dct.ai.actions.KillTarget")(target) }
+	newmiss = Mission(self, mission.type, targetasset , plan)
+	self:addMission(newmiss)
 	
 end
 
@@ -543,12 +551,14 @@ end
 -- remove the mission identified by id from the commander's tracking
 --]]
 function Commander:removeMission(id)
+	Logger:debug("COMMANDER ==== REMOVE MISSION ====  :"..id)
+	
 	period = self.missions[id].period
 	local mission = self.missions[id]
 	self.missions[id] = nil
 	
 	if(period == 0) then
-		self.missionstats:dec(mission.type)
+		self.missionstats:dec(mission.type) -- okay I need to figure this out 
 	end
 end
 
