@@ -96,7 +96,8 @@ end
 
 function Commander:surrender()
 
-	trigger.action.OutTextForCoalition(self.owner, "SURRENDERING", 30)
+	Logger:debug("COMMANDER SURRENDERED")
+	trigger.action.OutTextForCoalition(self.owner, "SURRENDERING", 30) -- make this a setting for flavor text
 	self.playerCommander = {}
 	
 end

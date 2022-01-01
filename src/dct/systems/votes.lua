@@ -21,8 +21,10 @@ function Vote:__init(cmdr, theater)
 	self._theater = theater
 	self._cmdr = cmdr
 	self.currentvote = "No active votes currently"
+	self.active = false
 	self.votes = {} --True == yes, false == no
-	self.action = {}
+	self.n_yes = 0
+	self.n_voted = 0
 	self.cd_table = {} -- who is on cooldown from vote calling
 		
 	Logger:debug("Vote init: ")
@@ -30,8 +32,8 @@ function Vote:__init(cmdr, theater)
 	self.action = {
 
 		[enum.voteType["PUBLIC"]["Request Command"]] = Command("Vote result: request command default", nothing),
-		[enum.voteType["PUBLIC"]["Kick Commander"]] = true,
-		[enum.voteType["PUBLIC"]["Surrender"]] = true,
+		[enum.voteType["PUBLIC"]["Kick Commander"]] = true, -- we will fill in player info
+		[enum.voteType["PUBLIC"]["Surrender"]] = true, -- we will fill in player info
 		[enum.voteType["PRIVATE"]["Other"]] = Command("Vote result: Other, Default", nothing), -- externally sestable, default to nothing
 		--enum.voteType["PRIVATE"]["Decision"] = false,
 	}	
@@ -53,51 +55,76 @@ function nothing()
 end
 
 function Vote:tally(voteType)
-		
+
+	Logger:debug("VOTE: -------- TALLY")
+	Logger:debug("voteType:  "..voteType)
+	Logger:debug("voteType:  "..voteType)
+	
 	local percent = dct.settings.gameplay["VOTE_PERCENTAGE_REQUIRED"]
-	local numbervotes = 0
+
+	if(self.n_yes/self.n_voted > percent) then
 	
-	
-	for k,v in pairs(self.votes) do
-		
-		if(v) then
-		
-			numberyes = numberyes + 1
-			
-		end
-		
-		numbervotes = numbervotes+1
-		
-	end
-	
-	if(numberyes/numbervotes > percent) then
-	
-		trigger.OutTextForCoalition(self.cmdr.owner, "VOTE PASSED!")
-		self._theater.singleton():queueCommand(1, self.action[voteType])
-		self.votes = {}		
-		self.currentvote = "No active votes currently"	
+		trigger.action.outTextForCoalition(self._cmdr.owner, "VOTE PASSED!", 30)
+		self._theater:queueCommand(1, self.action[voteType])
+		self:reset()
 	
 	else
 	
-		trigger.OutTextForCoalition(self.cmdr.owner, "VOTE DEFEATED!")
-		self.votes = {}		
-		self.currentvote = "No active votes currently"	
+		trigger.action.outTextForCoalition(self.cmdr.owner, "VOTE DEFEATED!", 30)
+		self:reset()	
 		
 	end
 	
 	
 end
 
+function Vote:reset()
+
+	Logger:debug("VOTE: -------- Reset")
+	self.votes = {}
+	self.currentvote = "No active votes currently"	
+	self.n_voted = 0
+	self.n_yes = 0
+	self.active = false
+	
+	
+end
+
 function Vote:addVote(voter, voteVal)
 	
-	if(self.votes[voter] ~= nil) then
+	player_ucid = net.get_player_info(voter.id, 'ucid')	
 	
-		return "You have already voted!"
+	if(self.votes[player_ucid] ~= nil) then
+	
+		self.votes[player_ucid] = voteVal	
+		
+		if(self.votes[player_ucid] == voteVal) then
+		
+			return "Your vote has not changed" 
+		
+		else
+			
+			if(voteVal == true) then
+				self.n_yes = self.n_yes + 1
+			else			
+				self.n_yes = self.n_yes - 1
+			end
+			
+			return "Your vote has been changed" 
+		
+		end
 	
 	else
 		
-		self.votes[voter] = voteVal
-		
+		if(voteVal) then 
+			self.n_yes = self.n_yes + 1
+			self.n_voted = self.n_voted + 1
+		else
+			self.n_voted = self.n_voted + 1
+		end		
+			
+		self.votes[player_ucid] = voteVal	
+				
 		return "Your vote has been added" 
 	
 	end
@@ -136,12 +163,15 @@ function Vote:callVote(voteType, vote_initiator)
 	else
 		
 		Logger:debug("-- MULTI-PLAYER! --")
-		init_ucid = net.get_player_info(vote_initiator.id, 'ucid')
-		Logger:debug("-- UCID --"..init_ucid)
+		ptable = net.get_player_info(vote_initiator.id)
+		pname = ptable.name
+		pucid = ptable.ucid
+		pside = ptable.side
+		Logger:debug("-- UCID --"..pucid)
 		
 	end
 	
-	if(self.cd_table[init_ucid]) then -- check if on cooldown -- go off ucid maybe?
+	if(self.cd_table[pucid]) then -- check if on cooldown -- go off ucid maybe?
 			
 		Logger:debug("Player on cooldown")
 		
@@ -149,55 +179,59 @@ function Vote:callVote(voteType, vote_initiator)
 		
 	else
 	
-		self:cooldown(init_ucid)		
+		self:cooldown(pucid)		
 		
 	end
 	
-	if(self.currentvote ~= "No active votes currently") then
+	if(self.active) then
 	
 		return "A vote is already in progress"
 	
 	end
 	
-	msg = vote_initiator.name.."has called a vote!/n"
+	msg = pname.." has called a vote!\n"
 	
 	if(voteType == enum.voteType["PUBLIC"]["Request Command"]) then
 		
-		self.action[enum.voteType["PUBLIC"]["Request Command"]] = Command("Vote result: request command player"..vote_initiator.name, self._cmdr.assignCommander(), vote_initiator.name)
+		self.action[enum.voteType["PUBLIC"]["Request Command"]] = Command("Vote result: request command player"..pname, self._cmdr.assignCommander, pname)
 		
 		self._theater:queueCommand(dct.settings.gameplay["VOTE_TIME"],
-			Command("VOTE-- vote type, player ".. voteType .. vote_initiator.name, self.tally, self, voteType))
+			Command("VOTE-- vote type, player ".. voteType .. pname, self.tally, self, voteType))
 		
 		self.currentvote = msg..self.message[voteType]
-		
-		trigger.OutTextForCoalition(vote_initiator.owner, self.currentvote)
+		self.active = true
+		trigger.outTextForCoalition(self._cmdr.owner, self.currentvote, 30) --N.B despite not _seeming_ to output to coalition during testing, it does happen. it is just immediately overwritten when using the F10 command menu
 		
 		return "Vote Started!"
 		
 	elseif(voteType == enum.voteType["PUBLIC"]["Kick Commander"]) then
 	
-		self.action[enum.voteType["PUBLIC"]["Request Command"]] = Command("Vote result: request command player"..vote_initiator.name, self._cmdr.kickCommander())
+		self.action[enum.voteType["PUBLIC"]["Kick Commander"]] = Command("Vote result: request command player"..pname, self._cmdr.kickCommander)
 		
 		self._theater:queueCommand(dct.settings.gameplay["VOTE_TIME"],
-			Command("VOTE-- vote type, player ".. voteType .. player, self.tally, self, voteType))
+			Command("VOTE-- vote type, player ".. voteType .. pname, self.tally, self, voteType))
 			
 		self.currentvote = msg..self.message[voteType]
-		
-		trigger.OutTextForCoalition(vote_initiator.owner, self.currentvote)
+		self.active = true
+		trigger.action.outTextForCoalition(self._cmdr.owner, self.currentvote, 30)
 		
 		return "Vote Started!"
 		
 	elseif(voteType == enum.voteType["PUBLIC"]["Surrender"]) then
 		Logger:debug("-- surrender monkey --")
-		self.action[enum.voteType["PUBLIC"]["Request Command"]] = Command("Vote result: surrender"..vote_initiator.name, self._cmdr.surrender(), self._cmdr)
+		self.action[enum.voteType["PUBLIC"]["Surrender"]] = Command("Vote result: surrender"..pname, self._cmdr.surrender, self._cmdr)
 		Logger:debug("-- wut --")
 		
 		self._theater:queueCommand(dct.settings.gameplay["VOTE_TIME"],
-			Command("VOTE-- vote type, player ".. voteType .. player, self.tally, self, voteType))
+			Command("VOTE-- vote type, player ".. voteType .. pname, self.tally, self, voteType))
 		
 		self.currentvote = msg..self.message[voteType]
+		self.active = true
+		Logger:debug(self.currentvote)
+		Logger:debug(self._cmdr.owner)
 		
-		trigger.OutTextForCoalition(vote_initiator.owner, self.currentvote)
+		trigger.action.outTextForCoalition(self._cmdr.owner, self.currentvote, 30)
+		trigger.action.outTextForCoalition(1, self.currentvote, 30)
 		
 		return "Vote Started!"
 		
@@ -206,19 +240,21 @@ function Vote:callVote(voteType, vote_initiator)
 		--actions needs to be filled in (by whatever external source is summoning it) before vote is tallied or nothing will happen
 				
 		self._theater:queueCommand(dct.settings.gameplay["VOTE_TIME"],
-			Command("VOTE-- vote type, player ".. voteType .. vote_initiator.name, self.tally, self, voteType))
+			Command("VOTE-- vote type, player ".. voteType .. pname, self.tally, self, voteType))
 		
 		self.currentvote = msg..self.message[voteType]
+		self.active = true
+		trigger.action.outTextForCoalition(self._cmdr.owner, self.currentvote, 30)
 		
-		trigger.OutTextForCoalition(player.coalition, self.currentvote)
-		
-		return "Vote Started!"
+		return 
 		
 	else
 		
 		return nil
 	
 	end
+	
+	return "Vote Started!"
 	
 end
 

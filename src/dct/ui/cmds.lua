@@ -555,16 +555,29 @@ local ShowCurrentVote = class(UICmd)
 function ShowCurrentVote:__init(theater, data)
 	UICmd.__init(self, theater, data)
 	self.name = "ShowCurrentVote:"..data.name
-	self.currentvote = theater:getCommander(asset.owner).Vote.currentvote
 	
 end
 
 function ShowCurrentVote:_execute(_ , _)
-			
-	Logger:debug("------ show vote --------------")
-	Logger:debug(self.currentvote)
+	
+	local currentvote = self.theater:getCommander(self.asset.owner).Vote.currentvote
+	local active = self.theater:getCommander(self.asset.owner).Vote.active
+	local numyes = self.theater:getCommander(self.asset.owner).Vote.n_yes
+	local numvotes = self.theater:getCommander(self.asset.owner).Vote.n_voted
+	
+	
+	
+	if(active) then
+	
+		msg = currentvote.."\n CURRENT TALLY: "..tostring(numyes).."/"..tostring(numvotes)
+	
+	else
+	
+		msg = currentvote
+		
+	end
 
-	return self.currentvote
+	return msg
 	
 end
 
@@ -577,9 +590,8 @@ function CallVoteCmd:__init(theater, data)
 end
 
 function CallVoteCmd:_execute(_ --[[time]], _ --[[cmdr]])
-	local msg
-
-	return self.theater:getCommander(self.asset.owner).Vote:callVote(self.voteType, self.asset)
+	
+	return self.theater:getCommander(self.asset.owner).Vote:callVote(self.voteType, self.asset) --N.B d
 	
 end
 
@@ -596,7 +608,7 @@ function VoteCmd:_execute(_ --[[time]], _ --[[cmdr]])
 	local msg
 	
 
-	return self.theater.singleton():getCommander(asset.owner).Vote:addVote(self.asset, self.voteVal)
+	return self.theater:getCommander(self.asset.owner).Vote:addVote(self.asset, self.voteVal)
 	
 end
 

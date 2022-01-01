@@ -204,7 +204,6 @@ enum.voteType = {
 
 }
 
-
 --This is from an old implementation, I must delete
 --[[
 enum.periodicMissions = { 
