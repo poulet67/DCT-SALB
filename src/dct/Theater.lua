@@ -46,8 +46,8 @@ function Systems:__init()
 		"dct.systems.playerslots",
 		"dct.systems.Victory",
 		"dct.systems.spawnable",
-		"dct.systems.decision",
-		"dct.systems.stages",
+		--"dct.systems.decision",
+		--"dct.systems.stages",
 		"dct.templates.RegionManager",
 	}
 
@@ -410,6 +410,7 @@ end
 function Theater:stageTransition(n)
 
 	self.Stage = n;
+
 	
 	
 	--do other stuff

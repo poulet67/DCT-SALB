@@ -551,6 +551,56 @@ function SpawnCmd:_execute(_ --[[time]], _ --[[cmdr]])
 	
 end
 
+local ShowCurrentVote = class(UICmd)
+function ShowCurrentVote:__init(theater, data)
+	UICmd.__init(self, theater, data)
+	self.name = "ShowCurrentVote:"..data.name
+	self.currentvote = theater:getCommander(asset.owner).Vote.currentvote
+	
+end
+
+function ShowCurrentVote:_execute(_ , _)
+			
+	Logger:debug("------ show vote --------------")
+	Logger:debug(self.currentvote)
+
+	return self.currentvote
+	
+end
+
+
+local CallVoteCmd = class(UICmd)
+function CallVoteCmd:__init(theater, data)
+	UICmd.__init(self, theater, data)
+	self.name = "CallVote:"..data.name
+	self.voteType = data.voteType
+end
+
+function CallVoteCmd:_execute(_ --[[time]], _ --[[cmdr]])
+	local msg
+
+	return self.theater:getCommander(self.asset.owner).Vote:callVote(self.voteType, self.asset)
+	
+end
+
+
+local VoteCmd = class(UICmd)
+function VoteCmd:__init(theater, data)
+	UICmd.__init(self, theater, data)
+	self.name = "VoteYes:"..data.name
+	self.voteVal = data.value
+	
+end
+
+function VoteCmd:_execute(_ --[[time]], _ --[[cmdr]])
+	local msg
+	
+
+	return self.theater.singleton():getCommander(asset.owner).Vote:addVote(self.asset, self.voteVal)
+	
+end
+
+
 local cmds = {
 	[enum.uiRequestType.THEATERSTATUS]   = TheaterUpdateCmd,
 	[enum.uiRequestType.MISSIONBRIEF]    = MissionBriefCmd,
@@ -564,6 +614,9 @@ local cmds = {
 	--[enum.uiRequestType.SCRATCHPADSET]   = ScratchPadSet,
 	[enum.uiRequestType.CHECKPAYLOAD]    = CheckPayloadCmd,
 	[enum.uiRequestType.MISSIONJOIN]     = MissionJoinCmd,
+	[enum.uiRequestType.CURRENTVOTE]    = ShowCurrentVote,
+	[enum.uiRequestType.CALLVOTE]     = CallVoteCmd,
+	[enum.uiRequestType.VOTE]    = VoteCmd,
 	[enum.uiRequestType.SPAWN]     = SpawnCmd,
 }
 

@@ -3,7 +3,7 @@
 --
 -- A Stage class to handle stage transitions in a mission
 --]]
-
+--[[
 require("math")
 local class    = require("libs.class")
 local utils    = require("libs.utils")
@@ -31,3 +31,5 @@ end
 
 
 return Stages
+
+--]]

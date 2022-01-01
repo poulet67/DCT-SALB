@@ -5,7 +5,7 @@
 -- 
 -- 
 --]]
-
+--[[
 local enum     = require("dct.enum")
 local dctutils = require("dct.utils")
 local settings = _G.dct.settings
@@ -23,4 +23,6 @@ function Decision:__init() -- need to pass file path to decision.cfg
 	
 end
 
-return Decision
+return Decision 
+
+]]--

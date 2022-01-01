@@ -58,6 +58,10 @@ function Commander:__init(theater, side)
 	self.known = {}
 	self.CommandPoints = 0
 	
+	Logger:debug("COMMANDER ==== INIT VOTE ====  :")
+	self.Vote = require("dct.systems.votes")(self, theater)
+	self.playerCommander = nil -- player with commander level privledges if nil, commander is public
+	
 
 	theater:queueCommand(120, Command(
 		"Commander.startIADS:"..tostring(self.owner),
@@ -74,6 +78,27 @@ function Commander:__init(theater, side)
 	theater:queueCommand(7, Command(
 		"Commander.init_persistent_missions:"..tostring(self.owner),
 		self.init_persistent_missions, self))
+end
+
+function Commander:kickCommander()
+
+	trigger.action.outTextForGroup(self.getAsset(self.playerCommander).id, "You have been kicked from the player commander role", 30)
+	self.playerCommander = {}
+	
+end
+
+function Commander:assignCommander(player)
+
+	trigger.action.outTextForGroup(self.getAsset(self.playerCommander).id,  "You have been assigned the player commander role", 30)
+	self.playerCommander = {} --gotta decide if I will make this work for SP as well... (?)
+	
+end
+
+function Commander:surrender()
+
+	trigger.action.OutTextForCoalition(self.owner, "SURRENDERING", 30)
+	self.playerCommander = {}
+	
 end
 
 function Commander:getKnownTables(theater)
@@ -99,8 +124,8 @@ end
 function Commander:init_freqs()
 
 	
-	Logger:debug("COMMANDER ==== SIDE ====  :"..self.owner)
-	Logger:debug("COMMANDER ==== ENUM ====  :"..enum.coalitionMap[self.owner])
+	--Logger:debug("COMMANDER ==== SIDE ====  :"..self.owner)
+	--Logger:debug("COMMANDER ==== ENUM ====  :"..enum.coalitionMap[self.owner])
 	
 	coalition_string = enum.coalitionMap[self.owner]
 	
@@ -110,7 +135,7 @@ function Commander:init_freqs()
 		
 	end
 	
-	Logger:debug("COMMANDER ==== COAL STRING ====  :"..coalition_string)
+	--Logger:debug("COMMANDER ==== COAL STRING ====  :"..coalition_string)
 	
 	freq_settings_tbl = settings.radios["_FREQS"]
 	
@@ -158,7 +183,7 @@ function Commander:init_persistent_missions()
 			
 			mission = Mission(self, enum.missionType[k], asset, {})
 			self:addMission(mission)			
-			Logger:debug("COMMANDER ==== PERSISTENT DONE ====  :"..mission.id)
+			--Logger:debug("COMMANDER ==== PERSISTENT DONE ====  :"..mission.id)
 			
 		end	
 	end
@@ -271,8 +296,8 @@ end
 
 function Commander:checkFreqInUse(f_band, channel)
 
-	Logger:debug("CHECKING:" .. f_band) 
-	Logger:debug("CHECKING:" .. channel) 
+	--Logger:debug("CHECKING:" .. f_band) 
+	--Logger:debug("CHECKING:" .. channel) 
 	
 	if self.freqs_in_use[f_band][channel] and self.freqs_in_use["UNAVAILABLE"][channel] then
 		return true
@@ -293,24 +318,24 @@ function Commander:select_channel(f_band, band_start, band_end, step_size)
 	num_channels = band_width/step_size	
 	selected_channel_index = math.random(0, num_channels)
 	
-	Logger:debug("INSIDE pkg comms channel index:" .. selected_channel_index) 
-	Logger:debug("INSIDE pkg comms channel:" .. num_channels) 
+	--Logger:debug("INSIDE pkg comms channel index:" .. selected_channel_index) 
+	--Logger:debug("INSIDE pkg comms channel:" .. num_channels) 
 	
 	channel = string.format("%.3f",selected_channel_index*step_size+band_start)
 		
-	Logger:debug("INSIDE pkg comms channel selected:" .. channel) 
+	--Logger:debug("INSIDE pkg comms channel selected:" .. channel) 
 	
 	isInUse = self:checkFreqInUse(f_band, channel)
 	
 	if(isInUse) then --AKA unavailable
 	
-		Logger:debug("IN USE") 
+		--Logger:debug("IN USE") 
 		
 		return
 		
 	else 
 	
-		Logger:debug("RETURNING"..channel) 
+		--Logger:debug("RETURNING"..channel) 
 		
 		return channel, selected_channel_index
 	
@@ -480,12 +505,12 @@ function Commander:assignMissionsToTargets()
 			
 			target = self:getAsset(k)		
 			missiontype = dctutils.assettype2mission(target.type)
-			Logger:debug("COMMANDER ==== ASSIGN MISSION ====  :"..k)
+			--Logger:debug("COMMANDER ==== ASSIGN MISSION ====  :"..k)
 			local plan = { require("dct.ai.actions.KillTarget")(target) }
 			
 			local mission = Mission(self, missiontype, target, plan)
 			self:addMission(mission)			
-			Logger:debug("COMMANDER ==== DONE ====  :"..mission.id)
+			--Logger:debug("COMMANDER ==== DONE ====  :"..mission.id)
 			self.known[k] = nil;
 		end
 	end

@@ -190,6 +190,21 @@ enum.briefingKeys = { --so we can iterate through the briefing (order matters he
 	
 }
 
+enum.voteType = {
+	
+	["PUBLIC"] = {-- will show up in the F10 menu
+		["Request Command"]      = 1,
+		["Kick Commander"]      = 2,
+		["Surrender"]      = 3,	
+	},
+	["PRIVATE"] = {
+		["Other"]      = 4,
+		["Decision"]      = 5,
+	}
+
+}
+
+
 --This is from an old implementation, I must delete
 --[[
 enum.periodicMissions = { 
@@ -320,7 +335,10 @@ enum.uiRequestType = {
 --	["SCRATCHPADSET"]   = 11,
 	["CHECKPAYLOAD"]    = 12,
 	["MISSIONJOIN"]     = 13,
-	["SPAWN"]     = 14,
+	["CURRENTVOTE"]     = 14,
+	["CALLVOTE"]     = 15,
+	["VOTE"]     = 16,
+	["SPAWN"]     = 17,
 
 }
 

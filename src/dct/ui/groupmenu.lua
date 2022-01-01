@@ -38,7 +38,9 @@ function menus.createMenu(asset)
 	Logger:debug("createMenu - adding menu for group: "..tostring(name))
 
 	asset.uimenus = {}
-
+	
+	---------------------------------------------------------------MISSIONS
+	
 	local msnmenu = addmenu(gid, "Missions", nil)
 	
 	addcmd(gid, "Theater Update", msnmenu, Theater.playerRequest,
@@ -74,7 +76,7 @@ function menus.createMenu(asset)
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONSTATUS,
 		})
-	addcmd(gid, "Abort Mission", msnmenu, Theater.playerRequest,     --<------------- still need to make sure this works within the new schema
+	addcmd(gid, "Abort Mission", msnmenu, Theater.playerRequest,
 		{
 			["name"]   = name,
 			["type"]   = enum.uiRequestType.MISSIONABORT,
@@ -82,6 +84,56 @@ function menus.createMenu(asset)
 		})
 	
 	
+	---------------------------------------------------------------VOTES
+	
+	local votemenu = addmenu(gid, "Vote", nil)
+	
+	addcmd(gid, "Current Vote", votemenu, Theater.playerRequest,     
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.CURRENTVOTE
+		})
+
+	local callvotemenu = addmenu(gid, "Call Vote", votemenu)
+	
+		for k, v in pairs(enum.voteType["PUBLIC"]) do		
+			addcmd(gid, k, callvotemenu, Theater.playerRequest,
+			{
+				["name"]   = name,
+				["type"]   = enum.uiRequestType.CALLVOTE,
+				["voteType"]   = v,
+			})
+		
+		
+		end
+		
+	addcmd(gid, "Vote Yes", votemenu, Theater.playerRequest,     
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.VOTE,
+			["value"]  = true
+		})
+		
+	addcmd(gid, "Vote No", votemenu, Theater.playerRequest,     
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.VOTE,
+			["value"]  = false
+		})
+	
+	
+	
+--	for k, v in pairs({
+--		["DISPLAY"] = enum.uiRequestType.SCRATCHPADGET,
+--		["SET"] = enum.uiRequestType.SCRATCHPADSET}) do
+--		addcmd(gid, k, padmenu, Theater.playerRequest,
+--			{
+--				["name"]   = name,
+--				["type"]   = v,
+--			})
+--	end	
+
+
 --	local padmenu = addmenu(gid, "Scratch Pad", nil)
 --	for k, v in pairs({
 --		["DISPLAY"] = enum.uiRequestType.SCRATCHPADGET,
