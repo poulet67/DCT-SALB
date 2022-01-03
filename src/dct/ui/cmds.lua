@@ -612,6 +612,22 @@ function VoteCmd:_execute(_ --[[time]], _ --[[cmdr]])
 	
 end
 
+local DebuggingCmd = class(UICmd)
+function DebuggingCmd:__init(theater, data)
+	UICmd.__init(self, theater, data)
+	self.name = "DEBUGGING:"..data.name
+	self.voteVal = data.value
+	
+end
+
+function DebuggingCmd:_execute(_ --[[time]], _ --[[cmdr]])
+
+	local msg
+
+	return "DEBUG RUN"
+	
+end
+
 
 local cmds = {
 	[enum.uiRequestType.THEATERSTATUS]   = TheaterUpdateCmd,
@@ -630,6 +646,8 @@ local cmds = {
 	[enum.uiRequestType.CALLVOTE]     = CallVoteCmd,
 	[enum.uiRequestType.VOTE]    = VoteCmd,
 	[enum.uiRequestType.SPAWN]     = SpawnCmd,
+	[enum.uiRequestType.DEBUGGING]     = DebuggingCmd,
+	
 }
 
 return cmds

@@ -122,6 +122,16 @@ function menus.createMenu(asset)
 		})
 	
 	
+	--to command certain areas of code be executed in game, comment out for release/production
+	
+	addcmd(gid, "Debugging", nil, Theater.playerRequest,     
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.DEBUGGING,
+			["value"]  = false
+		})
+	
+	
 	
 --	for k, v in pairs({
 --		["DISPLAY"] = enum.uiRequestType.SCRATCHPADGET,

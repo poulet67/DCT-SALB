@@ -19,6 +19,7 @@ local assetpaths = {
 	"dct.assets.Player",
 	"dct.assets.StaticAsset",
 	"dct.assets.Waypoint",
+	--"dct.assets.DCTWeapon",
 }
 
 local AssetManager = require("libs.namedclass")("AssetManager", Observable)
@@ -69,6 +70,8 @@ function AssetManager:__init(theater)
 end
 
 function AssetManager:factory(assettype)
+	Logger:debug(assettype)	
+
 	local asset = self._factoryclasses[assettype]
 	assert(asset, "unsupported asset type: "..
 		utils.getkey(enum.assetType, assettype))

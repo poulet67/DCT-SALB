@@ -171,6 +171,14 @@ local function checkbriefing(keydata, tbl)
 	end
 end
 
+local function checkheading(keydata, tbl)
+	if (tbl[keydata.name] >= 0 or tbl[keydata.name] <= 360) then
+		return true
+	else
+		return false
+	end
+end
+
 local function checkobjtype(keydata, tbl)
 	if type(tbl[keydata.name]) == "number" and
 		utils.getkey(enum.assetType, tbl[keydata.name]) ~= nil then
@@ -308,6 +316,7 @@ local function getkeys(objtype)
 		[enum.assetType.AIRSPACE]       = true,
 		[enum.assetType.AIRBASE]        = true,
 		[enum.assetType.WAYPOINT]        = true,
+		[enum.assetType.WEAPON]        = true,
 	}
 	local defaultintel = 1
 	if objtype == enum.assetType.AIRBASE then
@@ -406,6 +415,12 @@ local function getkeys(objtype)
 	end
 	
 	if objtype == enum.assetType.WAYPOINT then
+		table.insert(keys, {
+			["name"]  = "location",
+			["type"]  = "table",})
+	end
+	
+	if objtype == enum.assetType.WEAPON then
 		table.insert(keys, {
 			["name"]  = "location",
 			["type"]  = "table",})

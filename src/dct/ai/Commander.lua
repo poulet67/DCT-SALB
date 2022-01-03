@@ -106,6 +106,8 @@ function Commander:getKnownTables(theater)
 
 	self.known = theater:getAssetMgr():getKnownTables(self.owner)
 	
+	
+	
 end
 
 function Commander:rolex(value)
@@ -206,6 +208,14 @@ function Commander:update(time)
 
 	for _, mission in pairs(self.missions) do
 		mission:update(time)
+		--Logger:debug("COMMANDER ==== COMPELETE ====  :"..tostring(mission:isComplete()))
+		if(mission:isComplete()) then
+		
+			Logger:debug("COMMANDER ==== REMOVING ====  :"..mission.id)
+		
+			self:removeMission(mission.id)
+		
+		end
 	end
 	
 	self:assignMissionsToTargets()
@@ -511,9 +521,11 @@ function Commander:assignMissionsToTargets()
 		--
 		for k, v in pairs(self.known) do
 			
-			target = self:getAsset(k)		
+			Logger:debug("COMMANDER ==== ASSIGN MISSION ====  :"..k)
+			target = self:getAsset(k)
+			Logger:debug("COMMANDER ==== ASSIGN MISSION ====  :"..target.type)			
 			missiontype = dctutils.assettype2mission(target.type)
-			--Logger:debug("COMMANDER ==== ASSIGN MISSION ====  :"..k)
+			Logger:debug("COMMANDER ==== missiontype, target type ====  :"..missiontype..target.type)
 			local plan = { require("dct.ai.actions.KillTarget")(target) }
 			
 			local mission = Mission(self, missiontype, target, plan)
@@ -544,6 +556,7 @@ end
 
 function Commander:addMission(mission)
 	self.missions[mission:getID()] = mission		
+	Logger:debug("BEFORE STATS")
 	self.missionstats:inc(mission.type)
 end
 

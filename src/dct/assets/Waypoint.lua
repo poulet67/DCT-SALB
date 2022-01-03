@@ -18,7 +18,8 @@ end
 
 function Waypoint.assettypes()
 	return {
-		require("dct.enum").assetType.WAYPOINT
+		require("dct.enum").assetType.WAYPOINT,
+		require("dct.enum").assetType.WEAPON
 	}
 end
 
@@ -28,7 +29,5 @@ function Waypoint:_completeinit(template)
 		"runtime error: Waypoint requires template to define a location")
 	self._location = vector.Vector3D(template.location):raw()
 end
-
--- TODO: need to figure out how to track influence within this space
 
 return Waypoint

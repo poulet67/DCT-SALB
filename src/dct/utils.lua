@@ -236,6 +236,19 @@ function utils.fmtposition(position, precision, fmt)
 	return utils.LLtostring(lat, long, precision, fmt)
 end
 
+function utils.getHeading(velocity_vector)
+
+	local heading = math.deg(math.atan2(velocity_vector.z, velocity_vector.x))
+	
+	env.info("HEADING: "..heading)
+	
+	if heading < 0 then
+		heading = heading + 360
+	end
+  
+	return heading
+end
+
 function utils.trimTypeName(typename)
 	return string.match(typename, "[^.]-$")
 end

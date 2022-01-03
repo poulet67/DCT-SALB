@@ -9,9 +9,9 @@ Class Hierarchy:
 
 							                       AssetBase----Airspace-----Waypoint
 								                       |
-	  Base---------------------------------------------+
+	  Base---------------------------------------------+								
 		|											   |
- FOB----+-- Airbase							  Static-----IAgent-----Player
+ FOB----+-- Airbase							  Static-----IAgent-----Player			DCTWeapon
 
 
 --]]
@@ -157,15 +157,15 @@ end
 function AssetBase:_completeinit(template) -- NOTE: Add any new template keys here!
 	self.type     = template.objtype
 	
-	local debugLogger = Logger.getByName("interp")
+	--local debugLogger = Logger.getByName("interp")
 	
 	if template.desc then	
-		debugLogger:debug("ASSETbase -- desc found: %s", template.desc)
+		--debugLogger:debug("ASSETbase -- desc found: %s", template.desc)
 		
 		self.briefing = dctutils.interp(template.desc, {
 			["LOCATIONMETHOD"] = genLocationMethod(),
 		})
-		debugLogger:debug("BRIEFING MADE: "..self.briefing)
+		--debugLogger:debug("BRIEFING MADE: "..self.briefing)
 		
 	else
 		print(string.format("Template(%s) has nil 'desc' field",

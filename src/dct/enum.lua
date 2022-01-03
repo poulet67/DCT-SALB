@@ -48,13 +48,14 @@ enum.assetType = {
 	-- extended type set
 	["AIRSPACE"]    = 26,
 	["WAYPOINT"]    = 27,
-	["SHORAD"]      = 28,
-	["PLAYERGROUP"] = 29,
-	["SPECIALFORCES"] = 30,
+	["WEAPON"]    = 28,
+	["SHORAD"]      = 29,
+	["PLAYERGROUP"] = 30,
+	["SPECIALFORCES"] = 31,
 	
 	-- Mission not assigned to an asset
-	["NOMISSION"] = 31, -- not actually implemented at the moment
-	["FRIENDLY"] = 32,
+	["NOMISSION"] = 32, -- not actually implemented at the moment
+	["FRIENDLY"] = 33,
 	
 }
 
@@ -275,6 +276,7 @@ enum.assetClass = {
 	-- agents never get serialized to the state file
 	["AGENTS"] = {
 		[enum.assetType.PLAYERGROUP] = true,
+		[enum.assetType.WEAPON] = true,
 	}
 }
 
@@ -311,6 +313,9 @@ enum.missionTypeMap = {
 	[enum.missionType.CAP] = {
 		[enum.assetType.AIRSPACE]   = true,
 	},
+	[enum.missionType.INTERCEPT] = {
+		[enum.assetType.WEAPON]   = true,
+	},
 }
 
 enum.missionAbortType = {
@@ -338,6 +343,7 @@ enum.uiRequestType = {
 	["CALLVOTE"]     = 15,
 	["VOTE"]     = 16,
 	["SPAWN"]     = 17,
+	["DEBUGGING"]     = 17,
 
 }
 

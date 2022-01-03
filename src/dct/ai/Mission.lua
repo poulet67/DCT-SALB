@@ -46,11 +46,11 @@ function Mission:__init(cmdr, missiontype, tgt, plan)
 		
 	if(tgt.marshal_point) then -- marshal point
 		self.marshal_point = tgt.marshal_point 
-		Logger:debug("-- MARSHAL POINT FOUND --")
+		--Logger:debug("-- MARSHAL POINT FOUND --")
 	end
 	
 	if(tgt.period) then -- periodic mission
-		Logger:debug("-- DING --")
+		--Logger:debug("-- DING --")
 		self.period = tgt.period
 		self.pushtime = os.date("%Rz", dctutils.zulutime(self.starttime + self.period))
 		self.dormanttime = 900 -- how long the mission will stay alive after period has been reached (15 minutes seems reasonable, could make this a setting) (TODO)
@@ -158,11 +158,17 @@ end
 
 
 function Mission:update()
+		
+	--Logger:debug("Mission UPDATE") --for state: "..self.state.__clsname)
+	--Logger:debug(self.target) --for state: "..self.state.__clsname)
 	
-	Logger:debug("update() called") --for state: "..self.state.__clsname)
+	if(dct.Theater.singleton():getAssetMgr():getAsset(self.target) == nil) then
+	
+		--Logger:debug("Mission: dead") --for state: "..self.state.__clsname)
+		self:_setComplete(true)
+	
+	end
 		
-		
-			
 		--should update target location
 		
 		--old stuff, will probably remove
@@ -206,7 +212,7 @@ function Mission:init_readable()
 
 	divider = "\n"..string.rep('-',60).."\n"
 		
-	Logger:debug("-- MISSION: INIT READABLE --")
+	--Logger:debug("-- MISSION: INIT READABLE --")
 		
 	-- this may seem extremely complicated but:
 	-- A) It is more efficient
@@ -251,15 +257,24 @@ function Mission:init_readable()
 									 [3] = divider
 									}			
 
-	end
-	
+	end	
+
 	if(enum.briefingType["STANDARD"][self.type]) then -- standard briefing or not
 	
 		self.readable["TargetLocation"] = 	{[1] = human.locationhdr(self.type),
 										[2] = "LOCATION", --we leave this one blank so we can fill in with whatever format the player requesting takes
 										[3] = divider
 										}
-											
+			
+		if(self.heading) then--not implemented
+		
+			self.readable["Heading"] = 	{[1] = "Tracking:\n",
+										 [2] = self.heading,
+										 [3] = divider
+										}			
+
+		end
+										
 		self.readable["Briefing"] = 		{[1] = "Briefing:\n",
 									 [2] = self.briefing, --we leave this one blank so we can fill in with whatever format the player requesting takes
 									 [3] = divider
@@ -287,8 +302,7 @@ function Mission:init_readable()
 	end		
 		
 	
-	Logger:debug("-- MISSION: DONE READABLE --")	
-	Logger:debug("%s", self.readable["PackageHeader"][1])	
+	--Logger:debug("-- MISSION: DONE READABLE --")	
 		
 end
 
