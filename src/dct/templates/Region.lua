@@ -168,7 +168,7 @@ local function getTemplates(self, basepath)
 					
 				end
 
-				self:addTemplate(Template.fromFile(self, fpath, stmpath))
+				self:addTemplate(Template.fromFile(fpath, stmpath))
 			end
 		end
 	end
@@ -293,7 +293,49 @@ function Region:__init(regionpath)
 	loadMetadata(self, regionpath..utils.sep.."region.def")
 	loadGeoData(self) -- load in geographical data
 	getTemplates(self, self.path)
+    --initMapDrawing()
 	Logger:debug("'"..self.name.."' Loaded")
+	
+	--draw the region
+	
+	
+	
+end
+
+local function loadMetadata(self, regiondefpath)
+	Logger:debug("=> regiondefpath: "..regiondefpath)
+	
+	local keys = {
+		[1] = {
+			["name"] = "name",
+			["type"] = "string",
+		},
+		[2] = {
+			["name"] = "priority",
+			["type"] = "number",
+		},
+		[4] = {
+			["name"] = "limits",
+			["type"] = "table",
+			["default"] = {},
+			["check"] = processlimits,
+		},
+		[5] = {
+			["name"] = "airspace",
+			["type"] = "boolean",
+			["default"] = true,
+		},
+	}
+
+	local region = utils.readlua(regiondefpath)
+	if region.region then
+		region = region.region
+	end
+	--Logger:debug("REGION --- "..region.name)
+	
+	region.defpath = regiondefpath
+	utils.checkkeys(keys, region)
+	utils.mergetables(self, region)
 	
 end
 
@@ -329,9 +371,7 @@ end
 
 
 
-function Region:addTemplate(tpl) --note: we can not use this method to add staged templates, as the theater singleton doesn't exist yet (so we have no way of knowing what stage it is at.)
-								 --due to the definition of "stage" we can assume it starts at 1 always, and call :addStaged template after this
-								 --when I figure out a more elegant solution to this problem I will probably hack the DCT codebase apart with a rusty cleaver
+function Region:addTemplate(tpl) 
 								 
 	assert(self._templates[tpl.name] == nil,
 		"duplicate template '"..tpl.name.."' defined; "..tostring(tpl.path))

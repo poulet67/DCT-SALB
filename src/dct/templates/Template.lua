@@ -122,7 +122,10 @@ local function overrideGroupOptions(grp, idx, tpl)
 	if grp.data.dct_deathgoal ~= nil then
 		tpl.hasDeathGoals = true
 	end
-	grp.data.name = tpl.regionname.."_"..tpl.name.." "..tpl.coalition.." "..
+	--grp.data.name = tpl.regionname.."_"..tpl.name.." "..tpl.coalition.." "..
+	--	utils.getkey(Unit.Category, grp.category).." "..tostring(idx)
+		
+	grp.data.name = tpl.name.." "..tpl.coalition.." "..
 		utils.getkey(Unit.Category, grp.category).." "..tostring(idx)
 
 	for i, unit in ipairs(grp.data.units or {}) do
@@ -203,6 +206,12 @@ local function checkside(keydata, tbl)
 	return false
 end
 
+local function checkregname(keydata, tbl)
+	if type(tbl[keydata.name]) == "string" or tbl[keydata.name] == nil then
+		return true
+	end
+	return false
+end
 local function checkstage(keydata, tbl)
 	if tbl[keydata.name] >= 1 then
 		return true
@@ -323,13 +332,13 @@ local function getkeys(objtype)
 		defaultintel = 5
 	end
 
-	local keys = {
+	local keys = {  --NOTE: Nil values are allowed IF the key has: 1) no type defined, 2) a check function that (should check for type since that is no longer being done, and) will allow for nil values
 		{
 			["name"]  = "name",
 			["type"]  = "string",
 		}, {
 			["name"]  = "regionname",
-			["type"]  = "string",
+			["check"] = checkregname
 		}, {
 			["name"]  = "coalition",
 			["type"]  = "number",
@@ -514,17 +523,24 @@ function Template:copyData()
 	return copy
 end
 
-function Template.fromFile(region, dctfile, stmfile)
-	assert(region ~= nil, "region is required")
+function Template.fromFile(dctfile, stmfile)  --region, dctfile, stmfile)
+	--assert(region ~= nil, "region is required")
 	assert(dctfile ~= nil, "dctfile is required")
 
 	local template = utils.readlua(dctfile)
+	
 	if template.metadata then
 		template = template.metadata
 	end
 
-	template.regionname = region.name
-	template.regionprio = region.priority
+	if template.regionname then
+		template.regionname	= region.name
+	end
+	
+	if template.regionprio then
+		template.regionprio = region.priority
+	end
+	
 	
 	template.path = dctfile
 	
@@ -541,11 +557,31 @@ function Template.fromFile(region, dctfile, stmfile)
 		
 	end
 	
+	if(template.command_unit) then
+		--should probably add a restriction to regular template names (i.e can not contain TANKER or AWACS)
+		if(template.name == nil) then
+			template.commandUnitName = template.name
+		end
+		
+		template.name = template.type..dct.Theater.singleton():getcntr()
+		template.commandUnitType = template.type -- not sure if this could conflict somewhere down the line with asset type... best to just deal with it now
+		template.commandUnitName = template.data.units[1]["type"] -- command unit templates should only contain 1 unit, or multiple of the same type of unit 
+	
+		Logger:debug("TEMPLATE -- name found: %s", template.name)
+		Logger:debug("TEMPLATE -- commandUnitType found: %s", template.commandUnitType)
+		Logger:debug("TEMPLATE -- commandUnitName found: %s", template.commandUnitName)
+		
+	end	
+	
+	-- this should be last
+	
 	if stmfile ~= nil then
 	
 		template = utils.mergetables(STM.transform(utils.readlua(stmfile, "staticTemplate")), template)
-	
+		
+		
 	end
+	
 	
 	--local settings = dct.settings.server
 	--utils.savetable(template, "C:\Users\ian\Saved Games\DCS\Mods\tech\DCT\debug\table.dump")

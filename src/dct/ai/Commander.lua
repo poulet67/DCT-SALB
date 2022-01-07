@@ -58,9 +58,11 @@ function Commander:__init(theater, side)
 	self.known = {}
 	self.CommandPoints = 0
 	
+	self:initAICommandUnits()
+	
 	Logger:debug("COMMANDER ==== INIT VOTE ====  :")
 	self.Vote = require("dct.systems.votes")(self, theater)
-	self.playerCommander = nil -- player with commander level privledges if nil, commander is public
+	self.playerCommander = nil -- player with commander level privledges, if nil commander is public
 	
 
 	theater:queueCommand(120, Command(
@@ -79,6 +81,56 @@ function Commander:__init(theater, side)
 		"Commander.init_persistent_missions:"..tostring(self.owner),
 		self.init_persistent_missions, self))
 end
+
+function Commander:initAICommandUnits()
+
+	local command_path = settings.server.theaterpath..utils.sep.."command"
+	self:getTemplates(command_path)
+		
+
+end
+
+function Commander:getTemplates(command_path)
+
+	Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  : "..command_path)
+	
+	for filename in lfs.dir(command_path) do
+		if filename ~= "." and filename ~= ".." and
+			filename ~= ".git" then			
+			Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  :"..filename)
+			local fattr = lfs.attributes(command_path..utils.sep..filename)			
+			
+			if fattr.mode == "directory" then
+				
+				self:getTemplates(command_path..utils.sep..filename)
+			
+			elseif(string.match(filename, ".stm$")) then -- stm file found
+			
+				Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  STM FOUND")
+				
+				stmfile = command_path..utils.sep..filename
+				dctfile = stmfile:gsub(".stm", ".dct")
+				
+				if(io.open(dctfile, "r")) then-- def file found
+					io.close(dctfile) -- close it so windows doesn't complain
+					
+					Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  OPEN SUCCESSFUL")
+					
+					AI_Template = Template.fromFile(dctfile, stmfile)						
+					
+					self.Command_Units[enum.commandUnits[AI_Template.commandUnitType]][AI_Template.commandUnitName] = AI_Template
+					
+					Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  TEMPLATE ASSIGNED")
+					
+				end
+				
+			end
+			
+		end
+	end
+
+end
+
 
 function Commander:kickCommander()
 

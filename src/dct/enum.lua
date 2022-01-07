@@ -13,7 +13,7 @@ enum.assetType = {
 	-- "Objectives" 
 	["AMMODUMP"]    = 2,
 	["FUELDUMP"]    = 3,
-	["C2"]          = 4,
+	["C2"]          = 4, -- maybe can delete if I already have AWACS?
 	["EWR"]         = 5,
 	["MISSILE"]     = 6,
 	["OCA"]         = 7,
@@ -55,10 +55,18 @@ enum.assetType = {
 	
 	-- Mission not assigned to an asset
 	["NOMISSION"] = 32, -- not actually implemented at the moment
-	["FRIENDLY"] = 33,
-	
+	["FRIENDLY"] = 33, -- not actually implemented at the moment	
+	["AI"] = 34, -- still just a concept
 }
 
+enum.commandUnitTypes = {
+	["AWACS"] = 1, --["AI"] = 36, -- still just a concept
+	["TANKER"] = 2, --["AI"] = 36, -- still just a concept
+	["CAP"] = 3, --["AI"] = 36, -- still just a concept
+	["SEAD"] = 4, --["AI"] = 36, -- still just a concept
+	["GroundAttack"] = 5, --["AI"] = 36, -- still just a concept
+	}
+	
 --[[
 -- We use a min-heap so priority is in reverse numerical order,
 -- a higher number is lower priority
