@@ -92,7 +92,7 @@ end
 
 function Vote:addVote(voter, voteVal)
 	
-	player_ucid = net.get_player_info(voter.id, 'ucid')	
+	player_ucid = net.get_player_info(voter.netId, 'ucid')	
 	
 	if(self.votes[player_ucid] ~= nil) then
 	
@@ -134,7 +134,7 @@ end
 
 function Vote:playerassetToUcid(player)
 
-	return get_player_info(vote_initiator.id, "ucid")
+	return get_player_info(vote_initiator.netId, "ucid")
 
 end
 
@@ -162,13 +162,13 @@ function Vote:callVote(voteType, vote_initiator)
 		
 	else
 		
-		Logger:debug("-- MULTI-PLAYER! --")
-		Logger:debug("-- ID! --"..vote_initiator.id)
-		ptable = net.get_player_info(vote_initiator.id)
+		Logger:debug("-- MULTI-PLAYER! -- ")
+		Logger:debug("-- ID! -- "..vote_initiator.netId)
+		ptable = net.get_player_info(vote_initiator.netId)
 		pname = ptable.name
 		pucid = ptable.ucid
 		pside = ptable.side
-		Logger:debug("-- UCID --"..pucid)
+		Logger:debug("-- UCID -- "..pucid)
 		
 	end
 	
@@ -194,7 +194,7 @@ function Vote:callVote(voteType, vote_initiator)
 	
 	if(voteType == enum.voteType["PUBLIC"]["Request Command"]) then
 		
-		self.action[enum.voteType["PUBLIC"]["Request Command"]] = Command("Vote result: request command player"..pname, self._cmdr.assignCommander, vote_initiator)
+		self.action[enum.voteType["PUBLIC"]["Request Command"]] = Command("Vote result: request command player"..pname, self._cmdr.assignCommander, self._cmdr, vote_initiator)
 		
 		self._theater:queueCommand(dct.settings.gameplay["VOTE_TIME"],
 			Command("VOTE-- vote type, player ".. voteType .. pname, self.tally, self, voteType))
@@ -207,7 +207,7 @@ function Vote:callVote(voteType, vote_initiator)
 		
 	elseif(voteType == enum.voteType["PUBLIC"]["Kick Commander"]) then
 	
-		self.action[enum.voteType["PUBLIC"]["Kick Commander"]] = Command("Vote result: request command player"..pname, self._cmdr.kickCommander)
+		self.action[enum.voteType["PUBLIC"]["Kick Commander"]] = Command("Vote result: request command player"..pname, self._cmdr.kickCommander, self._cmdr)
 		
 		self._theater:queueCommand(dct.settings.gameplay["VOTE_TIME"],
 			Command("VOTE-- vote type, player ".. voteType .. pname, self.tally, self, voteType))

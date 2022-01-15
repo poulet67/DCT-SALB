@@ -60,7 +60,8 @@ local function find_netId(name)
 		playerinfo = net.get_player_info(v)
 		
 		if(playerinfo.name == name) then
-		
+			
+			env.info("find_netID: net id found!"..playerinfo.id)
 			return playerinfo.id
 		
 		end

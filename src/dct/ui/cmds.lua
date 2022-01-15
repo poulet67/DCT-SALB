@@ -625,23 +625,7 @@ function DebuggingCmd:_execute(_ --[[time]], _ --[[cmdr]])
 	local msg
 	
 	--give user player commander role
-	
-	plist = net.get_player_list()
-
-	env.info("table dump 2")
-	
-	for k,v in pairs(plist) do
-		env.info(k)	
-		env.info(v)	
-		ptable = net.get_player_info(v)
-		for key, value in pairs(ptable) do
-			env.info(key)	
-			env.info(value)				
-		end
 		
-	end
-	
-	
 	local playerAsset = self.asset --n.b some possible lua5.1 screwyness requires this to be assigned to a local variable when passed to function
 	
 	self.theater:getCommander(self.asset.owner):assignCommander(playerAsset)

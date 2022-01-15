@@ -149,7 +149,7 @@ end
 
 function Commander:kickCommander()
 
-	trigger.action.outTextForGroup(self.getAsset(self.playerCommander).id, "You have been kicked from the player commander role", 30)
+	trigger.action.outTextForGroup(self.getAsset(self.playerCommander).groupId, "You have been kicked from the player commander role", 30)
 	self.playerCommander = {}
 	
 end
@@ -159,24 +159,23 @@ function Commander:assignCommander(playerAsset)
 	--pass = self:getAsset(playerAsset)
 	
 	--Logger:debug("-- PlayerAsset --"..playerAsset)
-	Logger:debug("-- type --"..type(playerAsset))
+	--Logger:debug("-- type --"..type(playerAsset))
 	
-	for k, v in pairs(playerAsset) do
-		Logger:debug("-- k --"..k)
-	end
+	--for k, v in pairs(playerAsset) do
+	--	Logger:debug("-- k --"..k)
+	--end
 
 	--Logger:debug("-- type --"..type(playerAsset))
 	--Logger:debug("-- PlayerAsset --"..playerAsset)
-	Logger:debug("-- id --"..playerAsset.groupId)
+	--Logger:debug("-- id --"..playerAsset.netId)
 	--Logger:debug("-- name --"..playerAsset.name)
 	--Logger:debug("-- pass --"..pass.name)
 	--Logger:debug("-- id --"..pass.groupId) -- n.b: DCT syntax is groupId (DCS is just id)
 	
-	ptable = net.get_player_info(playerAsset.groupId)
+	ptable = net.get_player_info(playerAsset.netId)
 	pucid = ptable.ucid
 	
-	self.playerCommander = {[pucid] = true} 
-	
+	self.playerCommander = {[pucid] = true}
 	
 	trigger.action.outTextForGroup(playerAsset.groupId,  "You have been assigned the player commander role", 30)
 
