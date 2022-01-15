@@ -37,6 +37,7 @@ function MobileAsset.assettypes() --note add any new assetTypes here as well as 
 		enum.assetType.NAVAL,
 		enum.assetType.CONVOY,
 		enum.assetType.MOBILE,	
+		enum.assetType.AIGROUP,	
 		
 	}
 end

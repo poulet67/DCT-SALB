@@ -11,7 +11,7 @@ local enum  = require("dct.enum")
 local vector= require("dct.libs.vector")
 local Goal  = require("dct.Goal")
 local STM   = require("dct.templates.STM")
-
+local Logger = 	dct.Logger.getByName("Template")
 --[[
 -- represents the amount of damage that can be taken before
 -- that state is no longer considered valid.
@@ -494,12 +494,17 @@ end
 
 local Template = class()
 function Template:__init(data)
+	Logger:debug("TEMPLATE INIT")	
 	assert(data and type(data) == "table", "value error: data required")
 	self.hasDeathGoals = false
+	Logger:debug("BEFORE MERGETABLES")	
 	utils.mergetables(self, utils.deepcopy(data))
+	Logger:debug("AFTER MERGETABLES")	
 	self:validate()
 	self.checklocation = nil
 	self.fromFile = nil
+	
+	Logger:debug("DONE")	
 end
 
 function Template:validate()
@@ -527,7 +532,12 @@ function Template.fromFile(dctfile, stmfile)  --region, dctfile, stmfile)
 	--assert(region ~= nil, "region is required")
 	assert(dctfile ~= nil, "dctfile is required")
 
+	Logger:debug("TEMPLATE -- IN TEMPLATES: %s")
+	
 	local template = utils.readlua(dctfile)
+	
+	Logger:debug("TEMPLATE -- LUA READ")	
+	Logger:debug(tostring(template.command_unit))	
 	
 	if template.metadata then
 		template = template.metadata
@@ -546,7 +556,7 @@ function Template.fromFile(dctfile, stmfile)  --region, dctfile, stmfile)
 	
 	if(template.desc) then
  		
-		Logger	= dct.Logger.getByName("Template")
+		
 		Logger:debug("TEMPLATE -- desc found: %s", template.desc)
 	
 	end
@@ -556,36 +566,36 @@ function Template.fromFile(dctfile, stmfile)  --region, dctfile, stmfile)
 		template.desc = nil
 		
 	end
+	-- this should be last
 	
+	if stmfile ~= nil then
+		Logger:debug("TEMPLATE -- STM TRANSFORM")	
+		template = utils.mergetables(STM.transform(utils.readlua(stmfile, "staticTemplate")), template)
+		
+		
+	end
+	
+		
 	if(template.command_unit) then
 		--should probably add a restriction to regular template names (i.e can not contain TANKER or AWACS)
 		if(template.name == nil) then
 			template.commandUnitName = template.name
 		end
-		
+			
 		template.name = template.type..dct.Theater.singleton():getcntr()
 		template.commandUnitType = template.type -- not sure if this could conflict somewhere down the line with asset type... best to just deal with it now
-		template.commandUnitName = template.data.units[1]["type"] -- command unit templates should only contain 1 unit, or multiple of the same type of unit 
+		template.objtype = "AIGROUP" -- must be done so the right type gets applied during validate
+		template.commandUnitName = template.tpldata[1].data["units"][1]["type"] -- command unit templates should only contain 1 unit, or multiple of the same type of unit 
 	
 		Logger:debug("TEMPLATE -- name found: %s", template.name)
 		Logger:debug("TEMPLATE -- commandUnitType found: %s", template.commandUnitType)
 		Logger:debug("TEMPLATE -- commandUnitName found: %s", template.commandUnitName)
 		
 	end	
-	
-	-- this should be last
-	
-	if stmfile ~= nil then
-	
-		template = utils.mergetables(STM.transform(utils.readlua(stmfile, "staticTemplate")), template)
-		
-		
-	end
-	
-	
 	--local settings = dct.settings.server
 	--utils.savetable(template, "C:\Users\ian\Saved Games\DCS\Mods\tech\DCT\debug\table.dump")
 	
+	Logger:debug("RETURN")	
 	return Template(template)
 	
 end

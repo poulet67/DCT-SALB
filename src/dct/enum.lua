@@ -51,12 +51,12 @@ enum.assetType = {
 	["WEAPON"]    = 28,
 	["SHORAD"]      = 29,
 	["PLAYERGROUP"] = 30,
-	["SPECIALFORCES"] = 31,
+	["AIGROUP"] = 31, 
+	["SPECIALFORCES"] = 32,
 	
 	-- Mission not assigned to an asset
-	["NOMISSION"] = 32, -- not actually implemented at the moment
-	["FRIENDLY"] = 33, -- not actually implemented at the moment	
-	["AI"] = 34, -- still just a concept
+	["NOMISSION"] = 33, -- not actually implemented at the moment
+	["FRIENDLY"] = 34, -- not actually implemented at the moment	
 }
 
 enum.commandUnitTypes = {

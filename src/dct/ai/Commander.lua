@@ -56,10 +56,9 @@ function Commander:__init(theater, side)
 	self.aifreq       = 15  -- 2 minutes in seconds
 	--we have known knowns and known unknowns -- Dick Cheney
 	self.known = {}
+	self.Command_Units = {} -- spawnable AI units
 	self.CommandPoints = 0
-	
-	self:initAICommandUnits()
-	
+		
 	Logger:debug("COMMANDER ==== INIT VOTE ====  :")
 	self.Vote = require("dct.systems.votes")(self, theater)
 	self.playerCommander = nil -- player with commander level privledges, if nil commander is public
@@ -80,11 +79,15 @@ function Commander:__init(theater, side)
 	theater:queueCommand(7, Command(
 		"Commander.init_persistent_missions:"..tostring(self.owner),
 		self.init_persistent_missions, self))
+	theater:queueCommand(9, Command(
+		"Commander.init_persistent_missions:"..tostring(self.owner),
+		self.initAICommandUnits, self))
 end
 
 function Commander:initAICommandUnits()
 
-	local command_path = settings.server.theaterpath..utils.sep.."command"
+	sideString = enum.coalitionMap[self.owner]
+	local command_path = settings.server.theaterpath..utils.sep.."command"..utils.sep..sideString
 	self:getTemplates(command_path)
 		
 
@@ -110,6 +113,7 @@ function Commander:getTemplates(command_path)
 				
 				stmfile = command_path..utils.sep..filename
 				dctfile = stmfile:gsub(".stm", ".dct")
+				Logger:debug("dctfile: "..dctfile)
 				
 				if(io.open(dctfile, "r")) then-- def file found
 					io.close(dctfile) -- close it so windows doesn't complain
@@ -118,7 +122,18 @@ function Commander:getTemplates(command_path)
 					
 					AI_Template = Template.fromFile(dctfile, stmfile)						
 					
-					self.Command_Units[enum.commandUnits[AI_Template.commandUnitType]][AI_Template.commandUnitName] = AI_Template
+					Logger:debug("COMMANDER ==== OUT OF TEMPLATE")
+					Logger:debug("Name")
+					Logger:debug(AI_Template.commandUnitName)
+					Logger:debug("Type")
+					Logger:debug(AI_Template.commandUnitType)
+					
+					if self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]] then					
+						table.insert(self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]], {[AI_Template.commandUnitName] = AI_Template})
+					else
+						self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]] = {}
+						table.insert(self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]], {[AI_Template.commandUnitName] = AI_Template})
+					end
 					
 					Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  TEMPLATE ASSIGNED")
 					
@@ -139,10 +154,32 @@ function Commander:kickCommander()
 	
 end
 
-function Commander:assignCommander(player)
+function Commander:assignCommander(playerAsset)
+		
+	--pass = self:getAsset(playerAsset)
+	
+	--Logger:debug("-- PlayerAsset --"..playerAsset)
+	Logger:debug("-- type --"..type(playerAsset))
+	
+	for k, v in pairs(playerAsset) do
+		Logger:debug("-- k --"..k)
+	end
 
-	trigger.action.outTextForGroup(self.getAsset(self.playerCommander).id,  "You have been assigned the player commander role", 30)
-	self.playerCommander = {} --gotta decide if I will make this work for SP as well... (?)
+	--Logger:debug("-- type --"..type(playerAsset))
+	--Logger:debug("-- PlayerAsset --"..playerAsset)
+	Logger:debug("-- id --"..playerAsset.groupId)
+	--Logger:debug("-- name --"..playerAsset.name)
+	--Logger:debug("-- pass --"..pass.name)
+	--Logger:debug("-- id --"..pass.groupId) -- n.b: DCT syntax is groupId (DCS is just id)
+	
+	ptable = net.get_player_info(playerAsset.groupId)
+	pucid = ptable.ucid
+	
+	self.playerCommander = {[pucid] = true} 
+	
+	
+	trigger.action.outTextForGroup(playerAsset.groupId,  "You have been assigned the player commander role", 30)
+
 	
 end
 

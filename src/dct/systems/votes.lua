@@ -163,6 +163,7 @@ function Vote:callVote(voteType, vote_initiator)
 	else
 		
 		Logger:debug("-- MULTI-PLAYER! --")
+		Logger:debug("-- ID! --"..vote_initiator.id)
 		ptable = net.get_player_info(vote_initiator.id)
 		pname = ptable.name
 		pucid = ptable.ucid
@@ -193,14 +194,14 @@ function Vote:callVote(voteType, vote_initiator)
 	
 	if(voteType == enum.voteType["PUBLIC"]["Request Command"]) then
 		
-		self.action[enum.voteType["PUBLIC"]["Request Command"]] = Command("Vote result: request command player"..pname, self._cmdr.assignCommander, pname)
+		self.action[enum.voteType["PUBLIC"]["Request Command"]] = Command("Vote result: request command player"..pname, self._cmdr.assignCommander, vote_initiator)
 		
 		self._theater:queueCommand(dct.settings.gameplay["VOTE_TIME"],
 			Command("VOTE-- vote type, player ".. voteType .. pname, self.tally, self, voteType))
 		
 		self.currentvote = msg..self.message[voteType]
 		self.active = true
-		trigger.outTextForCoalition(self._cmdr.owner, self.currentvote, 30) --N.B despite not _seeming_ to output to coalition during testing, it does happen. it is just immediately overwritten when using the F10 command menu
+		trigger.action.outTextForCoalition(self._cmdr.owner, self.currentvote, 30) --N.B despite not _seeming_ to output to coalition during testing, it does happen. it is just immediately overwritten when using the F10 command menu
 		
 		return "Vote Started!"
 		

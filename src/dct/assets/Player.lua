@@ -49,14 +49,44 @@ local function build_kick_flagname(name)
 	return name.."_kick"
 end
 
+local function find_netId(name)
+
+	env.info("find_netID: name is:"..name)
+	
+	ptable = net.get_player_list()
+
+	for k,v in pairs(ptable) do
+	
+		playerinfo = net.get_player_info(v)
+		
+		if(playerinfo.name == name) then
+		
+			return playerinfo.id
+		
+		end
+			
+	end
+		
+	
+	return nil
+	
+end
+
 local function on_birth(asset, event)
 	local grp = event.initiator:getGroup()
+	local netId = find_netId(event.initiator:getPlayerName())
 	local id = grp:getID()
 	if asset.groupId ~= id then
 		asset._logger:warn(
 			string.format("asset.groupId(%d) != object:getID(%d)",
 				asset.groupId, id))
 	end
+	
+	if netId == nil then
+		asset._logger:warn("No netID found for player %s", event.initiator:getPlayerName())
+	end
+	
+	asset.netId = netId
 	asset.groupId = id
 end
 

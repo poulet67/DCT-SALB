@@ -203,6 +203,22 @@ function utils.checkkeys(keys, tbl)
 	end
 end
 
+
+function utils.tprint(tbl, indent) --usefull debugging tool
+  if not indent then indent = 0 end
+  for k, v in pairs(tbl) do
+    formatting = string.rep("  ", indent) .. k .. ": "
+    if type(v) == "table" then
+      env.info(formatting, 30)
+      tprint(v, indent+1)
+    elseif type(v) == 'boolean' then
+      env.info(formatting .. tostring(v))		
+    else
+      env.info(formatting .. v, 30)
+    end
+  end
+end
+
 --[[
 -- old
 function utils.checkkeys(keys, tbl) -- LUA TABLES ARE PASS BY REFERENCE BECAUSE IT IS A BEAUTIFUL LANGUAGE

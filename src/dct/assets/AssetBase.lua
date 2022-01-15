@@ -158,6 +158,10 @@ function AssetBase:_completeinit(template) -- NOTE: Add any new template keys he
 	self.type     = template.objtype
 	
 	--local debugLogger = Logger.getByName("interp")
+
+	if template.regionname then
+		self.rgnname  = template.regionname
+	end
 	
 	if template.desc then	
 		--debugLogger:debug("ASSETbase -- desc found: %s", template.desc)
@@ -175,18 +179,18 @@ function AssetBase:_completeinit(template) -- NOTE: Add any new template keys he
 	self.regenerate = template.regenerate
 	self.ignore   = template.ignore
 	self.owner    = template.coalition
-	self.rgnname  = template.regionname
 	self.tplname  = template.name
 	self.known  = template.known
 	self.cp_reward  = template.cp_reward -- command points awarded for succesful mission
 	self.period  = template.period  
 	self.marshal_point  = template.marshal_point  
+	
 
 	
-	if norenametype[self.type] == true or self.spawnable then
+	if norenametype[self.type] == true then
 		self.name = self.tplname
 	else
-		self.name = self.rgnname.."_"..self.owner.."_"..template.name
+		self.name = "norename".."_"..self.owner.."_"..template.name
 		if template.uniquenames == true then
 			self.name = self.name.." #"..
 				dct.Theater.singleton():getcntr()
