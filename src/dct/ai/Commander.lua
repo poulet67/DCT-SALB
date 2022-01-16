@@ -172,14 +172,27 @@ function Commander:assignCommander(playerAsset)
 	--Logger:debug("-- pass --"..pass.name)
 	--Logger:debug("-- id --"..pass.groupId) -- n.b: DCT syntax is groupId (DCS is just id)
 	
-	ptable = net.get_player_info(playerAsset.netId)
-	pucid = ptable.ucid
-	
+	pucid = net.get_player_info(playerAsset.netId, 'ucid')
+
 	self.playerCommander = {[pucid] = true}
 	
 	trigger.action.outTextForGroup(playerAsset.groupId,  "You have been assigned the player commander role", 30)
 
 	
+end
+
+function Commander:isCommander(playerAsset)
+		
+	pucid = net.get_player_info(playerAsset.netId, 'ucid')
+	
+	return self.playerCommander[pucid]
+	
+end
+
+function Commander:isPublic()
+		
+	return self.playerCommander == {}
+ 	
 end
 
 function Commander:surrender()
@@ -193,8 +206,6 @@ end
 function Commander:getKnownTables(theater)
 
 	self.known = theater:getAssetMgr():getKnownTables(self.owner)
-	
-	
 	
 end
 
