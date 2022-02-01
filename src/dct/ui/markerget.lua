@@ -88,6 +88,8 @@ function MarkerGet:parse(text, initiator, idx)
 	
 		first = string.match(text, "%a+") -- returns everything up to the :
 		second = string.match(text, "%p.+") -- returns everything after the :
+		second = second:sub(2)
+		
 		
 		if(string.match(valid, "^%d%d%d%d$")) then
 			
@@ -177,10 +179,16 @@ function MarkerGet:parse(text, initiator, idx)
 				Looks for the nearest DCT asset matching Name and issues a waypoint pushtask to move it to marker position
 			
 		DISPATCH:
-		
-			based on available AI units
+			(only works for defined AI groups)
+			required:
+			#			<-------- the number selection based on the list command
+			
+			
+			eg:
 			
 			AWACS:DISPATCH
+			4  					
+			
 			TANKER:DISPATCH
 			CAP:DISPATCH
 			GROUNDATTACK:DISPATCH
@@ -189,22 +197,46 @@ function MarkerGet:parse(text, initiator, idx)
 			
 		ORBIT
 		
+			required:
+			#			<-------- the number selection based on the list command
+			
+			(only works for defined AI groups)
 			AWACS:DISPATCH
 			
+			defaults to 20,000 ft alt.
+			
+			
+			
 		RACETRACK
-		
+				
+			required:
+			#			<-------- the number selection based on the list command
+			optional:
+			HDG:#		<-------- numerical bearing (0-360) along which the racetrack major axis will be flown
+								  default: 000
+			
+			(only works for defined AI groups)
+			
+			E.G:
 			TANKER:RACETRACK
-		
+			1
+			HDG:90
+			
+			
 		LAND
-		
+						
+			required:
+			"NAME"		<----- the quick reference name given to the AI group
+			
+			
+			(only works for defined AI groups)
 			AWACS:LAND
 			TANKER:LAND
 			CAP:LAND
 			
 		LIST
-			
-			list available units of AI type
-			
+			(only works for defined AI groups)
+						
 			AWACS:LIST
 			CAP:LIST
 			TANKER:LIST
@@ -218,34 +250,104 @@ function MarkerGet:parse(text, initiator, idx)
 		
 		local playerasset = self._theater:getAssetMgr():getAsset(initiator:getGroup():getName())
 		
-		if(self._theater:getCommander(playerasset.owner):isCommander(playerasset) or self._theater:getCommander(playerasset.owner):isPublic()) then	-- check player is commander
+		Logger:debug("MarkerGet : COMMAND "..first)
+		
+		validUnitType = enum.commandUnitTypes[first] ~= nil
+		
+		Logger:debug("MarkerGet : COMMAND "..tostring(validUnitType))				
+				
+		if((self._theater:getCommander(playerasset.owner):isCommander(playerasset) or self._theater:getCommander(playerasset.owner):isPublic()) and validUnitType) then	-- check player is commander
+			
+			Logger:debug("MarkerGet : INSIDE")	
+			Logger:debug("MarkerGet : second: ".. second)	
+			Logger:debug("MarkerGet : second: ".. second)	
 			
 			remainder = string.match(text, "\n.+$") -- returns everything on the next lines			
 			
 			if(second == "MOVE") then
-						
+			
+				unitType = first
+				unitSelection = string.sub(string.match(remainder, "type:%d+"), 6) --returns number after "type:" works even with \n inside remainder
+				Logger:debug("Unit Selection: " .. unitSelection)
+				
+				local cmdr = self._theater.getCommander(playerasset.owner)
+				
+				--self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))				
+
+				
 				Logger:debug("MarkerGet : COMMAND MOVE ")
 				
 			elseif(second == "DISPATCH") then
-			
+				
+				unitType = first
+				unitSelection = string.sub(string.match(remainder, "type:%d+"), 6) --returns number after "type:" works even with \n inside remainder
+				Logger:debug("Unit Selection: " .. unitSelection)
+				
+				local cmdr = self._theater.getCommander(playerasset.owner)
+				
+				self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))				
+				
 				Logger:debug("MarkerGet : COMMAND DISPATCH ")
 			
 			elseif(second == "ORBIT") then
 			
+				unitType = first
+				unitName = string.sub(string.match(remainder, "name:.+"), 6) --returns number after "name:" works even with \n inside remainder
+				
+				Logger:debug("Unit Selection: " .. unitName)
+				
+				local cmdr = self._theater.getCommander(playerasset.owner)
+				
+				self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))				
+				
 				Logger:debug("MarkerGet : COMMAND ORBIT ")
 				
 			elseif(second == "RACETRACK") then
-						
+			
+				unitType = first
+				unitName = string.sub(string.match(remainder, "name:.+"), 6) --returns number after "name:" works even with \n inside remainder
+				
+				Logger:debug("Unit Selection: " .. unitName)
+				
+				local cmdr = self._theater.getCommander(playerasset.owner)
+				
+				self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))			
+				
 				Logger:debug("MarkerGet : COMMAND RACETRACK ")
 			
 			elseif(second == "LAND") then
-			
+						
+				unitType = first
+				unitName = string.sub(string.match(remainder, "name:.+"), 6) --returns number after "name:" works even with \n inside remainder
+				
+				Logger:debug("Unit Selection: " .. unitName)
+				
+				local cmdr = self._theater.getCommander(playerasset.owner)
+				
+				self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))			
+				
 				Logger:debug("MarkerGet : COMMAND LAND")
 				
 			
 			elseif(second == "LIST") then
-			
+							
+				unitType = first
+								
+				--Logger:debug("Unit Selection: " .. unitName)
+				
+				local cmdr = self._theater:getCommander(playerasset.owner)
+				
+				--self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.getUnitList, cmdr, unitType))			
+				
 				Logger:debug("MarkerGet : COMMAND LIST")
+			
+				local msg = cmdr:getUnitList(unitType)
+				
+				trigger.action.outTextForGroup(playerasset.groupId, msg, 30)
+				
+				
+				--self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))				
+
 				
 			elseif(				false					) then
 			

@@ -65,7 +65,7 @@ enum.commandUnitTypes = {
 	["CAP"] = 3, --["AI"] = 36, -- still just a concept
 	["SEAD"] = 4, --["AI"] = 36, -- still just a concept
 	["GroundAttack"] = 5, --["AI"] = 36, -- still just a concept
-	}
+}
 	
 --[[
 -- We use a min-heap so priority is in reverse numerical order,

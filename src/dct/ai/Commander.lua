@@ -130,9 +130,13 @@ function Commander:getTemplates(command_path)
 					
 					if self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]] then					
 						table.insert(self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]], {[AI_Template.commandUnitName] = AI_Template})
+						Logger:debug("COMMANDER ==== Command unit assinged" .. enum.commandUnitTypes[AI_Template.commandUnitType])
+						
+						
 					else
 						self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]] = {}
 						table.insert(self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]], {[AI_Template.commandUnitName] = AI_Template})
+						Logger:debug("COMMANDER ==== Command unit assinged" .. enum.commandUnitTypes[AI_Template.commandUnitType])
 					end
 					
 					Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  TEMPLATE ASSIGNED")
@@ -146,6 +150,44 @@ function Commander:getTemplates(command_path)
 
 end
 
+function Commander:getUnitList(commandUnitType)
+
+	Logger:debug("COMMANDER ==== List ===")
+	Logger:debug(commandUnitType)
+	
+	
+	for k, v in pairs(self.Command_Units) do 
+	
+		Logger:debug(k)
+	
+	end
+	
+	Logger:debug(enum.commandUnitTypes[commandUnitType])		
+	messageString = "UNITS OF TYPE "..commandUnitType.."\n"
+	
+	for k, v in ipairs(self.Command_Units[enum.commandUnitTypes[commandUnitType]]) do
+		
+		Logger:debug("COMMANDER ==== List=== " .. k)
+		
+		for key, _ in pairs(self.Command_Units[enum.commandUnitTypes[commandUnitType]][k]) do 
+		
+			messageString = messageString..k.." = "..key.."\n"
+		
+		end
+		
+	end
+		
+	return messageString
+	
+
+end
+
+function Commander:dispatch(commandUnitType, commandUnitSelection)
+
+	Logger:debug("COMMANDER ==== Dispatch===")
+	
+
+end
 
 function Commander:kickCommander()
 
@@ -183,15 +225,25 @@ end
 
 function Commander:isCommander(playerAsset)
 		
-	pucid = net.get_player_info(playerAsset.netId, 'ucid')
+	if(self.playerCommander) then
 	
-	return self.playerCommander[pucid]
+		pucid = net.get_player_info(playerAsset.netId, 'ucid')
+		
+		if(playerCommander[pucid]) then
+			
+			return true
+			
+		end
+	
+	end
+	
+	return false
 	
 end
 
 function Commander:isPublic()
 		
-	return self.playerCommander == {}
+	return self.playerCommander == nil
  	
 end
 
@@ -199,7 +251,7 @@ function Commander:surrender()
 
 	Logger:debug("COMMANDER SURRENDERED")
 	trigger.action.OutTextForCoalition(self.owner, "SURRENDERING", 30) -- make this a setting for flavor text
-	self.playerCommander = {}
+	--self.playerCommander = {}
 	
 end
 
