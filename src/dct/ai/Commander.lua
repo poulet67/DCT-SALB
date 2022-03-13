@@ -14,7 +14,8 @@ local Command    = require("dct.Command")
 local Template    = require("dct.templates.Template")
 local Logger     = dct.Logger.getByName("Commander")
 local settings    = _G.dct.settings
---local settings = _G.dct.settings.server
+local package_names = require("dct.data.package_names")
+
 
 
 
@@ -61,6 +62,8 @@ function Commander:__init(theater, side)
 		
 	Logger:debug("COMMANDER ==== INIT VOTE ====  :")
 	self.Vote = require("dct.systems.votes")(self, theater)
+	Logger:debug("COMMANDER ==== INIT DISPATCHER ====  :")
+	self.Dispatcher = require("dct.systems.dispatcher")(self, theater)
 	self.playerCommander = nil -- player with commander level privledges, if nil commander is public
 	
 
@@ -88,13 +91,54 @@ function Commander:initAICommandUnits()
 
 	sideString = enum.coalitionMap[self.owner]
 	local command_path = settings.server.theaterpath..utils.sep.."command"..utils.sep..sideString
+	
+	self.Command_Units["ACTIVE"] = {}
+	
+	for k,v in pairs(enum.commandUnitTypes) do
+	
+		self.Command_Units[k] = {}
+		self.Command_Units["ACTIVE"][k] = {}
+	
+	end	
+	
 	self:getTemplates(command_path)
+	
+
+end
+
+function Commander:process_template(template)
+
+	assert(enum.commandUnitTypes[template.commandUnitType], "Command unit template must have valid unit type")
+	
+	-- TAKE OFF BEHAVIOR --------------
+	Logger:debug("TEMPLATE DUMP")
+	utils.tprint(AI_Template) 
+	Logger:debug(AI_Template.tpldata[1]["category"])
+	Logger:debug(Group.Category["AIRPLANE"])
+	Logger:debug(tostring(settings.gameplay["COMMAND_UNIT_AIRCRAFT_START_FROM_RAMP"]))
+	
+	if(AI_Template.tpldata[1]["category"] == Group.Category["AIRPLANE"] and settings.gameplay["COMMAND_UNIT_AIRCRAFT_START_FROM_RAMP"]) then
+		Logger:debug("INSIDE")
+		template.tpldata[1]["data"]["route"]["points"][1]["type"] = "From Runway" 
+		template.tpldata[1]["data"]["route"]["points"][1]["action"] = "From Runway" --Eagle Dynamics makes software
+		
+		-- Force AI template to "take off from ramp"
+	
+	end
+	
+	-- STORE TEMPLATE -------------
+	
+	Logger:debug("TEMPLATE SAVE")
+	Logger:debug(template.display_name)
+
+		
+	table.insert(self.Command_Units[AI_Template.commandUnitType], {[template.display_name] = AI_Template})
+	Logger:debug("COMMANDER ==== Command unit assinged" .. enum.commandUnitTypes[AI_Template.commandUnitType])
 		
 
 end
 
 function Commander:getTemplates(command_path)
-
 	Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  : "..command_path)
 	
 	for filename in lfs.dir(command_path) do
@@ -120,24 +164,18 @@ function Commander:getTemplates(command_path)
 					
 					Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  OPEN SUCCESSFUL")
 					
-					AI_Template = Template.fromFile(dctfile, stmfile)						
+					AI_Template = Template.fromFile(dctfile, stmfile, true)						
 					
 					Logger:debug("COMMANDER ==== OUT OF TEMPLATE")
 					Logger:debug("Name")
-					Logger:debug(AI_Template.commandUnitName)
+					Logger:debug(AI_Template.name)
+					Logger:debug("Display name")
+					Logger:debug(AI_Template.display_name)
 					Logger:debug("Type")
 					Logger:debug(AI_Template.commandUnitType)
 					
-					if self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]] then					
-						table.insert(self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]], {[AI_Template.commandUnitName] = AI_Template})
-						Logger:debug("COMMANDER ==== Command unit assinged" .. enum.commandUnitTypes[AI_Template.commandUnitType])
-						
-						
-					else
-						self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]] = {}
-						table.insert(self.Command_Units[enum.commandUnitTypes[AI_Template.commandUnitType]], {[AI_Template.commandUnitName] = AI_Template})
-						Logger:debug("COMMANDER ==== Command unit assinged" .. enum.commandUnitTypes[AI_Template.commandUnitType])
-					end
+					self:process_template(AI_Template)
+					
 					
 					Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  TEMPLATE ASSIGNED")
 					
@@ -152,24 +190,25 @@ end
 
 function Commander:getUnitList(commandUnitType)
 
-	Logger:debug("COMMANDER ==== List ===")
-	Logger:debug(commandUnitType)
+	--Logger:debug("COMMANDER ==== List ===")
+	--Logger:debug(commandUnitType)
 	
 	
-	for k, v in pairs(self.Command_Units) do 
+	--for k, v in pairs(self.Command_Units) do 
 	
-		Logger:debug(k)
+	--	Logger:debug(k)
 	
-	end
+	--end
 	
-	Logger:debug(enum.commandUnitTypes[commandUnitType])		
+	--Logger:debug(enum.commandUnitTypes[commandUnitType])	
+	
 	messageString = "UNITS OF TYPE "..commandUnitType.."\n"
 	
-	for k, v in ipairs(self.Command_Units[enum.commandUnitTypes[commandUnitType]]) do
+	for k, v in ipairs(self.Command_Units[commandUnitType]) do
 		
 		Logger:debug("COMMANDER ==== List=== " .. k)
 		
-		for key, _ in pairs(self.Command_Units[enum.commandUnitTypes[commandUnitType]][k]) do 
+		for key, _ in pairs(self.Command_Units[commandUnitType][k]) do 
 		
 			messageString = messageString..k.." = "..key.."\n"
 		
@@ -182,11 +221,273 @@ function Commander:getUnitList(commandUnitType)
 
 end
 
-function Commander:dispatch(commandUnitType, commandUnitSelection)
+-- Spawns template commandUnitType of commandUnitSelection at nearest airbase to point with orbit task at point at altitude
+
+function Commander:dispatch(commandUnitType, commandUnitSelection, point, altitude, speed)
 
 	Logger:debug("COMMANDER ==== Dispatch===")
+	Logger:debug(next(self.Command_Units[commandUnitType][commandUnitSelection]))
 	
+	if(altitude == nil) then
+	
+		altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
+		
+	end
+	
+	asset_template = self.Command_Units[commandUnitType][commandUnitSelection][next(self.Command_Units[commandUnitType][commandUnitSelection])] -- Should only ever be 1 entry in this table, next will bring us to it anyhow
+	tpl = utils.deepcopy(asset_template)	
+	
+	--can queucommand this to break up execution time
+	
+	self.Dispatcher:dispatchFixedWing(tpl, point, altitude, speed) --N.B this method will modify fields in tpl
+	
+	Logger:debug("COMMANDER: -- TEMPLATE DUMP")
+	utils.tprint(tpl) 
+	
+	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign] = {}
+	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["fullname"] = tpl.name
+	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["tasks"] = tpl.name
+	
+	asset_manager = require("dct.Theater").singleton():getAssetMgr()
+	asset = asset_manager:factory(tpl.objtype)(tpl)
+	asset_manager:add(asset)	
+	asset:generate(assetmgr, self)
+	asset:spawn()
+	
+	dspch_msg = dctutils.printTabular("DISPATCHING "..commandUnitType.." GROUP: "..tpl.dispatch_callsign, 65, "-")
+	
+	trigger.action.outTextForCoalition(self.owner, dspch_msg, 45)
+	
+end
 
+function Commander:move_command(commandUnitType, name, point, altitude, speed)
+
+	Logger:debug("COMMANDER: -- move_command")
+	
+	fullname = self.Command_Units["ACTIVE"][commandUnitType][name]["fullname"]
+		
+	if(fullname) then
+	
+		Logger:debug(fullname)
+		CU_Group = Group.getByName(fullname)
+		
+		if(CU_Group) then
+			
+			
+			if(altitude == nil) then
+				
+				altitude = CU_Group:getUnit(1):getPoint().y		
+				Logger:debug("ALTITUDE: "..altitude)		
+
+			end		
+			
+			if(speed == nil) then
+			
+				speed = dctutils.getAirspeed(CU_Group:getUnit(1):getVelocity())
+				Logger:debug("SPEED: "..speed)
+				
+			end
+			
+			myMission = self.Dispatcher:moveFixedWing(commandUnitType, point, altitude, speed)
+			CU_Group:getController():setTask(myMission) 		
+			--ROE ------------
+			CU_Group:getController():setOption(AI.Option.Air.id.ROE, 0) --Without this any CAP will not engage
+			CU_Group:getController():setOption(AI.Option.Ground.id.ROE, 0) 
+			CU_Group:getController():setOption(AI.Option.Naval.id.ROE, 0) 
+			CU_Group:getController():setOption(AI.Option.Air.id.REACTION_ON_THREAT, 3) -- might want to allow more flexibility here or set based on CU type
+			CU_Group:getController():setOption(AI.Option.Ground.id.REACTION_ON_THREAT, 3) -- might want to allow more flexibility here or set based on CU type
+			CU_Group:getController():setOption(AI.Option.Naval.id.REACTION_ON_THREAT, 3) -- might want to allow more flexibility here or set based on CU type
+		
+		else
+		
+		Logger:debug("COMMANDER: -- move_command: invalid name")
+		
+		end
+	
+	else
+	
+		Logger:debug("COMMANDER: -- move_command: invalid name")
+		
+	end
+	
+end
+
+function Commander:orbit_command(commandUnitType, name, point, altitude, speed)
+
+	Logger:debug("COMMANDER: -- orbit_command")
+	
+	fullname = self.Command_Units["ACTIVE"][commandUnitType][name]["fullname"]
+	Logger:debug(fullname)
+	
+	if(fullname) then
+	
+		CU_Group = Group.getByName(fullname)
+		
+		if(CU_Group) then
+			
+			if(altitude == nil) then
+			
+				altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
+				Logger:debug(altitude)
+			end		
+			
+			if(speed == nil) then
+			
+				speed = settings.gameplay["COMMAND_UNIT_DEFAULT_SPEED"]
+				Logger:debug(speed)
+				
+			end
+
+			myMission = dctutils.fixedWing.defaultMissionTask()		
+			myMission.params.route.points[1]["x"] = point.x
+			myMission.params.route.points[1]["y"] = point.z
+			myMission.params.route.points[1]["alt"] = altitude
+			myMission.params.route.points[1]["alt_type"] = "BARO"
+			myMission.params.route.points[1]["speed"] = speed
+			myMission.params.route.points[1]["type"] = "Turning Point"
+			myMission.params.route.points[1]["action"] = "Turning Point"
+			myMission.params.route.points[1]["task"] = dctutils.fixedWing.DefaultTask(commandUnitType)
+			
+			table.insert(myMission.params.route.points[1]["task"]["params"]["tasks"], dctutils.fixedWing.OrbitTask())
+			tasknum = myMission.params.route.points[1]["task"]["params"]["tasks"]
+			
+			myMission.params.route.points[1]["task"]["params"]["tasks"][#tasknum]["number"] = #tasknum		
+			myMission.params.route.points[1]["task"]["params"]["tasks"][#tasknum]["altitude"] = altitude
+			myMission.params.route.points[1]["task"]["params"]["tasks"][#tasknum]["speed"] = speed
+			
+			Logger:debug("MISSION DUMP")
+			utils.tprint(myMission)
+			
+			mytask = CU_Group:getController():setTask(myMission) 
+			CU_Group:getController():setOption(AI.Option.Air.id.ROE, 0) --Without this any CAP will not engage
+			CU_Group:getController():setOption(AI.Option.Air.id.REACTION_ON_THREAT, 0) -- might want to allow more flexibility here
+		else
+		
+		Logger:debug("COMMANDER: -- move_command: invalid name")
+		
+		end
+		
+	else
+		Logger:debug("COMMANDER: -- move_command: invalid name")
+	end
+	
+end
+
+function Commander:racetrack_command(commandUnitType, name, point, altitude, speed, heading, leg)
+
+	Logger:debug("COMMANDER: -- racetrack_command")
+	
+	fullname = self.Command_Units["ACTIVE"][commandUnitType][name]["fullname"]
+	Logger:debug(fullname)
+	
+	if(fullname and point and altitude and speed and heading and leg) then
+	
+		CU_Group = Group.getByName(fullname)
+		
+		if(CU_Group) then
+		
+			-- Race-track requires a 2nd waypoint after the one with the racetrack task
+			-- in order to compute where this will be we have to do some trigonometry
+			-- with the given heading and leg length.
+			
+			local angle = math.rad(heading)		
+			
+			--unit vectors of heading (x,y in mathematical terms, x, z in DCS terms)
+			
+			point2 = {["x"] = math.cos(angle)*leg + point.x,
+					  ["y"] = math.sin(angle)*leg + point.z,
+					 }
+			
+			
+
+			myMission = dctutils.fixedWing.defaultMissionTask()
+			myMission.params.route.points[1]["x"] = point.x
+			myMission.params.route.points[1]["y"] = point.z
+			myMission.params.route.points[1]["alt"] = altitude
+			myMission.params.route.points[1]["alt_type"] = "BARO"
+			myMission.params.route.points[1]["speed"] = speed
+			myMission.params.route.points[1]["type"] = "Turning Point"
+			myMission.params.route.points[1]["action"] = "Turning Point"
+			myMission.params.route.points[1]["task"] = dctutils.fixedWing.DefaultTask(commandUnitType)
+
+			tasknum = myMission.params.route.points[1]["task"]["params"]["tasks"]
+			
+			myMission.params.route.points[1]["task"]["params"]["tasks"][#tasknum+1] = dctutils.fixedWing.RacetrackTask(altitude, speed)
+
+			
+			myMission.params.route.points[2] = {}
+			myMission.params.route.points[2]["x"] = point2.x
+			myMission.params.route.points[2]["y"] = point2.y
+			myMission.params.route.points[2]["alt"] = altitude
+			myMission.params.route.points[2]["alt_type"] = "BARO"
+			myMission.params.route.points[2]["speed"] = speed
+			myMission.params.route.points[2]["type"] = "Turning Point"
+			myMission.params.route.points[2]["action"] = "Turning Point"
+			--if(commandUnitType == "Tanker") then
+			myMission.params.route.points[2]["task"] = dctutils.fixedWing.EmptyTask()
+			--else
+			--myMission.params.route.points[2]["task"] = dctutils.fixedWing.DefaultTask(commandUnitType)
+			--end
+			--myMission.params.route.points[2]["task"]["params"]["tasks"][2] = nil; --don't need this part for 2nd task (kind of tanker specific, but will leave it be for now)
+
+			Logger:debug("MISSION DUMP")
+			utils.tprint(myMission)
+			
+			mytask = CU_Group:getController():setTask(myMission) 
+			
+		else
+		
+		Logger:debug("COMMANDER: -- move_command: invalid name")
+		
+		end
+		
+	else
+		Logger:debug("COMMANDER: -- move_command: invalid name")
+	end
+	
+end
+
+function Commander:landing_command(commandUnitType, name, point)
+
+	Logger:debug("COMMANDER: -- landing_command")
+	
+	fullname = self.Command_Units["ACTIVE"][commandUnitType][name]["fullname"]
+	Logger:debug(fullname)
+	
+	if(fullname) then
+	
+		CU_Group = Group.getByName(fullname)		
+
+		if(CU_Group) then
+		
+		myMission = dctutils.fixedWing.defaultMissionTask()		
+		myMission.params.route.points[1]["x"] = point.x
+		myMission.params.route.points[1]["y"] = point.z
+		myMission.params.route.points[1]["type"] = "Land"
+		myMission.params.route.points[1]["action"] = "Landing"
+		myMission.params.route.points[1]["task"] = {} --dctutils.fixedWing.DefaultTask(commandUnitType) --might need an empty task
+		
+		nearest_AB = dctutils.getNearestAirbase(point, self.owner)			
+		myMission.params.route.points[1]["airdromeId"] = Airbase.getID(nearest_AB)
+		
+		Logger:debug("MISSION DUMP")
+		utils.tprint(myMission)
+		
+		mytask = CU_Group:getController():setTask(myMission) --WORK REEEE		
+		CU_Group:getController():setOption(AI.Option.Air.id.REACTION_ON_THREAT, 0) -- Go directing home, do not stop
+		CU_Group:getController():setOption(AI.Option.Ground.id.REACTION_ON_THREAT, 0) -- Go directing home, do not stop
+		CU_Group:getController():setOption(AI.Option.Naval.id.REACTION_ON_THREAT, 0) -- Go directing home, do not stop
+		
+		else
+		
+		Logger:debug("COMMANDER: -- move_command: invalid name")
+		
+		end
+		
+	else
+		Logger:debug("COMMANDER: -- move_command: invalid name")
+	end
+	
 end
 
 function Commander:kickCommander()
@@ -242,15 +543,15 @@ function Commander:isCommander(playerAsset)
 end
 
 function Commander:isPublic()
-		
-	return self.playerCommander == nil
+	
+	return settings.gameplay["COMMANDER_PUBLIC_BY_DEFAULT"] and self.playerCommander == nil
  	
 end
 
 function Commander:surrender()
 
 	Logger:debug("COMMANDER SURRENDERED")
-	trigger.action.OutTextForCoalition(self.owner, "SURRENDERING", 30) -- make this a setting for flavor text
+	trigger.action.outTextForCoalition(self.owner, "SURRENDERING", 30) -- make this a setting for flavor text
 	--self.playerCommander = {}
 	
 end

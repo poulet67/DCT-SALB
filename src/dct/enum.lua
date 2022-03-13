@@ -60,11 +60,13 @@ enum.assetType = {
 }
 
 enum.commandUnitTypes = {
-	["AWACS"] = 1, --["AI"] = 36, -- still just a concept
-	["TANKER"] = 2, --["AI"] = 36, -- still just a concept
-	["CAP"] = 3, --["AI"] = 36, -- still just a concept
+	["AWACS"] = 1, 
+	["TANKER"] = 2, 
+	["CAP"] = 3,
 	["SEAD"] = 4, --["AI"] = 36, -- still just a concept
-	["GroundAttack"] = 5, --["AI"] = 36, -- still just a concept
+	["STRIKE"] = 5, --["AI"] = 36, -- still just a concept
+	["CAS"] = 6, --["AI"] = 36, -- still just a concept
+	["ANTISHIP"] = 7, --["AI"] = 36, -- still just a concept
 }
 	
 --[[

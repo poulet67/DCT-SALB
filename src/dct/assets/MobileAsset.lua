@@ -253,10 +253,13 @@ local function removeDCTKeys(grp)
 		removekeys(unit, dctkeys)
 		
 	end
+	
 	return g
 end
 
 local function __spawn(grp)
+
+	env.info("----MOBILE ASSET------ SPAWN: ")
 	
 	coalition.addGroup(grp.countryid, grp.category, grp.data)
 

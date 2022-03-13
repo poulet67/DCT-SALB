@@ -219,7 +219,7 @@ function Theater:delayedInit()
 
 	for _, asset in self:getAssetMgr():iterate() do 
 		if asset.type ~= enum.assetType.PLAYERGROUP and not asset:isSpawned() then
-			asset:spawn() -- DCT does not actually add the
+			asset:spawn()
 		end
 	end
 	

@@ -12,6 +12,7 @@ local vector= require("dct.libs.vector")
 local Goal  = require("dct.Goal")
 local STM   = require("dct.templates.STM")
 local Logger = 	dct.Logger.getByName("Template")
+local settings    = _G.dct.settings
 --[[
 -- represents the amount of damage that can be taken before
 -- that state is no longer considered valid.
@@ -528,7 +529,7 @@ function Template:copyData()
 	return copy
 end
 
-function Template.fromFile(dctfile, stmfile)  --region, dctfile, stmfile)
+function Template.fromFile(dctfile, stmfile, command_unit)  --region, dctfile, stmfile)
 	--assert(region ~= nil, "region is required")
 	assert(dctfile ~= nil, "dctfile is required")
 
@@ -537,7 +538,7 @@ function Template.fromFile(dctfile, stmfile)  --region, dctfile, stmfile)
 	local template = utils.readlua(dctfile)
 	
 	Logger:debug("TEMPLATE -- LUA READ")	
-	Logger:debug(tostring(template.command_unit))	
+	Logger:debug(tostring(command_unit))	
 	
 	if template.metadata then
 		template = template.metadata
@@ -554,9 +555,7 @@ function Template.fromFile(dctfile, stmfile)  --region, dctfile, stmfile)
 	
 	template.path = dctfile
 	
-	if(template.desc) then
- 		
-		
+	if(template.desc) then		
 		Logger:debug("TEMPLATE -- desc found: %s", template.desc)
 	
 	end
@@ -572,24 +571,22 @@ function Template.fromFile(dctfile, stmfile)  --region, dctfile, stmfile)
 		Logger:debug("TEMPLATE -- STM TRANSFORM")	
 		template = utils.mergetables(STM.transform(utils.readlua(stmfile, "staticTemplate")), template)
 		
-		
 	end
 	
 		
-	if(template.command_unit) then
+	if(command_unit) then
 		--should probably add a restriction to regular template names (i.e can not contain TANKER or AWACS)
-		if(template.name == nil) then
-			template.commandUnitName = template.name
-		end
-			
-		template.name = template.type..dct.Theater.singleton():getcntr()
-		template.commandUnitType = template.type -- not sure if this could conflict somewhere down the line with asset type... best to just deal with it now
+		template.commandUnitType = template.CU_Type
+		if(template.display_name == nil) then
+			template.display_name = template.tpldata[1].data["units"][1]["type"] -- A default name for display purposes
+		end		
+
+		template.name = template.commandUnitType..dct.Theater.singleton():getcntr() -- just for uniqueness, we will rename during dispatch anyhow
 		template.objtype = "AIGROUP" -- must be done so the right type gets applied during validate
-		template.commandUnitName = template.tpldata[1].data["units"][1]["type"] -- command unit templates should only contain 1 unit, or multiple of the same type of unit 
+		
 	
 		Logger:debug("TEMPLATE -- name found: %s", template.name)
 		Logger:debug("TEMPLATE -- commandUnitType found: %s", template.commandUnitType)
-		Logger:debug("TEMPLATE -- commandUnitName found: %s", template.commandUnitName)
 		
 	end	
 	--local settings = dct.settings.server

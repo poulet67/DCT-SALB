@@ -25,6 +25,7 @@ local gameplay = {
 ["RECOND_RADIUS_DETECTION"] = 2000, --meters
 ["RECON_MISSION_ALTITUDE"] = 2000, --~5k feet
 ["RECON_MISSION_ALLOWABLE_ALTITUDE_ERROR"] = 200, --m
+["RECON_MISSION_ACTIVATION_TIME"] = 60, --s
 
 ["RECON_MISSION_RANGE"] = 2000, --how far away from the node can they get
 ["RECON_MISSION_DETECTION"] = 12000, 
@@ -44,10 +45,17 @@ local gameplay = {
 --inventories
 ["AIRBASE_INVENTORY_TRANSFER_ON_CAPTURE"] = false,
 
+--command units
+["COMMAND_UNIT_AIRCRAFT_START_FROM_RAMP"] = true,
+["COMMAND_UNIT_DEFAULT_ALTITUDE"] = 6000, --m (20 000 ft)
+["COMMAND_UNIT_DEFAULT_SPEED"] = 123.46, --m/s
+--
+["COMMANDER_PUBLIC_BY_DEFAULT"] = true,
+
 
 --Command points
 ["CP_RED_START"] = 100000,
-["CP_BLUE_START"] = 67,
+["CP_BLUE_START"] = 67, --lul
 ["CP_COST_MORE_FOBS"] = 5000,
 ["CP_COST_INTEL_REPORT"] = 5000,
 ["CP_COST_TARGET_PRECISION"] = 5000,

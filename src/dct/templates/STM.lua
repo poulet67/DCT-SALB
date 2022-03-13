@@ -120,11 +120,123 @@ end
 --            # group definition
 --            dct_deathgoal = goalspec
 --    }}}
+
+-- And here is an actualy useful thing, a real table dump: 
 --]]
+--[[
+2022-02-10 05:41:32.144 INFO    SCRIPTING: path: C:\Users\\Saved Games\DCS\Mods\tech\DCT\theater\command\BLUE\aircraft\E2DAWACS.dct
+2022-02-10 05:41:32.144 INFO    SCRIPTING: hasDeathGoals: false
+2022-02-10 05:41:32.144 INFO    SCRIPTING: spawnalways: false
+2022-02-10 05:41:32.144 INFO    SCRIPTING: theater: Caucasus
+2022-02-10 05:41:32.144 INFO    SCRIPTING: buildings: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING: next_stage: false
+2022-02-10 05:41:32.144 INFO    SCRIPTING: known: false
+2022-02-10 05:41:32.144 INFO    SCRIPTING: CU_Type: AWACS
+2022-02-10 05:41:32.144 INFO    SCRIPTING: regenerate: false
+2022-02-10 05:41:32.144 INFO    SCRIPTING: super: FUNCTION: super
+2022-02-10 05:41:32.144 INFO    SCRIPTING: commandUnitType: AWACS
+2022-02-10 05:41:32.144 INFO    SCRIPTING: ignore: false
+2022-02-10 05:41:32.144 INFO    SCRIPTING: cp_reward: 500
+2022-02-10 05:41:32.144 INFO    SCRIPTING: commandUnitName: E-2C
+2022-02-10 05:41:32.144 INFO    SCRIPTING: isa: FUNCTION: isa
+2022-02-10 05:41:32.144 INFO    SCRIPTING: spawnable: false
+2022-02-10 05:41:32.144 INFO    SCRIPTING: intel: 1
+2022-02-10 05:41:32.144 INFO    SCRIPTING: codename: default codename
+2022-02-10 05:41:32.144 INFO    SCRIPTING: copyData: FUNCTION: copyData
+2022-02-10 05:41:32.144 INFO    SCRIPTING: uniquenames: false
+2022-02-10 05:41:32.144 INFO    SCRIPTING: validate: FUNCTION: validate
+2022-02-10 05:41:32.144 INFO    SCRIPTING: desc: An E2-D AWACS on Cacausus map
+2022-02-10 05:41:32.144 INFO    SCRIPTING: coalition: 2
+2022-02-10 05:41:32.144 INFO    SCRIPTING: objtype: 31
+2022-02-10 05:41:32.144 INFO    SCRIPTING: name: AWACS1001
+2022-02-10 05:41:32.144 INFO    SCRIPTING: tpldata: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:   1: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:     countryid: 2
+2022-02-10 05:41:32.144 INFO    SCRIPTING:     data: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       taskSelected: true
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       modulation: 0
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       tasks: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       frequency: 251
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       hidden: false
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       units: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:         1: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           alt: 2000
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           type: E-2C
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           psi: 0
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           livery_id: E-2D Demo
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           onboard_num: 010
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           skill: High
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           y: 79435.356200528
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           x: -270026.38522427
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           name: AWACS1001 2 AIRPLANE 1-1
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           payload: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             pylons: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             fuel: 5624
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             flare: 60
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             chaff: 120
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             gun: 100
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           speed: 133.61111111111
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           callsign: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             1: 1
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             2: 1
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             3: 1
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             name: Overlord11
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           heading: 1.6222224783951
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           alt_type: BARO
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       y: 79435.356200528
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       x: -270026.38522427
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       name: AWACS1001 2 AIRPLANE 1
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       communication: true
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       route: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:         points: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:           1: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             alt: 2000
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             type: Turning Point
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             ETA: 0
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             alt_type: BARO
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             y: 79435.356200528
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             x: -270026.38522427
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             formation_template: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             speed_locked: true
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             speed: 133.61111111111
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             ETA_locked: true
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             task: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:               id: ComboTask
+2022-02-10 05:41:32.144 INFO    SCRIPTING:               params: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                 tasks: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                   1: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                     number: 1
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                     auto: true
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                     id: AWACS
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                     enabled: true
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                     params: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                   2: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                     number: 2
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                     auto: true
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                     id: WrappedAction
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                     enabled: true
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                     params: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                       action: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                         id: EPLRS
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                         params: 
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                           value: true
+2022-02-10 05:41:32.144 INFO    SCRIPTING:                           groupId: 1
+2022-02-10 05:41:32.144 INFO    SCRIPTING:             action: Turning Point
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       start_time: 0
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       task: AWACS
+2022-02-10 05:41:32.144 INFO    SCRIPTING:       uncontrolled: false
+2022-02-10 05:41:32.144 INFO    SCRIPTING:     category: 0
+2022-02-10 05:41:32.144 INFO    SCRIPTING: __init: FUNCTION: __init
+2022-02-10 05:41:32.144 INFO    SCRIPTING: namedCU: true
+2022-02-10 05:41:32.144 INFO    SCRIPTING: stage: 1
+--]]
+
 
 -- This is the most spaghetti piece of spaghetti made to unspaghetti spaghetti
 -- This is the jenga piece that will bring the whole tower down 
 -- push and prod at your own risk
+
+
 
 function STM.transform(stmdata, file)
 	local template   = {}

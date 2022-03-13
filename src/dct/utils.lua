@@ -16,6 +16,32 @@ local enemymap = {
 	[coalition.side.RED]     = coalition.side.BLUE,
 }
 
+local defaultwaypoint = {
+
+	["alt"] = 1000,
+	["action"] = "Turning Point",
+	["alt_type"] = "BARO",
+	["speed"] = 138.88888888889,
+	["task"] = 
+	{
+		["id"] = "ComboTask",
+		["params"] = 
+		{
+			["tasks"] = 
+			{
+			}, -- end of ["tasks"]
+		}, -- end of ["params"]
+	}, -- end of ["task"]
+	["type"] = "Turning Point",
+	["ETA"] = 0,
+	["ETA_locked"] = false,
+	["y"] = 0,
+	["x"] = 0,
+	["formation_template"] = "",
+	["speed_locked"] = true,
+                                        
+}
+
 utils.INTELMAX = 5
 
 function utils.getenemy(side)
@@ -249,6 +275,108 @@ function utils.getHeading(velocity_vector)
 	return heading
 end
 
+function utils.getAirspeed(velocity_vector)
+
+	sum = velocity_vector.x^2 + velocity_vector.y^2 + velocity_vector.z^2
+	value = math.sqrt(sum)
+	
+	env.info("AIRSPEED: "..value)
+  
+	return value
+end
+
+
+
+function utils.convertSpeed(value, from, to)
+
+	local SpeedConversionTable = {
+
+		["ms"] = {
+
+		["kt"] = 1.94384,
+		["kn"] = 1.94384,
+		["kph"] = 3.6,
+		},
+
+		["kph"] = {
+
+		["kt"] = 0.539957,
+		["kn"] = 0.539957,
+		["ms"] = 0.277778,
+		},
+
+		["kt"] = {
+
+		["kph"] = 1.852,
+		["ms"] = 0.514444,
+		},		
+		["kn"] = {
+
+		["kph"] = 1.852,
+		["ms"] = 0.514444,
+		},
+
+	}
+	
+	
+	
+	if SpeedConversionTable[from] and SpeedConversionTable[from][to] then		
+		
+		factor = SpeedConversionTable[from][to]
+		return value*factor
+				
+	else 
+	
+		return nil
+	
+	end
+
+end
+
+function utils.convertDistance(value, from, to)
+
+	local DistanceConversionTable = {
+
+		["m"] = {
+			["ft"] = 3.28084,
+			["nm"] = 0.000539957,
+			["km"] = 0.001,
+		},
+
+		["ft"] = {
+			["m"] = 0.3048,
+			["nm"] = 0.000164579,
+			["km"] = 0.0003048,
+		},
+
+		["km"] = {
+			["m"] = 1000,
+			["ft"] = 3280.84,
+			["nm"] = 0.539957,
+		},
+
+		["nm"] = {
+			["km"] = 0.0003048,
+			["m"] = 1000,
+			["ft"] = 6076.12,
+		}
+	}
+		
+	if DistanceConversionTable[from] and DistanceConversionTable[from][to] then
+
+		factor = DistanceConversionTable[from][to]
+		
+		return value*factor
+		
+	else 
+	
+		return nil
+	
+	end
+	
+end
+
+
 function utils.trimTypeName(typename)
 	return string.match(typename, "[^.]-$")
 end
@@ -416,4 +544,659 @@ function utils.buildevent.impact(wpn)
 	return event
 end
 
+function utils.getNearestAirbaseId(fromPoint, side) --Gets the closest airbase to a set of x y z coordinates	
+	
+	local AB_table = coalition.getAirbases(side)
+	
+	local lowestValue = math.huge
+
+	for i = 1, #AB_table do		
+		ABpoint = Airbase.getPoint(AB_table[i])
+		
+		--trigger.action.outText("\nXcur: "..x_current.."\nYcur:"..y_current.."\nZcur: "..x_current.."\nYcur:".., 120)
+	
+		diffx = fromPoint.x - ABpoint.x
+		diffy = fromPoint.y - ABpoint.y
+		diffz = fromPoint.z - ABpoint.z
+		
+		--need to clear out any "helipad only" airbases, like destroyers/CC/etc	
+		
+		env.info(Airbase.getName(AB_table[index]))		
+		
+		if(Airbase:hasAttribute("Aircraft Carrier") or Airbase:hasAttribute("Airfields")) then -- aircraft carriers and airfields only
+		-- N.B: This will be much more efficient if I write every airbase as a DCT object.
+		
+			env.info("inside")
+			env.info(Airbase.getName(AB_table[index]))		
+			mag = diffx^2 + diffy^2 + diffz^2 -- don't even need to do sqrt
+		
+			if(mag < lowestValue) then
+			
+				lowestValue = mag
+				index = i
+						
+			end		
+			
+		end
+		
+	end
+	
+	AB_ID = Airbase.getID(AB_table[index])
+	
+	env.info("AIRBASE")
+	env.info(index)
+	env.info(AB_ID)
+	env.info(Airbase.getName(AB_table[index]))
+	
+	return AB_ID
+	
+end
+
+function utils.getNearestAirbase(fromPoint, side) --Gets the closest airbase to a set of x y z coordinates	
+	
+	local AB_table = coalition.getAirbases(side)
+	
+	local lowestValue = math.huge
+
+	for i = 1, #AB_table do		
+		AB = AB_table[i]
+		ABpoint = Airbase.getPoint(AB)
+		
+		--trigger.action.outText("\nXcur: "..x_current.."\nYcur:"..y_current.."\nZcur: "..x_current.."\nYcur:".., 120)
+	
+		diffx = fromPoint.x - ABpoint.x
+		diffy = fromPoint.y - ABpoint.y
+		diffz = fromPoint.z - ABpoint.z
+		
+		--need to clear out any "helipad only" airbases, like destroyers/CC/etc	
+		
+		env.info(Airbase.getName(AB))	
+		env.info(Airbase.getName(AB))		
+		
+		if(AB:hasAttribute("AircraftCarrier") or AB:hasAttribute("Airfields")) then -- aircraft carriers and airfields only
+		-- N.B: This will be much more efficient if I write every airbase as a DCT object.
+		
+			env.info("inside")
+			env.info(AB:getName())		
+			mag = diffx^2 + diffy^2 + diffz^2 -- don't even need to do sqrt
+		
+			if(mag < lowestValue) then
+			
+				lowestValue = mag
+				index = i
+						
+			end		
+			
+		end
+		
+	end
+	
+	AB = AB_table[index]
+	
+	AB_ID = AB:getID()
+	
+	env.info("AIRBASE")
+	env.info(index)
+	env.info(AB_ID)
+	env.info(AB:getName())
+	
+	return AB
+	
+end
+
+function utils.getNearestHelipadId(fromPoint, side) --Gets the closest Helipad to a set of x y z coordinates	
+
+	
+end
+
+function utils.getAirbaseIdFromString(AB_String, side) --Gets the closest airbase to a set of x y z coordinates
+	
+	--[[
+	local AB_table = coalition.getAirbases(side)
+	
+	local lowestValue = math.huge
+
+	for i = 1, #AB_table do		
+		ABpoint = Airbase.getPoint(AB_table[i])
+		
+		--trigger.action.outText("\nXcur: "..x_current.."\nYcur:"..y_current.."\nZcur: "..x_current.."\nYcur:".., 120)
+	
+		diffx = fromPoint.x - ABpoint.x
+		diffy = fromPoint.y - ABpoint.y
+		diffz = fromPoint.z - ABpoint.z
+		
+		mag = diffx^2 + diffy^2 + diffz^2 -- don't even need to do sqrt
+		
+		if(mag < lowestValue) then
+			
+			lowestValue = mag
+			index = i
+						
+		end		
+
+	end
+	
+	AB_ID = Airbase.getID(AB_table[index])
+	
+	env.info("AIRBASE")
+	env.info(index)
+	env.info(AB_ID)
+	env.info(Airbase.getName(AB_table[index]))
+	
+	return AB_ID
+	]]--
+end
+
+
+-- Below functions have been taken from MIST: Mission Scripting Tools
+--------------------------------------------------------------------------
+--[[
+
+
+888b     d888 8888888 .d8888b. 88888888888 
+8888b   d8888   888  d88P  Y88b    888     
+88888b.d88888   888  Y88b.         888     
+888Y88888P888   888   "Y888b.      888     
+888 Y888P 888   888      "Y88b.    888     
+888  Y8P  888   888        "888    888     
+888   "   888   888  Y88b  d88P    888     
+888       888 8888888 "Y8888P"     888     
+                                           
+--
+--
+-- see:
+-- https://github.com/mrSkortch/MissionScriptingTools
+-- thanks Grimes/MrSkortch
+]]
+
+utils.ground = {}
+utils.fixedWing = {}
+utils.heli = {}
+
+function utils.ground.buildWP(point, overRideForm, overRideSpeed)
+
+	local wp = {}
+	wp.x = point.x
+
+	if point.z then
+		wp.y = point.z
+	else
+		wp.y = point.y
+	end
+	local form, speed
+
+	if point.speed and not overRideSpeed then
+		wp.speed = point.speed
+	elseif type(overRideSpeed) == 'number' then
+		wp.speed = overRideSpeed
+	else
+		wp.speed = mist.utils.kmphToMps(20)
+	end
+
+	if point.form and not overRideForm then
+		form = point.form
+	else
+		form = overRideForm
+	end
+
+	if not form then
+		wp.action = 'Cone'
+	else
+		form = string.lower(form)
+		if form == 'off_road' or form == 'off road' then
+			wp.action = 'Off Road'
+		elseif form == 'on_road' or form == 'on road' then
+			wp.action = 'On Road'
+		elseif form == 'rank' or form == 'line_abrest' or form == 'line abrest' or form == 'lineabrest'then
+			wp.action = 'Rank'
+		elseif form == 'cone' then
+			wp.action = 'Cone'
+		elseif form == 'diamond' then
+			wp.action = 'Diamond'
+		elseif form == 'vee' then
+			wp.action = 'Vee'
+		elseif form == 'echelon_left' or form == 'echelon left' or form == 'echelonl' then
+			wp.action = 'EchelonL'
+		elseif form == 'echelon_right' or form == 'echelon right' or form == 'echelonr' then
+			wp.action = 'EchelonR'
+		else
+			wp.action = 'Cone' -- if nothing matched
+		end
+	end
+
+	wp.type = 'Turning Point'
+
+	return wp
+
+end
+
+function utils.fixedWing.buildWP(point, side, WPtype, speed, alt, altType)
+
+	local wp = {}
+	wp.x = point.x
+
+	if point.z then
+		wp.y = point.z
+	else
+		wp.y = point.y
+	end
+
+	if alt and type(alt) == 'number' then
+		wp.alt = alt
+	else
+		wp.alt = 2000
+	end
+
+	if altType then
+		altType = string.lower(altType)
+		if altType == 'radio' or altType == 'agl' then
+			wp.alt_type = 'RADIO'
+		elseif altType == 'baro' or altType == 'asl' then
+			wp.alt_type = 'BARO'
+		end
+	else
+		wp.alt_type = 'RADIO'
+	end
+
+	if point.speed then
+		speed = point.speed
+	end
+
+	if point.type then
+		WPtype = point.type
+	end
+
+	if not speed then
+		wp.speed = mist.utils.kmphToMps(400)
+	else
+		wp.speed = speed
+	end
+
+	if not WPtype then
+		wp.action =	'Turning Point'
+	else
+		WPtype = string.lower(WPtype)
+		if WPtype == 'flyover' or WPtype == 'fly over' or WPtype == 'fly_over' then
+			wp.action =	'Fly Over Point'
+			wp.type = 'Turning Point'
+		elseif WPtype == 'turningpoint' or WPtype == 'turning point' or WPtype == 'turning_point' then
+			wp.action =	'Turning Point'
+			wp.type = 'Turning Point'
+		elseif WPtype == 'takeoff' or WPtype == 'from ramp' or WPtype == 'fromramp' then
+			wp.action =	'From Runway'
+			wp.type = 'TakeOff'
+			nearest_AB = utils.getNearestAirbase(point, side)
+			
+			if(nearest_AB:hasAttribute("AircraftCarrier")) then
+				
+				wp.linkUnit = Airbase.getID(nearest_AB)
+				wp.helipadId = Airbase.getID(nearest_AB)
+				
+			else
+			
+				wp.airdromeId = Airbase.getID(nearest_AB)
+			
+			end
+			
+			-- -- need to come up with a good DCT way to find the nearest friendly airdrome and ID	
+						
+		elseif WPtype == 'orbit' then
+			wp.action =	'Turning Point'
+			wp.type = 'Turning Point'					
+			wp.task =   {
+							["id"] = "ComboTask",
+							["params"] = 
+							{
+								["tasks"] = 
+								{
+									[1] = 
+									{
+										["number"] = 1,
+										["auto"] = false,
+										["id"] = "Orbit",
+										["enabled"] = true,
+										["params"] = 
+										{
+											["altitude"] = alt,
+											["pattern"] = "Circle",
+											["speed"] = speed,
+										}, -- end of ["params"]
+									}, -- end of [1]
+								}, -- end of ["tasks"]
+							}, -- end of ["params"]
+						} -- end of ["task"]
+						
+		else
+			wp.action = 'Turning Point'
+			wp.type = 'Turning Point'
+		end
+	end
+
+	return wp										
+										
+end
+
+function utils.heli.buildWP(point, WPtype, speed, alt, altType)
+
+	local wp = {}
+	wp.x = point.x
+
+	if point.z then
+		wp.y = point.z
+	else
+		wp.y = point.y
+	end
+
+	if alt and type(alt) == 'number' then
+		wp.alt = alt
+	else
+		wp.alt = 500
+	end
+
+	if altType then
+		altType = string.lower(altType)
+		if altType == 'radio' or altType == 'agl' then
+			wp.alt_type = 'RADIO'
+		elseif altType == 'baro' or altType == 'asl' then
+			wp.alt_type = 'BARO'
+		end
+	else
+		wp.alt_type = 'RADIO'
+	end
+
+	if point.speed then
+		speed = point.speed
+	end
+
+	if point.type then
+		WPtype = point.type
+	end
+
+	if not speed then
+		wp.speed = mist.utils.kmphToMps(200)
+	else
+		wp.speed = speed
+	end
+
+	if not WPtype then
+		wp.action =	'Turning Point'
+	else
+		WPtype = string.lower(WPtype)
+		if WPtype == 'flyover' or WPtype == 'fly over' or WPtype == 'fly_over' then
+			wp.action =	'Fly Over Point'
+		elseif WPtype == 'turningpoint' or WPtype == 'turning point' or WPtype == 'turning_point' then
+			wp.action = 'Turning Point'
+		else
+			wp.action =	'Turning Point'
+		end
+	end
+
+	wp.type = 'Turning Point'
+	return wp
+end
+
+function utils.fixedWing.defaultMissionTask()
+
+return {
+ 
+  ["id"] = 'Mission', 
+  ["params"] = { 
+	["airborne"] = true,
+	["route"] = { 
+	  ["points"] = { 
+		[1] = { 
+		  ["type"] = {}, 
+		  ["airdromeId"] = {},
+		  ["timeReFuAr"] = {},  
+		  ["helipadId"] = {}, 
+		  ["linkUnit"] = {},
+		  ["action"] = {}, 
+		  ["x"] = {}, 
+		  ["y"] = {}, 
+		  ["alt"] = {}, 
+		  ["alt_type"] = {}, 
+		  ["speed"] = {}, 
+		  ["speed_locked"] = {}, 
+		  ["ETA"] = {}, 
+		  ["ETA_locked"] = {}, 
+		  ["name"] = {}, 
+		  ["task"] = {}, 
+		}
+	  } 
+	}, 
+  } 
+}
+	
+
+end
+
+
+														
+function utils.AddTask(Table, Task)
+
+	table.insert(Table.params.tasks, Task)
+
+end
+														
+function utils.fixedWing.DefaultTask(CommandUnitType)
+
+	
+	if(enum.commandUnitTypes[CommandUnitType] == enum.commandUnitTypes["AWACS"]) then
+
+		return {	                                   
+		
+			["id"] = "ComboTask",
+			["params"] = 
+			{
+				["tasks"] =
+				{				
+					[1] = 
+					{
+						["number"] = 1,
+						["auto"] = true,
+						["id"] = "AWACS",
+						["enabled"] = true,
+						["params"] = 
+						{
+						}, -- end of ["params"]
+					}, -- end of [1]			
+					
+				}
+			}
+		}
+
+	elseif(enum.commandUnitTypes[CommandUnitType] == enum.commandUnitTypes["TANKER"]) then
+	
+		return {
+			["id"] = "ComboTask",
+			["params"] = 
+			{
+				["tasks"] =
+				{			
+				 [1] = 
+					{
+						["number"] = 1,
+						["auto"] = true,
+						["id"] = "Tanker",
+						["enabled"] = true,
+						["params"] = 
+						{
+						}, -- end of ["params"]
+					}, -- end of [1]
+				}
+			}
+		}
+	elseif(enum.commandUnitTypes[CommandUnitType] == enum.commandUnitTypes["CAP"]) then
+	
+		return {
+			["id"] = "ComboTask",
+			["params"] = 
+			{
+				["tasks"] =
+				{						
+					[1] = 
+						{
+							["number"] = 1,
+							["key"] = "CAP",
+							["id"] = "EngageTargets",
+							["enabled"] = true,
+							["auto"] = true,
+							["params"] = 
+							{
+								["targetTypes"] = 
+								{
+									[1] = "Air",
+								}, -- end of ["targetTypes"]
+								["priority"] = 0,
+							}, -- end of ["params"]
+						}, -- end of [1]
+				}
+			}			
+		}
+		
+	elseif(enum.commandUnitTypes[CommandUnitType] == enum.commandUnitTypes["SEAD"]) then
+	
+		return {
+			["id"] = "ComboTask",
+			["params"] = 
+			{
+				["tasks"] =
+				{		
+					[1] = 
+					{
+						["number"] = 1,
+						["key"] = "SEAD",
+						["id"] = "EngageTargets",
+						["enabled"] = true,
+						["auto"] = true,
+						["params"] = 
+						{
+							["targetTypes"] = 
+							{
+								[1] = "Air Defence",
+							}, -- end of ["targetTypes"]
+							["priority"] = 0,
+						}, -- end of ["params"]
+					}, -- end of [1]
+				}		
+			}
+		}
+	elseif(enum.commandUnitTypes[CommandUnitType] == enum.commandUnitTypes["CAS"]) then
+	
+		return {
+			["id"] = "ComboTask",
+			["params"] = 
+					{
+					
+					["tasks"] =
+					{		
+						
+						[1] = 
+						{
+							["number"] = 1,
+							["key"] = "CAS",
+							["id"] = "EngageTargets",
+							["enabled"] = true,
+							["auto"] = true,
+							["params"] = 
+							{
+								["targetTypes"] = 
+								{
+									[1] = "Helicopters",
+									[2] = "Ground Units",
+									[3] = "Light armed ships",
+								}, -- end of ["targetTypes"]
+								["priority"] = 0,
+							}, -- end of ["params"]
+						}, -- end of [1]
+						
+					}
+					
+				}
+			}
+	elseif(enum.commandUnitTypes[CommandUnitType] == enum.commandUnitTypes["ANTISHIP"]) then
+	
+		return {
+			["id"] = "ComboTask",
+			["params"] = 
+			{
+				["tasks"] =
+				{
+					
+					[1] = 
+					{
+						["number"] = 1,
+						["key"] = "AntiShip",
+						["id"] = "EngageTargets",
+						["enabled"] = true,
+						["auto"] = true,
+						["params"] = 
+						{
+							["targetTypes"] = 
+							{
+								[1] = "Ships",
+							}, -- end of ["targetTypes"]
+							["priority"] = 0,
+						}, -- end of ["params"]
+					}, -- end of [1]
+				}
+			}			
+		}
+	end
+	
+end
+
+
+function utils.fixedWing.OrbitTask()
+	return	
+			{
+				["number"] = {},
+				["auto"] = false,
+				["id"] = "Orbit",
+				["enabled"] = true,
+				["params"] = 
+				{
+					["altitude"] = {},
+					["pattern"] = "Circle",
+					["speed"] = {},
+				}, -- end of ["params"]
+			}
+			
+
+
+end			
+										
+function utils.fixedWing.RacetrackTask(altitude, speed)
+	return	
+			{
+				["number"] = {},
+				["auto"] = false,
+				["id"] = "Orbit",
+				["enabled"] = true,
+				["params"] = 
+				{
+					["altitude"] = altitude,
+					["pattern"] = "Race-Track",
+					["speed"] = speed,
+				}, -- end of ["params"]
+			}
+			
+end				
+		
+			
+function utils.fixedWing.EmptyTask()
+	return	
+		{			
+			["id"] = "ComboTask",
+			["params"] = 
+			{
+				["tasks"] =
+				{
+				}
+			}			
+		}
+			
+end			
+										
+	
 return utils

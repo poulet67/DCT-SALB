@@ -1,7 +1,7 @@
 --[[
 -- SPDX-License-Identifier: LGPL-3.0
 --
--- Like the scratch-pad but intended to be initialized only once
+-- Map marker sniffer - 
 -- 
 -- queues up text from any map marker post for parsing
 -- 
@@ -12,6 +12,9 @@ local Logger = require("dct.libs.Logger").getByName("UI")
 local enum    = require("dct.enum")
 local uicmds      = require("dct.ui.cmds")
 local Command     = require("dct.Command")
+local CLI     = require("dct.ui.CLI")
+local dctutils   = require("dct.utils") 
+local settings    = _G.dct.settings
 
 local function sanitize(txt)
 	if type(txt) ~= "string" then
@@ -43,35 +46,65 @@ end
 ]]--
 
 function MarkerGet:event(event)
+
 	if event.id ~= world.event.S_EVENT_MARK_CHANGE then
 		return
 	else	
 	
 		self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: parse",
-			self.parse, self, event.text, event.initiator, event.idx))				
+			self.parse, self, event.text, event.initiator, event.idx, event.pos))				
 
 	end
 
 
 end
 
-function MarkerGet:parse(text, initiator, idx)
+function MarkerGet:parse(text, initiator, idx, point)
+	
 	Logger:debug("MarkerGet: ----------------------------------- INSIDE PARSE ")
+	--
+	-- TODO: use lummander instead... This is pretty hacky 
+	
 	--[[
 	MAP MARKER COMMANDS
 	-------------------------
 	
 	Publicly available:
 	
-	#### (a 4 didgit number, and nothing else)
+	HELP
 	
+	explains the F10 marker command system and lists all available commands
+	
+	--------------------------------------
+
+	MISSION SYSTEM:
+	=============
+	
+	#### (a 4 didgit number, and nothing else)
+	-------------------
 	Join mission ####
 	
-	--maybe... debatable value
-	abort
+	MISSION:ABORT
 	
-	--maybe... for recon system
-	SPOTTED:(groupname)
+	
+		Squadron Leader Commands:
+		
+		
+	
+	
+	RECON SYSTEM:
+	============
+	SPOTTED:TEXT
+	Looks for enemy ground near 
+	Allows a user to spot an enemy unit and have it added to the commander's known list
+	Needs a minimum range requirement.
+	Optional: a cooldown between spots
+	Optional & Recommended: a penalty if player 'cries wolf'
+		
+	
+	
+	
+
 	
 	-------------------
 
@@ -83,11 +116,12 @@ function MarkerGet:parse(text, initiator, idx)
 			
 	valid = string.match(text, "^%d%d%d%d$") or string.match(text, "%a+:%a+")
 	
+	Logger:debug("MarkerGet : Valid Command: "..tostring(valid))
 	
 	if(valid and initiator) then -- can not run commands for players not in a slot on F10 map
 	
 		first = string.match(text, "%a+") -- returns everything up to the :
-		second = string.match(text, "%p.+") -- returns everything after the :
+		second = string.match(text, ":%w+") -- returns everything after the :
 		second = second:sub(2)
 		
 		
@@ -166,19 +200,26 @@ function MarkerGet:parse(text, initiator, idx)
 
 	
 		--[[
-		COMMANDER COMMANDS
-		-------------------------
+		COMMANDER SYSTEM
+		================
 		
-		MUST BE COMMANDER, OR COMMANDER MUST BE PUBLIC IN ORDER TO USE THESE:
+		Mission Control:
 		
-		COMMANDS AVAILABLE:
+		MISSION
 		
-		MOVE:
+		
+		
+		===================
+		AI Unit Commands:
+		
+		Works on 
+		
+		MOVE
 			GROUP:MOVE
 			"name" 
 				Looks for the nearest DCT asset matching Name and issues a waypoint pushtask to move it to marker position
 			
-		DISPATCH:
+		DISPATCH
 			(only works for defined AI groups)
 			required:
 			#			<-------- the number selection based on the list command
@@ -241,8 +282,45 @@ function MarkerGet:parse(text, initiator, idx)
 			CAP:LIST
 			TANKER:LIST
 			
+			
+		ACTIVE
+			(only works for defined AI groups)
+						
+			AWACS:ACTIVE
+			CAP:ACTIVE
+			TANKER:ACTIVE
+			
 		
+		===================
 		
+		===================
+		FOB Commands:
+		
+		FOB:NEW
+		
+		================
+		
+		===================
+		SAM Commands:
+		
+		SAM:NEW
+		
+		================
+		
+		===================
+		FARP Commands:
+		
+		FARP:NEW
+		
+		================
+		
+		===================
+		FSB Commands:
+		
+		FSB:NEW
+				
+		
+		================
 		
 		
 		
@@ -264,69 +342,363 @@ function MarkerGet:parse(text, initiator, idx)
 			
 			remainder = string.match(text, "\n.+$") -- returns everything on the next lines			
 			
-			if(second == "MOVE") then
-			
+				
+			if(second == "DISPATCH" and remainder) then
+				
 				unitType = first
-				unitSelection = string.sub(string.match(remainder, "type:%d+"), 6) --returns number after "type:" works even with \n inside remainder
-				Logger:debug("Unit Selection: " .. unitSelection)
+				sel = string.match(remainder, "TYPE:%d+")
+				alt = string.match(remainder, "ALT:%w+")
+				spd = string.match(remainder, "SPD:%w+")
 				
-				local cmdr = self._theater.getCommander(playerasset.owner)
+				if sel then
 				
-				--self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))				
+					unitSelection = tonumber(string.sub(sel, 6)) --returns number after "TYPE:" works even with \n inside remainder
+					
+				else
+				
+					trigger.action.outTextForGroup(playerasset.groupId, "Unit selection invalid. Try UnitType:List to see all available unit types\n Type HELP into an F10 marker for info on the command system", 30)
+					
+				end
+				
+				if alt then
+				
+					altitude = tonumber(string.sub(alt, 5)) --returns number after "TYPE:" works even with \n inside remainder
+				else
+				
+					altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
+					
+				end
+				
+				if spd then
+				
+					speed = tonumber(string.sub(spd, 5)) --returns number after "TYPE:" works even with \n inside remainder
+				else
+				
+					speed = settings.gameplay["COMMAND_UNIT_DEFAULT_SPEED"]
+					
+				end
+				
+				
+				if(unitSelection) then --valid input
+				
+					Logger:debug("MarkerGet : DISPATCH")
+					Logger:debug("Unit Selection: " .. unitSelection)
+					Logger:debug("Unit Type: " .. unitType)
+					Logger:debug("value: " .. enum.commandUnitTypes[unitType])
+				
+					local cmdr = self._theater:getCommander(playerasset.owner)
+					
+					--for k,v in pairs(cmdr.Command_Units) do					
+					--	Logger:debug("Command Unit: " .. k)					
+					--end					
+					--for k,v in pairs(cmdr.Command_Units[enum.commandUnitTypes[unitType]]) do					
+					--	Logger:debug("Command Unit 2: " .. k)					
+					--end					
+					--for k,v in pairs(cmdr.Command_Units[enum.commandUnitTypes[unitType]][unitSelection]) do					
+					--	Logger:debug("Command Unit 3: " .. k)					
+					--end
+ 					
+					Logger:debug("Type: " .. type(cmdr.Command_Units[unitType][tonumber(unitSelection)]))
+					
+					if cmdr.Command_Units[unitType][unitSelection] then -- valid selection
+					
+						Logger:debug("MarkerGet : VALID UNIT")
+						self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: DISPATCH", cmdr.dispatch, cmdr, unitType, unitSelection, point, altitude, speed))				
+						trigger.action.removeMark(idx)
+						
+					else
+					
+						trigger.action.outTextForGroup(playerasset.groupId, "Unit type or unit selection invalid. Try UnitType:List to see all available unit types type HELP into an F10 marker for info on the command system", 30)
+					
+					end
+				
+				else
+				
+					trigger.action.outTextForGroup(playerasset.groupId, "Unit type or unit selection invalid. Try UnitType:List to see all available unit types type HELP into an F10 marker for info on the command system", 30)
+					
+				end
+			
+			elseif(second == "MOVE" and remainder) then
+				
+				Logger:debug("MOVE COMMAND")
+				unitType = first
+				Logger:debug(remainder)
+				name = string.match(remainder, "\"%a+\"") -- returns anything inside double quotes "" 
+				alt = string.match(remainder, "ALT:%w+")
+				spd = string.match(remainder, "SPD:%w+")
+								
+				if alt then
+				
+					Logger:debug("ALTITUDE")
+					
+					alt = string.sub(alt, 5) --returns number after "ALT:" works even with \n inside remainder
+					altitude = tonumber(string.match(alt, "%d+"))
+					units = string.match(alt, "%a+")
+					
+					if units then
+					
+						altitude = dctutils.convertDistance(altitude, units, "m")
+					
+					else
+					
+						altitude = dctutils.convertDistance(altitude, "ft", "m")
+						
+					end
+				
+				else
+				
+					altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
+					
+				end
+				
+				if spd then
+				
+					Logger:debug("SPEED")
+					
+					spd = string.sub(spd, 5) --returns number after "SPD:" works even with \n inside remainder
+					speed = tonumber(string.match(spd, "%d+"))
+					units = string.match(spd, "%a+")
+					
+					if units then
+					
+						speed = dctutils.convertSpeed(speed, units, "ms")
+					
+					else	
+					
+						speed = dctutils.convertSpeed(speed, "kn", "ms")
+						
+					end
+					
+				else
+				
+					speed = settings.gameplay["COMMAND_UNIT_DEFAULT_SPEED"]
+										
+					
+				end				
+				
 
 				
-				Logger:debug("MarkerGet : COMMAND MOVE ")
+				local cmdr = self._theater:getCommander(playerasset.owner)
 				
-			elseif(second == "DISPATCH") then
-				
-				unitType = first
-				unitSelection = string.sub(string.match(remainder, "type:%d+"), 6) --returns number after "type:" works even with \n inside remainder
-				Logger:debug("Unit Selection: " .. unitSelection)
-				
-				local cmdr = self._theater.getCommander(playerasset.owner)
-				
-				self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))				
-				
-				Logger:debug("MarkerGet : COMMAND DISPATCH ")
-			
-			elseif(second == "ORBIT") then
-			
-				unitType = first
-				unitName = string.sub(string.match(remainder, "name:.+"), 6) --returns number after "name:" works even with \n inside remainder
-				
-				Logger:debug("Unit Selection: " .. unitName)
-				
-				local cmdr = self._theater.getCommander(playerasset.owner)
-				
-				self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))				
-				
-				Logger:debug("MarkerGet : COMMAND ORBIT ")
-				
-			elseif(second == "RACETRACK") then
-			
-				unitType = first
-				unitName = string.sub(string.match(remainder, "name:.+"), 6) --returns number after "name:" works even with \n inside remainder
-				
-				Logger:debug("Unit Selection: " .. unitName)
-				
-				local cmdr = self._theater.getCommander(playerasset.owner)
-				
-				self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))			
-				
-				Logger:debug("MarkerGet : COMMAND RACETRACK ")
-			
-			elseif(second == "LAND") then
+				if(unitType and name) then
+
+					name = name:sub(2,name:len()-1) --removes the double quotes "
+													
+					Logger:debug("name: " .. name)
+					Logger:debug("altitude: " .. altitude)
+					Logger:debug("speed: " .. speed)
+					
+					if(cmdr.Command_Units["ACTIVE"][unitType][name]) then
+					
+						self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.move_command, cmdr, unitType, name, point, altitude, speed))				
+						trigger.action.removeMark(idx)
 						
+					else
+					
+						trigger.action.outTextForGroup(playerasset.groupId, "Invalid unit name. This name is the last word or word combination in the group field when selected on a an F10 map marker. They must be passed in quotes, ex: \"ALPHA\"", 30)
+					
+					end
+					
+				else				
+					
+					trigger.action.outTextForGroup(playerasset.groupId, "Unit type or callsign/name or speed or altitude units are invalid. Try UnitType:List to see all available unit types or type HELP into an F10 marker for info on the command system. Callsigns/names are the last word or word combination in the group field when selected ona an F10 map marker. They must be passed in quotes, ex: \"ALPHA\"", 30)
+					
+				end
+				
+			elseif(second == "ORBIT" and remainder) then
+			
+				Logger:debug("ORBIT COMMAND")
 				unitType = first
-				unitName = string.sub(string.match(remainder, "name:.+"), 6) --returns number after "name:" works even with \n inside remainder
+				name = string.match(remainder, "\"%a+\"") -- returns anything inside double quotes "" 
+				alt = string.match(remainder, "ALT:%w+")
+				spd = string.match(remainder, "SPD:%w+")
+								
+				if alt then
 				
-				Logger:debug("Unit Selection: " .. unitName)
+					alt = string.sub(alt, 5) --returns number after "ALT:" works even with \n inside remainder
+					altitude = tonumber(string.match(alt, "%d+"))
+					units = string.match(alt, "%a+")
+					
+					if units then
+					
+						altitude = dctutils.convertDistance(altitude, units, "m")
+					
+					else
+					
+						altitude = dctutils.convertDistance(altitude, "ft", "m")
+						
+					end
+				else
 				
-				local cmdr = self._theater.getCommander(playerasset.owner)
+					altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
+					
+				end
 				
-				self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))			
+				if spd then
 				
-				Logger:debug("MarkerGet : COMMAND LAND")
+					spd = string.sub(spd, 5) --returns number after "SPD:" works even with \n inside remainder
+					speed = tonumber(string.match(spd, "%d+"))
+					units = string.match(spd, "%a+")
+					
+					if units then
+					
+						speed = dctutils.convertSpeed(speed, units, "ms")
+					
+					else	
+					
+						speed = dctutils.convertSpeed(speed, "kn", "ms")
+						
+					end
+					
+				else
+				
+					speed = settings.gameplay["COMMAND_UNIT_DEFAULT_SPEED"]					
+					
+				end				
+				
+				Logger:debug("type: " .. unitType)
+				Logger:debug("name: " .. name)
+				
+				if(unitType and name) then
+				
+					name = name:sub(2,name:len()-1) --removes the double quotes "
+					local cmdr = self._theater:getCommander(playerasset.owner)
+					self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.orbit_command, cmdr, unitType, name, point, altitude, speed))				
+					trigger.action.removeMark(idx)
+					
+				else				
+					
+					trigger.action.outTextForGroup(playerasset.groupId, "Unit type or callsign/name is invalid. Try UnitType:List to see all available unit types or type HELP into an F10 marker for info on the command system. Callsigns/names are the last word or word combination in the group field when selected ona an F10 map marker. They must be passed in quotes, ex: \"ALPHA\"", 30)
+					
+				end
+				
+				
+			elseif(second == "RACETRACK" and remainder) then
+			
+				Logger:debug("RACETRACK COMMAND")
+				unitType = first
+				name = string.match(remainder, "\"%a+\"") -- returns anything inside double quotes "" 
+				alt = string.match(remainder, "ALT:%w+")
+				spd = string.match(remainder, "SPD:%w+")
+				hdg = string.match(remainder, "HDG:%d+")
+				leg = string.match(remainder, "LEG:%d+")
+												
+				if alt then
+				
+					alt = string.sub(alt, 5) --returns number after "ALT:" works even with \n inside remainder
+					altitude = tonumber(string.match(alt, "%d+"))
+					units = string.match(alt, "%a+")
+					
+					if units then
+					
+						altitude = dctutils.convertDistance(altitude, units, "m")
+					
+					else
+					
+						altitude = dctutils.convertDistance(altitude, "ft", "m")
+						
+					end
+				else
+				
+					altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
+					
+				end
+				
+				if spd then
+				
+					spd = string.sub(spd, 5) --returns number after "SPD:" works even with \n inside remainder
+					speed = tonumber(string.match(spd, "%d+"))
+					units = string.match(spd, "%a+")
+					
+					if units then
+					
+						speed = dctutils.convertSpeed(speed, units, "ms")
+					
+					else	
+					
+						speed = dctutils.convertSpeed(speed, "kn", "ms")
+						
+					end
+					
+				else
+				
+					speed = settings.gameplay["COMMAND_UNIT_DEFAULT_SPEED"]						
+					
+				end	
+				
+				if hdg then
+				
+					hdg = string.sub(hdg, 5) --returns number after "HDG:" works even with \n inside remainder
+					hdg = tonumber(string.match(hdg, "%d+"))
+					
+				else
+				
+					hdg = 0; -- North
+					
+				end	
+				
+				if leg then
+				
+					leg = string.sub(leg, 5) --returns number after "HDG:" works even with \n inside remainder
+					leg = tonumber(string.match(leg, "%d+"))
+					units = string.match(spd, "%a+")
+					
+					if units then
+					
+						leg = dctutils.convertDistance(leg, units, "m")
+					
+					else
+					
+						leg = dctutils.convertDistance(leg, "nm", "m")
+						
+					end
+				
+				else
+				
+					leg = 74080 --40 nm
+					
+				end				
+				
+
+				
+				if(unitType and name) then
+				
+					Logger:debug("type: " .. unitType)
+					Logger:debug("name: " .. name)
+					
+					name = name:sub(2,name:len()-1) --removes the double quotes "
+					local cmdr = self._theater:getCommander(playerasset.owner)	
+					self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.racetrack_command, cmdr, unitType, name, point, altitude, speed, hdg, leg))	
+					trigger.action.removeMark(idx)
+					
+				else				
+					
+					trigger.action.outTextForGroup(playerasset.groupId, "Unit type or callsign/name is invalid. Try UnitType:List to see all available unit types or type HELP into an F10 marker for info on the command system. Callsigns/names are the last word or word combination in the group field when selected ona an F10 map marker. They must be passed in quotes, ex: \"ALPHA\"", 30)
+					
+				end
+				
+			
+			elseif(second == "LAND" and remainder) then
+				
+				Logger:debug("LAND COMMAND")
+				unitType = first
+				name = string.match(remainder, "\"%a+\"") -- returns anything inside double quotes "" 
+				
+				Logger:debug("type: " .. unitType)
+				Logger:debug("name: " .. name)
+				
+				if(unitType and name) then
+				
+					name = name:sub(2,name:len()-1) --removes the double quotes "
+					local cmdr = self._theater:getCommander(playerasset.owner)	
+					self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: LAND", cmdr.landing_command, cmdr, unitType, name, point))	
+					trigger.action.removeMark(idx)
+					
+				else				
+					
+					trigger.action.outTextForGroup(playerasset.groupId, "Unit type or callsign/name is invalid. Try UnitType:List to see all available unit types or type HELP into an F10 marker for info on the command system. Callsigns/names are the last word or word combination in the group field when selected ona an F10 map marker. They must be passed in quotes, ex: \"ALPHA\"", 30)
+					
+				end
 				
 			
 			elseif(second == "LIST") then
@@ -343,15 +715,45 @@ function MarkerGet:parse(text, initiator, idx)
 			
 				local msg = cmdr:getUnitList(unitType)
 				
+				trigger.action.removeMark(idx)				
+				trigger.action.outTextForGroup(playerasset.groupId, msg, 30)
+				
+				
+				--self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))				
+
+			
+			elseif(second == "ACTIVE") then
+							
+				unitType = first
+								
+				--Logger:debug("Unit Selection: " .. unitName)
+				
+				local cmdr = self._theater:getCommander(playerasset.owner)
+				
+				--self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.getUnitList, cmdr, unitType))			
+				
+				Logger:debug("MarkerGet : COMMAND LIST")
+			
+				local msg = cmdr:getActiveUnits(unitType)
+				
+				trigger.action.removeMark(idx)				
 				trigger.action.outTextForGroup(playerasset.groupId, msg, 30)
 				
 				
 				--self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: MOVE", cmdr.dispatch, cmdr, unitType))				
 
 				
-			elseif(				false					) then
+			elseif(first == "COMMAND" and second == "LIST") then --list available command units
 			
-			elseif(				false					) then
+			elseif(first == "MISSION" and second == "TOT") then
+			
+			elseif(first == "MISSION" and second == "BRIEFING") then
+			
+			elseif(first == "MISSION" and second == "") then
+			
+			elseif(first == "MISSION" and second == "TOT") then
+			
+			elseif(first == "MISSION" and second == "TOT") then
 			
 			elseif(				false					) then
 			

@@ -26,7 +26,6 @@ local DOMAIN = {
 	["LAND"] = "land",
 	["SEA"]  = "sea",
 }
-
 local STATUS = {
 	["CONTESTED"] = -1,
 	["NEUTRAL"]   = coalition.side.NEUTRAL,
@@ -407,12 +406,6 @@ function Region:addTemplate(tpl)
 	
 end
 
-function Region:addStagedTemplate(tpl) 
-
-	
-end
-
-
 function Region:getTemplateByName(name)
 	return self._templates[name]
 end
@@ -464,8 +457,8 @@ end
 function Region:generate()
 
 	local assetmgr = dct.Theater.singleton():getAssetMgr()
-	local tpltypes = utils.deepcopy(self._tpltypes) -- this is such a bizaare way to do this
-	local centroid = {}								-- I am gonna see if I can rip it out
+	local tpltypes = utils.deepcopy(self._tpltypes) 
+	local centroid = {}								
 
 	for objtype, _ in pairs(dctenums.assetClass.INITIALIZE) do
 		local names = tpltypes[objtype]
@@ -509,11 +502,6 @@ function Region:generateStagedTemplates(assetmgr, stagenum)
 	--occured
 	
 	
-end
-
-function Region:createReconGrid()
---Creates an array of points that span the region. These are nodes that are used for the recon system
-
 end
 
 return Region

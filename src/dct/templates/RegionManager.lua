@@ -15,7 +15,7 @@ local RegionManager = require("libs.namedclass")("RegionManager",
 	Marshallable)
 function RegionManager:__init(theater)
 	self.regions = {}
-
+	
 	self:loadRegions()
 	theater:getAssetMgr():addObserver(self.onDCTEvent, self,
 		self.__clsname..".onDCTEvent")

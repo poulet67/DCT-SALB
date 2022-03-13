@@ -211,6 +211,8 @@ local function associate_slots(ab)
 	-- template defining the airbase so that slots can be updated
 	-- without resetting the campaign state.
 	-- TODO: temp solution until a region manager is created
+	
+	
 	local region = dct.Theater.singleton().regions[ab.rgnname]
 	local tpl = region:getTemplateByName(ab.tplname)
 	for _, name in ipairs(tpl.players) do
@@ -260,7 +262,7 @@ function AirbaseAsset:_completeinit(template)
 	self._tpldata = self._tpldata or {}
 	self.state = OperationalState()
 	self.state:enter(self)
-	associate_slots(self)
+	--associate_slots(self)  -- TEMPORARILY DISABLED - WILL FIX THIS WITH PLANNED REGIONS UPGRADE
 end
 
 function AirbaseAsset:_setup()

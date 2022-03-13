@@ -210,98 +210,126 @@ local function validate_gameplay_configs(cfgdata, tbl)
 			["default"] = 300
 		},
 		[14] = {
+			["name"] = "RECON_MISSION_ACTIVATION_TIME",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 60
+		},
+		[15] = {
 			["name"] = "FOBS_PER_REGION_BASE",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 3
 		},
-		[15] = {
+		[16] = {
 			["name"] = "FOBS_PER_REGION_MAX",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 6
 		},
-		[16] = {
+		[17] = {
 			["name"] = "CHALLENEGE_TIMER",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 30
 		},
-		[17] = {
+		[18] = {
 			["name"] = "OFF_MAP_DELIVERY_DELAY",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 15
 		},
-		[18] = {
+		[19] = {
 			["name"] = "AIRBASE_INVENTORY_TRANSFER_ON_CAPTURE",
 			["type"] = "boolean",
 			["default"] = false
 		},
-		[19] = {
+		[20] = {
 			["name"] = "CP_RED_START",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 100000
 		},
-		[20] = {
+		[21] = {
 			["name"] = "CP_BLUE_START",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 100000
 		},
-		[21] = {
+		[22] = {
 			["name"] = "CP_COST_MORE_FOBS",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 5000
 		},
-		[22] = {
+		[23] = {
 			["name"] = "CP_COST_INTEL_REPORT",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 5000
 		},
-		[23] = {
+		[24] = {
 			["name"] = "CP_COST_TARGET_PRECISION",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 5000
 		},
-		[24] = {
+		[25] = {
 			["name"] = "TARGET_PRECISION_TIMER",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 3600
 		},
-		[25] = {
+		[26] = {
 			["name"] = "CP_COST_TACTICAL_RETREAT",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 5000
 		},
-		[26] = {
+		[27] = {
 			["name"] = "CP_COST_CREATE_BATTLE_PLANS",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 5000
 		},
-		[27] = {
+		[28] = {
 			["name"] = "CP_COST_PREPARE_OFFENSIVE",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
 			["default"] = 5000
 		},
-		[28] = {
+		[29] = {
 			["name"] = "BLUE_AI",
 			["type"] = "boolean",
 			["default"] = false
 		},
-		[29] = {
+		[30] = {
 			["name"] = "RED_AI",
 			["type"] = "boolean",
 			["default"] = false
 		},
+		[31] = {
+			["name"] = "COMMAND_UNIT_AIRCRAFT_START_FROM_RAMP",
+			["type"] = "boolean",
+			["default"] = true
+		},
+		[32] = {
+			["name"] = "COMMAND_UNIT_DEFAULT_ALTITUDE",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 6000
+		},
+		[33] = {
+			["name"] = "COMMANDER_PUBLIC_BY_DEFAULT",
+			["type"] = "boolean",
+			["default"] = true
+		},
+		[34] = {
+			["name"] = "COMMAND_UNIT_DEFAULT_SPEED",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 123.46
+		}
 	}
 	
 	tbl.path = path

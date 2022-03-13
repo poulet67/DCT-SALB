@@ -209,12 +209,14 @@ function utils.tprint(tbl, indent) --usefull debugging tool
   for k, v in pairs(tbl) do
     formatting = string.rep("  ", indent) .. k .. ": "
     if type(v) == "table" then
-      env.info(formatting, 30)
-      tprint(v, indent+1)
+      env.info(formatting)
+      utils.tprint(v, indent+1)
     elseif type(v) == 'boolean' then
       env.info(formatting .. tostring(v))		
+    elseif type(v) == 'function' then
+	  env.info(formatting .. "FUNCTION: "..k)
     else
-      env.info(formatting .. v, 30)
+      env.info(formatting .. tostring(v))
     end
   end
 end

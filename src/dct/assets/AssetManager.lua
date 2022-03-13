@@ -11,6 +11,7 @@ local dctutils = require("dct.utils")
 local Command  = require("dct.Command")
 local Logger   = dct.Logger.getByName("AssetManager")
 local Observable = require("dct.libs.Observable")
+local Template    = require("dct.templates.Template")
 
 local assetpaths = {
 	"dct.assets.MobileAsset",
@@ -30,7 +31,7 @@ function AssetManager:__init(theater)
 	-- The master list of assets, regardless of side, indexed by name.
 	-- Means Asset names must be globally unique.
 	self._assetset = {}
-
+	
 	-- The per side lists to maintain "short-cuts" to assets that
 	-- belong to a given side and are alive or dead.
 	-- These lists are simply asset names as keys with values of
@@ -67,6 +68,65 @@ function AssetManager:__init(theater)
 	theater:addObserver(self.onDCSEvent, self, "AssetManager.onDCSEvent")
 	theater:queueCommand(self.updaterate,
 		Command(self.__clsname..".update", self.update, self))
+end
+
+function AssetManager:AirbaseInit()
+-- Add all airbases from world.getAirbases() to the airbase table
+
+	AB_Tpl = {
+	["objtype"] = "AIRBASE", --enum.assetType["AIRBASE"],
+	["subordinates"] = {},
+	--["contest_dist"] = 10,
+	--["takeofftype"] = {},
+	--["recoverytype"] = {},
+	}
+
+	AB_tbl = world.getAirbases()
+	
+	Logger:debug("AIRBASE DUMP-----")
+
+	utils.tprint(AB_tbl, 2)
+		
+	for i = 1, #AB_tbl do
+	
+	   AB_Obj = AB_tbl[i]
+
+	   name = AB_Obj:getName()
+	
+		if(self:getAsset(name) == nil) then -- no airbase already defined
+			
+			
+		   AB_Tpl.AB_Obj = AB_Obj
+		   AB_Tpl.name = name		   
+		   --desc = AB_Obj:getDesc()
+		   --callsign = AB_Obj:getCallsign()
+		   AB_Tpl.id = AB_Obj:getID()
+		   --cat = AB_Obj:getCategory(AB_Obj)
+		   AB_Tpl.location = AB_Obj:getPoint()
+		   AB_Tpl.coalition = AB_Obj:getCoalition()	   
+		   
+		   
+		   
+		   tpl = Template(AB_Tpl)
+		   AB_asset = self:factory(tpl.objtype)(tpl)
+		   self:add(AB_asset)	
+		   AB_asset:generate(self)
+	       AB_asset:spawn()
+		   
+		   
+		   
+		   
+		   
+		   Logger:debug("AIRBASE ASSET GENERATED: " .. name)
+		  
+		else -- for debugging only
+		
+			Logger:debug("AIRBASE ALREADY FOUND: " .. name)
+		
+		end
+	end
+
+
 end
 
 function AssetManager:factory(assettype)
@@ -399,6 +459,7 @@ function AssetManager:postinit()
 		self:getAsset(assetname):spawn(true)
 	end
 	self._spawnq = {}
+	self:AirbaseInit()
 end
 	
 

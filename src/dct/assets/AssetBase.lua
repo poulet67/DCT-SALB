@@ -27,9 +27,10 @@ local Observable   = require("dct.libs.Observable")
 local Logger   = require("dct.libs.Logger")
 local settings = _G.dct.settings
 
-local norenametype = {
+local norenametype = { --NOTE: THESE ARE UNITS THAT ARE __NOT__ RENAMED
 	[dctenum.assetType.PLAYERGROUP]    = true,
 	[dctenum.assetType.AIRBASE]        = true,
+	[dctenum.assetType.AIGROUP]    = true,	
 }
 
 local function generateCodename(template)
@@ -157,7 +158,7 @@ end
 function AssetBase:_completeinit(template) -- NOTE: Add any new template keys here!
 	self.type     = template.objtype
 	
-	--local debugLogger = Logger.getByName("interp")
+	local debugLogger = Logger.getByName("AssetBase")
 
 	if template.regionname then
 		self.rgnname  = template.regionname
@@ -185,7 +186,8 @@ function AssetBase:_completeinit(template) -- NOTE: Add any new template keys he
 	self.period  = template.period  
 	self.marshal_point  = template.marshal_point  
 	
-
+	--debugLogger:debug("norenametype")
+	--debugLogger:debug(tostring(norenametype))
 	
 	if norenametype[self.type] == true then
 		self.name = self.tplname
