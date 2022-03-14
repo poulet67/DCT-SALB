@@ -260,7 +260,7 @@ function Commander:dispatch(commandUnitType, commandUnitSelection, point, altitu
 	
 end
 
-function Commander:move_command(commandUnitType, name, point, altitude, speed)
+function Commander:move_command(commandUnitType, name, point, altitude, speed) -- need to make fixed wing specific, or check for unit type.
 
 	Logger:debug("COMMANDER: -- move_command")
 	
@@ -292,15 +292,15 @@ function Commander:move_command(commandUnitType, name, point, altitude, speed)
 			CU_Group:getController():setTask(myMission) 		
 			--ROE ------------
 			CU_Group:getController():setOption(AI.Option.Air.id.ROE, 0) --Without this any CAP will not engage
-			CU_Group:getController():setOption(AI.Option.Ground.id.ROE, 0) 
-			CU_Group:getController():setOption(AI.Option.Naval.id.ROE, 0) 
+			--CU_Group:getController():setOption(AI.Option.Ground.id.ROE, 0) 
+			--CU_Group:getController():setOption(AI.Option.Naval.id.ROE, 0) 
 			CU_Group:getController():setOption(AI.Option.Air.id.REACTION_ON_THREAT, 3) -- might want to allow more flexibility here or set based on CU type
-			CU_Group:getController():setOption(AI.Option.Ground.id.REACTION_ON_THREAT, 3) -- might want to allow more flexibility here or set based on CU type
-			CU_Group:getController():setOption(AI.Option.Naval.id.REACTION_ON_THREAT, 3) -- might want to allow more flexibility here or set based on CU type
+			--CU_Group:getController():setOption(AI.Option.Ground.id.REACTION_ON_THREAT, 3) -- might want to allow more flexibility here or set based on CU type
+			--CU_Group:getController():setOption(AI.Option.Naval.id.REACTION_ON_THREAT, 3) -- might want to allow more flexibility here or set based on CU type
 		
 		else
 		
-		Logger:debug("COMMANDER: -- move_command: invalid name")
+			Logger:debug("COMMANDER: -- move_command: invalid name")
 		
 		end
 	
