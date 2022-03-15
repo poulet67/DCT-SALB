@@ -139,6 +139,7 @@ function Commander:process_template(template)
 end
 
 function Commander:getTemplates(command_path)
+
 	Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  : "..command_path)
 	
 	for filename in lfs.dir(command_path) do
@@ -193,16 +194,7 @@ function Commander:getUnitList(commandUnitType)
 	--Logger:debug("COMMANDER ==== List ===")
 	--Logger:debug(commandUnitType)
 	
-	
-	--for k, v in pairs(self.Command_Units) do 
-	
-	--	Logger:debug(k)
-	
-	--end
-	
-	--Logger:debug(enum.commandUnitTypes[commandUnitType])	
-	
-	messageString = "UNITS OF TYPE "..commandUnitType.."\n"
+	messageString = dctutils.printTabular("UNITS OF TYPE "..commandUnitType, 65, "-")
 	
 	for k, v in ipairs(self.Command_Units[commandUnitType]) do
 		
@@ -221,16 +213,54 @@ function Commander:getUnitList(commandUnitType)
 
 end
 
+function Commander:getActiveUnits(commandUnitType)
+
+	--Logger:debug("COMMANDER ==== List ===")
+	--Logger:debug(commandUnitType)
+	
+	
+	--for k, v in pairs(self.Command_Units) do 
+	
+	--	Logger:debug(k)
+	
+	--end
+	
+	--Logger:debug(enum.commandUnitTypes[commandUnitType])	
+
+	Logger:debug("COMMANDER ==== ACTIVE UNITS === Type: "..commandUnitType)
+	
+	active_message = dctutils.printTabular("ACTIVE UNITS OF TYPE "..commandUnitType, 65, "-")
+			
+	for k, v in pairs(self.Command_Units["ACTIVE"][commandUnitType]) do
+
+		active_message = active_message.."\n"..k.." = "..self.Command_Units["ACTIVE"][commandUnitType][k]["display_name"]
+		
+	end
+		
+	return active_message
+	
+
+end
+
 -- Spawns template commandUnitType of commandUnitSelection at nearest airbase to point with orbit task at point at altitude
 
 function Commander:dispatch(commandUnitType, commandUnitSelection, point, altitude, speed)
 
 	Logger:debug("COMMANDER ==== Dispatch===")
+	Logger:debug("commandUnitType: "..commandUnitType)
+	--Logger:debug("commandUnitType2: "..commandUnitType)
+	--Logger:debug("commandUnitType3: "..commandUnitType)
 	Logger:debug(next(self.Command_Units[commandUnitType][commandUnitSelection]))
 	
 	if(altitude == nil) then
 	
 		altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
+		
+	end	
+	
+	if(speed == nil) then
+	
+		speed = settings.gameplay["COMMAND_UNIT_DEFAULT_SPEED"]
 		
 	end
 	
@@ -244,9 +274,13 @@ function Commander:dispatch(commandUnitType, commandUnitSelection, point, altitu
 	Logger:debug("COMMANDER: -- TEMPLATE DUMP")
 	utils.tprint(tpl) 
 	
+	-- can probably just add this to dispatcher tbqh
+	
 	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign] = {}
-	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["fullname"] = tpl.name
-	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["tasks"] = tpl.name
+	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["DCS_group_name"] = tpl.name -- The DCS group name
+	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["altitude"] = altitude
+	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["speed"] = speed
+	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["display_name"] = tpl.display_name --for display in F10 menu
 	
 	asset_manager = require("dct.Theater").singleton():getAssetMgr()
 	asset = asset_manager:factory(tpl.objtype)(tpl)
@@ -257,47 +291,44 @@ function Commander:dispatch(commandUnitType, commandUnitSelection, point, altitu
 	dspch_msg = dctutils.printTabular("DISPATCHING "..commandUnitType.." GROUP: "..tpl.dispatch_callsign, 65, "-")
 	
 	trigger.action.outTextForCoalition(self.owner, dspch_msg, 45)
-	
+
 end
 
 function Commander:move_command(commandUnitType, name, point, altitude, speed) -- need to make fixed wing specific, or check for unit type.
 
 	Logger:debug("COMMANDER: -- move_command")
 	
-	fullname = self.Command_Units["ACTIVE"][commandUnitType][name]["fullname"]
+	DCS_group_name = self.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"] -- The DCS group name 
 		
-	if(fullname) then
+	if(DCS_group_name) then
 	
-		Logger:debug(fullname)
-		CU_Group = Group.getByName(fullname)
+		Logger:debug(DCS_group_name)
+		CU_Group = Group.getByName(DCS_group_name)
 		
 		if(CU_Group) then
 			
 			
 			if(altitude == nil) then
 				
-				altitude = CU_Group:getUnit(1):getPoint().y		
+				altitude = self.Command_Units["ACTIVE"][commandUnitType][name]["altitude"]
 				Logger:debug("ALTITUDE: "..altitude)		
 
 			end		
 			
 			if(speed == nil) then
 			
-				speed = dctutils.getAirspeed(CU_Group:getUnit(1):getVelocity())
+				speed = self.Command_Units["ACTIVE"][commandUnitType][name]["speed"]
 				Logger:debug("SPEED: "..speed)
 				
 			end
 			
-			myMission = self.Dispatcher:moveFixedWing(commandUnitType, point, altitude, speed)
+			myMission = self.Dispatcher:fixedWingmove(commandUnitType, point, altitude, speed)
 			CU_Group:getController():setTask(myMission) 		
 			--ROE ------------
-			CU_Group:getController():setOption(AI.Option.Air.id.ROE, 0) --Without this any CAP will not engage
-			--CU_Group:getController():setOption(AI.Option.Ground.id.ROE, 0) 
-			--CU_Group:getController():setOption(AI.Option.Naval.id.ROE, 0) 
-			CU_Group:getController():setOption(AI.Option.Air.id.REACTION_ON_THREAT, 3) -- might want to allow more flexibility here or set based on CU type
-			--CU_Group:getController():setOption(AI.Option.Ground.id.REACTION_ON_THREAT, 3) -- might want to allow more flexibility here or set based on CU type
-			--CU_Group:getController():setOption(AI.Option.Naval.id.REACTION_ON_THREAT, 3) -- might want to allow more flexibility here or set based on CU type
-		
+			CU_Group:getController():setOption(AI.Option.Air.id.ROE, 5) --Do not engage
+			CU_Group:getController():setOption(AI.Option.Air.id.REACTION_ON_THREAT, 0) -- No reactiong
+			-- These settings will (or should) ensure the unit goes directly where it is commanded at the altitude and speed set with no AI shennanigans			
+			
 		else
 		
 			Logger:debug("COMMANDER: -- move_command: invalid name")
@@ -312,16 +343,63 @@ function Commander:move_command(commandUnitType, name, point, altitude, speed) -
 	
 end
 
+function Commander:attack_command(commandUnitType, name, point, altitude, speed) -- need to make fixed wing specific, or check for unit type.
+	
+	Logger:debug("COMMANDER: -- attack_command")	
+	DCS_group_name = self.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"] -- The DCS group name 
+		
+	if(DCS_group_name and enum.offensiveUnits[enum.commandUnitTypes[commandUnitType]]) then -- group name exists and this is an offensive type unit
+	
+		Logger:debug(DCS_group_name)
+		CU_Group = Group.getByName(DCS_group_name)
+		
+		if(CU_Group) then
+			
+			
+			if(altitude == nil) then
+				
+				altitude = self.Command_Units["ACTIVE"][commandUnitType][name]["altitude"]
+				Logger:debug("ALTITUDE: "..altitude)		
+
+			end		
+			
+			if(speed == nil) then
+			
+				speed = self.Command_Units["ACTIVE"][commandUnitType][name]["speed"]
+				Logger:debug("SPEED: "..speed)
+				
+			end
+			
+			myMission = self.Dispatcher:fixedWingattack(commandUnitType, point, altitude, speed)
+			CU_Group:getController():setTask(myMission)
+			--ROE ------------
+			CU_Group:getController():setOption(AI.Option.Air.id.ROE, 0) -- Weapons free - engage at will
+			CU_Group:getController():setOption(AI.Option.Air.id.REACTION_ON_THREAT, 3) -- Allow evasion, avoidance, will keep any engaged targets from basically being a sitting duck. No kamikaze here.
+
+		else
+		
+			Logger:debug("COMMANDER: -- move_command: invalid name")
+		
+		end
+	
+	else
+	
+		Logger:debug("COMMANDER: -- move_command: invalid name")
+		
+	end
+	
+end
+--[[
 function Commander:orbit_command(commandUnitType, name, point, altitude, speed)
 
 	Logger:debug("COMMANDER: -- orbit_command")
 	
-	fullname = self.Command_Units["ACTIVE"][commandUnitType][name]["fullname"]
-	Logger:debug(fullname)
+	DCS_group_name = self.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"]
+	Logger:debug(DCS_group_name)
 	
-	if(fullname) then
+	if(DCS_group_name) then
 	
-		CU_Group = Group.getByName(fullname)
+		CU_Group = Group.getByName(DCS_group_name)
 		
 		if(CU_Group) then
 			
@@ -372,17 +450,17 @@ function Commander:orbit_command(commandUnitType, name, point, altitude, speed)
 	end
 	
 end
-
+]]--
 function Commander:racetrack_command(commandUnitType, name, point, altitude, speed, heading, leg)
 
 	Logger:debug("COMMANDER: -- racetrack_command")
 	
-	fullname = self.Command_Units["ACTIVE"][commandUnitType][name]["fullname"]
-	Logger:debug(fullname)
+	DCS_group_name = self.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"]
+	Logger:debug(DCS_group_name)
 	
-	if(fullname and point and altitude and speed and heading and leg) then
+	if(DCS_group_name and point and altitude and speed and heading and leg) then
 	
-		CU_Group = Group.getByName(fullname)
+		CU_Group = Group.getByName(DCS_group_name)
 		
 		if(CU_Group) then
 		
@@ -451,12 +529,12 @@ function Commander:landing_command(commandUnitType, name, point)
 
 	Logger:debug("COMMANDER: -- landing_command")
 	
-	fullname = self.Command_Units["ACTIVE"][commandUnitType][name]["fullname"]
-	Logger:debug(fullname)
+	DCS_group_name = self.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"]
+	Logger:debug(DCS_group_name)
 	
-	if(fullname) then
+	if(DCS_group_name) then
 	
-		CU_Group = Group.getByName(fullname)		
+		CU_Group = Group.getByName(DCS_group_name)		
 
 		if(CU_Group) then
 		

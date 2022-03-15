@@ -212,40 +212,32 @@ function MarkerGet:parse(text, initiator, idx, point)
 		===================
 		AI Unit Commands:
 		
+		Note: All units will remember their specified ALT and SPD, so if specified once, will not need to specify on future commands
+		
 		Works on 
 		
 		MOVE
 			GROUP:MOVE
 			"name" 
-				Looks for the nearest DCT asset matching Name and issues a waypoint pushtask to move it to marker position
+				Looks for the active command unit matching Name and issues an orbit pushtask to move it to marker position N.B <--- Must be given an orbit task or will immediatley RTB.
 			
 		DISPATCH
 			(only works for defined AI groups)
 			required:
-			#			<-------- the number selection based on the list command
+			TYPE: #			<-------- the number selection based on the list command
 			
 			
 			eg:
 			
 			AWACS:DISPATCH
-			4  					
+			TYPE: 4  					
 			
 			TANKER:DISPATCH
 			CAP:DISPATCH
-			GROUNDATTACK:DISPATCH
+			ANTISHIP:DISPATCH
 		
 			dispatches the current AI type from airbase nearest map marker to the map marker
-			
-		ORBIT
-		
-			required:
-			#			<-------- the number selection based on the list command
-			
-			(only works for defined AI groups)
-			AWACS:DISPATCH
-			
-			defaults to 20,000 ft alt.
-			
+						
 			
 			
 		RACETRACK
@@ -260,7 +252,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 			
 			E.G:
 			TANKER:RACETRACK
-			1
+			TYPE: 1
 			HDG:90
 			
 			
@@ -289,6 +281,13 @@ function MarkerGet:parse(text, initiator, idx, point)
 			AWACS:ACTIVE
 			CAP:ACTIVE
 			TANKER:ACTIVE
+			
+		ATTACK
+			(only works for defined AI groups)
+						
+			CAP:ATTACK
+			ANTISHIP:ATTACK
+			SEAD:ATTACK
 			
 		
 		===================
@@ -338,11 +337,11 @@ function MarkerGet:parse(text, initiator, idx, point)
 			
 			Logger:debug("MarkerGet : INSIDE")	
 			Logger:debug("MarkerGet : second: ".. second)	
-			Logger:debug("MarkerGet : second: ".. second)	
 			
 			remainder = string.match(text, "\n.+$") -- returns everything on the next lines			
 			
-				
+			-- COMMANDER COMMANDS _---------------------------------------------------------------------------------------------------------
+			
 			if(second == "DISPATCH" and remainder) then
 				
 				unitType = first
@@ -363,18 +362,12 @@ function MarkerGet:parse(text, initiator, idx, point)
 				if alt then
 				
 					altitude = tonumber(string.sub(alt, 5)) --returns number after "TYPE:" works even with \n inside remainder
-				else
-				
-					altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
-					
+								
 				end
 				
 				if spd then
 				
 					speed = tonumber(string.sub(spd, 5)) --returns number after "TYPE:" works even with \n inside remainder
-				else
-				
-					speed = settings.gameplay["COMMAND_UNIT_DEFAULT_SPEED"]
 					
 				end
 				
@@ -445,10 +438,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 						
 					end
 				
-				else
 				
-					altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
-					
 				end
 				
 				if spd then
@@ -469,14 +459,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 						
 					end
 					
-				else
-				
-					speed = settings.gameplay["COMMAND_UNIT_DEFAULT_SPEED"]
-										
-					
-				end				
-				
-
+				end		
 				
 				local cmdr = self._theater:getCommander(playerasset.owner)
 				
@@ -503,8 +486,87 @@ function MarkerGet:parse(text, initiator, idx, point)
 					
 					trigger.action.outTextForGroup(playerasset.groupId, "Unit type or callsign/name or speed or altitude units are invalid. Try UnitType:List to see all available unit types or type HELP into an F10 marker for info on the command system. Callsigns/names are the last word or word combination in the group field when selected ona an F10 map marker. They must be passed in quotes, ex: \"ALPHA\"", 30)
 					
+				end	
+
+			elseif(second == "ATTACK" and remainder) then
+				
+				Logger:debug("MOVE COMMAND")
+				unitType = first
+				Logger:debug(remainder)
+				name = string.match(remainder, "\"%a+\"") -- returns anything inside double quotes "" 
+				alt = string.match(remainder, "ALT:%w+")
+				spd = string.match(remainder, "SPD:%w+")
+								
+				if alt then
+				
+					Logger:debug("ALTITUDE")
+					
+					alt = string.sub(alt, 5) --returns number after "ALT:" works even with \n inside remainder
+					altitude = tonumber(string.match(alt, "%d+"))
+					units = string.match(alt, "%a+")
+					
+					if units then
+					
+						altitude = dctutils.convertDistance(altitude, units, "m")
+					
+					else
+					
+						altitude = dctutils.convertDistance(altitude, "ft", "m")
+						
+					end
+				
+				
 				end
 				
+				if spd then
+				
+					Logger:debug("SPEED")
+					
+					spd = string.sub(spd, 5) --returns number after "SPD:" works even with \n inside remainder
+					speed = tonumber(string.match(spd, "%d+"))
+					units = string.match(spd, "%a+")
+					
+					if units then
+					
+						speed = dctutils.convertSpeed(speed, units, "ms")
+					
+					else	
+					
+						speed = dctutils.convertSpeed(speed, "kn", "ms")
+						
+					end
+					
+				end		
+				
+				local cmdr = self._theater:getCommander(playerasset.owner)
+				
+				if(unitType and name) then
+
+					name = name:sub(2,name:len()-1) --removes the double quotes "
+													
+					Logger:debug("name: " .. name)
+					Logger:debug("altitude: " .. altitude)
+					Logger:debug("speed: " .. speed)
+					
+					if(cmdr.Command_Units["ACTIVE"][unitType][name]) then
+					
+						self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: ATTACK", cmdr.attack_command, cmdr, unitType, name, point, altitude, speed))
+						trigger.action.removeMark(idx)
+						
+					else
+					
+						trigger.action.outTextForGroup(playerasset.groupId, "Invalid unit name. This name is the last word or word combination in the group field when selected on a an F10 map marker. They must be passed in quotes, ex: \"ALPHA\"", 30)
+					
+					end
+					
+				else				
+					
+					trigger.action.outTextForGroup(playerasset.groupId, "Unit type or callsign/name or speed or altitude units are invalid. Try UnitType:List to see all available unit types or type HELP into an F10 marker for info on the command system. Callsigns/names are the last word or word combination in the group field when selected ona an F10 map marker. They must be passed in quotes, ex: \"ALPHA\"", 30)
+					
+				end
+			
+			-- OBSOLETE: MOVE command will be given this behavior and ATTACK command till replace MOVE for units that have an offensive capability.
+			--[[
 			elseif(second == "ORBIT" and remainder) then
 			
 				Logger:debug("ORBIT COMMAND")
@@ -571,7 +633,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 					trigger.action.outTextForGroup(playerasset.groupId, "Unit type or callsign/name is invalid. Try UnitType:List to see all available unit types or type HELP into an F10 marker for info on the command system. Callsigns/names are the last word or word combination in the group field when selected ona an F10 map marker. They must be passed in quotes, ex: \"ALPHA\"", 30)
 					
 				end
-				
+				--]]
 				
 			elseif(second == "RACETRACK" and remainder) then
 			
@@ -598,9 +660,6 @@ function MarkerGet:parse(text, initiator, idx, point)
 						altitude = dctutils.convertDistance(altitude, "ft", "m")
 						
 					end
-				else
-				
-					altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
 					
 				end
 				
@@ -618,11 +677,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 					
 						speed = dctutils.convertSpeed(speed, "kn", "ms")
 						
-					end
-					
-				else
-				
-					speed = settings.gameplay["COMMAND_UNIT_DEFAULT_SPEED"]						
+					end			
 					
 				end	
 				
@@ -657,9 +712,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 				
 					leg = 74080 --40 nm
 					
-				end				
-				
-
+				end			
 				
 				if(unitType and name) then
 				

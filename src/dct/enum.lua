@@ -68,6 +68,14 @@ enum.commandUnitTypes = {
 	["CAS"] = 6, --["AI"] = 36, -- still just a concept
 	["ANTISHIP"] = 7, --["AI"] = 36, -- still just a concept
 }
+
+enum.offensiveUnits = { -- units that partake in offensive missions (a permissive for the attack command)
+	[enum.commandUnitTypes["CAP"]] = true, 
+	[enum.commandUnitTypes["SEAD"]] = true, 
+	[enum.commandUnitTypes["STRIKE"]] = true, 
+	[enum.commandUnitTypes["CAS"]] = true, 
+	[enum.commandUnitTypes["ANTISHIP"]] = true, 
+}
 	
 --[[
 -- We use a min-heap so priority is in reverse numerical order,

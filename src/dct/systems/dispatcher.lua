@@ -96,7 +96,7 @@ function Dispatcher:dispatchFixedWing(template, point, altitude, speed)
 	
 end
 
-function Dispatcher:moveFixedWing(commandUnitType, point, altitude, speed)
+function Dispatcher:fixedWingmove(commandUnitType, point, altitude, speed)
 
 	Logger:debug("DISPATCHER ==== MOVE===")		
 	Logger:debug("commandUnitType: " .. commandUnitType)	
@@ -112,13 +112,7 @@ function Dispatcher:moveFixedWing(commandUnitType, point, altitude, speed)
 	myMission.params.route.points[1]["type"] = "Turning Point"
 	myMission.params.route.points[1]["action"] = "Turning Point"
 	
-	task_tbl = dctutils.fixedWing.DefaultTask(commandUnitType)
-	utils.tprint(task_tbl)
-	orbit_tsk = dctutils.fixedWing.OrbitTask() -- without an orbit task the unit will just RTB upon arrive (with no way to cancel).
-	utils.tprint(orbit_tsk)
-	
-	task_tbl.params.tasks[#task_tbl.params.tasks+1] = orbit_tsk
-	--table.insert(task_tbl.params.tasks, Task)
+	task_tbl = dctutils.fixedWing.OrbitTask()
 	
 	Logger:debug("TASK DUMP")
 	utils.tprint(task_tbl)
@@ -127,6 +121,48 @@ function Dispatcher:moveFixedWing(commandUnitType, point, altitude, speed)
 	
 	Logger:debug("MISSION DUMP")
 	--utils.tprint(myMission)
+	
+	return myMission
+	
+end
+
+function Dispatcher:fixedWingattack(commandUnitType, point, altitude, speed)
+
+	Logger:debug("DISPATCHER ==== MOVE===")		
+	Logger:debug("commandUnitType: " .. commandUnitType)	
+	Logger:debug("altitude: " .. altitude)
+	Logger:debug("speed: " .. speed)
+	
+	if(commandUnitType == "CAP" or commandUnitType == "SEAD" or commandUnitType == "ANTISHIP") then
+		
+		myMission = dctutils.fixedWing.defaultMissionTask()		
+		myMission.params.route.points[1]["x"] = point.x
+		myMission.params.route.points[1]["y"] = point.z
+		myMission.params.route.points[1]["alt"] = altitude
+		myMission.params.route.points[1]["alt_type"] = "BARO"
+		myMission.params.route.points[1]["speed"] = speed
+		myMission.params.route.points[1]["type"] = "Turning Point"
+		myMission.params.route.points[1]["action"] = "Turning Point"
+		
+		task_tbl = dctutils.fixedWing.DefaultTask(commandUnitType)
+		utils.tprint(task_tbl)
+		orbit_tsk = dctutils.fixedWing.OrbitTask() -- without an orbit task the unit will just RTB upon arrive (with no way to cancel).
+		utils.tprint(orbit_tsk)
+		
+		task_tbl.params.tasks[#task_tbl.params.tasks+1] = orbit_tsk
+		--table.insert(task_tbl.params.tasks, Task)
+		
+		Logger:debug("TASK DUMP")
+		utils.tprint(task_tbl)
+		
+		myMission.params.route.points[1]["task"] = task_tbl
+		
+		Logger:debug("MISSION DUMP")
+		--utils.tprint(myMission)
+	
+	elseif(commandUnitType == "CAS") then	-- t.b.c
+		
+	end
 	
 	return myMission
 	
@@ -164,10 +200,14 @@ local codenames = { --for naming AI command groups
 }
 
 function Dispatcher:assignCallsign(CUType)
-
+	
+	-- Tries names from codenames table until an unused one is found (up to 4)
+	-- If no available names, will compound two names at random (e.g: Alpha-Papa) if this one is unavailable
+	-- will compound a random number at the end over and over until something is available. e.g (Alpha-Papa-1)(Alpha-Papa-1-2-3-4)
+	
 	tries = 0
 	
-	while(tries < 5) do
+	while(true) do
 	
 		callsign_selected = codenames[math.random(0, #codenames)]
 		Logger:debug(callsign_selected)
@@ -183,21 +223,22 @@ function Dispatcher:assignCallsign(CUType)
 			tries = 0
 			callsign_selected = codenames[math.random(0, #codenames)].."-"..math.random(0, 9)
 				
-				while(tries < 5) do
-					
-					if(self.ActiveUnits[CUType][callsign_selected] == nil) then
-			
-						self.ActiveUnits[CUType][callsign_selected] = true;
-						return callsign_selected
-									
-					else
-					
-						callsign_selected = callsign_selected.."-"..math.random(0, 9)
-						tries = tries+1
-					
-					end
-					
-				end		
+			while(true) do
+				
+				if(self.ActiveUnits[CUType][callsign_selected] == nil) then -- very unlikely with a large enough codename base
+		
+					self.ActiveUnits[CUType][callsign_selected] = true;
+					return callsign_selected
+								
+				else
+				
+					callsign_selected = callsign_selected.."-"..math.random(0, 9) -- very very unlikely, but will repeat until something unique is formed			
+				
+				end
+				
+			end	
+
+
 			
 			
 		
@@ -207,13 +248,8 @@ function Dispatcher:assignCallsign(CUType)
 			
 		end
 		
-	end
-	
-	
-					
-	Logger:warn("DISPATCHER: Namespace is too busy - add more codenames") -- very unlikely to happen
-	
-	return nil
+	end	
+
 	
 end
 
