@@ -92,6 +92,7 @@ function utils.loadtable(sfile)
 end
 
 function utils.savetable(tbl,filename)		
+  local function exportstring(s) return string.format("%q", s) end
   local charS,charE = "   ","\n"
   local file,err = io.open( filename, "wb" )
   if err then return err end
@@ -154,6 +155,8 @@ function utils.savetable(tbl,filename)
 				 file:write( str..exportstring( v )..","..charE )
 			  elseif stype == "number" then
 				 file:write( str..tostring( v )..","..charE )
+			  elseif stype == "boolean" then
+				 file:write( str..tostring( v )..","..charE )
 			  end
 		   end
 		end
@@ -204,7 +207,7 @@ function utils.checkkeys(keys, tbl)
 end
 
 
-function utils.tprint(tbl, indent) --usefull debugging tool
+function utils.tprint(tbl, indent) --useful debugging tool
   if not indent then indent = 0 end
   for k, v in pairs(tbl) do
     formatting = string.rep("  ", indent) .. k .. ": "

@@ -15,28 +15,26 @@
 -- Check coalition of airfield (for that matter, have a means to deal with captured airfields
 -- Deal with multicrew somehow
 
+local utils      = require("libs.utils")
+local dctutils   = require("dct.utils")
 local class  = require("libs.namedclass")
-local Logger = require("dct.libs.Logger").getByName("UI")
+local Logger = require("dct.libs.Logger").getByName("Inventory")
 local enum        = require("dct.enum")
 local Command     = require("dct.Command")
+local settings    = _G.dct.settings
 
-local Inventory = class("Vote")
-function Inventory:__init(init_table)
-
+local Inventory = class("Inventory")
+function Inventory:__init(base)
+	self._inventory = {} -- the actual 'inventory table'
+	
+	self.base = base
+	
+	self.inventory_tables_path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"
 	--self._theater = theater might be useful to have these (n.b might also be able to just grab these with requires, no need to pass anything
 	--self._cmdr = cmdr
 	
-	if init_table then
-	
-		self.inventory = init_table
-	
-	else
-	
-		self.init_tables
-	
-	end
-	
-	--self.path <-- point to theater/tables/inventories
+	self.init_tables
+
 	
 	
 end
@@ -48,99 +46,101 @@ function Inventory:post_init()
 	
 	-- below: old style
 	-- Use DCT events for this now
+end
+
+--[[
+function EventHandler:onEvent(event)
+  onTakeoffEvent(event)
+  onLandingEvent(event)
+  onBirthEvent(event)  
+end
+
+function onTakeoffEvent(event)
+  
+	if event.id == world.event.S_EVENT_TAKEOFF then
+		--trigger.action.outText("takeoff", 30)
+		
+		local departingAirbase = event.place:getName()		
+		--trigger.action.outText(departingAirbase, 30)
+		--test_ammoTable = event.initiator:getAmmo()
+		--trigger.action.outText(event.initiator, 30)	
+		
+		
+		if(Inventory_Check(event.initiator, event.place:getName())) then --Unit has a valid loadout
+		
+			Inventory_Checkout(event.initiator, departingAirbase)
+		
+		else	
+		
+			trigger.action.outText("Temporal anomaly detected! You will phase into nullspace in "..explode_delay.." seconds", 30)	
+			timer.scheduleFunction(explode_player, event.initiator, timer.getTime() + explode_delay) -- seconds mission time required
+
+
+		end
+		
+	end
 	
-	function EventHandler:onEvent(event)
-	  onTakeoffEvent(event)
-	  onLandingEvent(event)
-	  onBirthEvent(event)  
-	end
+  
+end
 
-	function onTakeoffEvent(event)
-	  
-		if event.id == world.event.S_EVENT_TAKEOFF then
-			--trigger.action.outText("takeoff", 30)
-			
-			local departingAirbase = event.place:getName()		
-			--trigger.action.outText(departingAirbase, 30)
-			--test_ammoTable = event.initiator:getAmmo()
-			--trigger.action.outText(event.initiator, 30)	
-			
-			
-			if(Inventory_Check(event.initiator, event.place:getName())) then --Unit has a valid loadout
-			
-				Inventory_Checkout(event.initiator, departingAirbase)
-			
-			else	
-			
-				trigger.action.outText("Temporal anomaly detected! You will phase into nullspace in "..explode_delay.." seconds", 30)	
-				timer.scheduleFunction(explode_player, event.initiator, timer.getTime() + explode_delay) -- seconds mission time required
-
-
-			end
-			
-		end
+function onLandingEvent(event)
+  
+	if event.id == world.event.S_EVENT_LAND then
+	
+		trigger.action.outText("Landing ------------- Inventory Transfer:", 30)
+		trigger.action.outText(event.initiator:getName(), 30)
+		arrivingAirbase = event.place:getName()
 		
-	  
-	end
-
-	function onLandingEvent(event)
-	  
-		if event.id == world.event.S_EVENT_LAND then
+		--trigger.action.outText(arrivingAirbase, 30)
+		--test_ammoTable = event.initiator:getAmmo()
+		--trigger.action.outText(event.initiator, 30)	
 		
-			trigger.action.outText("Landing ------------- Inventory Transfer:", 30)
-			trigger.action.outText(event.initiator:getName(), 30)
-			arrivingAirbase = event.place:getName()
+		--Check if landing aircraft has any deliveries
+		
+		for k, v in pairs(deliveries) do
+		
+			if(deliveries[k].UnitAttachedto == event.initiator:getName()) then
 			
-			--trigger.action.outText(arrivingAirbase, 30)
-			--test_ammoTable = event.initiator:getAmmo()
-			--trigger.action.outText(event.initiator, 30)	
-			
-			--Check if landing aircraft has any deliveries
-			
-			for k, v in pairs(deliveries) do
-			
-				if(deliveries[k].UnitAttachedto == event.initiator:getName()) then
+				trigger.action.outText("Delivery Detected!", 30)				
+				Delivery_Handoff(arrivingAirbase, event.initiator:getName())
+				deliveries[k] = nil --clear this entry from the table
+				break -- not sure if we will ever want multiple deliveries attached to 1 unit. Can't think of a use case, but if that happens this like will need to be removed. As is it will slightly improve performance				
 				
-					trigger.action.outText("Delivery Detected!", 30)				
-					Delivery_Handoff(arrivingAirbase, event.initiator:getName())
-					deliveries[k] = nil --clear this entry from the table
-					break -- not sure if we will ever want multiple deliveries attached to 1 unit. Can't think of a use case, but if that happens this like will need to be removed. As is it will slightly improve performance				
-					
-				end
-			
 			end
-			
 		
-			--if(Inventory_Check(event.initiator, event.place:getName())) then --Unit has a valid loadout not sure if we need to check anything really?
-			
-			Inventory_Handoff(event.initiator, arrivingAirbase) -- going to need to think a bit about how to deal with logistics aircraft comming and going, especially things like the C-130 having 4 crew members...
-			
-			--else		
-			--	trigger.action.outText("Boom!", 30)	
-			--	trigger.action.explosion(event.initiator:getPoint(), 50)
-
-			--end
-			
 		end
 		
-	  
-	end
+	
+		--if(Inventory_Check(event.initiator, event.place:getName())) then --Unit has a valid loadout not sure if we need to check anything really?
+		
+		Inventory_Handoff(event.initiator, arrivingAirbase) -- going to need to think a bit about how to deal with logistics aircraft comming and going, especially things like the C-130 having 4 crew members...
+		
+		--else		
+		--	trigger.action.outText("Boom!", 30)	
+		--	trigger.action.explosion(event.initiator:getPoint(), 50)
 
-	function onBirthEvent(event)
-	  
-		if event.id == world.event.S_EVENT_BIRTH then
-			--trigger.action.outText("inside birth event", 30)		
-			local position = event.initiator:getPoint()
-			local CurrentAirbase = getCurrentAirbase(position.x, position.y, position.z)	
-			
-			missionCommands.addCommandForGroup(event.initiator:getGroup():getID(), "Check Loadout vs. Inventory", nil, Inventory_Manual_Check_Loadout, event.initiator) -- Submenus: List available weapons at current airbase, list available airframs at air base (something else?)
+		--end
 		
-			
-		--playerLocationTable[event.initiator] = 
-		
-		end	
-	  
 	end
+	
+  
+end
+
+function onBirthEvent(event)
+  
+	if event.id == world.event.S_EVENT_BIRTH then
+		--trigger.action.outText("inside birth event", 30)		
+		local position = event.initiator:getPoint()
+		local CurrentAirbase = getCurrentAirbase(position.x, position.y, position.z)	
+		
+		missionCommands.addCommandForGroup(event.initiator:getGroup():getID(), "Check Loadout vs. Inventory", nil, Inventory_Manual_Check_Loadout, event.initiator) -- Submenus: List available weapons at current airbase, list available airframs at air base (something else?)
+	
+		
+	--playerLocationTable[event.initiator] = 
+	
+	end	
+  
+end
 		
 	
 end

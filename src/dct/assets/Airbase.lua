@@ -108,6 +108,7 @@ function RepairingState:__init()
 	self.type = statetypes.REPAIRING
 	self.timeout = 12*60*60 -- 12 hour repair time
 	self.ctime   = timer.getAbsTime()
+	self.Inventory = require("dct.systems.Inventory")(self) -- Inventory of all consumable assets: Airframes, Munitions, Pilots, Manpower, Fuel, 
 	self:_addMarshalNames({"type", "timeout",})
 end
 

@@ -73,59 +73,68 @@ end
 function AssetManager:AirbaseInit()
 -- Add all airbases from world.getAirbases() to the airbase table
 
-	AB_Tpl = {
-	["objtype"] = "AIRBASE", --enum.assetType["AIRBASE"],
-	["subordinates"] = {},
-	--["contest_dist"] = 10,
-	--["takeofftype"] = {},
-	--["recoverytype"] = {},
-	}
-
-	AB_tbl = world.getAirbases()
+	Logger:debug("ASSET MANAGER: AIRBASE INIT-----")
 	
-	Logger:debug("AIRBASE DUMP-----")
-
-	utils.tprint(AB_tbl, 2)
+	for __, side in pairs(coalition.side) do
+	
+		AB_tbl = coalition.getAirbases(side) -- ordinarily coalition.getAirbases(1) + coalition.getAirbases(2) + coalition.getAirbases(3) = world.getAirbases              but of course, it just doesn't work like that.... hope you enjoy hacky workarounds
 		
-	for i = 1, #AB_tbl do
-	
-	   AB_Obj = AB_tbl[i]
+		Logger:debug("AIRBASE DUMP-----")		
+		Logger:debug("SIDE: ".. side)		
+		
+		--utils.tprint(AB_tbl)
+		
+		for i = 1, #AB_tbl do
+		
+		   AB_Obj = AB_tbl[i]
 
-	   name = AB_Obj:getName()
-	
-		if(self:getAsset(name) == nil) then -- no airbase already defined
+		   name = AB_Obj:getName()
+		   id = AB_Obj:getID()
+		   desc_table = AB_Obj:getDesc() 
+		   Logger:debug("-------------------------")
+		   Logger:debug(name)
+		   Logger:debug(desc_table.typeName)
+		   Logger:debug(id)
+		   Logger:debug("i"..i)
+		   --utils.tprint(desc_table) -- TPRINT BAD
+			  
+			if(self:getAsset(name) == nil) then -- no airbase already defined
+				AB_Tpl = {
+					["objtype"] = "AIRBASE", --enum.assetType["AIRBASE"],
+					["subordinates"] = {},
+					--["contest_dist"] = 10,
+					--["takeofftype"] = {},
+					--["recoverytype"] = {},
+				}
+				
+			   AB_Tpl.AB_Obj = AB_Obj
+			   AB_Tpl.name = name		   
+			   --desc = AB_Obj:getDesc()
+			   --callsign = AB_Obj:getCallsign()
+			   AB_Tpl.id = AB_Obj:getID()
+			   --cat = AB_Obj:getCategory(AB_Obj)
+			   AB_Tpl.location = AB_Obj:getPoint()
+			   AB_Tpl.coalition = AB_Obj:getCoalition()	   
+			   
+			   tpl = Template(AB_Tpl)
+			   AB_asset = self:factory(tpl.objtype)(tpl)
+			   self:add(AB_asset)	
+			   AB_asset:generate(self)
+			   AB_asset:spawn()
+			   
+			   -- Need to add some thing for airbase types
+
+			   
+			   Logger:debug("AIRBASE ASSET GENERATED: " .. name)
+			  
+			else -- for debugging only
 			
+				Logger:debug("AIRBASE ALREADY FOUND: " .. name)
 			
-		   AB_Tpl.AB_Obj = AB_Obj
-		   AB_Tpl.name = name		   
-		   --desc = AB_Obj:getDesc()
-		   --callsign = AB_Obj:getCallsign()
-		   AB_Tpl.id = AB_Obj:getID()
-		   --cat = AB_Obj:getCategory(AB_Obj)
-		   AB_Tpl.location = AB_Obj:getPoint()
-		   AB_Tpl.coalition = AB_Obj:getCoalition()	   
-		   
-		   
-		   
-		   tpl = Template(AB_Tpl)
-		   AB_asset = self:factory(tpl.objtype)(tpl)
-		   self:add(AB_asset)	
-		   AB_asset:generate(self)
-	       AB_asset:spawn()
-		   
-		   
-		   
-		   
-		   
-		   Logger:debug("AIRBASE ASSET GENERATED: " .. name)
-		  
-		else -- for debugging only
-		
-			Logger:debug("AIRBASE ALREADY FOUND: " .. name)
-		
+			end
 		end
 	end
-
+	
 
 end
 

@@ -76,6 +76,16 @@ enum.offensiveUnits = { -- units that partake in offensive missions (a permissiv
 	[enum.commandUnitTypes["CAS"]] = true, 
 	[enum.commandUnitTypes["ANTISHIP"]] = true, 
 }
+
+ 
+enum.airbaseTakeoffBlocked = { -- DCS is dumb and will allow some units to take off from airbases they shouldn't (like an E-3 AWACS on the LHA Tarawa) this list is to prevent that from happening (add more as required)
+	["LHA_Tarawa"] = {
+		["FA-18C_hornet"] = true, 
+		["E-2C"] = true,
+		["S-3B Tanker"] = true,		  
+	}
+			  
+}
 	
 --[[
 -- We use a min-heap so priority is in reverse numerical order,
@@ -426,5 +436,165 @@ enum.event = {
 }
 
 enum.kickCode = require("dct.libs.kickinfo").kickCode
+
+-- GAMEPLAY ENUMS
+-- These can be considered somewhere between a "setting" and a "tunable gampeplay/balance variable"
+-- 
+--
+--
+-- Essentially, creating a setting for every single gameplay variable I might want to affect was
+-- getting way too onerous. 
+
+
+-- RECON
+-- Define different ranges for which certain aircraft will detect enemy units and make them known to
+-- the commander
+
+
+enum.gameplay.ReconRange = {
+
+
+
+
+
+
+
+
+}
+
+
+-- ELINT
+-- Define different ranges for which certain aircraft will detect enemy SAMs and make them known to
+-- the commander
+
+
+enum.gameplay.ElintRange = {
+
+
+
+
+
+
+
+
+}
+
+-- Logistics
+-- Weights, volumes, capacity, fuel consumption, ammo requirements, etc
+-- 
+
+enum.gameplay.logistics.capacity = {
+["airframes"] = {
+				["C-130"] = {
+							["weight"] = 4000 --kg
+							["volume"] = 50 --cubic m
+				
+				
+				
+							},
+
+
+				},
+["ground_units"] = {
+				["TRUCCCK"] = {
+							["weight"] = 4000 --kg
+							["volume"] = 50 --cubic m				
+							},
+
+
+				},
+
+
+
+}
+
+enum.gameplay.logistics.payload = {
+["munitions"] = {
+				["AIM-120C"] = {
+							["weight"] = 200, --kg
+							["volume"] = 1 --cubic m				
+							},
+				},
+				
+["other"] = {		-- some of these may be a bit controversial
+					-- all are approximate
+				["Manpower"] = {
+							["weight"] = 90, --kg -- decent average, including kit
+							["volume"] = 0.3 --cubic m
+							},
+				["ammo"] = { --needs to be generic. According to marinecft.com
+							-- normal USMC ammo boxes weigh 30 lbs appx 1934 cu in = 0.03 cu m
+							["weight"] = 13.6078, --kg -- 1 crate o
+							["volume"] = 0.03185645 --cubic m				
+							},
+				["food"] = { --one U.S ration is 18 - 26 ounces. 24 ounces = 0.68 kg, 3 in x 12 in x 8 in
+							["weight"] = 0.680389, --kg -- 1 crate o
+							["volume"] = 0.00471947443 --cubic m				
+							},
+				["ammenities"] = { --very, very broad category, but generally light compared to military hardware. Think, first aid kits, radios,
+								   --books/magazines, rations, etc. Infact, we are going to use the weight and volume of a first aid kit for this
+							-- normal USMC ammo boxes weigh 30 lbs appx 1934 cu in = 0.03 cu m
+							["weight"] = 1.36, --kg -- 1 crate o
+							["volume"] = 0.02079 --cubic m				
+							},
+				["mail"] = { --not sure how to measure this one really
+				
+							["weight"] = 1.36, --kg -- 1 crate o
+							["volume"] = 0.02079 --cubic m				
+							},			
+				["Casualty"] = {
+							["weight"] = 90, --kg -- decent average, including litter, medical equipment
+							["volume"] = 0.5 --cubic m
+							},
+			}
+
+
+
+
+}
+enum.gameplay.logistics.discrete = { -- A discrete value is 1 per unit.
+									 -- A non discrete value is weight/volume (or volume/weight)
+									 -- 1 person vs. 100 kg of diesel
+	["Manpower"] = true,
+	["casualties"] = true,
+	["ammo"] = false,
+	["diesel"] = false,
+	["aviation fuel"] = false,
+	["Amenities"] = false,
+	["mail"] = false,
+}
+
+
+
+}
+
+enum.gameplay.logistics.fuel_consumption = {
+--in m/cu m (a bit of a weird unit, but saves a calculation at run time)
+
+["ground_units"] = {
+				["TRUCCCK"] = 
+
+
+				},
+
+
+}
+
+enum.gameplay.logistics.ammo_consumption = {
+--amount of ammo to go from empty to reloaded (again controversial and approximate)
+["ground_units"] = {
+				["TRUCCCK"] = {
+							["weight"] = 4000 --kg
+							["volume"] = 50 --cubic m				
+							},
+
+
+				},
+
+
+}
+
+
+
 
 return enum
