@@ -1,0 +1,4 @@
+name = "Anapa Shore Air Defence Company "
+objtype = "SPECIALFORCES"
+known = true
+stage = 2 -- for testing, will change this to 2 for OD 

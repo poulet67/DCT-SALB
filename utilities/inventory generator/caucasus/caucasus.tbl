@@ -1,0 +1,25 @@
+return 
+-- Table: {1}
+{
+   "Anapa-Vityazevo",
+   "Krasnodar-Center",
+   "Novorossiysk",
+   "Krymsk",
+   "Maykop-Khanskaya",
+   "Gelendzhik",
+   "Sochi-Adler",
+   "Krasnodar-Pashkovsky",
+   "Sukhumi-Babushara",
+   "Gudauta",
+   "Batumi",
+   "Senaki-Kolkhi",
+   "Kobuleti",
+   "Kutaisi",
+   "Mineralnye Vody",
+   "Nalchik",
+   "Mozdok",
+   "Tbilisi-Lochini",
+   "Soganlug",
+   "Vaziani",
+   "Beslan",
+}

@@ -1,0 +1,4 @@
+name = "Anapa Shore Bunker Network"
+objtype = "BUNKER"
+known = true
+stage = 1 -- for testing, will change this to 2 for OD 

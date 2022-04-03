@@ -1,0 +1,51 @@
+-- display names 
+
+dn_table =
+{
+	["airframes"] = { --not sure if there is really no displayName for these...
+					},
+	["munitions"] = {
+				  ["ARAKM70BAP"] = "ARAK M70B AP",
+				  ["OF_350"] = "OF 350",
+				  ["ARAKM70BHE"] = "ARAK M70B HE",
+				  ["weapons.nurs.C_8CM_BU"] = "S-8TsM Green",
+				  ["weapons.nurs.C_8CM_RD"] = "S-8TsM Red",
+				  ["weapons.nurs.C_8CM_VT"] = "S-8TsM Violet",
+				  ["weapons.nurs.C_8CM_WH"] = "S-8TsM White",
+				  ["weapons.nurs.C_8CM_YE"] = "S-8TsM Yellow",
+				  ["weapons.nurs.R4M"] = "R4M 3.2kg Un-guided air-to-air rocket",
+				  ["weapons.nurs.SNEB68_EAP"] = "SNEB 68mm EAP",
+				  ["weapons.nurs.SNEB68_WP"] = "SNEB 68mm WP",
+				  ["weapons.nurs.UG_90MM"] = "90mm Rocket",
+				  ["weapons.shells.20mm_M53_API"] = "20mm M53 API",
+				  ["50Browning_API_M8"] = ".50 Browning API M8",
+				  ["50Browning_APIT_M20"] = ".50 Browning APIT M20",
+				  ["50Browning_AP_M2"] = ".50 Browning AP M2",
+				  ["50Browning_Ball_M2"] = ".50 Browning Ball M8",
+				},
+	["ground"] = {
+					},
+	["naval"] = { ["ALBATROS"] = "Albatros",
+				  ["ELNYA"] = "Elnya",
+				  ["HandyWind"] = "Handy Wind",
+				  ["KILO"] = "Kilo",
+				  ["LHA_Tarawa"] = "LHA Tarawa",
+				  ["MOLNIYA"] = "Molniya",
+				  ["MOSCOW"] = "Moskva",
+				  ["NEUSTRASH"] = "Neustrashimyy",
+				  ["PERRY"] = "Perry",
+				  ["PIOTR"] = "Piotr",
+				  ["REZKY"] = "Rezky",
+				  ["Type_052B"] = "Type 052B",
+				  ["Type_052C"] = "Type 052C",
+				  ["Type_054A"] = "Type 054A",
+				  ["Type_071"] = "Type 071",
+				  ["Type_093"] = "Type 093",
+				  ["USS_Arleigh_Burke_IIa"] = "USS Arleigh Burke IIa",
+				  ["VINSON"] = "USS Carl Vinson",
+				  ["ZWEZDNY"] = "Zwezdny",
+				  ["speedboat"] = "Armed Speed Boat",
+				  }
+
+}
+

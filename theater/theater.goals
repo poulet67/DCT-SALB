@@ -1,0 +1,13 @@
+time = 0  --43200 = 12 hours in seconds 0 = disabled
+
+blue = {
+	capture_region = 2 -- When region with ID = 2 is owned by bluefor, victory
+}
+
+red = {
+
+}
+
+neutral = {
+
+}

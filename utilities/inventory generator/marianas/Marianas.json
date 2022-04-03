@@ -1,0 +1,162 @@
+{
+  "Andersen AFB": {
+    "callsign": "Andersen AFB",
+    "cat": 4,
+    "desc": {
+      "_origin": "",
+      "attributes": {
+        "Airfields": true
+      },
+      "category": 0,
+      "displayName": "Andersen AFB",
+      "life": 3600,
+      "typeName": "Andersen AFB"
+    },
+    "id": 6,
+    "point": {
+      "x": 9961.662109375,
+      "y": 166.12214660645,
+      "z": 13072.155273438
+    }
+  },
+  "Antonio B. Won Pat Intl": {
+    "callsign": "Antonio B. Won Pat Intl",
+    "cat": 4,
+    "desc": {
+      "_origin": "",
+      "attributes": {
+        "Airfields": true
+      },
+      "category": 0,
+      "displayName": "Antonio B. Won Pat Intl",
+      "life": 3600,
+      "typeName": "Antonio B. Won Pat Intl"
+    },
+    "id": 4,
+    "point": {
+      "x": -588.52325439453,
+      "y": 77.79207611084,
+      "z": -1388.0504150391
+    }
+  },
+  "North West Field": {
+    "callsign": "North West Field",
+    "cat": 4,
+    "desc": {
+      "_origin": "",
+      "attributes": {
+        "Airfields": true
+      },
+      "category": 0,
+      "displayName": "North West Field",
+      "life": 3600,
+      "typeName": "North West Field"
+    },
+    "id": 8,
+    "point": {
+      "x": 15909.4765625,
+      "y": 159.00015258789,
+      "z": 7619.5615234375
+    }
+  },
+  "Olf Orote": {
+    "callsign": "Olf Orote",
+    "cat": 4,
+    "desc": {
+      "_origin": "",
+      "attributes": {
+        "Airfields": true
+      },
+      "category": 0,
+      "displayName": "Olf Orote",
+      "life": 3600,
+      "typeName": "Olf Orote"
+    },
+    "id": 5,
+    "point": {
+      "x": -5213.9970703125,
+      "y": 28.364225387573,
+      "z": -16965.154296875
+    }
+  },
+  "Pagan Airstrip": {
+    "callsign": "Pagan Airstrip",
+    "cat": 4,
+    "desc": {
+      "_origin": "",
+      "attributes": {
+        "Airfields": true
+      },
+      "category": 0,
+      "displayName": "Pagan Airstrip",
+      "life": 3600,
+      "typeName": "Pagan Airstrip"
+    },
+    "id": 7,
+    "point": {
+      "x": 512369.6875,
+      "y": 16.033027648926,
+      "z": 107433.7421875
+    }
+  },
+  "Rota Intl": {
+    "callsign": "Rota Intl",
+    "cat": 4,
+    "desc": {
+      "_origin": "",
+      "attributes": {
+        "Airfields": true
+      },
+      "category": 0,
+      "displayName": "Rota Intl",
+      "life": 3600,
+      "typeName": "Rota Intl"
+    },
+    "id": 1,
+    "point": {
+      "x": 75950.7734375,
+      "y": 173.38017272949,
+      "z": 47661.18359375
+    }
+  },
+  "Saipan Intl": {
+    "callsign": "Saipan Intl",
+    "cat": 4,
+    "desc": {
+      "_origin": "",
+      "attributes": {
+        "Airfields": true
+      },
+      "category": 0,
+      "displayName": "Saipan Intl",
+      "life": 3600,
+      "typeName": "Saipan Intl"
+    },
+    "id": 2,
+    "point": {
+      "x": 179620.453125,
+      "y": 65.000068664551,
+      "z": 100743.234375
+    }
+  },
+  "Tinian Intl": {
+    "callsign": "Tinian Intl",
+    "cat": 4,
+    "desc": {
+      "_origin": "",
+      "attributes": {
+        "Airfields": true
+      },
+      "category": 0,
+      "displayName": "Tinian Intl",
+      "life": 3600,
+      "typeName": "Tinian Intl"
+    },
+    "id": 3,
+    "point": {
+      "x": 166672,
+      "y": 73.154266357422,
+      "z": 88785.890625
+    }
+  }
+}

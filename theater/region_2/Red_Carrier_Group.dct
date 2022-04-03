@@ -1,0 +1,15 @@
+name = "Red Carrier Group"
+objtype = "NAVAL"
+known = true -- Whether this will automatically be put into the other side's "known" table
+
+--
+period = 1800 -- Mission will repeat every 1800 s (1/2 hour)
+
+-- stage transition stuff here
+stage = 1 -- Spawned on first stage
+next_stage = true
+desc = "%LOCATIONMETHOD% a Soviet carrier strike group poised outside the port of Novorossiysk. Marshal with other anti-ship strike elements and attack the group in force. Note marshal time and marshal point" 
+marshal_point = {
+					 x = -81571,
+					 y = 228905
+				}
