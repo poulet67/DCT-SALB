@@ -15,8 +15,9 @@
 -- Check coalition of airfield (for that matter, have a means to deal with captured airfields
 -- Deal with multicrew somehow
 
-local utils      = require("libs.utils")
 local dctutils   = require("dct.utils")
+local utils   = require("libs.utils")
+local JSON   = require("libs.JSON")
 local class  = require("libs.namedclass")
 local Logger = require("dct.libs.Logger").getByName("Inventory")
 local enum        = require("dct.enum")
@@ -25,21 +26,57 @@ local settings    = _G.dct.settings
 
 local Inventory = class("Inventory")
 function Inventory:__init(base)
-	self._inventory = {} -- the actual 'inventory table'
+	
+	--utils.tprint(base) 
+	Logger:debug("INVENTORY: "..base.name)
+	self._inventory = self:init_inv(base.name) -- the actual 'inventory table'
 	
 	self.base = base
 	
-	self.inventory_tables_path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"
+	--self.inventory_tables_path = settings.theaterpath..utils.sep.."tables"..utils.sep.."inventories"
 	--self._theater = theater might be useful to have these (n.b might also be able to just grab these with requires, no need to pass anything
 	--self._cmdr = cmdr
-	
-	self.init_tables
+
 
 	
 	
 end
 
-function Inventory:post_init()
+function Inventory.singleton()
+	if _G.dct.theater ~= nil then
+		return _G.dct.theater
+	end
+	_G.dct.theater = Theater()
+	return _G.dct.theater
+end
+
+function Inventory:init_inv(name)
+
+	if(master_table[name]) then
+		
+		Logger:debug("INVENTORY FOUND: "..name)
+		
+		
+		
+		
+	else
+	
+		local empty_table = { 	
+								["airframes"] = {},
+								["munitions"] = {},
+								["ground units"] = {},
+								["naval"] = {},
+								["trains"] = {},
+								["other"] = {},
+							}
+							
+		master_table[name] = empty_table
+		
+		Logger:debug("NEW INVENTORY: "..name)
+		
+		return master_table[name]
+	
+	end
 
 	--add event handlers
 	--
@@ -47,6 +84,60 @@ function Inventory:post_init()
 	-- below: old style
 	-- Use DCT events for this now
 end
+
+function generate_master()
+
+	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."inventory.JSON"
+	inv_table = dctutils.read_JSON_file(path)
+	
+	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."link.tbl"
+	lnk_table = dctutils.read_lua_file(path)
+	
+	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."display_names.tbl"
+	dn_table = dctutils.read_lua_file(path)
+
+	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."master.JSON"
+	master_table = dctutils.read_JSON_file(path)
+
+	for k,v in pairs(dn_table) do
+	
+		for key, value in pairs(dn_table[k]) do
+			
+			if(master_table[k][key]) then
+			
+				master_table[k][key]["displayName"] = dn_table[k][key]
+			
+			end
+	
+		end
+		
+	end
+		
+	for k,v in pairs(lnk_table) do
+					
+		for key, value in pairs(lnk_table[k]) do
+		
+			if(master_table[k][key]) then
+				
+				master_table[k][key]["link"] = master_table[k][lnk_table[k][key]]
+			
+			end
+			
+		end
+		
+	end
+		
+	inv_table["master"] = master_table --to do: make sure this field can't be chosen as a base name
+		
+	--Logger:debug("INVENTORY: -- MASTER DUMP")
+	--utils.tprint(inv_table.master) 
+	
+	return inv_table
+	
+end
+
+local master_table = generate_master()
+
 
 --[[
 function EventHandler:onEvent(event)
@@ -633,7 +724,7 @@ end
 
 
 --in utils now 
---[[
+
 function getCurrentAirbase(x_current,y_current,z_current) --Gets the closest airbase to a set of x y z coordinates
 	
 	
@@ -688,8 +779,7 @@ function explode_player(playerUnit)
 	trigger.action.explosion(playerUnit:getPoint(), 100)
 	
 end
-]--
---[[
+
 function init_inventories_from_master_tables()  --master table constructor. any structural changes should be made here
 
 	INITIALWEAPONQUANTITY = 4
@@ -769,7 +859,9 @@ function init_tables_from_JSON() --load from a JSON file
 end
 
 --init_inventories_from_master_tables()
-init_tables_from_JSON()
-world.addEventHandler(EventHandler)
-timer.scheduleFunction(print_to_JSON, {}, timer.getTime() + 120) -- mins mission time required
+--init_tables_from_JSON()
+--world.addEventHandler(EventHandler)
+--timer.scheduleFunction(print_to_JSON, {}, timer.getTime() + 120) -- mins mission time required
 --timer.scheduleFunction(check_for_deliveries, {}, timer.getTime() + 15) -- mins mission time required
+
+return Inventory

@@ -451,6 +451,8 @@ enum.kickCode = require("dct.libs.kickinfo").kickCode
 -- the commander
 
 
+enum.gameplay = {}
+
 enum.gameplay.ReconRange = {
 
 
@@ -482,11 +484,12 @@ enum.gameplay.ElintRange = {
 -- Logistics
 -- Weights, volumes, capacity, fuel consumption, ammo requirements, etc
 -- 
+enum.gameplay.logistics = {}
 
 enum.gameplay.logistics.capacity = {
 ["airframes"] = {
 				["C-130"] = {
-							["weight"] = 4000 --kg
+							["weight"] = 4000, --kg
 							["volume"] = 50 --cubic m
 				
 				
@@ -497,7 +500,7 @@ enum.gameplay.logistics.capacity = {
 				},
 ["ground_units"] = {
 				["TRUCCCK"] = {
-							["weight"] = 4000 --kg
+							["weight"] = 4000, --kg
 							["volume"] = 50 --cubic m				
 							},
 
@@ -566,13 +569,10 @@ enum.gameplay.logistics.discrete = { -- A discrete value is 1 per unit.
 
 
 
-}
-
 enum.gameplay.logistics.fuel_consumption = {
 --in m/cu m (a bit of a weird unit, but saves a calculation at run time)
 
 ["ground_units"] = {
-				["TRUCCCK"] = 
 
 
 				},
@@ -584,7 +584,7 @@ enum.gameplay.logistics.ammo_consumption = {
 --amount of ammo to go from empty to reloaded (again controversial and approximate)
 ["ground_units"] = {
 				["TRUCCCK"] = {
-							["weight"] = 4000 --kg
+							["weight"] = 4000, --kg
 							["volume"] = 50 --cubic m				
 							},
 

@@ -7,6 +7,7 @@
 require("os")
 require("math")
 local check = require("libs.check")
+local JSON = require("libs.JSON")
 local enum  = require("dct.enum")
 local utils = {}
 
@@ -283,6 +284,50 @@ function utils.getAirspeed(velocity_vector)
 	env.info("AIRSPEED: "..value)
   
 	return value
+end
+
+function utils.read_JSON_file(filename)
+	
+	file = io.open(filename, "r")
+	
+	if(file) then
+		env.info("file found: " .. filename)
+		JSONString = file:read("*all")
+		file:close()
+		
+		if(JSONString) then
+			return JSON:decode(JSONString)
+		else
+			return nil	
+		end
+		
+	
+	else
+		
+		return nil
+	
+	end
+
+
+end
+
+function utils.read_lua_file(filename)
+	
+	file = io.open(filename, "r")
+	
+	if(file) then
+		env.info("file found: " .. filename)
+		fstring = file:read("*all")
+		file:close()
+		
+		return assert(loadstring(fstring)())
+	
+	else
+		
+		return nil
+	
+	end
+
 end
 
 

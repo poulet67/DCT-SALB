@@ -11,7 +11,7 @@ Class Hierarchy:
 								                       |
 	  Base---------------------------------------------+								
 		|											   |
- FOB----+-- Airbase							  Static-----IAgent-----Player			DCTWeapon
+ FOB----+-- Airbase-----FARP  					     Static-----IAgent-----Player			DCTWeapon
 
 
 --]]
