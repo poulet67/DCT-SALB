@@ -34,7 +34,7 @@ Class Hierarchy:
 								                       |
 	  Base---------------------------------------------+								
 		|											   |
- FOB----+-- Airbase---City/POI			     Static-----IAgent-----Player			DCTWeapon
+ FOB----+-- Airbase---City/POI--- Off_Map		     Static-----IAgent-----Player			DCTWeapon
 			   |
 			   |
 			  FARP
@@ -49,6 +49,7 @@ local Subordinates  = require("dct.libs.Subordinates")
 local AssetBase     = require("dct.assets.AssetBase")
 local Marshallable  = require("dct.libs.Marshallable")
 local State         = require("dct.libs.State")
+local Logger   = dct.Logger.getByName("Base")
 
 local statetypes = {
 	["OPERATIONAL"] = 1,
@@ -161,6 +162,23 @@ function OperationalState:onDCTEvent(asset, event)
 	--  * S_EVENT_HIT - no need to handle at this time
 	--  * S_EVENT_DEAD - no need to handle at this time
 	--]]
+	
+	--inventory handler
+	Logger:debug("OP STATE DCT EVENT")
+	
+	local inventory_relevents = {
+		[world.event.S_EVENT_TAKEOFF]                = asset.Inventory.handleTakeoff,
+		[world.event.S_EVENT_LAND]                = asset.Inventory.handleLanding,
+	}
+	if inventory_relevents[event.id] == nil then
+		Logger:debug("base: "..asset.name.." - not relevent event: "..
+		tostring(event.id))
+		return
+	else	
+		inventory_relevents[event.id](asset.Inventory, event)
+		return
+	end
+	
 	asset._logger:warn("operational state: onDCTEvent called event.id"..
 		event.id)
 end
@@ -174,7 +192,7 @@ local statemap = {
 local Base = class("Base", AssetBase, Subordinates)
 function Base:__init(template)
 	AssetBase.__init(self, template)
-	self:init_inventory()
+	self.Inventory = require("dct.systems.inventory")(self)
 	Subordinates.__init(self)
 	self:_addMarshalNames({
 		"_subordinates",
@@ -193,13 +211,6 @@ end
 --	}
 --end
 
-function Base:init_inventory()
-
-	self.Inventory = require("dct.systems.inventory")(self)
-
-end
-
-
 function Base:resetDamage()
 end
 
@@ -214,6 +225,7 @@ function Base:update()
 end
 
 function Base:onDCTEvent(event)
+	Logger:debug("--IN DCT EVENT. State: "..tostring(Base:isOperational()))
 	local newstate = self.state:onDCTEvent(self, event)
 	if newstate ~= nil then
 		self.state:exit(self)
@@ -277,4 +289,7 @@ function Base:despawn()
 	AssetBase.despawn(self)
 end
 
+function Base:getObjectNames()
+	return {self.name}
+end
 return Base

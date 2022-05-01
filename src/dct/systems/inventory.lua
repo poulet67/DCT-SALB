@@ -28,38 +28,31 @@ local Inventory = class("Inventory")
 function Inventory:__init(base)
 	
 	--utils.tprint(base) 
-	Logger:debug("INVENTORY: "..base.name)
-	self._inventory = self:init_inv(base.name) -- the actual 'inventory table'
-	
+	Logger:debug("INVENTORY: "..base.name)		
 	self.base = base
+	self._inventory = self:init_inv(base) -- the actual 'inventory table'
+
 	
 	--self.inventory_tables_path = settings.theaterpath..utils.sep.."tables"..utils.sep.."inventories"
 	--self._theater = theater might be useful to have these (n.b might also be able to just grab these with requires, no need to pass anything
 	--self._cmdr = cmdr
-
+	
 
 	
 	
 end
 
-function Inventory.singleton()
-	if _G.dct.theater ~= nil then
-		return _G.dct.theater
-	end
-	_G.dct.theater = Theater()
-	return _G.dct.theater
-end
-
-function Inventory:init_inv(name)
-
+function Inventory:init_inv()
+	
+	local name = self.base.name
+	Logger:debug("INVENTORY: "..name)	
+	
 	if(master_table[name]) then
 		
 		Logger:debug("INVENTORY FOUND: "..name)
+		return master_table[name]
 		
-		
-		
-		
-	else
+	else --no table found, issue empty inventory
 	
 		local empty_table = { 	
 								["airframes"] = {},
@@ -67,7 +60,7 @@ function Inventory:init_inv(name)
 								["ground units"] = {},
 								["naval"] = {},
 								["trains"] = {},
-								["other"] = {},
+
 							}
 							
 		master_table[name] = empty_table
@@ -78,26 +71,161 @@ function Inventory:init_inv(name)
 	
 	end
 
-	--add event handlers
-	--
+end
+
+function compute_withdrawl_table(unit_takingOff)
 	
-	-- below: old style
-	-- Use DCT events for this now
+	local withdrawl_table = { 	
+						["airframes"] = {},
+						["munitions"] = {},
+						["ground units"] = {},
+						["naval"] = {},
+						["trains"] = {},
+						["other"] = {},
+							}
+	
+	local descTable = unit_takingOff:getDesc()
+	local airframe = descTable.typeName	
+	local ammoTable = unit_takingOff:getAmmo()
+	
+	withdrawl_table["airframes"][airframe] = 1 
+	withdrawl_table["other"]["Flight Crew"] = master_table["crew_requirements"][airframe]
+	
+	utils.tprint(ammoTable)		
+	Logger:debug("TABLE DUMP")	
+	utils.tprint(master_table["info"])	
+	
+	for k,v in pairs(ammoTable) do
+		local typeName = ammoTable[k].desc.typeName
+		
+		if(master_table["info"][typeName]["link"]) then
+			
+			Logger:debug("link found: "..master_table["info"][typeName]["link"])
+			withdrawl_table["munitions"][master_table["info"][typeName]["link"]] = v.count
+			
+		else
+			withdrawl_table["munitions"][typeName] = v.count
+		end
+	end
+	
+	withdrawl_table["other"]["Jet Fuel"] = (unit_takingOff:getFuel() * descTable.fuelMassMax) or 0 -- N.B WW2 era aircraft and possibly some prop planes may use avgas .. for now we will keep it all under the same umbrella
+	
+	--TODO: add cargo handling
+	
+	--end
+		
+	utils.tprint(withdrawl_table)	
+	
+	return withdrawl_table
+	
+end
+
+function Inventory:handleTakeoff(event)
+	
+	Logger:debug("INVENTORY TAKEOFF: "..self.base.name)
+	
+	local unit_takingOff = event.initiator
+	
+	--if(unit_takingOff:getPlayerName()) then -- AI units will subtract from inventory when dispatched
+		
+		--Logger:debug("INVENTORY - TAKEOFF: "..unit_takingOff:getPlayerName())
+		
+		withdrawl_table = compute_withdrawl_table(unit_takingOff)			
+		
+		valid_loadout_table = self:Check(withdrawl_table)
+		
+		
+		if(valid_loadout_table["all"]) then --Unit has a valid loadout
+		
+			self:Withdraw(withdrawl_table)
+			
+		else	
+			
+			outTextForGroup(unit_takingOff.groupId, "You have taken off with a configuration that is impossible given the current airbase inventory. You will be kicked to spectator upon which you will be able to re-slot into an aircraft. Please read the briefing for information on the logistics and inventory system.", 60)
+			-- Kick player (somehow)
+			
+			--OLD
+			--trigger.action.outText("Temporal anomaly detected! You will phase into nullspace in "..explode_delay.." seconds", 30)	
+			--timer.scheduleFunction(explode_player, event.initiator, timer.getTime() + explode_delay) -- seconds mission time required
+
+
+		end
+	
+	--end
+	
+	
+end
+
+function Inventory:handleLanding(event)
+
+end
+
+function Inventory:Check(withdrawl_table)
+	
+	local ValidLoadout = true
+	local ValidTable = {}
+	
+
+	for k, v in pairs(withdrawl_table) do --Go through categories: airframes, munitions...
+		
+		for keys, values in pairs(withdrawl_table[k]) do					
+				
+			if(self._inventory[k][v]) then
+								
+				Logger:debug("INVENTORY check k: "..k.." v: "..v)
+				
+				ValidTable[v] = self._inventory[k][v]["qty"] > withdrawl_table[k][v]
+				ValidLoadout = ValidTable[v] and ValidLoadout
+			
+			else
+
+				ValidTable[v] = false
+				ValidLoadout = false
+			
+			end
+		end
+	end
+			
+	utils.tprint(ValidTable)	
+	
+	ValidTable["all"] = ValidLoadout
+
+	return ValidTable
+	
+end
+
+function Inventory:Withdraw(withdrawl_table)
+	--MAKE SURE YOU ALWAYS CHECK BEFORE WITHDRAWING!
+	
+	for k, v in pairs(withdrawl_table) do --Go through categories: airframes, munitions...
+		
+		for keys, values in pairs(withdrawl_table[k]) do
+										
+			Logger:debug("INVENTORY Withdraw k: "..keys.." v: "..values)			
+			self._inventory[k][v]["qty"] = self._inventory[k][v]["qty"] - values
+			
+		end
+		
+	end
+		
 end
 
 function generate_master()
 
-	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."inventory.JSON"
-	inv_table = dctutils.read_JSON_file(path)
-	
+	local path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."inventory.JSON"
+	local inv_table = dctutils.read_JSON_file(path)
+		
 	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."link.tbl"
-	lnk_table = dctutils.read_lua_file(path)
+	local lnk_table = dctutils.read_lua_file(path)
 	
 	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."display_names.tbl"
-	dn_table = dctutils.read_lua_file(path)
+	local dn_table = dctutils.read_lua_file(path)
 
 	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."master.JSON"
-	master_table = dctutils.read_JSON_file(path)
+	local master_table = dctutils.read_JSON_file(path)
+	
+	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."crew.tbl"
+	local crew_table = dctutils.read_lua_file(path)
 
 	for k,v in pairs(dn_table) do
 	
@@ -125,19 +253,18 @@ function generate_master()
 			
 		end
 		
-	end
+	end	
 		
-	inv_table["master"] = master_table --to do: make sure this field can't be chosen as a base name
+	inv_table["info"] = master_table --to do: make sure this field can't be chosen as a base name
+	inv_table["crew_requirements"] = crew_table --to do: make sure this field can't be chosen as a base name
 		
-	--Logger:debug("INVENTORY: -- MASTER DUMP")
-	--utils.tprint(inv_table.master) 
-	
+	Logger:debug("INVENTORY: -- MASTER DUMP")
+
 	return inv_table
 	
 end
 
-local master_table = generate_master()
-
+master_table = generate_master()
 
 --[[
 function EventHandler:onEvent(event)
@@ -146,6 +273,10 @@ function EventHandler:onEvent(event)
   onBirthEvent(event)  
 end
 
+--]]
+
+
+--[[
 function onTakeoffEvent(event)
   
 	if event.id == world.event.S_EVENT_TAKEOFF then
@@ -201,7 +332,7 @@ function onLandingEvent(event)
 		
 		end
 		
-	
+
 		--if(Inventory_Check(event.initiator, event.place:getName())) then --Unit has a valid loadout not sure if we need to check anything really?
 		
 		Inventory_Handoff(event.initiator, arrivingAirbase) -- going to need to think a bit about how to deal with logistics aircraft comming and going, especially things like the C-130 having 4 crew members...
@@ -276,27 +407,34 @@ function Inventory:delivery(arrivingAirbase, UnitAttachedto)
 		
 	end
 end
-			
-function Inventory:check_loadout(playerUnit)
+--]]
+	
+function Inventory:check_loadout(MunitionTable)
 
-	trigger.action.outText("INVENTORY CHECK:", 30) --TO do: Make this a message to group only
+	--MunitionTable:
+	--A table of the munitions carried 
+
+	Logger:debug("INVENTORY --- CHECKING LOADOUT")
 	
 	currentAirbase = getCurrentAirbase(playerUnit:getPoint().x,playerUnit:getPoint().y,playerUnit:getPoint().z)
 	
-	local valid = Inventory_Check(playerUnit, currentAirbase)
+	local valid = Inventory_Check(playerUnit)
 	
 	if(valid) then
 		
-		trigger.action.outText("Your loadout is approved, you may proceed.", 30)	
+		message = "Your loadout is approved, you may proceed."
 		
 	elseif(not(valid)) then
 		
-		trigger.action.outText("You currently in an airframe or have weapons equipped that do not exist at this airbase. This temporal paradox will cause you to implode upon takeoff. Please change your loadout if you wish to remain in this dimension.", 30)	
+		message = "You currently in an airframe or have weapons equipped that do not exist at this airbase. Temporal paradoxes are NOT permitted. Please change your loadout before takeoff."
 		
 	end
-
+	
+	return message
+	
 end
 
+--[[
 function Inventory:checkout(playerUnit, currentAirbase)
 
 	trigger.action.outText("INVENTORY CHECKOUT REPORT:", 30)
@@ -387,7 +525,8 @@ function Inventory:checkout(playerUnit, currentAirbase)
 	
 
 end
-
+]]--
+--[[
 function Inventory:handoff(playerUnit, currentAirbase)
 	
 	--To do: include fuel, airframes and pilots.
@@ -560,73 +699,9 @@ function Inventory:Add_GroundUnit(UnitName, InvAirbase, quantitytoAdd)
 -- not yet implemented
 
 end
+--]]
 
-function Inventory:Check(playerUnit, currentAirbase)
-
-	--will probably fail for empty loadouts
-	local ValidLoadout = true
-
-	--CHECK Airframe
-	descTable = playerUnit:getDesc()
-	
-	AirframeName = descTable.displayName
-	
-	--trigger.action.outText("DisplayName:"..AirframeName, 30)
-
-	qty_airframes_available = Inventory_Find_Airframe_Qty(AirframeName, currentAirbase)
-
-	if(qty_airframes_available < 1) then--will probably need to subtract this on birth and release it if player drops out... somehow...
-		ValidLoadout = false
-	end
-
-	--CHECK PilotLives
-
-	pilot_lives_available = Inventory_Find_PilotLives_Qty(currentAirbase)
-
-	if(pilot_lives_available < 1) then--will probably need to subtract this on birth and release it if player drops out... somehow...
-		ValidLoadout = false
-	end
-	
-	--CHECK Fuel
-	
-	fuel_available = Inventory_Find_Fuel_Qty(currentAirbase)
-	
-	currentFuelPct = playerUnit:getFuel()
-	
-	fuelMassMax = descTable.fuelMassMax
-	
-	myFuel = fuelMassMax*currentFuelPct
-	
-	trigger.action.outText("There is "..fuel_available.." kg of Fuel at "..currentAirbase.." you currently have "..myFuel.." kg loaded.", 30)
-	
-	trigger.action.outText("WEAPON CHECK:", 30)
-
-	--CHECK Weapons
-
-	for k, v in pairs(playerUnit:getAmmo()) do
-	
-		number = v.count
-		WeaponName = v.desc.displayName
-		
-		if(WeaponName ~= nil) then
-		
-			qty_weap_vailable = Inventory_Find_Weapon_Qty(WeaponName, currentAirbase) 		
-			--trigger.action.outText("number:"..number, 30)
-			--trigger.action.outText("qty:"..qty_weap_vailable, 30)
-			
-			if(number > qty_weap_vailable) then
-				ValidLoadout = false		
-			end
-		
-		end
-			
-			
-	end
-
-	return ValidLoadout
-	
-end
-
+--[[
 function Inventory:get_weapon_qty(WeaponName, currentAirbase)
 	
 	local num_weapons = 0;
@@ -723,44 +798,6 @@ function Inventory_Find_Fuel_Qty(currentAirbase)
 end
 
 
---in utils now 
-
-function getCurrentAirbase(x_current,y_current,z_current) --Gets the closest airbase to a set of x y z coordinates
-	
-	
-	local base = world.getAirbases()
-	local lowestValue = math.huge -- I am an utter amateur to lua, if there is a better/smarter/faster way to do this I am all ears
-	
-	for i = 1, #base do
-		desc = Airbase.getCallsign(base[i])
-		point = Airbase.getPoint(base[i])
-		
-		--trigger.action.outText("\nXcur: "..x_current.."\nYcur:"..y_current.."\nZcur: "..x_current.."\nYcur:".., 120)
-	
-		diffx = x_current - point.x
-		diffy = y_current - point.y
-		diffz = z_current - point.z
-		
-		mag = diffx^2 + diffy^2 + diffz^2 -- don't even need to do sqrt
-		
-		if(mag < lowestValue) then
-		
-			lowestValue = mag
-			closestAirbase = desc
-			--trigger.action.outText("inside getCurrent Airbase.\ndistance: "..lowestValue.."\nairbase:"..closestAirbase, 30)
-			
-		end		
-	   	   
-	end
-	
-	trigger.action.outText("CLOSEST AIRBASE: "..closestAirbase, 30)
-	
-	return closestAirbase
-   
-end
-]]--
-
-
 function check_for_deliveries() --TBC
 
     trigger.action.outText("Checking for deliveries", 30)	
@@ -771,7 +808,7 @@ function check_for_deliveries() --TBC
 
 	
 end
-
+]]--
 --[[
 function explode_player(playerUnit)
 
@@ -779,89 +816,6 @@ function explode_player(playerUnit)
 	trigger.action.explosion(playerUnit:getPoint(), 100)
 	
 end
-
-function init_inventories_from_master_tables()  --master table constructor. any structural changes should be made here
-
-	INITIALWEAPONQUANTITY = 4
-	INITIALAIRCRAFTQUANTITY = 0
-
-	weapon_entry_table = {}
-	airframes_entry_table = {}
-
-	function deepcopy(orig)
-		local orig_type = type(orig)
-		local copy
-		if orig_type == 'table' then
-			copy = {}
-			for orig_key, orig_value in next, orig, nil do
-				copy[deepcopy(orig_key)] = deepcopy(orig_value)
-			end
-			setmetatable(copy, deepcopy(getmetatable(orig)))
-		else -- number, string, boolean, etc
-			copy = orig
-		end
-		return copy
-	end
-
-	for k, v in pairs(master_displayNames_table) do
-
-		weapon_entry_table[k] = {displayName = v,
-								 quantity = INITIALWEAPONQUANTITY,
-								 hidden = false, --will likely make use of this for web app plans
-								 authorized = true --more grand plans?							 
-								}
-		
-	end
-
-	for k, v in pairs(master_airframes_table) do
-
-		airframes_entry_table[k] = {displayName = v,
-									quantity = INITIALAIRCRAFTQUANTITY,
-									hidden = false, --will likely make use of this for web app plans						 
-									}
-		
-	end
-
-	for k, v in pairs(syria_master_Airbase_name_table) do
-
-		inventories[k] = {Airbase = v,
-						  Weapons = deepcopy(weapon_entry_table),
-						  Airframes = deepcopy(airframes_entry_table),
-						  Fuel = 1000000,
-						  PilotLives = 500,
-						  GroundWeapons = 1000				  
-						  }
-						  
-	end
-	
-end
 ]]--
-
-function init_tables_from_JSON() --load from a JSON file
-
-    trigger.action.outText("JSON read", 30)	
-	
-	file = io.open(lfs.writedir().."\\Scripts\\Inventories System\\Inventory\\inventories_init.JSON", "r")
-	JSONString = file:read("*all") 
-	inventories = JSON:decode(JSONString)
-	file:close()
-	
-	--file = io.open(lfs.writedir().."\\Scripts\\Inventories System\\Economy\\economy_init.JSON", "r")
-	--JSONString = file:read("*all") 
-	--economy = JSON:decode(JSONString)
-	--file:close()
-
-	--file = io.open(lfs.writedir().."\\Scripts\\Inventories System\\Deliveries\\deliveries_init.JSON", "r")
-	--JSONString = file:read("*all") 
-	--deliveries = JSON:decode(JSONString)
-	--file:close()
-
-end
-
---init_inventories_from_master_tables()
---init_tables_from_JSON()
---world.addEventHandler(EventHandler)
---timer.scheduleFunction(print_to_JSON, {}, timer.getTime() + 120) -- mins mission time required
---timer.scheduleFunction(check_for_deliveries, {}, timer.getTime() + 15) -- mins mission time required
 
 return Inventory

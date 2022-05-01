@@ -47,6 +47,7 @@ end
 
 function MarkerGet:event(event)
 
+	Logger:debug("MarkerGet : event: "..tostring(event.initiator))
 	if event.id ~= world.event.S_EVENT_MARK_CHANGE then
 		return
 	else	
@@ -117,6 +118,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 	valid = string.match(text, "^%d%d%d%d$") or string.match(text, "%a+:%a+")
 	
 	Logger:debug("MarkerGet : Valid Command: "..tostring(valid))
+	Logger:debug("MarkerGet : initiatior: "..tostring(initiator))
 	
 	if(valid and initiator) then -- can not run commands for players not in a slot on F10 map
 	

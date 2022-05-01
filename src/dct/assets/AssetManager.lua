@@ -193,6 +193,7 @@ function AssetManager:add(asset)
 	end
 
 	Logger:debug("Adding object names for '%s'", asset.name)
+	
 	-- read Asset's object names and setup object to asset mapping
 	-- to be used in handling DCS events and other uses
 	for _, objname in pairs(asset:getObjectNames()) do
@@ -377,6 +378,8 @@ function AssetManager:doOneObject(obj, event)
 	   name = obj:getGroup():getName()
 	end
 
+	Logger:debug("doOneObject")
+	Logger:debug(name)
 	local asset = self:getAssetByDCSObject(name)
 						 
 	if asset == nil then
@@ -384,6 +387,9 @@ function AssetManager:doOneObject(obj, event)
 		self._object2asset[name] = nil
 		return
 	end
+	
+	Logger:debug("ASSET MANAGER: DO ONE-----")
+	
 	asset:onDCTEvent(event)
 end
 
@@ -411,7 +417,9 @@ function AssetManager:onDCSEvent(event)
 		[world.event.S_EVENT_TAKEOFF] = "place", -- type: Object
 		[world.event.S_EVENT_BASE_CAPTURED] = "place", -- type: Airbase	   
 	}
-
+	
+	Logger:debug("ASSET MANAGER: onDCSEvent-----")
+	
 	if not relevents[event.id] then
 		self._logger:debug("onDCSEvent - not relevant event: %s", tostring(event.id))
 		
