@@ -31,7 +31,6 @@ function Inventory:__init(base)
 	Logger:debug("INVENTORY: "..base.name)		
 	self.base = base
 	self._inventory = self:init_inv(base) -- the actual 'inventory table'
-
 	
 	--self.inventory_tables_path = settings.theaterpath..utils.sep.."tables"..utils.sep.."inventories"
 	--self._theater = theater might be useful to have these (n.b might also be able to just grab these with requires, no need to pass anything
@@ -47,33 +46,32 @@ function Inventory:init_inv()
 	local name = self.base.name
 	Logger:debug("INVENTORY: "..name)	
 	
-	if(master_table[name]) then
+	if(g_master_table[name]) then
 		
 		Logger:debug("INVENTORY FOUND: "..name)
-		return master_table[name]
+		return g_master_table[name]
 		
 	else --no table found, issue empty inventory
-	
-		local empty_table = { 	
-								["airframes"] = {},
-								["munitions"] = {},
-								["ground units"] = {},
-								["naval"] = {},
-								["trains"] = {},
-
-							}
-							
-		master_table[name] = empty_table
+		
+		g_master_table[name] = {}
+		--this way we can make changes to the empty state and it will apply without any changes necessary internally
+		for k,v in pairs(g_master_table["info"]["empty_table"]) do
+						
+			g_master_table[name][k] = {}
+			
+		end
 		
 		Logger:debug("NEW INVENTORY: "..name)
 		
-		return master_table[name]
+		return g_master_table[name]
 	
 	end
 
 end
 
-function compute_withdrawl_table(unit_takingOff)
+air = {}
+
+function air.compute_withdrawl_table(unit_takingOff)
 	
 	local withdrawl_table = { 	
 						["airframes"] = {},
@@ -85,30 +83,25 @@ function compute_withdrawl_table(unit_takingOff)
 							}
 	
 	local descTable = unit_takingOff:getDesc()
-	local airframe = descTable.typeName	
+	local airframe = g_links["airframes"][descTable.typeName] or descTable.typeName
 	local ammoTable = unit_takingOff:getAmmo()
+
 	
 	withdrawl_table["airframes"][airframe] = 1 
-	withdrawl_table["other"]["Flight Crew"] = master_table["crew_requirements"][airframe]
+	withdrawl_table["other"]["Flight Crew"] = g_crew_requirements[airframe]
 	
-	utils.tprint(ammoTable)		
 	Logger:debug("TABLE DUMP")	
-	utils.tprint(master_table["info"])	
+	utils.tprint(ammoTable)		
 	
 	for k,v in pairs(ammoTable) do
 		local typeName = ammoTable[k].desc.typeName
-		
-		if(master_table["info"][typeName]["link"]) then
-			
-			Logger:debug("link found: "..master_table["info"][typeName]["link"])
-			withdrawl_table["munitions"][master_table["info"][typeName]["link"]] = v.count
-			
-		else
-			withdrawl_table["munitions"][typeName] = v.count
-		end
+		local weapon_name = g_links["munitions"][typeName] or typeName
+
+		withdrawl_table["munitions"][weapon_name] = v.count
 	end
 	
-	withdrawl_table["other"]["Jet Fuel"] = (unit_takingOff:getFuel() * descTable.fuelMassMax) or 0 -- N.B WW2 era aircraft and possibly some prop planes may use avgas .. for now we will keep it all under the same umbrella
+	fuelType = g_fuel_types[airframe] or "Jet Fuel"	
+	withdrawl_table["other"][fuelType] =  (unit_takingOff:getFuel() * descTable.fuelMassMax) or 0
 	
 	--TODO: add cargo handling
 	
@@ -130,7 +123,7 @@ function Inventory:handleTakeoff(event)
 		
 		--Logger:debug("INVENTORY - TAKEOFF: "..unit_takingOff:getPlayerName())
 		
-		withdrawl_table = compute_withdrawl_table(unit_takingOff)			
+		withdrawl_table = air.compute_withdrawl_table(unit_takingOff)			
 		
 		valid_loadout_table = self:Check(withdrawl_table)
 		
@@ -141,12 +134,23 @@ function Inventory:handleTakeoff(event)
 			
 		else	
 			
-			outTextForGroup(unit_takingOff.groupId, "You have taken off with a configuration that is impossible given the current airbase inventory. You will be kicked to spectator upon which you will be able to re-slot into an aircraft. Please read the briefing for information on the logistics and inventory system.", 60)
-			-- Kick player (somehow)
 			
-			--OLD
-			--trigger.action.outText("Temporal anomaly detected! You will phase into nullspace in "..explode_delay.." seconds", 30)	
-			--timer.scheduleFunction(explode_player, event.initiator, timer.getTime() + explode_delay) -- seconds mission time required
+			
+			if(unit_takingOff:getPlayerName()) then -- unit is a player/client
+				
+				trigger.action.outTextForGroup(unit_takingOff.groupId, "You have taken off with a configuration that is impossible given the current airbase inventory. You will be kicked to spectator. You will be able to re-slot into an aircraft. Please read the briefing for information on the logistics and inventory system.", 60)
+				-- Kick player (somehow)
+				player_asset = getAsset(unit_takingOff:getGroup():getName())
+				player_asset:kick(enum.kickCode.INVENTORY)
+				
+			else
+				
+				asset = getAsset(unit_takingOff:getGroup():getName())				
+				asset_manager = getAssetMgr()
+				asset_manager:remove(asset)	
+				asset:despawn()
+				
+			end
 
 
 		end
@@ -164,22 +168,23 @@ function Inventory:Check(withdrawl_table)
 	
 	local ValidLoadout = true
 	local ValidTable = {}
+	Logger:debug("INVENTORY check -- my inventory:")
+	utils.tprint(self._inventory)	
 	
-
 	for k, v in pairs(withdrawl_table) do --Go through categories: airframes, munitions...
 		
 		for keys, values in pairs(withdrawl_table[k]) do					
+			
+			Logger:debug("k: "..k)
+			Logger:debug("keys "..keys)
+			if(self._inventory[k][keys]) then							
 				
-			if(self._inventory[k][v]) then
-								
-				Logger:debug("INVENTORY check k: "..k.." v: "..v)
-				
-				ValidTable[v] = self._inventory[k][v]["qty"] > withdrawl_table[k][v]
-				ValidLoadout = ValidTable[v] and ValidLoadout
+				ValidTable[keys] = self._inventory[k][keys]["qty"] > withdrawl_table[k][keys]
+				ValidLoadout = ValidTable[keys] and ValidLoadout
 			
 			else
 
-				ValidTable[v] = false
+				ValidTable[keys] = false
 				ValidLoadout = false
 			
 			end
@@ -214,57 +219,17 @@ function generate_master()
 
 	local path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."inventory.JSON"
 	local inv_table = dctutils.read_JSON_file(path)
-		
-	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."link.tbl"
-	local lnk_table = dctutils.read_lua_file(path)
-	
-	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."display_names.tbl"
-	local dn_table = dctutils.read_lua_file(path)
-
-	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."master.JSON"
-	local master_table = dctutils.read_JSON_file(path)
-	
-	path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."crew.tbl"
-	local crew_table = dctutils.read_lua_file(path)
-
-	for k,v in pairs(dn_table) do
-	
-		for key, value in pairs(dn_table[k]) do
-			
-			if(master_table[k][key]) then
-			
-				master_table[k][key]["displayName"] = dn_table[k][key]
-			
-			end
-	
-		end
-		
-	end
-		
-	for k,v in pairs(lnk_table) do
-					
-		for key, value in pairs(lnk_table[k]) do
-		
-			if(master_table[k][key]) then
-				
-				master_table[k][key]["link"] = master_table[k][lnk_table[k][key]]
-			
-			end
-			
-		end
-		
-	end	
-		
-	inv_table["info"] = master_table --to do: make sure this field can't be chosen as a base name
-	inv_table["crew_requirements"] = crew_table --to do: make sure this field can't be chosen as a base name
-		
-	Logger:debug("INVENTORY: -- MASTER DUMP")
 
 	return inv_table
 	
 end
 
-master_table = generate_master()
+-- GLOBALS
+g_master_table = generate_master()
+g_display_names = g_master_table["info"]["display_names"]
+g_crew_requirements = g_master_table["info"]["game_config"]["crew_requirements"]
+g_fuel_types = g_master_table["info"]["game_config"]["fuel_type"]
+g_links = g_master_table["info"]["game_config"]["links"]
 
 --[[
 function EventHandler:onEvent(event)
@@ -432,6 +397,14 @@ function Inventory:check_loadout(MunitionTable)
 	
 	return message
 	
+end
+
+function getAsset(name)
+	return require("dct.Theater").singleton():getAssetMgr():getAsset(name)
+end
+
+function getAssetMgr()
+	return require("dct.Theater").singleton():getAssetMgr()
 end
 
 --[[

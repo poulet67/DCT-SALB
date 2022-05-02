@@ -13,7 +13,8 @@ enum.kickCode = {
 	["EMPTY"]   = 3,
 	["DEAD"]    = 4,
 	["LOADOUT"] = 5,
-	["MISSION"] = 6,
+	["INVENTORY"] = 6,
+	["MISSION"] = 7,
 }
 
 enum.kickReason = {
@@ -30,6 +31,8 @@ enum.kickReason = {
 	[enum.kickCode.LOADOUT] =
 		"payload violation, you attempted to takeoff with restricted "..
 		"weapons. Check the loadout limits.",
+	[enum.kickCode.INVENTORY] =
+		"you have been kicked for withdrawing items that don't exist",
 	[enum.kickCode.MISSION] =
 		"no mission assigned. Must have a mission assigned.",
 }
