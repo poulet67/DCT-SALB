@@ -1,12 +1,23 @@
 --[[
 -- SPDX-License-Identifier: LGPL-3.0
 --
--- Mobile asset, represents assets that can move.
+-- Commandable asset, represents assets that can be dispatched and ordered with commander system.
 --
--- MobileAsset<AssetBase>:
---   has associated DCS objects, has death goals related to the
---   state of the DCS objects, the asset does not move
---]]
+-- Commandable<AssetBase>:
+
+Class Hierarchy:
+
+							                       AssetBase----Airspace-----Waypoint
+								                       |
+		    +------------------------------------------+------------------------------------------------+
+		    |										   |												|
+		   Base								Static-----IAgent-----Player							  Mobile
+ 		    |																				  			|
+FOB----- Airbase-----FARP														   				   Dispatchable
+			|																																
+		  Naval (to do)
+		  
+--]]								
 
 require("math")
 local utils    = require("libs.utils")
@@ -37,8 +48,7 @@ function MobileAsset.assettypes() --note add any new assetTypes here as well as 
 		enum.assetType.NAVAL,
 		enum.assetType.CONVOY,
 		enum.assetType.MOBILE,	
-		enum.assetType.AIGROUP,	
-		
+		enum.assetType.AIGROUP,		
 	}
 end
 

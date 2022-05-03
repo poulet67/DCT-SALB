@@ -6,6 +6,19 @@
 -- StaticAsset<AssetBase>:
 --   has associated DCS objects, has death goals related to the
 --   state of the DCS objects, the asset does not move
+Class Hierarchy:
+
+							                       AssetBase----Airspace-----Waypoint
+								                       |
+		    +------------------------------------------+------------------------------------------------+
+		    |										   |												|
+		   Base								Static-----IAgent-----Player							  Mobile
+ 		    |																				  			|
+FOB----- Airbase-----FARP														   				   Dispatchable
+			|																																
+		  Naval (to do)
+		  
+--]]								
 --]]
 
 require("math")

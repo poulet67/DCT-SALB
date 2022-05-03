@@ -51,6 +51,7 @@ function Commander:__init(theater, side)
 	self.owner        = side
 	self.missionstats = Stats(genStatIds())
 	self.missions     = {}
+	self.theater     = theater
 	self.missionorder     = {} -- just an array like table, so we can sort by priority
 	self.freqs_in_use = self:init_freqs() --frequencies currently assigned to a mission
 	self.isAI = self:getAIstatus()
@@ -75,7 +76,7 @@ function Commander:__init(theater, side)
 --		self.startperiodicMission, self, theater))
 	theater:queueCommand(8, Command(                        --- WARNING: this must be larger than the time (first argument) specified in theater's delayed init!
 		"Commander.getKnownTables:"..tostring(self.owner),
-		self.getKnownTables, self, theater))
+		self.getKnownTables, self))
 	theater:queueCommand(self.aifreq, Command(
 		"Commander.update:"..tostring(self.owner),
 		self.update, self))
@@ -215,17 +216,6 @@ end
 
 function Commander:getActiveUnits(commandUnitType)
 
-	--Logger:debug("COMMANDER ==== List ===")
-	--Logger:debug(commandUnitType)
-	
-	
-	--for k, v in pairs(self.Command_Units) do 
-	
-	--	Logger:debug(k)
-	
-	--end
-	
-	--Logger:debug(enum.commandUnitTypes[commandUnitType])	
 
 	Logger:debug("COMMANDER ==== ACTIVE UNITS === Type: "..commandUnitType)
 	
@@ -242,286 +232,50 @@ function Commander:getActiveUnits(commandUnitType)
 
 end
 
+function Commander:deactivateCommandUnit(asset)
+
+	self.Command_Units["ACTIVE"][commandUnitType][asset.dispatch_callsign] = nil
+
+end
+
 -- Spawns template commandUnitType of commandUnitSelection at nearest airbase to point with orbit task at point at altitude
 
 function Commander:dispatch(commandUnitType, commandUnitSelection, point, altitude, speed)
 
 	Logger:debug("COMMANDER ==== Dispatch===")
 	Logger:debug("commandUnitType: "..commandUnitType)
-	--Logger:debug("commandUnitType2: "..commandUnitType)
-	--Logger:debug("commandUnitType3: "..commandUnitType)
 	Logger:debug(next(self.Command_Units[commandUnitType][commandUnitSelection]))
 	
-	if(altitude == nil) then
+
+		--can queucommand this to break up execution time
 	
-		altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
-		
-	end	
-	
-	if(speed == nil) then
-	
-		speed = settings.gameplay["COMMAND_UNIT_DEFAULT_SPEED"]
-		
-	end
-	
-	asset_template = self.Command_Units[commandUnitType][commandUnitSelection][next(self.Command_Units[commandUnitType][commandUnitSelection])] -- Should only ever be 1 entry in this table, next will bring us to it anyhow
-	tpl = utils.deepcopy(asset_template)	
-	
-	--can queucommand this to break up execution time
-	
-	self.Dispatcher:dispatchFixedWing(tpl, point, altitude, speed) --N.B this method will modify fields in tpl
-	
-	Logger:debug("COMMANDER: -- TEMPLATE DUMP")
-	utils.tprint(tpl) 
-	
-	-- can probably just add this to dispatcher tbqh
-	
-	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign] = {}
-	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["DCS_group_name"] = tpl.name -- The DCS group name
-	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["altitude"] = altitude
-	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["speed"] = speed
-	self.Command_Units["ACTIVE"][commandUnitType][tpl.dispatch_callsign]["display_name"] = tpl.display_name --for display in F10 menu
-	
-	asset_manager = require("dct.Theater").singleton():getAssetMgr()
-	asset = asset_manager:factory(tpl.objtype)(tpl)
-	asset_manager:add(asset)	
-	asset:generate(assetmgr, self)
-	asset:spawn()
-	
-	dspch_msg = dctutils.printTabular("DISPATCHING "..commandUnitType.." GROUP: "..tpl.dispatch_callsign, 65, "-")
-	
-	trigger.action.outTextForCoalition(self.owner, dspch_msg, 45)
+	self.theater:queueCommand(1, Command("Commander dispatch", self.Dispatcher.fixedWing_dispatch, self.Dispatcher, point, altitude, speed, commandUnitType, commandUnitSelection))
+
 
 end
 
 function Commander:move_command(commandUnitType, name, point, altitude, speed) -- need to make fixed wing specific, or check for unit type.
-
+		
 	Logger:debug("COMMANDER: -- move_command")
-	
-	DCS_group_name = self.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"] -- The DCS group name 
 		
-	if(DCS_group_name) then
-	
-		Logger:debug(DCS_group_name)
-		CU_Group = Group.getByName(DCS_group_name)
+	self.theater:queueCommand(1, Command("Commander move", self.Dispatcher.fixedWing_move, self.Dispatcher, commandUnitType, name, point, altitude, speed))
 		
-		if(CU_Group) then
-			
-			
-			if(altitude == nil) then
-				
-				altitude = self.Command_Units["ACTIVE"][commandUnitType][name]["altitude"]
-				Logger:debug("ALTITUDE: "..altitude)		
-
-			end		
-			
-			if(speed == nil) then
-			
-				speed = self.Command_Units["ACTIVE"][commandUnitType][name]["speed"]
-				Logger:debug("SPEED: "..speed)
-				
-			end
-			
-			myMission = self.Dispatcher:fixedWingmove(commandUnitType, point, altitude, speed)
-			CU_Group:getController():setTask(myMission) 		
-			--ROE ------------
-			CU_Group:getController():setOption(AI.Option.Air.id.ROE, 5) --Do not engage
-			CU_Group:getController():setOption(AI.Option.Air.id.REACTION_ON_THREAT, 0) -- No reactiong
-			-- These settings will (or should) ensure the unit goes directly where it is commanded at the altitude and speed set with no AI shennanigans			
-			
-		else
-		
-			Logger:debug("COMMANDER: -- move_command: invalid name")
-		
-		end
-	
-	else
-	
-		Logger:debug("COMMANDER: -- move_command: invalid name")
-		
-	end
-	
 end
 
 function Commander:attack_command(commandUnitType, name, point, altitude, speed) -- need to make fixed wing specific, or check for unit type.
 	
 	Logger:debug("COMMANDER: -- attack_command")	
-	DCS_group_name = self.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"] -- The DCS group name 
-		
-	if(DCS_group_name and enum.offensiveUnits[enum.commandUnitTypes[commandUnitType]]) then -- group name exists and this is an offensive type unit
 	
-		Logger:debug(DCS_group_name)
-		CU_Group = Group.getByName(DCS_group_name)
-		
-		if(CU_Group) then
-			
-			
-			if(altitude == nil) then
-				
-				altitude = self.Command_Units["ACTIVE"][commandUnitType][name]["altitude"]
-				Logger:debug("ALTITUDE: "..altitude)		
-
-			end		
-			
-			if(speed == nil) then
-			
-				speed = self.Command_Units["ACTIVE"][commandUnitType][name]["speed"]
-				Logger:debug("SPEED: "..speed)
-				
-			end
-			
-			myMission = self.Dispatcher:fixedWingattack(commandUnitType, point, altitude, speed)
-			CU_Group:getController():setTask(myMission)
-			--ROE ------------
-			CU_Group:getController():setOption(AI.Option.Air.id.ROE, 0) -- Weapons free - engage at will
-			CU_Group:getController():setOption(AI.Option.Air.id.REACTION_ON_THREAT, 3) -- Allow evasion, avoidance, will keep any engaged targets from basically being a sitting duck. No kamikaze here.
-
-		else
-		
-			Logger:debug("COMMANDER: -- move_command: invalid name")
-		
-		end
 	
-	else
-	
-		Logger:debug("COMMANDER: -- move_command: invalid name")
-		
-	end
+	self.theater:queueCommand(1, Command("Commander move", self.Dispatcher.fixedWing_attack, self.Dispatcher, commandUnitType, name, point, altitude, speed))
 	
 end
---[[
-function Commander:orbit_command(commandUnitType, name, point, altitude, speed)
 
-	Logger:debug("COMMANDER: -- orbit_command")
-	
-	DCS_group_name = self.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"]
-	Logger:debug(DCS_group_name)
-	
-	if(DCS_group_name) then
-	
-		CU_Group = Group.getByName(DCS_group_name)
-		
-		if(CU_Group) then
-			
-			if(altitude == nil) then
-			
-				altitude = settings.gameplay["COMMAND_UNIT_DEFAULT_ALTITUDE"]
-				Logger:debug(altitude)
-			end		
-			
-			if(speed == nil) then
-			
-				speed = settings.gameplay["COMMAND_UNIT_DEFAULT_SPEED"]
-				Logger:debug(speed)
-				
-			end
-
-			myMission = dctutils.fixedWing.defaultMissionTask()		
-			myMission.params.route.points[1]["x"] = point.x
-			myMission.params.route.points[1]["y"] = point.z
-			myMission.params.route.points[1]["alt"] = altitude
-			myMission.params.route.points[1]["alt_type"] = "BARO"
-			myMission.params.route.points[1]["speed"] = speed
-			myMission.params.route.points[1]["type"] = "Turning Point"
-			myMission.params.route.points[1]["action"] = "Turning Point"
-			myMission.params.route.points[1]["task"] = dctutils.fixedWing.DefaultTask(commandUnitType)
-			
-			table.insert(myMission.params.route.points[1]["task"]["params"]["tasks"], dctutils.fixedWing.OrbitTask())
-			tasknum = myMission.params.route.points[1]["task"]["params"]["tasks"]
-			
-			myMission.params.route.points[1]["task"]["params"]["tasks"][#tasknum]["number"] = #tasknum		
-			myMission.params.route.points[1]["task"]["params"]["tasks"][#tasknum]["altitude"] = altitude
-			myMission.params.route.points[1]["task"]["params"]["tasks"][#tasknum]["speed"] = speed
-			
-			Logger:debug("MISSION DUMP")
-			utils.tprint(myMission)
-			
-			mytask = CU_Group:getController():setTask(myMission) 
-			CU_Group:getController():setOption(AI.Option.Air.id.ROE, 0) --Without this any CAP will not engage
-			CU_Group:getController():setOption(AI.Option.Air.id.REACTION_ON_THREAT, 0) -- might want to allow more flexibility here
-		else
-		
-		Logger:debug("COMMANDER: -- move_command: invalid name")
-		
-		end
-		
-	else
-		Logger:debug("COMMANDER: -- move_command: invalid name")
-	end
-	
-end
-]]--
 function Commander:racetrack_command(commandUnitType, name, point, altitude, speed, heading, leg)
 
 	Logger:debug("COMMANDER: -- racetrack_command")
 	
-	DCS_group_name = self.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"]
-	Logger:debug(DCS_group_name)
-	
-	if(DCS_group_name and point and altitude and speed and heading and leg) then
-	
-		CU_Group = Group.getByName(DCS_group_name)
-		
-		if(CU_Group) then
-		
-			-- Race-track requires a 2nd waypoint after the one with the racetrack task
-			-- in order to compute where this will be we have to do some trigonometry
-			-- with the given heading and leg length.
-			
-			local angle = math.rad(heading)		
-			
-			--unit vectors of heading (x,y in mathematical terms, x, z in DCS terms)
-			
-			point2 = {["x"] = math.cos(angle)*leg + point.x,
-					  ["y"] = math.sin(angle)*leg + point.z,
-					 }
-			
-			
-
-			myMission = dctutils.fixedWing.defaultMissionTask()
-			myMission.params.route.points[1]["x"] = point.x
-			myMission.params.route.points[1]["y"] = point.z
-			myMission.params.route.points[1]["alt"] = altitude
-			myMission.params.route.points[1]["alt_type"] = "BARO"
-			myMission.params.route.points[1]["speed"] = speed
-			myMission.params.route.points[1]["type"] = "Turning Point"
-			myMission.params.route.points[1]["action"] = "Turning Point"
-			myMission.params.route.points[1]["task"] = dctutils.fixedWing.DefaultTask(commandUnitType)
-
-			tasknum = myMission.params.route.points[1]["task"]["params"]["tasks"]
-			
-			myMission.params.route.points[1]["task"]["params"]["tasks"][#tasknum+1] = dctutils.fixedWing.RacetrackTask(altitude, speed)
-
-			
-			myMission.params.route.points[2] = {}
-			myMission.params.route.points[2]["x"] = point2.x
-			myMission.params.route.points[2]["y"] = point2.y
-			myMission.params.route.points[2]["alt"] = altitude
-			myMission.params.route.points[2]["alt_type"] = "BARO"
-			myMission.params.route.points[2]["speed"] = speed
-			myMission.params.route.points[2]["type"] = "Turning Point"
-			myMission.params.route.points[2]["action"] = "Turning Point"
-			--if(commandUnitType == "Tanker") then
-			myMission.params.route.points[2]["task"] = dctutils.fixedWing.EmptyTask()
-			--else
-			--myMission.params.route.points[2]["task"] = dctutils.fixedWing.DefaultTask(commandUnitType)
-			--end
-			--myMission.params.route.points[2]["task"]["params"]["tasks"][2] = nil; --don't need this part for 2nd task (kind of tanker specific, but will leave it be for now)
-
-			Logger:debug("MISSION DUMP")
-			utils.tprint(myMission)
-			
-			mytask = CU_Group:getController():setTask(myMission) 
-			
-		else
-		
-		Logger:debug("COMMANDER: -- move_command: invalid name")
-		
-		end
-		
-	else
-		Logger:debug("COMMANDER: -- move_command: invalid name")
-	end
+	self.theater:queueCommand(1, Command("Commander move", self.Dispatcher.fixedWing_racetrack, self.Dispatcher, commandUnitType, name, point, altitude, speed, heading, leg))
 	
 end
 
@@ -529,42 +283,8 @@ function Commander:landing_command(commandUnitType, name, point)
 
 	Logger:debug("COMMANDER: -- landing_command")
 	
-	DCS_group_name = self.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"]
-	Logger:debug(DCS_group_name)
+	self.theater:queueCommand(1, Command("Commander move", self.Dispatcher.fixedWing_land, self.Dispatcher, commandUnitType, name, point))
 	
-	if(DCS_group_name) then
-	
-		CU_Group = Group.getByName(DCS_group_name)		
-
-		if(CU_Group) then
-		
-		myMission = dctutils.fixedWing.defaultMissionTask()		
-		myMission.params.route.points[1]["x"] = point.x
-		myMission.params.route.points[1]["y"] = point.z
-		myMission.params.route.points[1]["type"] = "Land"
-		myMission.params.route.points[1]["action"] = "Landing"
-		myMission.params.route.points[1]["task"] = {} --dctutils.fixedWing.DefaultTask(commandUnitType) --might need an empty task
-		
-		nearest_AB = dctutils.getNearestAirbase(point, self.owner)			
-		myMission.params.route.points[1]["airdromeId"] = Airbase.getID(nearest_AB)
-		
-		Logger:debug("MISSION DUMP")
-		utils.tprint(myMission)
-		
-		mytask = CU_Group:getController():setTask(myMission) --WORK REEEE		
-		CU_Group:getController():setOption(AI.Option.Air.id.REACTION_ON_THREAT, 0) -- Go directing home, do not stop
-		CU_Group:getController():setOption(AI.Option.Ground.id.REACTION_ON_THREAT, 0) -- Go directing home, do not stop
-		CU_Group:getController():setOption(AI.Option.Naval.id.REACTION_ON_THREAT, 0) -- Go directing home, do not stop
-		
-		else
-		
-		Logger:debug("COMMANDER: -- move_command: invalid name")
-		
-		end
-		
-	else
-		Logger:debug("COMMANDER: -- move_command: invalid name")
-	end
 	
 end
 
@@ -634,9 +354,9 @@ function Commander:surrender()
 	
 end
 
-function Commander:getKnownTables(theater)
+function Commander:getKnownTables()
 
-	self.known = theater:getAssetMgr():getKnownTables(self.owner)
+	self.known = self.theater:getAssetMgr():getKnownTables(self.owner)
 	
 end
 

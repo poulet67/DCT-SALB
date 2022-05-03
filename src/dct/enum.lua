@@ -13,7 +13,7 @@ enum.assetType = {
 	-- "Objectives" 
 	["AMMODUMP"]    = 2,
 	["FUELDUMP"]    = 3,
-	["C2"]          = 4, -- maybe can delete if I already have AWACS?
+	["C2"]          = 4,
 	["EWR"]         = 5,
 	["MISSILE"]     = 6,
 	["OCA"]         = 7,
@@ -43,7 +43,8 @@ enum.assetType = {
 	["CONVOY"]         = 23,
 	-- mobile
 	["NAVAL"]         = 24,
-	["MOBILE"]         = 25,
+	-- Commandable units
+	["DISPATCHABLE"]         = 25,
 
 	-- extended type set
 	["AIRSPACE"]    = 26,
@@ -51,12 +52,10 @@ enum.assetType = {
 	["WEAPON"]    = 28,
 	["SHORAD"]      = 29,
 	["PLAYERGROUP"] = 30,
-	["AIGROUP"] = 31, 
-	["SPECIALFORCES"] = 32,
+	["SPECIALFORCES"] = 31,
 	
 	-- Mission not assigned to an asset
-	["NOMISSION"] = 33, -- not actually implemented at the moment
-	["FRIENDLY"] = 34, -- not actually implemented at the moment	
+	["NOMISSION"] = 32, -- not actually implemented at the moment
 }
 
 enum.commandUnitTypes = {
@@ -283,7 +282,6 @@ enum.assetClass = {
 		[enum.assetType.SEA]      		= true,
 		[enum.assetType.NAVAL]      		= true,
 		[enum.assetType.NOMISSION]      = true,
-		[enum.assetType.FRIENDLY]     = true,
 	},
 	-- strategic list is used in calculating ownership of a region
 	-- among other things

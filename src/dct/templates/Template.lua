@@ -582,7 +582,7 @@ function Template.fromFile(dctfile, stmfile, command_unit)  --region, dctfile, s
 		end		
 
 		template.name = template.commandUnitType..dct.Theater.singleton():getcntr() -- just for uniqueness, we will rename during dispatch anyhow
-		template.objtype = "AIGROUP" -- must be done so the right type gets applied during validate
+		template.objtype = "DISPATCHABLE" -- must be done so the right type gets applied during validate
 		
 	
 		Logger:debug("TEMPLATE -- name found: %s", template.name)

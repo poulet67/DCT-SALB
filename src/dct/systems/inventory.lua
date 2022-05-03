@@ -31,6 +31,7 @@ function Inventory:__init(base)
 	Logger:debug("INVENTORY: "..base.name)		
 	self.base = base
 	self._inventory = self:init_inv(base) -- the actual 'inventory table'
+	self.assetmgr = require("dct.Theater").singleton():getAssetMgr()
 	
 	--self.inventory_tables_path = settings.theaterpath..utils.sep.."tables"..utils.sep.."inventories"
 	--self._theater = theater might be useful to have these (n.b might also be able to just grab these with requires, no need to pass anything
@@ -145,9 +146,10 @@ function Inventory:handleTakeoff(event)
 				
 			else
 				
-				asset = getAsset(unit_takingOff:getGroup():getName())				
-				asset_manager = getAssetMgr()
-				asset_manager:remove(asset)	
+				Logger:debug("Inventory Despawn: "..unit_takingOff:getGroup():getName())
+				
+				asset = self.assetmgr:getAsset(unit_takingOff:getGroup():getName())	
+				self.assetmgr:remove(asset)	
 				asset:despawn()
 				
 			end
@@ -158,10 +160,6 @@ function Inventory:handleTakeoff(event)
 	--end
 	
 	
-end
-
-function Inventory:handleLanding(event)
-
 end
 
 function Inventory:Check(withdrawl_table)
@@ -399,13 +397,7 @@ function Inventory:check_loadout(MunitionTable)
 	
 end
 
-function getAsset(name)
-	return require("dct.Theater").singleton():getAssetMgr():getAsset(name)
-end
 
-function getAssetMgr()
-	return require("dct.Theater").singleton():getAssetMgr()
-end
 
 --[[
 function Inventory:checkout(playerUnit, currentAirbase)

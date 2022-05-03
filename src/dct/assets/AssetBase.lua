@@ -9,11 +9,15 @@ Class Hierarchy:
 
 							                       AssetBase----Airspace-----Waypoint
 								                       |
-	  Base---------------------------------------------+								
-		|											   |
- FOB----+-- Airbase-----FARP  					     Static-----IAgent-----Player			DCTWeapon
-
-
+		    +------------------------------------------+------------------------------------------------+
+		    |										   |												|
+		   Base								Static-----IAgent-----Player							  Mobile
+ 		    |																				  			|
+FOB----- Airbase-----FARP														   				   Dispatchable
+			|																																
+		  Naval (to do)
+		  
+--]]								
 --]]
 
 require("math")
@@ -30,7 +34,7 @@ local settings = _G.dct.settings
 local norenametype = { --NOTE: THESE ARE UNITS THAT ARE __NOT__ RENAMED
 	[dctenum.assetType.PLAYERGROUP]    = true,
 	[dctenum.assetType.AIRBASE]        = true,
-	[dctenum.assetType.AIGROUP]    = true,	
+	[dctenum.assetType.DISPATCHABLE]        = true,
 }
 
 local function generateCodename(template)

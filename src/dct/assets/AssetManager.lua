@@ -14,6 +14,7 @@ local Observable = require("dct.libs.Observable")
 local Template    = require("dct.templates.Template")
 
 local assetpaths = {
+	"dct.assets.Dispatchable",
 	"dct.assets.MobileAsset",
 	"dct.assets.Airbase",
 	"dct.assets.Airspace",
