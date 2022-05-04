@@ -2,12 +2,21 @@
 
 A fork of the popular DCT framework.
 
-SALB is focused on improving the gameplay experience from a strategic perspective.
+WM is focused on improving the gameplay experience from a strategic perspective.
 
 Several new features have been added and are planned. Some core functionality has been completely revamped.
 
-More to come..
+Features:
+- Inventory system of all possible detectable game assets (please harass ED to add TPODs: https://forum.dcs.world/topic/264426-scripting-engine-means-to-determine-if-an-aircraft-has-a-targeting-or-other-pod-equipped)
+- Commander system that allows for spawning and commanding of pre-defined unit templates
+    -To be added: ability to create FOBs and FARPs
+- Revamped mission system aimed to enhance cooordination and tasking.
+To come:
+- Enhanced region control system
+- Recon system
+- More
 
+Still very much a work in progress, hope to have a demo server running stage 1 a demo operation soon.
 
 ## Description
 
