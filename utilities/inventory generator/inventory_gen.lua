@@ -5,6 +5,8 @@ map = arg[1] -- which map
 map = map:lower()
 
 mapdir = "./"..map.."/"	
+options_dir = "./"..map.."/options/"
+init_dir = "./"..map.."/initial/"
 
 valid = {
 	["caucasus"] = true,
@@ -94,21 +96,59 @@ function read_lua_file(filename)
 	end
 
 end
+--[[
+function read_lua_table(file, tblname)
+	assert(file and type(file) == "string", "file path must be provided")
+	
+	local f = assert(loadfile(file))
+	local config = {}
+	setfenv(f, config)
+	assert(pcall(f))
+	local tbl = config
+	
+	if tblname ~= nil then
+		tbl = config[tblname]
+	end
+	
+	return tbl, file
+
+end
+]]--
+
+function read_lua_tables(file)
+	assert(file and type(file) == "string", "file path must be provided")
+	
+	local f = assert(loadfile(file))
+	local config = {}
+	setfenv(f, config)
+	assert(pcall(f))
+	
+	return config
+
+end
 
 
 if(valid[map]) then
+	
+	------------- OPTIONS ---------------
+	
+	options_file = options_dir.."options.tbl"
+	game_table = read_lua_tables(options_file) or empty_table
+	inventories_table["info"] = game_table
+	--empty table required for internal logic
+	inventories_table["info"]["empty_table"] = {}
+	empty_table(inventories_table["info"]["empty_table"])
 
 	
 	-- MASTER TABLE
 	
-	masterfile = "../../theater/tables/inventories/master.JSON"
+	masterfile = "./master/master.JSON"
 	m_table = read_JSON_file(masterfile)
-
-	-- AIRBASE TABLE
 	
-	airbase_file = mapdir..map..".tbl"
+	-- AIRBASE LIST
 	
-	AB_list = read_lua_file(airbase_file)
+	airbase_file = mapdir.."bases.JSON"	
+	AB_list = read_JSON_file(airbase_file)
 		
 	-- CONFIG TABLE
 	
@@ -120,8 +160,6 @@ if(valid[map]) then
 	dft_file = mapdir.."default.JSON"
 	df_tbl = read_JSON_file(dft_file) or empty_table
 	
-	
-	--df_tbl = df_tbl or empty_table
 	
 	-- PREAMBLE
 	-- "make sure the table has all airbases"
@@ -139,7 +177,6 @@ if(valid[map]) then
 	
 	-- MAIN 
 	-- inventory master table generation
-	
 
 	
 	for k, v in pairs(cfg_tbl) do
@@ -178,7 +215,7 @@ if(valid[map]) then
 			
 			print("specific")
 			
-			inv_file = mapdir..k..".JSON"
+			inv_file = init_dir..k..".JSON"
 			print(inv_file:lower())
 			file = io.open(inv_file:lower(), "r")
 			
@@ -230,7 +267,7 @@ if(valid[map]) then
 				
 				
 			else
-			 -- empty already, do nothing
+				-- empty already, do nothing
 			end
 			
 		elseif(state == "empty") then
@@ -240,11 +277,19 @@ if(valid[map]) then
 		
 		 
 	end
+
 	
-	filename = mapdir.."./inventory.JSON"
+	filename = mapdir.."output/inventory.JSON"
+	copy_file = "../../theater/tables/inventories/inventory.JSON"
+	
 	file = io.open(filename, "w+")
 	file:write(JSON:encode_pretty(inventories_table))
 	file:close()
 	
+	file = io.open(copy_file, "w+")
+	file:write(JSON:encode_pretty(inventories_table))
+	file:close()
+	
 	print("done")
+	
 end

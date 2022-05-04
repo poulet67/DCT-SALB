@@ -1,0 +1,458 @@
+{
+  "2B11 mortar": {
+    "weapons.shells.2A60_120": true
+  },
+  "2S6 Tunguska": {
+    "SA9M311": true,
+    "weapons.shells.2A38_30_AP": true,
+    "weapons.shells.2A38_30_HE": true
+  },
+  "5p73 s-125 ln": {
+    "SA5B27": true
+  },
+  "AAV7": {
+    "weapons.shells.HEDPM430": true,
+    "weapons.shells.M2_12_7_T": true
+  },
+  "BMD-1": {
+    "weapons.missiles.MALUTKA": true,
+    "weapons.shells.2A28_73": true,
+    "weapons.shells.7_62x54": true
+  },
+  "BMP-1": {
+    "weapons.missiles.MALUTKA": true,
+    "weapons.shells.2A28_73": true,
+    "weapons.shells.7_62x54": true
+  },
+  "BMP-2": {
+    "weapons.missiles.KONKURS": true,
+    "weapons.shells.2A42_30_AP": true,
+    "weapons.shells.2A42_30_HE": true,
+    "weapons.shells.7_62x54": true
+  },
+  "BMP-3": {
+    "weapons.missiles.P_9M117": true,
+    "weapons.shells.2A42_30_AP": true,
+    "weapons.shells.2A42_30_HE": true,
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.UOF_17_100HE": true
+  },
+  "BRDM-2": {
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.KPVT_14_5_T": true
+  },
+  "BTR-80": {
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.KPVT_14_5_T": true
+  },
+  "BTR-82A": {
+    "weapons.shells.2A42_30_AP": true,
+    "weapons.shells.2A42_30_HE": true,
+    "weapons.shells.7_62x54": true
+  },
+  "BTR_D": {
+    "weapons.missiles.KONKURS": true,
+    "weapons.shells.7_62x54": true
+  },
+  "Challenger2": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.M256_120_AP": true,
+    "weapons.shells.M256_120_HE": true
+  },
+  "Chieftain_mk3": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.L23A1_APFSDS": true,
+    "weapons.shells.L31A7_HESH": true
+  },
+  "Cobra": {
+    "weapons.shells.Utes_12_7x108_T": true
+  },
+  "Gepard": {
+    "weapons.shells.KDA_35_HE": true
+  },
+  "Grad-URAL": {
+    "weapons.nurs.GRAD_9M22U": true
+  },
+  "Grad_FDDM": {
+    "weapons.nurs.GRAD_9M22U": true,
+    "weapons.shells.7_62x54": true
+  },
+  "HQ-7_LN_SP": {
+    "HQ-7": true
+  },
+  "Hawk ln": {
+    "HAWK_RAKETA": true
+  },
+  "Igla manpad INS": {
+    "weapons.missiles.Igla_1E": true
+  },
+  "Infantry AK": {
+    "weapons.shells.5_45x39": true
+  },
+  "Infantry AK Ins": {
+    "weapons.shells.5_45x39": true
+  },
+  "Infantry AK ver2": {
+    "weapons.shells.5_45x39": true
+  },
+  "Infantry AK ver3": {
+    "weapons.shells.5_45x39": true
+  },
+  "Kub 2P25 ln": {
+    "SA3M9M": true
+  },
+  "LAV-25": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.M242_25_AP_M791": true,
+    "weapons.shells.M242_25_HE_M792": true
+  },
+  "Leclerc": {
+    "weapons.shells.M256_120_AP": true,
+    "weapons.shells.M256_120_HE": true,
+    "weapons.shells.M2_12_7_T": true
+  },
+  "Leopard-2": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.M256_120_AP_L55": true,
+    "weapons.shells.M256_120_HE_L55": true
+  },
+  "Leopard-2A5": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.M256_120_AP": true,
+    "weapons.shells.M256_120_HE": true
+  },
+  "Leopard1A3": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.HESH_105": true,
+    "weapons.shells.M68_105_AP": true
+  },
+  "M-1 Abrams": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.M256_120_AP": true,
+    "weapons.shells.M256_120_HE": true,
+    "weapons.shells.M2_12_7_T": true
+  },
+  "M-109": {
+    "weapons.shells.M185_155": true
+  },
+  "M-113": {
+    "weapons.shells.M2_12_7_T": true
+  },
+  "M-2 Bradley": {
+    "weapons.missiles.TOW2": true,
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.M242_25_AP_M791": true,
+    "weapons.shells.M242_25_HE_M792": true
+  },
+  "M-60": {
+    "weapons.shells.M2_12_7_T": true,
+    "weapons.shells.M68_105_AP": true,
+    "weapons.shells.M68_105_HE": true
+  },
+  "M1043 HMMWV Armament": {
+    "weapons.shells.M2_12_7_T": true
+  },
+  "M1045 HMMWV TOW": {
+    "weapons.missiles.TOW2": true
+  },
+  "M1097 Avenger": {
+    "weapons.missiles.FIM_92C": true,
+    "weapons.shells.M2_12_7_T": true
+  },
+  "M1126 Stryker ICV": {
+    "weapons.shells.M2_12_7_T": true
+  },
+  "M1128 Stryker MGS": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.HESH_105": true,
+    "weapons.shells.M2_12_7_T": true,
+    "weapons.shells.M68_105_AP": true
+  },
+  "M1134 Stryker ATGM": {
+    "weapons.missiles.TOW2": true,
+    "weapons.shells.7_62x51": true
+  },
+  "M2A1_halftrack": {
+    "weapons.shells.Br303": true,
+    "weapons.shells.Br303_tr": true,
+    "weapons.shells.M2_12_7_T": true
+  },
+  "M48 Chaparral": {
+    "weapons.missiles.MIM_72G": true
+  },
+  "M4_Sherman": {
+    "weapons.shells.Br303": true,
+    "weapons.shells.Br303_tr": true,
+    "weapons.shells.M46": true,
+    "weapons.shells.M61": true
+  },
+  "M6 Linebacker": {
+    "weapons.missiles.FIM_92C": true,
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.M242_25_AP_M791": true,
+    "weapons.shells.M242_25_HE_M792": true
+  },
+  "MCV-80": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.L14A2_30_APDS": true,
+    "weapons.shells.L21A1_30_HE": true
+  },
+  "MLRS": {
+    "weapons.nurs.M26": true
+  },
+  "MLRS FDDM": {
+    "weapons.nurs.M26": true,
+    "weapons.shells.M2_12_7_T": true
+  },
+  "MTLB": {
+    "weapons.shells.7_62x54": true
+  },
+  "Marder": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.Rh202_20_AP": true,
+    "weapons.shells.Rh202_20_HE": true
+  },
+  "Merkava_Mk4": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.M256_120_AP": true,
+    "weapons.shells.M256_120_HE": true
+  },
+  "NASAMS_LN_B": {
+    "weapons.missiles.AIM_120": true
+  },
+  "NASAMS_LN_C": {
+    "weapons.missiles.AIM_120C": true
+  },
+  "Osa 9A33 ln": {
+    "SA9M33": true
+  },
+  "PLZ05": {
+    "weapons.shells.PLZ_155_HE": true,
+    "weapons.shells.Utes_12_7x108_T": true
+  },
+  "PT_76": {
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.BR_354N": true,
+    "weapons.shells.OF_350": true
+  },
+  "Paratrooper AKS-74": {
+    "weapons.shells.5_45x39": true
+  },
+  "Paratrooper RPG-16": {
+    "weapons.shells.2A28_73": true
+  },
+  "Patriot ln": {
+    "MIM_104": true
+  },
+  "Pz_IV_H": {
+    "weapons.shells.7_92x57_Smkl": true,
+    "weapons.shells.7_92x57sS": true,
+    "weapons.shells.Pzgr_39/40": true,
+    "weapons.shells.Sprgr_34_L48": true
+  },
+  "Roland ADS": {
+    "ROLAND_R": true
+  },
+  "S-200_Launcher": {
+    "SA5V28": true
+  },
+  "S-300PS 5P85C ln": {
+    "SA5B55": true
+  },
+  "S-300PS 5P85D ln": {
+    "SA5B55": true
+  },
+  "S-60_Type59_Artillery": {
+    "weapons.shells.53-UBR-281U": true,
+    "weapons.shells.53-UOR-281U": true
+  },
+  "SA-11 Buk LN 9A310M1": {
+    "SA9M38M1": true
+  },
+  "SA-18 Igla manpad": {
+    "weapons.missiles.Igla_1E": true
+  },
+  "SA-18 Igla-S manpad": {
+    "weapons.missiles.Igla_1E": true
+  },
+  "SAU 2-C9": {
+    "weapons.shells.2A60_120": true
+  },
+  "SAU Akatsia": {
+    "weapons.shells.2A33_152": true
+  },
+  "SAU Gvozdika": {
+    "weapons.shells.2A18_122": true
+  },
+  "SAU Msta": {
+    "weapons.shells.2A64_152": true,
+    "weapons.shells.Utes_12_7x108_T": true
+  },
+  "S_75M_Volhov": {
+    "SA2V755": true
+  },
+  "Scud_B": {
+    "weapons.missiles.SCUD_RAKETA": true
+  },
+  "Sd_Kfz_251": {
+    "weapons.shells.7_92x57_Smkl": true,
+    "weapons.shells.7_92x57sS": true
+  },
+  "Smerch": {
+    "weapons.nurs.SMERCH_9M55K": true
+  },
+  "Smerch_HE": {
+    "weapons.nurs.SMERCH_9M55F": true
+  },
+  "Soldier AK": {
+    "weapons.shells.5_45x39": true
+  },
+  "Soldier M249": {
+    "weapons.shells.5_56x45": true
+  },
+  "Soldier M4": {
+    "weapons.shells.5_56x45": true
+  },
+  "Soldier M4 GRG": {
+    "weapons.shells.5_56x45": true
+  },
+  "Soldier RPG": {
+    "weapons.shells.2A28_73": true
+  },
+  "Soldier stinger": {
+    "weapons.missiles.FIM_92C": true
+  },
+  "SpGH_Dana": {
+    "weapons.shells.DANA_152": true
+  },
+  "Strela-1 9P31": {
+    "SA9M31": true
+  },
+  "Strela-10M3": {
+    "SA9M333": true,
+    "weapons.shells.7_62x54": true
+  },
+  "T-55": {
+    "weapons.shells.3UBM11_100mm_AP": true,
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.UOF412_100HE": true,
+    "weapons.shells.Utes_12_7x108_T": true
+  },
+  "T-72B": {
+    "weapons.missiles.SVIR": true,
+    "weapons.shells.2A46M_125_AP": true,
+    "weapons.shells.2A46M_125_HE": true,
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.Utes_12_7x108_T": true
+  },
+  "T-72B3": {
+    "weapons.missiles.SVIR": true,
+    "weapons.shells.2A46M_125_HE": true,
+    "weapons.shells.3BM59_125_AP": true,
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.Utes_12_7x108_T": true
+  },
+  "T-80UD": {
+    "weapons.missiles.REFLEX": true,
+    "weapons.shells.2A46M_125_AP": true,
+    "weapons.shells.2A46M_125_HE": true,
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.Utes_12_7x108_T": true
+  },
+  "T-90": {
+    "weapons.missiles.REFLEX": true,
+    "weapons.shells.2A46M_125_AP": true,
+    "weapons.shells.2A46M_125_HE": true,
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.Utes_12_7x108_T": true
+  },
+  "T155_Firtina": {
+    "weapons.shells.K307_155HE": true,
+    "weapons.shells.M2_12_7_T": true
+  },
+  "TPZ": {
+    "weapons.shells.7_62x51": true
+  },
+  "Tor 9A331": {
+    "SA9M330": true
+  },
+  "Uragan_BM-27": {
+    "weapons.nurs.URAGAN_9M27F": true
+  },
+  "Ural-375 ZU-23": {
+    "weapons.shells.2A7_23_AP": true,
+    "weapons.shells.2A7_23_HE": true
+  },
+  "Ural-375 ZU-23 Insurgent": {
+    "weapons.shells.2A7_23_AP": true,
+    "weapons.shells.2A7_23_HE": true
+  },
+  "VAB_Mephisto": {
+    "weapons.missiles.HOT2": true
+  },
+  "Vulcan": {
+    "weapons.shells.M61_20_AP": true,
+    "weapons.shells.M61_20_HE": true
+  },
+  "ZBD04A": {
+    "weapons.missiles.P_9M117": true,
+    "weapons.shells.2A42_30_AP": true,
+    "weapons.shells.2A42_30_HE": true,
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.UOF_17_100HE": true
+  },
+  "ZSU-23-4 Shilka": {
+    "weapons.shells.2A7_23_AP": true,
+    "weapons.shells.2A7_23_HE": true
+  },
+  "ZSU_57_2": {
+    "weapons.shells.53-UBR-281U": true,
+    "weapons.shells.53-UOR-281U": true
+  },
+  "ZTZ96B": {
+    "weapons.missiles.REFLEX": true,
+    "weapons.shells.7_62x54": true,
+    "weapons.shells.Utes_12_7x108_T": true,
+    "weapons.shells.ZTZ_125_AP": true,
+    "weapons.shells.ZTZ_125_HE": true
+  },
+  "ZU-23 Closed Insurgent": {
+    "weapons.shells.2A7_23_AP": true,
+    "weapons.shells.2A7_23_HE": true
+  },
+  "ZU-23 Emplacement": {
+    "weapons.shells.2A7_23_AP": true,
+    "weapons.shells.2A7_23_HE": true
+  },
+  "ZU-23 Emplacement Closed": {
+    "weapons.shells.2A7_23_AP": true,
+    "weapons.shells.2A7_23_HE": true
+  },
+  "ZU-23 Insurgent": {
+    "weapons.shells.2A7_23_AP": true,
+    "weapons.shells.2A7_23_HE": true
+  },
+  "bofors40": {
+    "weapons.shells.Bofors_40mm_HE": true
+  },
+  "flak18": {
+    "weapons.shells.Flak18_Sprgr_39": true
+  },
+  "hy_launcher": {
+    "HY-2": true
+  },
+  "leopard-2A4": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.M256_120_AP": true,
+    "weapons.shells.M256_120_HE": true
+  },
+  "leopard-2A4_trs": {
+    "weapons.shells.7_62x51": true,
+    "weapons.shells.M256_120_AP": true,
+    "weapons.shells.M256_120_HE": true
+  },
+  "rapier_fsa_launcher": {
+    "weapons.missiles.Rapier": true
+  }
+}

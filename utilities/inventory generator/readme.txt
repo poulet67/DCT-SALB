@@ -3,21 +3,54 @@ Inventories:
 All the utilities used to generate the tables used are provided, however they may not be necessary for most users. When new ammo and airframes are added to game, users are recommended to check the github/discord for the new entries to add to inventory tables
 
 Configuration:
+	
+	Part 1: Region Configuration
+	
+		Configure the various regions for your game state
+		Any bases added to the initial state will be saved in ____ and bases.TBL
+		
+	Part 2: Airbase and Base list generation
+		
+		Copy bases.TBL from part 1 into the utilities/base list generator/bases folder (if not already placed there automatically)
+		Load the .miz file for your mission into the mission editor and run the script utilities/base list generator/generate_list.lua
+		This will create a list called " ".tbl
 
-	- Navigate the folder with the map you need.
-	
-	- game.tbl 
-		-adds all "non-ED" game assets
-	
-	- link.tbl
-		- Since ED is so terrible at organizing assets, this table will allow various different weapons to be "linked"
-				-examples: Swedish Mavericks vs. AGM-65(or whatever) counterpart, various different 'tail types' of bombs on mosquito, bugs where various airframes have differently named weapons.
-				-This will add a "link" field to this entry when inventory is generated. When checked the DCT game logic checks this field, it will use the value linked to when performing inventory operations. 
-				-the table provided by default represents my best attempt to capture and consolidate all the different cases that arise. 
-				-if not exist, everything will have it's own entry
-	
-	- set up configuration to your desire/needs the following files are provided
-	
+	Part 3: Inventory Generator
+		
+		- Navigate the folder with the map you need.
+		- Configure options in option folder as you like
+			
+		---OPTIONS----
+			
+		- game
+			-adds all "non-ED" game assets
+			
+		- display names 
+			-the default "ED" names are inconsistent and often terrible they can be replaced here for good readable output
+		
+		- links
+			- Since ED is so terrible at organizing assets, this table will allow various different weapons to be "linked"
+					-examples: Swedish Aim-9s bugs where various airframes have differently named weapons, etc.
+					-This will add a "link" field to this entry when inventory is generated. When checked the DCT game logic checks this field, it will use the value linked to when performing inventory operations. 
+					-the table provided by default represents my best attempt to capture and consolidate all the different cases that arise. 
+					-if not exist, everything will have it's own entry
+						
+		- store
+			- add configuration for store (wip)
+			
+		---Configuration---
+		
+			---Initial---
+
+				
+			- default.json: 
+				- This is the inventory table that will be given to every airbase specified as "default" in the .cfg file. 
+				- if not exist, airbase/base will be empty
+
+			- x.json 
+				- Named inventory states per 'specific' option in .cfg file
+				- These can be created manually using template found in template folder of top level inventories generator directory
+			
 		- airbases.cfg
 
 			- Airbases settings file:
@@ -26,34 +59,10 @@ Configuration:
 							options: "default", "empty", "specific", "value"
 					(if default, any new table created will use the global default table: default.tbl if doesn't exist, will spawn with empty fields)
 					(empty means the airbase will not be usable until supplied)
-					(specific means it will look for a file called "name.inv" that it will use for its inventory table)
+					(specific allows you to define the name of a file it will use to fill this inventory. If empty it will look for a file called "name.inv" where name is the name of the airbase)
 					(value will allows you to specify a "values" table for each category of the inventory table)
 
-				- Note: Airbases not in this table will be added with empty inventories
-					
-					
-				
-		- bases.cfg
-			- add any configuration for bases defined in Region definition here (starting template provided)
-			
-			- Bases settings file:
-				- If you have specified any bases on start in the region definition you can set the inventory state here
-					- "Initial State":
-							options: "default", "empty", "specific", "value: #"
-					(if default, any new table created will use the global default table: default.tbl)
-					(empty means the airbase will not be usable until supplied)
-					(specific means it will look for a file called "name.inv" that it will use for its inventory table)
-					(value will add all assets defined in tables with quantities of # (useful for training maps or offmaps - set to a sufficiently high value so users can sandbox wih it or have a sufficiently ))
-		
-		- store.cfg
-			- add configuration for store (wip)
-			
-		- default.tbl: 
-			- This is the inventory table that will be given to every airbase specified as "default" in the .cfg file. 
-			- if not exist, airbase/base will be empty
-
-	- For more fine control you will have to modify the fields in the table generated in the next step by hand. Hope to GUI-fy this in
-	the future so it is less arduous.
+				- Note: If for any reason airbases are not in this table they will be added with empty inventories in DCT
 
 
 Execution:
@@ -65,7 +74,9 @@ Execution:
 			-"nevada"
 			-"persian gulf"
 			-"syria"
-		
+			-"templates"
+				--> This creates blank template files with all displaynames filled in
+				
 	- If script executes with no errors ("Done" in stdout) inventory.JSON will be created in the map folder you specified.
 			-copy that to theater/tables/inventories
 		

@@ -1,0 +1,14 @@
+--Aircraft Crew requirements
+--All aircrew including pilot, copilot any technical or mission crew.
+
+return { 
+--  ["Amenities"] = {},
+    ["Ammo"] = {},
+    ["Aviation Fuel"] = {},
+    ["Casualties"] = {},
+    ["Diesel"] = {},
+    ["Mail"] = {},
+    ["Manpower"] = {},
+    ["Flight Crew"] = {},
+  }
+

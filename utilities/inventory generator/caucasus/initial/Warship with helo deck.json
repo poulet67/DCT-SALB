@@ -1,0 +1,22 @@
+{
+  "airframes": {
+    "UH-1H": 1,
+  },
+  "ground units": {
+  },
+  "munitions": {
+  },
+  "naval": {
+  },
+  "other": {
+    "Amenities": 0,
+    "Ammo": 0,
+    "Jet Fuel": 10000,
+    "Aviation Fuel": 0,
+    "Casualties": 0,
+    "Diesel": 0,
+    "Mail": 0,
+    "Manpower": 20,
+    "Flight Crew": 6
+  }
+}

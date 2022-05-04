@@ -135,8 +135,6 @@ function Inventory:handleTakeoff(event)
 			
 		else	
 			
-			
-			
 			if(unit_takingOff:getPlayerName()) then -- unit is a player/client
 				
 				trigger.action.outTextForGroup(unit_takingOff.groupId, "You have taken off with a configuration that is impossible given the current airbase inventory. You will be kicked to spectator. You will be able to re-slot into an aircraft. Please read the briefing for information on the logistics and inventory system.", 60)
