@@ -8,12 +8,16 @@ Several new features have been added and are planned. Some core functionality ha
 
 Features:
 - Inventory system of all possible detectable game assets (please harass ED to add TPODs: https://forum.dcs.world/topic/264426-scripting-engine-means-to-determine-if-an-aircraft-has-a-targeting-or-other-pod-equipped)
-- Commander system that allows for spawning and commanding of pre-defined unit templates
+- Commander system that allows for dispatch and command of pre-defined unit templates
     -To be added: ability to create FOBs and FARPs
+    -To be added: interaction with mission system
+    -To be added: additional gameplay mechanics
 - Revamped mission system aimed to enhance cooordination and tasking.
+- Multiplayer voting system
 To come:
 - Enhanced region control system
 - Recon system
+- Full fledged logistics
 - More
 
 Still very much a work in progress, hope to have a demo server running stage 1 a demo operation soon.
