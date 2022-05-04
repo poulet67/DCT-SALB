@@ -1,4 +1,4 @@
-# Dynamic Campaign Tools (DCT) - SALB:Strategic Air Land Battle
+# Dynamic Campaign Tools (DCT-WM) - War Machine (working title)
 
 A fork of the popular DCT framework.
 
