@@ -54,6 +54,41 @@
     "naval": [],
     "other": []
   },
+  "Burke-1": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "Burke-2": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "Burke-2-1": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "CV-59 Forrestal": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "CVN-71 Theodore Roosevelt": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
   "Gelendzhik": {
     "airframes": [],
     "ground units": [],
@@ -1227,9 +1262,6 @@
       "X_41": {
         "qty": 100000
       },
-      "YJ-12": {
-        "qty": 100000
-      },
       "weapons.bombs.250-2": {
         "qty": 100000
       },
@@ -1269,6 +1301,9 @@
       "weapons.bombs.BEER_BOMB": {
         "qty": 100000
       },
+      "weapons.bombs.BELOUGA": {
+        "qty": 100000
+      },
       "weapons.bombs.BIN_200": {
         "qty": 100000
       },
@@ -1278,7 +1313,7 @@
       "weapons.bombs.BKF_PTAB2_5KO": {
         "qty": 100000
       },
-      "weapons.bombs.BLG66": {
+      "weapons.bombs.BLG66_BELOUGA": {
         "qty": 100000
       },
       "weapons.bombs.BL_755": {
@@ -1741,6 +1776,9 @@
         "qty": 100000
       },
       "weapons.missiles.X_65": {
+        "qty": 100000
+      },
+      "weapons.missiles.YJ-12": {
         "qty": 100000
       },
       "weapons.missiles.YJ-62": {
@@ -2358,32 +2396,7 @@
         "qty": 0
       }
     },
-    "other": {
-      "Amenities": {
-        "qty": 10000
-      },
-      "Ammo": {
-        "qty": 10000
-      },
-      "Aviation Fuel": {
-        "qty": 10000
-      },
-      "Casualties": {
-        "qty": 10000
-      },
-      "Diesel": {
-        "qty": 10000
-      },
-      "Mail": {
-        "qty": 10000
-      },
-      "Manpower": {
-        "qty": 10000
-      },
-      "Pilots": {
-        "qty": 10000
-      }
-    }
+    "other": []
   },
   "Krasnodar-Pashkovsky": {
     "airframes": [],
@@ -2400,6 +2413,20 @@
     "other": []
   },
   "Kutaisi": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "LHA-1 Tarawa": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "LHA-2 Tarawa": {
     "airframes": [],
     "ground units": [],
     "munitions": [],
@@ -2435,2211 +2462,67 @@
     "other": []
   },
   "Novorossiysk": {
-    "airframes": {
-      "A-10A": {
-        "qty": 50
-      },
-      "A-10C": {
-        "qty": 50
-      },
-      "A-10C_2": {
-        "qty": 50
-      },
-      "A-20G": {
-        "qty": 50
-      },
-      "A-50": {
-        "qty": 50
-      },
-      "AH-1W": {
-        "qty": 50
-      },
-      "AH-64A": {
-        "qty": 50
-      },
-      "AH-64D": {
-        "qty": 50
-      },
-      "AH-64D_BLK_II": {
-        "qty": 50
-      },
-      "AJS37": {
-        "qty": 50
-      },
-      "AV8BNA": {
-        "qty": 50
-      },
-      "An-26B": {
-        "qty": 50
-      },
-      "An-30M": {
-        "qty": 50
-      },
-      "B-1B": {
-        "qty": 50
-      },
-      "B-52H": {
-        "qty": 50
-      },
-      "Bf-109K-4": {
-        "qty": 50
-      },
-      "C-101CC": {
-        "qty": 50
-      },
-      "C-101EB": {
-        "qty": 50
-      },
-      "C-130": {
-        "qty": 50
-      },
-      "C-17A": {
-        "qty": 50
-      },
-      "CH-47D": {
-        "qty": 50
-      },
-      "CH-53E": {
-        "qty": 50
-      },
-      "Christen Eagle II": {
-        "qty": 50
-      },
-      "E-2C": {
-        "qty": 50
-      },
-      "E-3A": {
-        "qty": 50
-      },
-      "F-117A": {
-        "qty": 50
-      },
-      "F-14A": {
-        "qty": 50
-      },
-      "F-14A-135-GR": {
-        "qty": 50
-      },
-      "F-14B": {
-        "qty": 50
-      },
-      "F-15C": {
-        "qty": 50
-      },
-      "F-15E": {
-        "qty": 50
-      },
-      "F-16A": {
-        "qty": 50
-      },
-      "F-16A MLU": {
-        "qty": 50
-      },
-      "F-16C bl.50": {
-        "qty": 50
-      },
-      "F-16C bl.52d": {
-        "qty": 50
-      },
-      "F-16C_50": {
-        "qty": 50
-      },
-      "F-4E": {
-        "qty": 50
-      },
-      "F-5E": {
-        "qty": 50
-      },
-      "F-5E-3": {
-        "qty": 50
-      },
-      "F-86F Sabre": {
-        "qty": 50
-      },
-      "F/A-18A": {
-        "qty": 50
-      },
-      "F/A-18C": {
-        "qty": 50
-      },
-      "FA-18C_hornet": {
-        "qty": 50
-      },
-      "FW-190A8": {
-        "qty": 50
-      },
-      "FW-190D9": {
-        "qty": 50
-      },
-      "H-6J": {
-        "qty": 50
-      },
-      "Hawk": {
-        "qty": 50
-      },
-      "I-16": {
-        "qty": 50
-      },
-      "IL-76MD": {
-        "qty": 50
-      },
-      "IL-78M": {
-        "qty": 50
-      },
-      "J-11A": {
-        "qty": 50
-      },
-      "JF-17": {
-        "qty": 50
-      },
-      "KC-135": {
-        "qty": 50
-      },
-      "KC130": {
-        "qty": 50
-      },
-      "KC135MPRS": {
-        "qty": 50
-      },
-      "KJ-2000": {
-        "qty": 50
-      },
-      "Ka-27": {
-        "qty": 50
-      },
-      "Ka-50": {
-        "qty": 50
-      },
-      "L-39C": {
-        "qty": 50
-      },
-      "L-39ZA": {
-        "qty": 50
-      },
-      "M-2000C": {
-        "qty": 50
-      },
-      "MQ-9 Reaper": {
-        "qty": 50
-      },
-      "Mi-24P": {
-        "qty": 50
-      },
-      "Mi-24V": {
-        "qty": 50
-      },
-      "Mi-26": {
-        "qty": 50
-      },
-      "Mi-28N": {
-        "qty": 50
-      },
-      "Mi-8MT": {
-        "qty": 50
-      },
-      "MiG-15bis": {
-        "qty": 50
-      },
-      "MiG-19P": {
-        "qty": 50
-      },
-      "MiG-21Bis": {
-        "qty": 50
-      },
-      "MiG-23MLD": {
-        "qty": 50
-      },
-      "MiG-25PD": {
-        "qty": 50
-      },
-      "MiG-25RBT": {
-        "qty": 50
-      },
-      "MiG-27K": {
-        "qty": 50
-      },
-      "MiG-29A": {
-        "qty": 50
-      },
-      "MiG-29G": {
-        "qty": 50
-      },
-      "MiG-29S": {
-        "qty": 50
-      },
-      "MiG-31": {
-        "qty": 50
-      },
-      "Mirage 2000-5": {
-        "qty": 50
-      },
-      "MosquitoFBMkVI": {
-        "qty": 50
-      },
-      "OH-58D": {
-        "qty": 50
-      },
-      "P-47D-30": {
-        "qty": 50
-      },
-      "P-47D-30bl1": {
-        "qty": 50
-      },
-      "P-47D-40": {
-        "qty": 50
-      },
-      "P-51D": {
-        "qty": 50
-      },
-      "P-51D-30-NA": {
-        "qty": 50
-      },
-      "RQ-1A Predator": {
-        "qty": 50
-      },
-      "S-3B": {
-        "qty": 50
-      },
-      "S-3B Tanker": {
-        "qty": 50
-      },
-      "SA342L": {
-        "qty": 50
-      },
-      "SA342M": {
-        "qty": 50
-      },
-      "SA342Minigun": {
-        "qty": 50
-      },
-      "SA342Mistral": {
-        "qty": 50
-      },
-      "SH-60B": {
-        "qty": 50
-      },
-      "SpitfireLFMkIX": {
-        "qty": 50
-      },
-      "SpitfireLFMkIXCW": {
-        "qty": 50
-      },
-      "Su-17M4": {
-        "qty": 50
-      },
-      "Su-24M": {
-        "qty": 50
-      },
-      "Su-24MR": {
-        "qty": 50
-      },
-      "Su-25": {
-        "qty": 50
-      },
-      "Su-25T": {
-        "qty": 50
-      },
-      "Su-25TM": {
-        "qty": 50
-      },
-      "Su-27": {
-        "qty": 50
-      },
-      "Su-30": {
-        "qty": 50
-      },
-      "Su-33": {
-        "qty": 50
-      },
-      "Su-34": {
-        "qty": 50
-      },
-      "TF-51D": {
-        "qty": 50
-      },
-      "Tornado GR4": {
-        "qty": 50
-      },
-      "Tornado IDS": {
-        "qty": 50
-      },
-      "Tu-142": {
-        "qty": 50
-      },
-      "Tu-160": {
-        "qty": 50
-      },
-      "Tu-22M3": {
-        "qty": 50
-      },
-      "Tu-95MS": {
-        "qty": 50
-      },
-      "UH-1H": {
-        "qty": 50
-      },
-      "UH-60A": {
-        "qty": 50
-      },
-      "WingLoong-I": {
-        "qty": 50
-      },
-      "Yak-40": {
-        "qty": 50
-      },
-      "Yak-52": {
-        "qty": 50
-      }
-    },
-    "ground units": {
-      "1L13 EWR": {
-        "qty": 100
-      },
-      "2B11 mortar": {
-        "qty": 100
-      },
-      "2S6 Tunguska": {
-        "qty": 100
-      },
-      "55G6 EWR": {
-        "qty": 100
-      },
-      "5p73 s-125 ln": {
-        "qty": 100
-      },
-      "AA8": {
-        "qty": 100
-      },
-      "AAV7": {
-        "qty": 100
-      },
-      "ATMZ-5": {
-        "qty": 100
-      },
-      "ATZ-10": {
-        "qty": 100
-      },
-      "ATZ-5": {
-        "qty": 100
-      },
-      "ATZ-60_Maz": {
-        "qty": 100
-      },
-      "BMD-1": {
-        "qty": 100
-      },
-      "BMP-1": {
-        "qty": 100
-      },
-      "BMP-2": {
-        "qty": 100
-      },
-      "BMP-3": {
-        "qty": 100
-      },
-      "BRDM-2": {
-        "qty": 100
-      },
-      "BTR-80": {
-        "qty": 100
-      },
-      "BTR-82A": {
-        "qty": 100
-      },
-      "BTR_D": {
-        "qty": 100
-      },
-      "Bedford_MWD": {
-        "qty": 100
-      },
-      "Blitz_36-6700A": {
-        "qty": 100
-      },
-      "Challenger2": {
-        "qty": 100
-      },
-      "Chieftain_mk3": {
-        "qty": 100
-      },
-      "Cobra": {
-        "qty": 100
-      },
-      "Dog Ear radar": {
-        "qty": 100
-      },
-      "GAZ-3307": {
-        "qty": 100
-      },
-      "GAZ-3308": {
-        "qty": 100
-      },
-      "GAZ-66": {
-        "qty": 100
-      },
-      "Gepard": {
-        "qty": 100
-      },
-      "Grad-URAL": {
-        "qty": 100
-      },
-      "Grad_FDDM": {
-        "qty": 100
-      },
-      "HEMTT TFFT": {
-        "qty": 100
-      },
-      "HQ-7_LN_SP": {
-        "qty": 100
-      },
-      "HQ-7_STR_SP": {
-        "qty": 100
-      },
-      "Hawk cwar": {
-        "qty": 100
-      },
-      "Hawk ln": {
-        "qty": 100
-      },
-      "Hawk pcp": {
-        "qty": 100
-      },
-      "Hawk sr": {
-        "qty": 100
-      },
-      "Hawk tr": {
-        "qty": 100
-      },
-      "Hummer": {
-        "qty": 100
-      },
-      "IKARUS Bus": {
-        "qty": 100
-      },
-      "Igla manpad INS": {
-        "qty": 100
-      },
-      "Infantry AK": {
-        "qty": 100
-      },
-      "Infantry AK Ins": {
-        "qty": 100
-      },
-      "Infantry AK ver2": {
-        "qty": 100
-      },
-      "Infantry AK ver3": {
-        "qty": 100
-      },
-      "KAMAZ Truck": {
-        "qty": 100
-      },
-      "KrAZ6322": {
-        "qty": 100
-      },
-      "Kub 1S91 str": {
-        "qty": 100
-      },
-      "Kub 2P25 ln": {
-        "qty": 100
-      },
-      "LAV-25": {
-        "qty": 100
-      },
-      "LAZ Bus": {
-        "qty": 100
-      },
-      "Land_Rover_101_FC": {
-        "qty": 100
-      },
-      "Land_Rover_109_S3": {
-        "qty": 100
-      },
-      "Leclerc": {
-        "qty": 100
-      },
-      "Leopard-2": {
-        "qty": 100
-      },
-      "Leopard-2A5": {
-        "qty": 100
-      },
-      "Leopard1A3": {
-        "qty": 100
-      },
-      "LiAZ Bus": {
-        "qty": 100
-      },
-      "M 818": {
-        "qty": 100
-      },
-      "M-1 Abrams": {
-        "qty": 100
-      },
-      "M-109": {
-        "qty": 100
-      },
-      "M-113": {
-        "qty": 100
-      },
-      "M-2 Bradley": {
-        "qty": 100
-      },
-      "M-60": {
-        "qty": 100
-      },
-      "M1043 HMMWV Armament": {
-        "qty": 100
-      },
-      "M1045 HMMWV TOW": {
-        "qty": 100
-      },
-      "M1097 Avenger": {
-        "qty": 100
-      },
-      "M1126 Stryker ICV": {
-        "qty": 100
-      },
-      "M1128 Stryker MGS": {
-        "qty": 100
-      },
-      "M1134 Stryker ATGM": {
-        "qty": 100
-      },
-      "M2A1_halftrack": {
-        "qty": 100
-      },
-      "M48 Chaparral": {
-        "qty": 100
-      },
-      "M4_Sherman": {
-        "qty": 100
-      },
-      "M6 Linebacker": {
-        "qty": 100
-      },
-      "M978 HEMTT Tanker": {
-        "qty": 100
-      },
-      "MAZ-6303": {
-        "qty": 100
-      },
-      "MCV-80": {
-        "qty": 100
-      },
-      "MLRS": {
-        "qty": 100
-      },
-      "MLRS FDDM": {
-        "qty": 100
-      },
-      "MTLB": {
-        "qty": 100
-      },
-      "Marder": {
-        "qty": 100
-      },
-      "Merkava_Mk4": {
-        "qty": 100
-      },
-      "NASAMS_Command_Post": {
-        "qty": 100
-      },
-      "NASAMS_LN_B": {
-        "qty": 100
-      },
-      "NASAMS_LN_C": {
-        "qty": 100
-      },
-      "NASAMS_Radar_MPQ64F1": {
-        "qty": 100
-      },
-      "Osa 9A33 ln": {
-        "qty": 100
-      },
-      "PLZ05": {
-        "qty": 100
-      },
-      "PT_76": {
-        "qty": 100
-      },
-      "Paratrooper AKS-74": {
-        "qty": 100
-      },
-      "Paratrooper RPG-16": {
-        "qty": 100
-      },
-      "Patriot AMG": {
-        "qty": 100
-      },
-      "Patriot ECS": {
-        "qty": 100
-      },
-      "Patriot EPP": {
-        "qty": 100
-      },
-      "Patriot cp": {
-        "qty": 100
-      },
-      "Patriot ln": {
-        "qty": 100
-      },
-      "Patriot str": {
-        "qty": 100
-      },
-      "Predator GCS": {
-        "qty": 100
-      },
-      "Predator TrojanSpirit": {
-        "qty": 100
-      },
-      "Pz_IV_H": {
-        "qty": 100
-      },
-      "RLS_19J6": {
-        "qty": 100
-      },
-      "RPC_5N62V": {
-        "qty": 100
-      },
-      "Roland ADS": {
-        "qty": 100
-      },
-      "Roland Radar": {
-        "qty": 100
-      },
-      "S-200_Launcher": {
-        "qty": 100
-      },
-      "S-300PS 40B6M tr": {
-        "qty": 100
-      },
-      "S-300PS 40B6MD sr": {
-        "qty": 100
-      },
-      "S-300PS 54K6 cp": {
-        "qty": 100
-      },
-      "S-300PS 5P85C ln": {
-        "qty": 100
-      },
-      "S-300PS 5P85D ln": {
-        "qty": 100
-      },
-      "S-300PS 64H6E sr": {
-        "qty": 100
-      },
-      "S-60_Type59_Artillery": {
-        "qty": 100
-      },
-      "SA-11 Buk CC 9S470M1": {
-        "qty": 100
-      },
-      "SA-11 Buk LN 9A310M1": {
-        "qty": 100
-      },
-      "SA-11 Buk SR 9S18M1": {
-        "qty": 100
-      },
-      "SA-18 Igla comm": {
-        "qty": 100
-      },
-      "SA-18 Igla manpad": {
-        "qty": 100
-      },
-      "SA-18 Igla-S comm": {
-        "qty": 100
-      },
-      "SA-18 Igla-S manpad": {
-        "qty": 100
-      },
-      "SAU 2-C9": {
-        "qty": 100
-      },
-      "SAU Akatsia": {
-        "qty": 100
-      },
-      "SAU Gvozdika": {
-        "qty": 100
-      },
-      "SAU Msta": {
-        "qty": 100
-      },
-      "SKP-11": {
-        "qty": 100
-      },
-      "SNR_75V": {
-        "qty": 100
-      },
-      "S_75M_Volhov": {
-        "qty": 100
-      },
-      "Scud_B": {
-        "qty": 100
-      },
-      "Sd_Kfz_251": {
-        "qty": 100
-      },
-      "Silkworm_SR": {
-        "qty": 100
-      },
-      "Smerch": {
-        "qty": 100
-      },
-      "Smerch_HE": {
-        "qty": 100
-      },
-      "Soldier AK": {
-        "qty": 100
-      },
-      "Soldier M249": {
-        "qty": 100
-      },
-      "Soldier M4": {
-        "qty": 100
-      },
-      "Soldier M4 GRG": {
-        "qty": 100
-      },
-      "Soldier RPG": {
-        "qty": 100
-      },
-      "Soldier stinger": {
-        "qty": 100
-      },
-      "SpGH_Dana": {
-        "qty": 100
-      },
-      "Stinger comm": {
-        "qty": 100
-      },
-      "Stinger comm dsr": {
-        "qty": 100
-      },
-      "Strela-1 9P31": {
-        "qty": 100
-      },
-      "Strela-10M3": {
-        "qty": 100
-      },
-      "T-55": {
-        "qty": 100
-      },
-      "T-72B": {
-        "qty": 100
-      },
-      "T-72B3": {
-        "qty": 100
-      },
-      "T-80UD": {
-        "qty": 100
-      },
-      "T-90": {
-        "qty": 100
-      },
-      "T155_Firtina": {
-        "qty": 100
-      },
-      "TPZ": {
-        "qty": 100
-      },
-      "TZ-22_KrAZ": {
-        "qty": 100
-      },
-      "Tigr_233036": {
-        "qty": 100
-      },
-      "Tor 9A331": {
-        "qty": 100
-      },
-      "Trolley bus": {
-        "qty": 100
-      },
-      "UAZ-469": {
-        "qty": 100
-      },
-      "Uragan_BM-27": {
-        "qty": 100
-      },
-      "Ural ATsP-6": {
-        "qty": 100
-      },
-      "Ural-375": {
-        "qty": 100
-      },
-      "Ural-375 PBU": {
-        "qty": 100
-      },
-      "Ural-375 ZU-23": {
-        "qty": 100
-      },
-      "Ural-375 ZU-23 Insurgent": {
-        "qty": 100
-      },
-      "Ural-4320 APA-5D": {
-        "qty": 100
-      },
-      "Ural-4320-31": {
-        "qty": 100
-      },
-      "Ural-4320T": {
-        "qty": 100
-      },
-      "VAB_Mephisto": {
-        "qty": 100
-      },
-      "VAZ Car": {
-        "qty": 100
-      },
-      "Vulcan": {
-        "qty": 100
-      },
-      "ZBD04A": {
-        "qty": 100
-      },
-      "ZIL-131 KUNG": {
-        "qty": 100
-      },
-      "ZIL-135": {
-        "qty": 100
-      },
-      "ZIL-4331": {
-        "qty": 100
-      },
-      "ZSU-23-4 Shilka": {
-        "qty": 100
-      },
-      "ZSU_57_2": {
-        "qty": 100
-      },
-      "ZTZ96B": {
-        "qty": 100
-      },
-      "ZU-23 Closed Insurgent": {
-        "qty": 100
-      },
-      "ZU-23 Emplacement": {
-        "qty": 100
-      },
-      "ZU-23 Emplacement Closed": {
-        "qty": 100
-      },
-      "ZU-23 Insurgent": {
-        "qty": 100
-      },
-      "ZiL-131 APA-80": {
-        "qty": 100
-      },
-      "bofors40": {
-        "qty": 100
-      },
-      "flak18": {
-        "qty": 100
-      },
-      "generator_5i57": {
-        "qty": 100
-      },
-      "hy_launcher": {
-        "qty": 100
-      },
-      "leopard-2A4": {
-        "qty": 100
-      },
-      "leopard-2A4_trs": {
-        "qty": 100
-      },
-      "p-19 s-125 sr": {
-        "qty": 100
-      },
-      "rapier_fsa_blindfire_radar": {
-        "qty": 100
-      },
-      "rapier_fsa_launcher": {
-        "qty": 100
-      },
-      "rapier_fsa_optical_tracker_unit": {
-        "qty": 100
-      },
-      "snr s-125 tr": {
-        "qty": 100
-      }
-    },
-    "munitions": {
-      "9M317": {
-        "qty": 100000
-      },
-      "AGM_119": {
-        "qty": 100000
-      },
-      "AGM_84S": {
-        "qty": 100000
-      },
-      "AIM-9L": {
-        "qty": 100000
-      },
-      "AIM-9P": {
-        "qty": 100000
-      },
-      "AIM-9P5": {
-        "qty": 100000
-      },
-      "AIM_54": {
-        "qty": 100000
-      },
-      "AIM_54A_Mk47": {
-        "qty": 100000
-      },
-      "AIM_54A_Mk60": {
-        "qty": 100000
-      },
-      "AIM_54C_Mk47": {
-        "qty": 100000
-      },
-      "AIM_9": {
-        "qty": 100000
-      },
-      "AIM_9X": {
-        "qty": 100000
-      },
-      "CATM_9M": {
-        "qty": 100000
-      },
-      "GAR-8": {
-        "qty": 100000
-      },
-      "GBU_27": {
-        "qty": 100000
-      },
-      "HAWK_RAKETA": {
-        "qty": 100000
-      },
-      "HHQ-9": {
-        "qty": 100000
-      },
-      "HOT3": {
-        "qty": 100000
-      },
-      "HQ-16": {
-        "qty": 100000
-      },
-      "HQ-7": {
-        "qty": 100000
-      },
-      "HY-2": {
-        "qty": 100000
-      },
-      "Kh-66_Grom": {
-        "qty": 100000
-      },
-      "Kormoran": {
-        "qty": 100000
-      },
-      "MICA_R": {
-        "qty": 100000
-      },
-      "MICA_T": {
-        "qty": 100000
-      },
-      "MIM_104": {
-        "qty": 100000
-      },
-      "MMagicII": {
-        "qty": 100000
-      },
-      "PL-5EII": {
-        "qty": 100000
-      },
-      "P_24R": {
-        "qty": 100000
-      },
-      "P_24T": {
-        "qty": 100000
-      },
-      "P_27P": {
-        "qty": 100000
-      },
-      "P_27PE": {
-        "qty": 100000
-      },
-      "P_27T": {
-        "qty": 100000
-      },
-      "P_27TE": {
-        "qty": 100000
-      },
-      "P_33E": {
-        "qty": 100000
-      },
-      "P_40R": {
-        "qty": 100000
-      },
-      "P_40T": {
-        "qty": 100000
-      },
-      "P_500": {
-        "qty": 100000
-      },
-      "P_60": {
-        "qty": 100000
-      },
-      "P_700": {
-        "qty": 100000
-      },
-      "P_73": {
-        "qty": 100000
-      },
-      "P_77": {
-        "qty": 100000
-      },
-      "R-13M": {
-        "qty": 100000
-      },
-      "R-13M1": {
-        "qty": 100000
-      },
-      "R-3R": {
-        "qty": 100000
-      },
-      "R-3S": {
-        "qty": 100000
-      },
-      "R-60": {
-        "qty": 100000
-      },
-      "ROLAND_R": {
-        "qty": 100000
-      },
-      "R_550": {
-        "qty": 100000
-      },
-      "Rb 04E": {
-        "qty": 100000
-      },
-      "Rb 05A": {
-        "qty": 100000
-      },
-      "Rb 15F": {
-        "qty": 100000
-      },
-      "Rb 24": {
-        "qty": 100000
-      },
-      "Rb 24J": {
-        "qty": 100000
-      },
-      "Rb 74": {
-        "qty": 100000
-      },
-      "SA2V755": {
-        "qty": 100000
-      },
-      "SA3M9M": {
-        "qty": 100000
-      },
-      "SA48H6E2": {
-        "qty": 100000
-      },
-      "SA5B27": {
-        "qty": 100000
-      },
-      "SA5B55": {
-        "qty": 100000
-      },
-      "SA5V28": {
-        "qty": 100000
-      },
-      "SA9M31": {
-        "qty": 100000
-      },
-      "SA9M311": {
-        "qty": 100000
-      },
-      "SA9M33": {
-        "qty": 100000
-      },
-      "SA9M330": {
-        "qty": 100000
-      },
-      "SA9M333": {
-        "qty": 100000
-      },
-      "SA9M38M1": {
-        "qty": 100000
-      },
-      "SM_2": {
-        "qty": 100000
-      },
-      "S_25L": {
-        "qty": 100000
-      },
-      "Sea_Eagle": {
-        "qty": 100000
-      },
-      "Super_530D": {
-        "qty": 100000
-      },
-      "TOW": {
-        "qty": 100000
-      },
-      "X_22": {
-        "qty": 100000
-      },
-      "X_41": {
-        "qty": 100000
-      },
-      "YJ-12": {
-        "qty": 100000
-      },
-      "weapons.bombs.250-2": {
-        "qty": 100000
-      },
-      "weapons.bombs.AB_250_2_SD_10A": {
-        "qty": 100000
-      },
-      "weapons.bombs.AB_500_1_SD_10A": {
-        "qty": 100000
-      },
-      "weapons.bombs.AN_M30A1": {
-        "qty": 100000
-      },
-      "weapons.bombs.AN_M57": {
-        "qty": 100000
-      },
-      "weapons.bombs.AN_M64": {
-        "qty": 100000
-      },
-      "weapons.bombs.AN_M65": {
-        "qty": 100000
-      },
-      "weapons.bombs.BAP_100": {
-        "qty": 100000
-      },
-      "weapons.bombs.BDU_33": {
-        "qty": 100000
-      },
-      "weapons.bombs.BDU_45": {
-        "qty": 100000
-      },
-      "weapons.bombs.BDU_45B": {
-        "qty": 100000
-      },
-      "weapons.bombs.BDU_50LD": {
-        "qty": 100000
-      },
-      "weapons.bombs.BEER_BOMB": {
-        "qty": 100000
-      },
-      "weapons.bombs.BIN_200": {
-        "qty": 100000
-      },
-      "weapons.bombs.BKF_AO2_5RT": {
-        "qty": 100000
-      },
-      "weapons.bombs.BKF_PTAB2_5KO": {
-        "qty": 100000
-      },
-      "weapons.bombs.BLG66": {
-        "qty": 100000
-      },
-      "weapons.bombs.BL_755": {
-        "qty": 100000
-      },
-      "weapons.bombs.BR_250": {
-        "qty": 100000
-      },
-      "weapons.bombs.BR_500": {
-        "qty": 100000
-      },
-      "weapons.bombs.BetAB_500": {
-        "qty": 100000
-      },
-      "weapons.bombs.BetAB_500ShP": {
-        "qty": 100000
-      },
-      "weapons.bombs.British_GP_250LB_Bomb_Mk1": {
-        "qty": 100000
-      },
-      "weapons.bombs.British_GP_250LB_Bomb_Mk4": {
-        "qty": 100000
-      },
-      "weapons.bombs.British_GP_250LB_Bomb_Mk5": {
-        "qty": 100000
-      },
-      "weapons.bombs.British_GP_500LB_Bomb_Mk1": {
-        "qty": 100000
-      },
-      "weapons.bombs.British_GP_500LB_Bomb_Mk4_Short": {
-        "qty": 100000
-      },
-      "weapons.bombs.British_GP_500LB_Bomb_Mk5": {
-        "qty": 100000
-      },
-      "weapons.bombs.British_MC_250LB_Bomb_Mk1": {
-        "qty": 100000
-      },
-      "weapons.bombs.British_MC_250LB_Bomb_Mk2": {
-        "qty": 100000
-      },
-      "weapons.bombs.British_MC_500LB_Bomb_Mk1_Short": {
-        "qty": 100000
-      },
-      "weapons.bombs.British_MC_500LB_Bomb_Mk2": {
-        "qty": 100000
-      },
-      "weapons.bombs.British_SAP_500LB_Bomb_Mk5": {
-        "qty": 100000
-      },
-      "weapons.bombs.CBU_103": {
-        "qty": 100000
-      },
-      "weapons.bombs.CBU_105": {
-        "qty": 100000
-      },
-      "weapons.bombs.CBU_52B": {
-        "qty": 100000
-      },
-      "weapons.bombs.CBU_87": {
-        "qty": 100000
-      },
-      "weapons.bombs.CBU_97": {
-        "qty": 100000
-      },
-      "weapons.bombs.CBU_99": {
-        "qty": 100000
-      },
-      "weapons.bombs.FAB-250-M62": {
-        "qty": 100000
-      },
-      "weapons.bombs.FAB_100": {
-        "qty": 100000
-      },
-      "weapons.bombs.FAB_100M": {
-        "qty": 100000
-      },
-      "weapons.bombs.FAB_100SV": {
-        "qty": 100000
-      },
-      "weapons.bombs.FAB_250": {
-        "qty": 100000
-      },
-      "weapons.bombs.FAB_50": {
-        "qty": 100000
-      },
-      "weapons.bombs.FAB_500": {
-        "qty": 100000
-      },
-      "weapons.bombs.GBU_10": {
-        "qty": 100000
-      },
-      "weapons.bombs.GBU_12": {
-        "qty": 100000
-      },
-      "weapons.bombs.GBU_16": {
-        "qty": 100000
-      },
-      "weapons.bombs.GBU_31": {
-        "qty": 100000
-      },
-      "weapons.bombs.GBU_31_V_3B": {
-        "qty": 100000
-      },
-      "weapons.bombs.GBU_31_V_4B": {
-        "qty": 100000
-      },
-      "weapons.bombs.GBU_32_V_2B": {
-        "qty": 100000
-      },
-      "weapons.bombs.GBU_38": {
-        "qty": 100000
-      },
-      "weapons.bombs.GBU_54_V_1B": {
-        "qty": 100000
-      },
-      "weapons.bombs.HEBOMB": {
-        "qty": 100000
-      },
-      "weapons.bombs.HEBOMBD": {
-        "qty": 100000
-      },
-      "weapons.bombs.KAB_1500LG": {
-        "qty": 100000
-      },
-      "weapons.bombs.KAB_1500T": {
-        "qty": 100000
-      },
-      "weapons.bombs.KAB_500": {
-        "qty": 100000
-      },
-      "weapons.bombs.KAB_500Kr": {
-        "qty": 100000
-      },
-      "weapons.bombs.KAB_500S": {
-        "qty": 100000
-      },
-      "weapons.bombs.LUU_2B": {
-        "qty": 100000
-      },
-      "weapons.bombs.MK_82AIR": {
-        "qty": 100000
-      },
-      "weapons.bombs.MK_82SNAKEYE": {
-        "qty": 100000
-      },
-      "weapons.bombs.M_117": {
-        "qty": 100000
-      },
-      "weapons.bombs.Mk_81": {
-        "qty": 100000
-      },
-      "weapons.bombs.Mk_82": {
-        "qty": 100000
-      },
-      "weapons.bombs.Mk_82Y": {
-        "qty": 100000
-      },
-      "weapons.bombs.Mk_83": {
-        "qty": 100000
-      },
-      "weapons.bombs.Mk_84": {
-        "qty": 100000
-      },
-      "weapons.bombs.RBK_250": {
-        "qty": 100000
-      },
-      "weapons.bombs.RBK_250_275_AO_1SCH": {
-        "qty": 100000
-      },
-      "weapons.bombs.RBK_500AO": {
-        "qty": 100000
-      },
-      "weapons.bombs.RBK_500U": {
-        "qty": 100000
-      },
-      "weapons.bombs.RBK_500U_OAB_2_5RT": {
-        "qty": 100000
-      },
-      "weapons.bombs.RN-24": {
-        "qty": 100000
-      },
-      "weapons.bombs.RN-28": {
-        "qty": 100000
-      },
-      "weapons.bombs.ROCKEYE": {
-        "qty": 100000
-      },
-      "weapons.bombs.SAB_100": {
-        "qty": 100000
-      },
-      "weapons.bombs.SC_250_T1_L2": {
-        "qty": 100000
-      },
-      "weapons.bombs.SC_250_T3_J": {
-        "qty": 100000
-      },
-      "weapons.bombs.SC_500_J": {
-        "qty": 100000
-      },
-      "weapons.bombs.SC_500_L2": {
-        "qty": 100000
-      },
-      "weapons.bombs.SD_250_Stg": {
-        "qty": 100000
-      },
-      "weapons.bombs.SD_500_A": {
-        "qty": 100000
-      },
-      "weapons.bombs.TYPE-200A": {
-        "qty": 100000
-      },
-      "weapons.missiles.ADM_141A": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_114K": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_122": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_154": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_154A": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_154B": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_45": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_65D": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_65E": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_65F": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_65G": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_65H": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_65K": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_65L": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_84A": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_84D": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_84E": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_84H": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_86": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGM_88": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGR_20A": {
-        "qty": 100000
-      },
-      "weapons.missiles.AGR_20_M282": {
-        "qty": 100000
-      },
-      "weapons.missiles.AIM-7E": {
-        "qty": 100000
-      },
-      "weapons.missiles.AIM-7F": {
-        "qty": 100000
-      },
-      "weapons.missiles.AIM-7MH": {
-        "qty": 100000
-      },
-      "weapons.missiles.AIM_120": {
-        "qty": 100000
-      },
-      "weapons.missiles.AIM_120C": {
-        "qty": 100000
-      },
-      "weapons.missiles.AIM_7": {
-        "qty": 100000
-      },
-      "weapons.missiles.AKD-10": {
-        "qty": 100000
-      },
-      "weapons.missiles.ALARM": {
-        "qty": 100000
-      },
-      "weapons.missiles.AT_6": {
-        "qty": 100000
-      },
-      "weapons.missiles.Ataka_9M120": {
-        "qty": 100000
-      },
-      "weapons.missiles.Ataka_9M120F": {
-        "qty": 100000
-      },
-      "weapons.missiles.Ataka_9M220": {
-        "qty": 100000
-      },
-      "weapons.missiles.BGM_109B": {
-        "qty": 100000
-      },
-      "weapons.missiles.BK90_MJ1": {
-        "qty": 100000
-      },
-      "weapons.missiles.BK90_MJ1_MJ2": {
-        "qty": 100000
-      },
-      "weapons.missiles.BK90_MJ2": {
-        "qty": 100000
-      },
-      "weapons.missiles.BRM-1_90MM": {
-        "qty": 100000
-      },
-      "weapons.missiles.C-701IR": {
-        "qty": 100000
-      },
-      "weapons.missiles.C-701T": {
-        "qty": 100000
-      },
-      "weapons.missiles.C-802AK": {
-        "qty": 100000
-      },
-      "weapons.missiles.FIM_92C": {
-        "qty": 100000
-      },
-      "weapons.missiles.GB-6": {
-        "qty": 100000
-      },
-      "weapons.missiles.GB-6-HE": {
-        "qty": 100000
-      },
-      "weapons.missiles.GB-6-SFW": {
-        "qty": 100000
-      },
-      "weapons.missiles.HOT2": {
-        "qty": 100000
-      },
-      "weapons.missiles.Igla_1E": {
-        "qty": 100000
-      },
-      "weapons.missiles.KD-20": {
-        "qty": 100000
-      },
-      "weapons.missiles.KD-63": {
-        "qty": 100000
-      },
-      "weapons.missiles.KD-63B": {
-        "qty": 100000
-      },
-      "weapons.missiles.KONKURS": {
-        "qty": 100000
-      },
-      "weapons.missiles.Kh25MP_PRGS1VP": {
-        "qty": 100000
-      },
-      "weapons.missiles.LD-10": {
-        "qty": 100000
-      },
-      "weapons.missiles.LS-6-500": {
-        "qty": 100000
-      },
-      "weapons.missiles.MALUTKA": {
-        "qty": 100000
-      },
-      "weapons.missiles.MBDA_Mistral": {
-        "qty": 100000
-      },
-      "weapons.missiles.MIM_72G": {
-        "qty": 100000
-      },
-      "weapons.missiles.Matra Super 530D": {
-        "qty": 100000
-      },
-      "weapons.missiles.P_9M117": {
-        "qty": 100000
-      },
-      "weapons.missiles.RB75": {
-        "qty": 100000
-      },
-      "weapons.missiles.RB75B": {
-        "qty": 100000
-      },
-      "weapons.missiles.RB75T": {
-        "qty": 100000
-      },
-      "weapons.missiles.REFLEX": {
-        "qty": 100000
-      },
-      "weapons.missiles.RIM_116A": {
-        "qty": 100000
-      },
-      "weapons.missiles.Rapier": {
-        "qty": 100000
-      },
-      "weapons.missiles.SCUD_RAKETA": {
-        "qty": 100000
-      },
-      "weapons.missiles.SD-10": {
-        "qty": 100000
-      },
-      "weapons.missiles.SVIR": {
-        "qty": 100000
-      },
-      "weapons.missiles.SeaSparrow": {
-        "qty": 100000
-      },
-      "weapons.missiles.TOW2": {
-        "qty": 100000
-      },
-      "weapons.missiles.Vikhr_M": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_25ML": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_25MP": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_25MR": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_28": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_29L": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_29T": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_31A": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_31P": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_35": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_58": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_59M": {
-        "qty": 100000
-      },
-      "weapons.missiles.X_65": {
-        "qty": 100000
-      },
-      "weapons.missiles.YJ-62": {
-        "qty": 100000
-      },
-      "weapons.missiles.YJ-83": {
-        "qty": 100000
-      },
-      "weapons.missiles.YJ-83K": {
-        "qty": 100000
-      },
-      "weapons.missiles.YJ-84": {
-        "qty": 100000
-      },
-      "weapons.nurs.ARAKM70BAP": {
-        "qty": 100000
-      },
-      "weapons.nurs.ARAKM70BHE": {
-        "qty": 100000
-      },
-      "weapons.nurs.British_AP_25LBNo1_3INCHNo1": {
-        "qty": 100000
-      },
-      "weapons.nurs.British_HE_60LBFNo1_3INCHNo1": {
-        "qty": 100000
-      },
-      "weapons.nurs.British_HE_60LBSAPNo2_3INCHNo1": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_13": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_24": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_25": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_5": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_8": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_8CM": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_8CM_BU": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_8CM_GN": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_8CM_RD": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_8CM_VT": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_8CM_WH": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_8CM_YE": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_8OFP2": {
-        "qty": 100000
-      },
-      "weapons.nurs.C_8OM": {
-        "qty": 100000
-      },
-      "weapons.nurs.GRAD_9M22U": {
-        "qty": 100000
-      },
-      "weapons.nurs.HVAR": {
-        "qty": 100000
-      },
-      "weapons.nurs.HYDRA_70_M151": {
-        "qty": 100000
-      },
-      "weapons.nurs.HYDRA_70_M156": {
-        "qty": 100000
-      },
-      "weapons.nurs.HYDRA_70_M229": {
-        "qty": 100000
-      },
-      "weapons.nurs.HYDRA_70_M257": {
-        "qty": 100000
-      },
-      "weapons.nurs.HYDRA_70_M274": {
-        "qty": 100000
-      },
-      "weapons.nurs.HYDRA_70_M282": {
-        "qty": 100000
-      },
-      "weapons.nurs.HYDRA_70_MK1": {
-        "qty": 100000
-      },
-      "weapons.nurs.HYDRA_70_MK5": {
-        "qty": 100000
-      },
-      "weapons.nurs.HYDRA_70_MK61": {
-        "qty": 100000
-      },
-      "weapons.nurs.HYDRA_70_WTU1B": {
-        "qty": 100000
-      },
-      "weapons.nurs.M26": {
-        "qty": 100000
-      },
-      "weapons.nurs.M8rocket": {
-        "qty": 100000
-      },
-      "weapons.nurs.R4M": {
-        "qty": 100000
-      },
-      "weapons.nurs.RS-82": {
-        "qty": 100000
-      },
-      "weapons.nurs.S-24A": {
-        "qty": 100000
-      },
-      "weapons.nurs.S-24B": {
-        "qty": 100000
-      },
-      "weapons.nurs.S-25-O": {
-        "qty": 100000
-      },
-      "weapons.nurs.S-5M": {
-        "qty": 100000
-      },
-      "weapons.nurs.SMERCH_9M55F": {
-        "qty": 100000
-      },
-      "weapons.nurs.SMERCH_9M55K": {
-        "qty": 100000
-      },
-      "weapons.nurs.SNEB68_EAP": {
-        "qty": 100000
-      },
-      "weapons.nurs.SNEB68_WP": {
-        "qty": 100000
-      },
-      "weapons.nurs.SPRD-99": {
-        "qty": 100000
-      },
-      "weapons.nurs.UG_90MM": {
-        "qty": 100000
-      },
-      "weapons.nurs.URAGAN_9M27F": {
-        "qty": 100000
-      },
-      "weapons.nurs.WGr21": {
-        "qty": 100000
-      },
-      "weapons.nurs.Zuni_127": {
-        "qty": 100000
-      },
-      "weapons.shells.20mm_M53_API": {
-        "qty": 100000
-      },
-      "weapons.shells.2A18_122": {
-        "qty": 100000
-      },
-      "weapons.shells.2A28_73": {
-        "qty": 100000
-      },
-      "weapons.shells.2A33_152": {
-        "qty": 100000
-      },
-      "weapons.shells.2A38_30_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.2A38_30_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.2A42_30_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.2A42_30_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.2A46M_125_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.2A46M_125_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.2A60_120": {
-        "qty": 100000
-      },
-      "weapons.shells.2A64_152": {
-        "qty": 100000
-      },
-      "weapons.shells.2A7_23_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.2A7_23_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.3BM59_125_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.3UBM11_100mm_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.50Browning_APIT_M20": {
-        "qty": 100000
-      },
-      "weapons.shells.50Browning_API_M8": {
-        "qty": 100000
-      },
-      "weapons.shells.50Browning_AP_M2": {
-        "qty": 100000
-      },
-      "weapons.shells.50Browning_Ball_M2": {
-        "qty": 100000
-      },
-      "weapons.shells.53-UBR-281U": {
-        "qty": 100000
-      },
-      "weapons.shells.53-UOR-281U": {
-        "qty": 100000
-      },
-      "weapons.shells.5_45x39": {
-        "qty": 100000
-      },
-      "weapons.shells.5_56x45": {
-        "qty": 100000
-      },
-      "weapons.shells.7_62x51": {
-        "qty": 100000
-      },
-      "weapons.shells.7_62x51tr": {
-        "qty": 100000
-      },
-      "weapons.shells.7_62x54": {
-        "qty": 100000
-      },
-      "weapons.shells.7_62x54_NOTRACER": {
-        "qty": 100000
-      },
-      "weapons.shells.7_92x57_Smkl": {
-        "qty": 100000
-      },
-      "weapons.shells.7_92x57sS": {
-        "qty": 100000
-      },
-      "weapons.shells.A222_130": {
-        "qty": 100000
-      },
-      "weapons.shells.AK100_100": {
-        "qty": 100000
-      },
-      "weapons.shells.AK176_76": {
-        "qty": 100000
-      },
-      "weapons.shells.AK630_30_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.AK630_30_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.BK_27": {
-        "qty": 100000
-      },
-      "weapons.shells.BR_354N": {
-        "qty": 100000
-      },
-      "weapons.shells.Bofors_40mm_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.Br303": {
-        "qty": 100000
-      },
-      "weapons.shells.Br303_tr": {
-        "qty": 100000
-      },
-      "weapons.shells.British303_B_Mk6z": {
-        "qty": 100000
-      },
-      "weapons.shells.British303_W_Mk1z": {
-        "qty": 100000
-      },
-      "weapons.shells.DANA_152": {
-        "qty": 100000
-      },
-      "weapons.shells.DEFA552_30": {
-        "qty": 100000
-      },
-      "weapons.shells.DEFA553_30HE": {
-        "qty": 100000
-      },
-      "weapons.shells.DEFA554_30_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.Flak18_Sprgr_39": {
-        "qty": 100000
-      },
-      "weapons.shells.GAU8_30_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.GSH23_23_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.GSH23_23_HE_T": {
-        "qty": 100000
-      },
-      "weapons.shells.GSH301_30_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.GSH301_30_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.GSH_23_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.GSh_30_2K_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.HEDPM430": {
-        "qty": 100000
-      },
-      "weapons.shells.HESH_105": {
-        "qty": 100000
-      },
-      "weapons.shells.HP30_30_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.Hispano_Mk_II_MKI_HE/I": {
-        "qty": 100000
-      },
-      "weapons.shells.K307_155HE": {
-        "qty": 100000
-      },
-      "weapons.shells.KDA_35_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.KPVT_14_5_T": {
-        "qty": 100000
-      },
-      "weapons.shells.L14A2_30_APDS": {
-        "qty": 100000
-      },
-      "weapons.shells.L21A1_30_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.L23A1_APFSDS": {
-        "qty": 100000
-      },
-      "weapons.shells.L31A7_HESH": {
-        "qty": 100000
-      },
-      "weapons.shells.M134_7_62_T": {
-        "qty": 100000
-      },
-      "weapons.shells.M185_155": {
-        "qty": 100000
-      },
-      "weapons.shells.M197_20": {
-        "qty": 100000
-      },
-      "weapons.shells.M20_50_aero_APIT": {
-        "qty": 100000
-      },
-      "weapons.shells.M230_30": {
-        "qty": 100000
-      },
-      "weapons.shells.M230_HEDP M789": {
-        "qty": 100000
-      },
-      "weapons.shells.M242_25_AP_M791": {
-        "qty": 100000
-      },
-      "weapons.shells.M242_25_HE_M792": {
-        "qty": 100000
-      },
-      "weapons.shells.M256_120_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.M256_120_AP_L55": {
-        "qty": 100000
-      },
-      "weapons.shells.M256_120_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.M256_120_HE_L55": {
-        "qty": 100000
-      },
-      "weapons.shells.M2_12_7_T": {
-        "qty": 100000
-      },
-      "weapons.shells.M2_50_aero_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.M39_20_HEI_T": {
-        "qty": 100000
-      },
-      "weapons.shells.M46": {
-        "qty": 100000
-      },
-      "weapons.shells.M56A3_HE_RED": {
-        "qty": 100000
-      },
-      "weapons.shells.M61": {
-        "qty": 100000
-      },
-      "weapons.shells.M61_20_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.M61_20_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.M61_20_PGU28": {
-        "qty": 100000
-      },
-      "weapons.shells.M68_105_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.M68_105_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.MG_13x64_APT": {
-        "qty": 100000
-      },
-      "weapons.shells.MG_13x64_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.MG_20x82_API": {
-        "qty": 100000
-      },
-      "weapons.shells.MG_20x82_HEI_T": {
-        "qty": 100000
-      },
-      "weapons.shells.MG_20x82_MGsch": {
-        "qty": 100000
-      },
-      "weapons.shells.MINGR55": {
-        "qty": 100000
-      },
-      "weapons.shells.MK45_127": {
-        "qty": 100000
-      },
-      "weapons.shells.MK75_76": {
-        "qty": 100000
-      },
-      "weapons.shells.MK_108_MGsch": {
-        "qty": 100000
-      },
-      "weapons.shells.N37_37x155_HEI_T": {
-        "qty": 100000
-      },
-      "weapons.shells.NR23_23x115_API": {
-        "qty": 100000
-      },
-      "weapons.shells.NR23_23x115_HEI_T": {
-        "qty": 100000
-      },
-      "weapons.shells.NR30_30x155_APT": {
-        "qty": 100000
-      },
-      "weapons.shells.OF_350": {
-        "qty": 100000
-      },
-      "weapons.shells.PGU32_SAPHEI_T": {
-        "qty": 100000
-      },
-      "weapons.shells.PKT_7_62": {
-        "qty": 100000
-      },
-      "weapons.shells.PKT_7_62_T": {
-        "qty": 100000
-      },
-      "weapons.shells.PLZ_155_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.Pzgr_39/40": {
-        "qty": 100000
-      },
-      "weapons.shells.Rh202_20_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.Rh202_20_HE": {
-        "qty": 100000
-      },
-      "weapons.shells.Sprgr_34_L48": {
-        "qty": 100000
-      },
-      "weapons.shells.UOF412_100HE": {
-        "qty": 100000
-      },
-      "weapons.shells.UOF_17_100HE": {
-        "qty": 100000
-      },
-      "weapons.shells.Utes_12_7x108_T": {
-        "qty": 100000
-      },
-      "weapons.shells.VOG17": {
-        "qty": 100000
-      },
-      "weapons.shells.YakB_12_7_T": {
-        "qty": 100000
-      },
-      "weapons.shells.ZTZ_125_AP": {
-        "qty": 100000
-      },
-      "weapons.shells.ZTZ_125_HE": {
-        "qty": 100000
-      },
-      "weapons.torpedoes.YU-6": {
-        "qty": 100000
-      }
-    },
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
     "naval": [],
-    "other": {
-      "Amenities": {
-        "qty": 10000
-      },
-      "Ammo": {
-        "qty": 10000
-      },
-      "Aviation Fuel": {
-        "qty": 10000
-      },
-      "Casualties": {
-        "qty": 10000
-      },
-      "Diesel": {
-        "qty": 10000
-      },
-      "Mail": {
-        "qty": 10000
-      },
-      "Manpower": {
-        "qty": 10000
-      },
-      "Pilots": {
-        "qty": 10000
-      }
-    }
+    "other": []
+  },
+  "Perry-1": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "Perry-2": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "Perry-2-1": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "Perry-2-2": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "Perry-2-3": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "Perry-3": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "Perry-4": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "Perry-5": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
   },
   "Senaki-Kolkhi": {
     "airframes": [],
@@ -4676,12 +2559,343 @@
     "naval": [],
     "other": []
   },
+  "Tico-1": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "Tico-2": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
+  "Tico-2-1": {
+    "airframes": [],
+    "ground units": [],
+    "munitions": [],
+    "naval": [],
+    "other": []
+  },
   "Vaziani": {
     "airframes": [],
     "ground units": [],
     "munitions": [],
     "naval": [],
     "other": []
+  },
+  "info": {
+    "display_names": {
+      "airframes": [],
+      "ground": [],
+      "munitions": {
+        "50Browning_APIT_M20": ".50 Browning APIT M20",
+        "50Browning_API_M8": ".50 Browning API M8",
+        "50Browning_AP_M2": ".50 Browning AP M2",
+        "50Browning_Ball_M2": ".50 Browning Ball M8",
+        "ARAKM70BAP": "ARAK M70B AP",
+        "ARAKM70BHE": "ARAK M70B HE",
+        "OF_350": "OF 350",
+        "weapons.nurs.C_8CM_BU": "S-8TsM Green",
+        "weapons.nurs.C_8CM_RD": "S-8TsM Red",
+        "weapons.nurs.C_8CM_VT": "S-8TsM Violet",
+        "weapons.nurs.C_8CM_WH": "S-8TsM White",
+        "weapons.nurs.C_8CM_YE": "S-8TsM Yellow",
+        "weapons.nurs.R4M": "R4M 3.2kg Un-guided air-to-air rocket",
+        "weapons.nurs.SNEB68_EAP": "SNEB 68mm EAP",
+        "weapons.nurs.SNEB68_WP": "SNEB 68mm WP",
+        "weapons.nurs.UG_90MM": "90mm Rocket",
+        "weapons.shells.20mm_M53_API": "20mm M53 API"
+      },
+      "naval": {
+        "ALBATROS": "Albatros",
+        "ELNYA": "Elnya",
+        "HandyWind": "Handy Wind",
+        "KILO": "Kilo",
+        "LHA_Tarawa": "LHA Tarawa",
+        "MOLNIYA": "Molniya",
+        "MOSCOW": "Moskva",
+        "NEUSTRASH": "Neustrashimyy",
+        "PERRY": "Perry",
+        "PIOTR": "Piotr",
+        "REZKY": "Rezky",
+        "Type_052B": "Type 052B",
+        "Type_052C": "Type 052C",
+        "Type_054A": "Type 054A",
+        "Type_071": "Type 071",
+        "Type_093": "Type 093",
+        "USS_Arleigh_Burke_IIa": "USS Arleigh Burke IIa",
+        "VINSON": "USS Carl Vinson",
+        "ZWEZDNY": "Zwezdny",
+        "speedboat": "Armed Speed Boat"
+      }
+    },
+    "empty_table": {
+      "airframes": [],
+      "ground units": [],
+      "munitions": [],
+      "naval": [],
+      "other": []
+    },
+    "game_assets": {
+      "Amenities": [],
+      "Ammo": [],
+      "Aviation Fuel": [],
+      "Casualties": [],
+      "Diesel": [],
+      "Flight Crew": [],
+      "Jet Fuel": [],
+      "Mail": [],
+      "Manpower": []
+    },
+    "game_config": {
+      "crew_requirements": {
+        "A-10A": 1,
+        "A-10C": 1,
+        "A-10C_2": 1,
+        "A-20G": 5,
+        "A-50": 15,
+        "AH-1W": 2,
+        "AH-64A": 2,
+        "AH-64D": 2,
+        "AH-64D_BLK_II": 2,
+        "AJS37": 1,
+        "AV8BNA": 1,
+        "An-26B": 5,
+        "An-30M": 7,
+        "B-1B": 4,
+        "B-52H": 5,
+        "Bf-109K-4": 1,
+        "C-101CC": 2,
+        "C-101EB": 2,
+        "C-130": 5,
+        "C-17A": 2,
+        "CH-47D": 2,
+        "CH-53E": 2,
+        "Christen Eagle II": 2,
+        "E-2C": 5,
+        "E-3A": 20,
+        "F-117A": 1,
+        "F-14A": 2,
+        "F-14A-135-GR": 2,
+        "F-15C": 1,
+        "F-15E": 2,
+        "F-16A": 1,
+        "F-16A MLU": 1,
+        "F-16C bl.50": 1,
+        "F-16C bl.52d": 1,
+        "F-16C_50": 1,
+        "F-4E": 1,
+        "F-5E": 1,
+        "F-5E-3": 1,
+        "F-86F Sabre": 1,
+        "F/A-18A": 1,
+        "F/A-18C": 1,
+        "FA-18C_hornet": 1,
+        "FW-190A8": 1,
+        "H-6J": 4,
+        "Hawk": 1,
+        "I-16": 1,
+        "IL-76MD": 5,
+        "IL-78M": 6,
+        "J-11A": 1,
+        "JF-17": 1,
+        "KC-135": 3,
+        "KC130": 4,
+        "KC135MPRS": 3,
+        "KJ-2000": 15,
+        "Ka-27": 6,
+        "Ka-50": 1,
+        "L-39C": 2,
+        "L-39ZA": 2,
+        "M-2000C": 1,
+        "MQ-9 Reaper": 0,
+        "Mi-24P": 2,
+        "Mi-24V": 2,
+        "Mi-28N": 2,
+        "Mi-8MT": 3,
+        "MiG-15bis": 1,
+        "MiG-19P": 1,
+        "MiG-21Bis": 1,
+        "MiG-23MLD": 1,
+        "MiG-25PD": 1,
+        "MiG-25RBT": 1,
+        "MiG-27K": 1,
+        "MiG-29A": 1,
+        "MiG-29G": 1,
+        "MiG-29S": 1,
+        "MiG-31": 1,
+        "Mirage 2000-5": 1,
+        "MosquitoFBMkVI": 2,
+        "OH-58D": 2,
+        "P-47D-30": 1,
+        "P-47D-30bl1": 1,
+        "P-47D-40": 1,
+        "P-51D": 1,
+        "P-51D-30-NA": 1,
+        "RQ-1A Predator": 0,
+        "S-3B Tanker": 4,
+        "SA342L": 2,
+        "SA342M": 2,
+        "SA342Minigun": 2,
+        "SA342Mistral": 2,
+        "SH-60B": 4,
+        "SpitfireLFMkIX": 1,
+        "SpitfireLFMkIXCW": 1,
+        "Su-17M4": 1,
+        "Su-24M": 2,
+        "Su-24MR": 2,
+        "Su-25": 1,
+        "Su-25T": 1,
+        "Su-25TM": 1,
+        "Su-27": 1,
+        "Su-30": 2,
+        "Su-33": 1,
+        "Su-34": 2,
+        "TF-51D": 1,
+        "Tornado GR4": 2,
+        "Tornado IDS": 2,
+        "Tu-142": 12,
+        "Tu-160": 4,
+        "Tu-22M3": 4,
+        "Tu-95MS": 6,
+        "UH-1H": 2,
+        "UH-60A": 4,
+        "WingLoong-I": 0,
+        "Yak-40": 3,
+        "Yak-52": 2
+      },
+      "fuel_type": {
+        "A-10A": "Jet Fuel",
+        "A-10C": "Jet Fuel",
+        "A-10C_2": "Jet Fuel",
+        "A-20G": "Jet Fuel",
+        "A-50": "Jet Fuel",
+        "AH-1W": "Jet Fuel",
+        "AH-64A": "Jet Fuel",
+        "AH-64D": "Jet Fuel",
+        "AH-64D_BLK_II": "Jet Fuel",
+        "AJS37": "Jet Fuel",
+        "AV8BNA": "Jet Fuel",
+        "An-26B": "Jet Fuel",
+        "An-30M": "Jet Fuel",
+        "B-1B": "Jet Fuel",
+        "B-52H": "Jet Fuel",
+        "Bf-109K-4": "Aviation Fuel",
+        "C-101CC": "Jet Fuel",
+        "C-101EB": "Jet Fuel",
+        "C-130": "Jet Fuel",
+        "C-17A": "Jet Fuel",
+        "CH-47D": "Jet Fuel",
+        "CH-53E": "Jet Fuel",
+        "Christen Eagle II": "Aviation Fuel",
+        "E-2C": "Jet Fuel",
+        "E-3A": "Jet Fuel",
+        "F-117A": "Jet Fuel",
+        "F-14A": "Jet Fuel",
+        "F-14A-135-GR": "Jet Fuel",
+        "F-15C": "Jet Fuel",
+        "F-15E": "Jet Fuel",
+        "F-16A": "Jet Fuel",
+        "F-16A MLU": "Jet Fuel",
+        "F-16C bl.50": "Jet Fuel",
+        "F-16C bl.52d": "Jet Fuel",
+        "F-16C_50": "Jet Fuel",
+        "F-4E": "Jet Fuel",
+        "F-5E": "Jet Fuel",
+        "F-5E-3": "Jet Fuel",
+        "F-86F Sabre": "Jet Fuel",
+        "F/A-18A": "Jet Fuel",
+        "F/A-18C": "Jet Fuel",
+        "FA-18C_hornet": "Jet Fuel",
+        "FW-190A8": "Aviation Fuel",
+        "H-6J": "Jet Fuel",
+        "Hawk": "Jet Fuel",
+        "I-16": "Aviation Fuel",
+        "IL-76MD": "Jet Fuel",
+        "IL-78M": "Jet Fuel",
+        "J-11A": "Jet Fuel",
+        "JF-17": "Jet Fuel",
+        "KC-135": "Jet Fuel",
+        "KC130": "Jet Fuel",
+        "KC135MPRS": "Jet Fuel",
+        "KJ-2000": "Jet Fuel",
+        "Ka-27": "Jet Fuel",
+        "Ka-50": "Jet Fuel",
+        "L-39C": "Jet Fuel",
+        "L-39ZA": "Jet Fuel",
+        "M-2000C": "Jet Fuel",
+        "MQ-9 Reaper": "Aviation Fuel",
+        "Mi-24P": "Jet Fuel",
+        "Mi-24V": "Jet Fuel",
+        "Mi-28N": "Jet Fuel",
+        "Mi-8MT": "Jet Fuel",
+        "MiG-15bis": "Jet Fuel",
+        "MiG-19P": "Jet Fuel",
+        "MiG-21Bis": "Jet Fuel",
+        "MiG-23MLD": "Jet Fuel",
+        "MiG-25PD": "Jet Fuel",
+        "MiG-25RBT": "Jet Fuel",
+        "MiG-27K": "Jet Fuel",
+        "MiG-29A": "Jet Fuel",
+        "MiG-29G": "Jet Fuel",
+        "MiG-29S": "Jet Fuel",
+        "MiG-31": "Jet Fuel",
+        "Mirage 2000-5": "Jet Fuel",
+        "MosquitoFBMkVI": "Aviation Fuel",
+        "OH-58D": "Jet Fuel",
+        "P-47D-30": "Aviation Fuel",
+        "P-47D-30bl1": "Aviation Fuel",
+        "P-47D-40": "Aviation Fuel",
+        "P-51D": "Aviation Fuel",
+        "P-51D-30-NA": "Aviation Fuel",
+        "RQ-1A Predator": "Aviation Fuel",
+        "S-3B Tanker": "Jet Fuel",
+        "SA342L": "Jet Fuel",
+        "SA342M": "Jet Fuel",
+        "SA342Minigun": "Jet Fuel",
+        "SA342Mistral": "Jet Fuel",
+        "SH-60B": "Jet Fuel",
+        "SpitfireLFMkIX": "Aviation Fuel",
+        "SpitfireLFMkIXCW": "Aviation Fuel",
+        "Su-17M4": "Jet Fuel",
+        "Su-24M": "Jet Fuel",
+        "Su-24MR": "Jet Fuel",
+        "Su-25": "Jet Fuel",
+        "Su-25T": "Jet Fuel",
+        "Su-25TM": "Jet Fuel",
+        "Su-27": "Jet Fuel",
+        "Su-30": "Jet Fuel",
+        "Su-33": "Jet Fuel",
+        "Su-34": "Jet Fuel",
+        "TF-51D": "Aviation Fuel",
+        "Tornado GR4": "Jet Fuel",
+        "Tornado IDS": "Jet Fuel",
+        "Tu-142": "Jet Fuel",
+        "Tu-160": "Jet Fuel",
+        "Tu-22M3": "Jet Fuel",
+        "Tu-95MS": "Jet Fuel",
+        "UH-1H": "Jet Fuel",
+        "UH-60A": "Jet Fuel",
+        "WingLoong-I": "Aviation Fuel",
+        "Yak-40": "Jet Fuel",
+        "Yak-52": "Aviation Fuel"
+      },
+      "links": {
+        "airframes": [],
+        "ground units": [],
+        "munitions": {
+          "Rb 24J": "AIM-9J",
+          "Rb 74": "AIM-9L"
+        },
+        "naval": [],
+        "other": [],
+        "trains": []
+      }
+    }
   },
   "my_base": {
     "airframes": [],

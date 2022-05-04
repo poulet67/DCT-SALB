@@ -1,0 +1,14 @@
+--military formation definition
+
+unit = {["corps"] = 
+			{["division"] = 
+					{["bridgade"] = 
+						{["battalion"] = 
+							{["company"] = 
+								{["platoon"] = true
+								}
+							}
+						}
+					}
+			}
+		}

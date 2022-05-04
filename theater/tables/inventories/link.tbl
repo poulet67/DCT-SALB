@@ -1,9 +1,0 @@
--- Link munitions together so they pull the same quantity
-ln_table = 
-{
-	["munitions"] = {
-					["Rb 24J"] = "AIM-9J",
-					["Rb 74"] = "AIM-9L",
-					}
-
-}
