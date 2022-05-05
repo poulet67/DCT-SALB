@@ -50,7 +50,7 @@ display_names = {
 --assets used in the base game
 
 game_assets = { 
-	["Amenities"] = {},
+    ["Amenities"] = {},
     ["Ammo"] = {},
     ["Aviation Fuel"] = {},
     ["Jet Fuel"] = {},

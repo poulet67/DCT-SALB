@@ -39,7 +39,7 @@
     "SH-60B": 0,
     "TF-51D": 0,
     "UH-1H": 2,
-    "UH-60A": 0,
+    "UH-60A": 0
   },
   "ground units": {
   },
@@ -441,6 +441,6 @@
     "Diesel": 0,
     "Mail": 0,
     "Manpower": 5000,
-    "Flight Crew": 500,
+    "Flight Crew": 500
   }
 }

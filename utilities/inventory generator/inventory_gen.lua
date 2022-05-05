@@ -5,7 +5,7 @@ map = arg[1] -- which map
 map = map:lower()
 
 mapdir = "./"..map.."/"	
-options_dir = "./"..map.."/options/"
+options_dir = "./options/"
 init_dir = "./"..map.."/initial/"
 
 valid = {
@@ -214,8 +214,13 @@ if(valid[map]) then
 		elseif(state == "specific") then
 			
 			print("specific")
+			if(v.Name) then
+				name = v.Name
+			else
+				name = k
+			end
 			
-			inv_file = init_dir..k..".JSON"
+			inv_file = init_dir..name..".JSON"
 			print(inv_file:lower())
 			file = io.open(inv_file:lower(), "r")
 			

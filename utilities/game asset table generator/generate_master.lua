@@ -23,6 +23,26 @@ do
 		
 	end
 end
+
+function read_lua_file(filename)
+	
+	file = io.open(filename, "r")
+	
+	if(file) then
+		print("file found: " .. filename)
+		fstring = file:read("*all")
+		file:close()
+		
+		return assert(loadstring(fstring)())
+	
+	else
+		
+		return nil
+	
+	end
+
+end
+
 --
 -- _Important_ INVENTORY TABLE DEFINITION HERE:
 --
@@ -127,7 +147,7 @@ for key, value in pairs(DCS_ground_unit_table) do
 	local desc = unit:getDesc()
 	--displayName = unit:getName() --A lot of DCS typeNames are... Bad. This will add a field for them with their display name so they can at least be used within DCT
 	master_table["ground units"][unit_name] = {}
-	master_table["ground units"][unit_name]["displayName"] = displayName or false
+	master_table["ground units"][unit_name]["displayName"] = desc.displayName or false
 	template_table["ground units"][unit_name] = 0
 	
 	local ammo_tbl = unit:getAmmo()
@@ -157,7 +177,7 @@ for key, value in pairs(DCS_ship_table) do
 	local desc = unit:getDesc()
 	--displayName = unit:getName() --A lot of DCS typeNames are... Bad. This will add a field for them with their display name so they can at least be used within DCT
 	master_table["naval"][unit_name] = {}
-	master_table["naval"][unit_name]["displayName"] = displayName or false
+	master_table["naval"][unit_name]["displayName"] = desc.displayName or false
 	template_table["naval"][unit_name] = 0
 
 	local ammo_tbl = unit:getAmmo()
@@ -179,15 +199,24 @@ for key, value in pairs(DCS_ship_table) do
 	
 end
 
+-- Append the game assets from options table to the template
+options_path = modpath..utils.sep.."utilities"..utils.sep.."inventory generator"..utils.sep.."options"..utils.sep.."options.tbl"
+game_assets = utils.readlua(options_path, "game_assets")
+
+for k, v in pairs(game_assets) do
+	template_table["other"][k] = 0
+end
+
 -- SAVE the master table into the inventory generator master folder
 
-local tablepath = modpath..utils.sep.."utilities"..utils.sep.."inventory generator"..utils.sep.."master" --saves and overwrites the inventory generator master
-master_filename = tablepath..utils.sep.."master"..".JSON"
-template_filename = tablepath.."template"..".JSON"
+
+local tablepath = modpath..utils.sep.."utilities"..utils.sep.."inventory generator"..utils.sep --saves and overwrites the inventory generator master
+master_filename = tablepath..utils.sep.."master"..utils.sep.."master.JSON"
+template_filename = tablepath..utils.sep.."template.JSON"
 
 copy_filename = modpath..utils.sep.."utilities"..utils.sep.."game asset table generator"..utils.sep.."output"..utils.sep.."master.JSON" -- and also saves a copy to the "output" folder
 
-file = io.open(filename, "w+")
+file = io.open(master_filename, "w+")
 file:write(JSON:encode_pretty(master_table))
 file:close()
 

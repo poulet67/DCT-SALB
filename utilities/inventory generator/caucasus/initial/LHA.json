@@ -3,7 +3,7 @@
     "AH-64D_BLK_II": 4,
     "AV8BNA": 24,
     "UH-1H": 2,
-    "UH-60A": 0,
+    "UH-60A": 0
   },
   "ground units": {
   },
@@ -405,6 +405,6 @@
     "Diesel": 0,
     "Mail": 0,
     "Manpower": 5000,
-    "Flight Crew": 200,
+    "Flight Crew": 200
   }
 }

@@ -982,574 +982,574 @@
   },
   "ground units": {
     "1L13 EWR": {
-      "displayName": "Igla-S"
+      "displayName": "EWR 1L13"
     },
     "2B11 mortar": {
-      "displayName": "12.7mm"
+      "displayName": "Mortar 2B11 120mm"
     },
     "2S6 Tunguska": {
-      "displayName": "20mm HE"
+      "displayName": "SAM SA-19 Tunguska \"Grison\" "
     },
     "55G6 EWR": {
-      "displayName": "Igla-S"
+      "displayName": "EWR 55G6"
     },
     "5p73 s-125 ln": {
-      "displayName": "5V28 (SA-5 Gammon)"
+      "displayName": "SAM SA-3 S-125 \"Goa\" LN"
     },
     "AA8": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Firefighter Vehicle AA-7.2/60"
     },
     "AAV7": {
-      "displayName": "7.62mm"
+      "displayName": "APC AAV-7 Amphibious"
     },
     "ATMZ-5": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Refueler ATMZ-5"
     },
     "ATZ-10": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Refueler ATZ-10"
     },
     "ATZ-5": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Refueler ATZ-5"
     },
     "ATZ-60_Maz": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Refueler ATZ-60 Tractor"
     },
     "BMD-1": {
-      "displayName": "7.62mm"
+      "displayName": "IFV BMD-1"
     },
     "BMP-1": {
-      "displayName": "AT-5 Spandrel"
+      "displayName": "IFV BMP-1"
     },
     "BMP-2": {
-      "displayName": "AT-10 Stabber"
+      "displayName": "IFV BMP-2"
     },
     "BMP-3": {
-      "displayName": "3UBR6 (30mm APBC-T)"
+      "displayName": "IFV BMP-3"
     },
     "BRDM-2": {
-      "displayName": "12.7mm"
+      "displayName": "Scout BRDM-2"
     },
     "BTR-80": {
-      "displayName": "HQ-7"
+      "displayName": "APC BTR-80"
     },
     "BTR-82A": {
-      "displayName": "7.62mm"
+      "displayName": "IFV BTR-82A"
     },
     "BTR_D": {
-      "displayName": "12.7mm"
+      "displayName": "APC BTR-RD"
     },
     "Bedford_MWD": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck Bedford"
     },
     "Blitz_36-6700A": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck Opel Blitz"
     },
     "Challenger2": {
-      "displayName": "7.62mm"
+      "displayName": "MBT Challenger II"
     },
     "Chieftain_mk3": {
-      "displayName": "12.7mm"
+      "displayName": "MBT Chieftain Mk.3"
     },
     "Cobra": {
-      "displayName": "12.7mm"
+      "displayName": "Scout Cobra"
     },
     "Dog Ear radar": {
-      "displayName": "MIM-23K Hawk"
+      "displayName": "MCC-SR Sborka \"Dog Ear\" SR"
     },
     "GAZ-3307": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck GAZ-3307"
     },
     "GAZ-3308": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck GAZ-3308"
     },
     "GAZ-66": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck GAZ-66"
     },
     "Gepard": {
-      "displayName": "7.62mm"
+      "displayName": "SPAAA Gepard"
     },
     "Grad-URAL": {
-      "displayName": "M26 (270mm DPICM)"
+      "displayName": "MLRS BM-21 Grad 122mm"
     },
     "Grad_FDDM": {
-      "displayName": "9M55K (300mm CM-AP)"
+      "displayName": "Grad MRL FDDM (FC)"
     },
     "HEMTT TFFT": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Firefighter HEMMT TFFT"
     },
     "HQ-7_LN_SP": {
-      "displayName": "Igla-S"
+      "displayName": "HQ-7 Self-Propelled LN"
     },
     "HQ-7_STR_SP": {
-      "displayName": "Igla-S"
+      "displayName": "HQ-7 Self-Propelled STR"
     },
     "Hawk cwar": {
-      "displayName": "MIM-23K Hawk"
+      "displayName": "SAM Hawk CWAR AN/MPQ-55"
     },
     "Hawk ln": {
-      "displayName": "AIM-120B"
+      "displayName": "SAM Hawk LN M192"
     },
     "Hawk pcp": {
-      "displayName": "AIM-120B"
+      "displayName": "SAM Hawk Platoon Command Post (PCP)"
     },
     "Hawk sr": {
-      "displayName": "AIM-120B"
+      "displayName": "SAM Hawk SR (AN/MPQ-50)"
     },
     "Hawk tr": {
-      "displayName": "AIM-120B"
+      "displayName": "SAM Hawk TR (AN/MPQ-46)"
     },
     "Hummer": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "LUV HMMWV Jeep"
     },
     "IKARUS Bus": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Bus IKARUS-280"
     },
     "Igla manpad INS": {
-      "displayName": "FIM-92B"
+      "displayName": "MANPADS SA-18 Igla \"Grouse\" Ins"
     },
     "Infantry AK": {
-      "displayName": "5.45mm"
+      "displayName": "Infantry AK-74 Rus ver1"
     },
     "Infantry AK Ins": {
-      "displayName": "5.45mm"
+      "displayName": "Insurgent AK-74"
     },
     "Infantry AK ver2": {
-      "displayName": "5.45mm"
+      "displayName": "Infantry AK-74 Rus ver2"
     },
     "Infantry AK ver3": {
-      "displayName": "5.56mm"
+      "displayName": "Infantry AK-74 Rus ver3"
     },
     "KAMAZ Truck": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck KAMAZ 43101"
     },
     "KrAZ6322": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck KrAZ-6322 6x6"
     },
     "Kub 1S91 str": {
-      "displayName": "9M33 Osa (SA-8 Gecko)"
+      "displayName": "SAM SA-6 Kub \"Straight Flush\" STR"
     },
     "Kub 2P25 ln": {
-      "displayName": "9M33 Osa (SA-8 Gecko)"
+      "displayName": "SAM SA-6 Kub \"Gainful\" TEL"
     },
     "LAV-25": {
-      "displayName": "12.7mm"
+      "displayName": "IFV LAV-25"
     },
     "LAZ Bus": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Bus LAZ-695"
     },
     "Land_Rover_101_FC": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck Land Rover 101 FC"
     },
     "Land_Rover_109_S3": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "LUV Land Rover 109"
     },
     "Leclerc": {
-      "displayName": "7.62mm"
+      "displayName": "MBT Leclerc"
     },
     "Leopard-2": {
-      "displayName": "12.7mm"
+      "displayName": "MBT Leopard-2A6M"
     },
     "Leopard-2A5": {
-      "displayName": "7.62mm"
+      "displayName": "MBT Leopard-2A5"
     },
     "Leopard1A3": {
-      "displayName": "7.62mm"
+      "displayName": "MBT Leopard 1A3"
     },
     "LiAZ Bus": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Bus LiAZ-677"
     },
     "M 818": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck M939 Heavy"
     },
     "M-1 Abrams": {
-      "displayName": "12.7mm"
+      "displayName": "MBT M1A2 Abrams"
     },
     "M-109": {
-      "displayName": "12.7mm"
+      "displayName": "SPH M109 Paladin 155mm"
     },
     "M-113": {
-      "displayName": ".303 British"
+      "displayName": "APC M113"
     },
     "M-2 Bradley": {
-      "displayName": "7.62mm"
+      "displayName": "IFV M2A2 Bradley"
     },
     "M-60": {
-      "displayName": "7.62mm"
+      "displayName": "MBT M60A3 Patton"
     },
     "M1043 HMMWV Armament": {
-      "displayName": "12.7mm"
+      "displayName": "Scout HMMWV"
     },
     "M1045 HMMWV TOW": {
-      "displayName": "7.62mm"
+      "displayName": "ATGM HMMWV"
     },
     "M1097 Avenger": {
-      "displayName": "MIM-72G"
+      "displayName": "SAM Avenger (Stinger)"
     },
     "M1126 Stryker ICV": {
-      "displayName": "BGM-71 TOW"
+      "displayName": "IFV M1126 Stryker ICV"
     },
     "M1128 Stryker MGS": {
-      "displayName": ".303 British"
+      "displayName": "SPG Stryker MGS"
     },
     "M1134 Stryker ATGM": {
-      "displayName": "HOT2"
+      "displayName": "ATGM Stryker"
     },
     "M2A1_halftrack": {
-      "displayName": "7.62mm"
+      "displayName": "APC M2A1 Halftrack"
     },
     "M48 Chaparral": {
-      "displayName": "35mm HE"
+      "displayName": "SAM Chaparral M48"
     },
     "M4_Sherman": {
-      "displayName": "7.92x57 s.S"
+      "displayName": "Tk M4 Sherman"
     },
     "M6 Linebacker": {
-      "displayName": "9M330 Tor (SA-15 Gauntlet)"
+      "displayName": "SAM Linebacker - Bradley M6"
     },
     "M978 HEMTT Tanker": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Refueler M978 HEMTT"
     },
     "MAZ-6303": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck MAZ-6303"
     },
     "MCV-80": {
-      "displayName": "7.62mm"
+      "displayName": "IFV Warrior "
     },
     "MLRS": {
-      "displayName": "3OF49 (120mm HE)"
+      "displayName": "MLRS M270 227mm"
     },
     "MLRS FDDM": {
-      "displayName": "12.7mm"
+      "displayName": "MRLS FDDM (FC)"
     },
     "MTLB": {
-      "displayName": "7.92x57 s.S"
+      "displayName": "APC MTLB"
     },
     "Marder": {
-      "displayName": "7.62mm"
+      "displayName": "IFV Marder"
     },
     "Merkava_Mk4": {
-      "displayName": "12.7mm"
+      "displayName": "MBT Merkava IV"
     },
     "NASAMS_Command_Post": {
-      "displayName": "AIM-120B"
+      "displayName": "SAM NASAMS C2"
     },
     "NASAMS_LN_B": {
-      "displayName": "AIM-120C-5"
+      "displayName": "SAM NASAMS LN AIM-120B"
     },
     "NASAMS_LN_C": {
-      "displayName": "MIM-104 Patriot"
+      "displayName": "SAM NASAMS LN AIM-120C"
     },
     "NASAMS_Radar_MPQ64F1": {
-      "displayName": "MIM-104 Patriot"
+      "displayName": "SAM NASAMS SR MPQ64F1"
     },
     "Osa 9A33 ln": {
-      "displayName": "9M31 Strela-1 (SA-9 Gaskin)"
+      "displayName": "SAM SA-8 Osa \"Gecko\" TEL"
     },
     "PLZ05": {
-      "displayName": "3OF56 (122mm HE)"
+      "displayName": "PLZ-05"
     },
     "PT_76": {
-      "displayName": "7.62mm"
+      "displayName": "LT PT-76"
     },
     "Paratrooper AKS-74": {
-      "displayName": "PG-15 (73mm HEAT)"
+      "displayName": "Paratrooper AKS"
     },
     "Paratrooper RPG-16": {
-      "displayName": "HY-2 (SS-N-2 Styx)"
+      "displayName": "Paratrooper RPG-16"
     },
     "Patriot AMG": {
-      "displayName": "MIM-104 Patriot"
+      "displayName": "SAM Patriot CR (AMG AN/MRC-137)"
     },
     "Patriot ECS": {
-      "displayName": "MIM-104 Patriot"
+      "displayName": "SAM Patriot ECS"
     },
     "Patriot EPP": {
-      "displayName": "MIM-104 Patriot"
+      "displayName": "SAM Patriot EPP-III"
     },
     "Patriot cp": {
-      "displayName": "MIM-104 Patriot"
+      "displayName": "SAM Patriot C2 ICC"
     },
     "Patriot ln": {
-      "displayName": "Rapier"
+      "displayName": "SAM Patriot LN"
     },
     "Patriot str": {
-      "displayName": "Rapier"
+      "displayName": "SAM Patriot STR"
     },
     "Predator GCS": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "MCC Predator UAV CP & GCS"
     },
     "Predator TrojanSpirit": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "MCC-COMM Predator UAV CL"
     },
     "Pz_IV_H": {
-      "displayName": "AT-10 Stabber"
+      "displayName": "Tk PzIV H"
     },
     "RLS_19J6": {
-      "displayName": "3M9M Kub (SA-6 Gainful)"
+      "displayName": "SAM SA-5 S-200 ST-68U \"Tin Shield\" SR"
     },
     "RPC_5N62V": {
-      "displayName": "3M9M Kub (SA-6 Gainful)"
+      "displayName": "SAM SA-5 S-200 \"Square Pair\" TR"
     },
     "Roland ADS": {
-      "displayName": "5V55 S-300PS (SA-10B Grumble)"
+      "displayName": "SAM Roland ADS"
     },
     "Roland Radar": {
-      "displayName": "5V55 S-300PS (SA-10B Grumble)"
+      "displayName": "SAM Roland EWR"
     },
     "S-200_Launcher": {
-      "displayName": "3M9M Kub (SA-6 Gainful)"
+      "displayName": "SAM SA-5 S-200 \"Gammon\" LN"
     },
     "S-300PS 40B6M tr": {
-      "displayName": "5V55 S-300PS (SA-10B Grumble)"
+      "displayName": "SAM SA-10 S-300 \"Grumble\" Flap Lid TR "
     },
     "S-300PS 40B6MD sr": {
-      "displayName": "5V55 S-300PS (SA-10B Grumble)"
+      "displayName": "SAM SA-10 S-300 \"Grumble\" Clam Shell SR"
     },
     "S-300PS 54K6 cp": {
-      "displayName": "5V55 S-300PS (SA-10B Grumble)"
+      "displayName": "SAM SA-10 S-300 \"Grumble\" C2 "
     },
     "S-300PS 5P85C ln": {
-      "displayName": "9M38M1 Buk-M1 (SA-11 Gadfly)"
+      "displayName": "SAM SA-10 S-300 \"Grumble\" TEL D"
     },
     "S-300PS 5P85D ln": {
-      "displayName": "5V55 S-300PS (SA-10B Grumble)"
+      "displayName": "SAM SA-10 S-300 \"Grumble\" TEL C"
     },
     "S-300PS 64H6E sr": {
-      "displayName": "5V55 S-300PS (SA-10B Grumble)"
+      "displayName": "SAM SA-10 S-300 \"Grumble\" Big Bird SR "
     },
     "S-60_Type59_Artillery": {
-      "displayName": "23mm HE"
+      "displayName": "AAA S-60 57mm"
     },
     "SA-11 Buk CC 9S470M1": {
-      "displayName": "9M38M1 Buk-M1 (SA-11 Gadfly)"
+      "displayName": "SAM SA-11 Buk \"Gadfly\" C2 "
     },
     "SA-11 Buk LN 9A310M1": {
-      "displayName": "7.62mm"
+      "displayName": "SAM SA-11 Buk \"Gadfly\" Fire Dome TEL"
     },
     "SA-11 Buk SR 9S18M1": {
-      "displayName": "7.62mm"
+      "displayName": "SAM SA-11 Buk \"Gadfly\" Snow Drift SR"
     },
     "SA-18 Igla comm": {
-      "displayName": "Igla-S"
+      "displayName": "MANPADS SA-18 Igla \"Grouse\" C2"
     },
     "SA-18 Igla manpad": {
-      "displayName": "Igla-S"
+      "displayName": "MANPADS SA-18 Igla \"Grouse\""
     },
     "SA-18 Igla-S comm": {
-      "displayName": "12.7mm"
+      "displayName": "MANPADS SA-18 Igla-S \"Grouse\" C2"
     },
     "SA-18 Igla-S manpad": {
-      "displayName": "12.7mm"
+      "displayName": "MANPADS SA-18 Igla-S \"Grouse\""
     },
     "SAU 2-C9": {
-      "displayName": "5.45mm"
+      "displayName": "SPM 2S9 Nona 120mm M"
     },
     "SAU Akatsia": {
-      "displayName": "152-EOF (152mm HE)"
+      "displayName": "SPH 2S3 Akatsia 152mm"
     },
     "SAU Gvozdika": {
-      "displayName": "12.7mm"
+      "displayName": "SPH 2S1 Gvozdika 122mm"
     },
     "SAU Msta": {
-      "displayName": "53OF540 (152mm HE)"
+      "displayName": "SPH 2S19 Msta 152mm"
     },
     "SKP-11": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck SKP-11 Mobile ATC"
     },
     "SNR_75V": {
-      "displayName": "SA2V755"
+      "displayName": "SAM SA-2 S-75 \"Fan Song\" TR"
     },
     "S_75M_Volhov": {
-      "displayName": "5V27 S-125 Neva (SA-3 Goa)"
+      "displayName": "SAM SA-2 S-75 \"Guideline\" LN"
     },
     "Scud_B": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "SSM SS-1C Scud-B"
     },
     "Sd_Kfz_251": {
-      "displayName": "7.62mm"
+      "displayName": "APC Sd.Kfz.251 Halftrack"
     },
     "Silkworm_SR": {
-      "displayName": "HY-2 (SS-N-2 Styx)"
+      "displayName": "AShM Silkworm SR"
     },
     "Smerch": {
-      "displayName": "9M55F (300mm HE)"
+      "displayName": "MLRS 9A52 Smerch CM 300mm"
     },
     "Smerch_HE": {
-      "displayName": "9M27F (220mm HE)"
+      "displayName": "MLRS 9A52 Smerch HE 300mm"
     },
     "Soldier AK": {
-      "displayName": "5.45mm"
+      "displayName": "Infantry AK-74"
     },
     "Soldier M249": {
-      "displayName": "5.56mm"
+      "displayName": "Infantry M249"
     },
     "Soldier M4": {
-      "displayName": "5.56mm"
+      "displayName": "Infantry M4"
     },
     "Soldier M4 GRG": {
-      "displayName": "PG-15 (73mm HEAT)"
+      "displayName": "Infantry M4 Georgia"
     },
     "Soldier RPG": {
-      "displayName": "5.45mm"
+      "displayName": "Infantry RPG"
     },
     "Soldier stinger": {
-      "displayName": "MIM-23K Hawk"
+      "displayName": "MANPADS Stinger"
     },
     "SpGH_Dana": {
-      "displayName": "M795 (155mm HE)"
+      "displayName": "SPH Dana vz77 152mm"
     },
     "Stinger comm": {
-      "displayName": "MIM-23K Hawk"
+      "displayName": "MANPADS Stinger C2"
     },
     "Stinger comm dsr": {
-      "displayName": "MIM-23K Hawk"
+      "displayName": "MANPADS Stinger C2 Desert"
     },
     "Strela-1 9P31": {
-      "displayName": "7.62mm"
+      "displayName": "SAM SA-9 Strela 1 \"Gaskin\" TEL"
     },
     "Strela-10M3": {
-      "displayName": "9M330 Tor (SA-15 Gauntlet)"
+      "displayName": "SAM SA-13 Strela 10M3 \"Gopher\" TEL"
     },
     "T-55": {
-      "displayName": "12.7mm"
+      "displayName": "MBT T-55"
     },
     "T-72B": {
-      "displayName": "12.7mm"
+      "displayName": "MBT T-72B"
     },
     "T-72B3": {
-      "displayName": "12.7mm"
+      "displayName": "MBT T-72B3"
     },
     "T-80UD": {
-      "displayName": "12.7mm"
+      "displayName": "MBT T-80U"
     },
     "T-90": {
-      "displayName": "7.62mm"
+      "displayName": "MBT T-90"
     },
     "T155_Firtina": {
-      "displayName": "3OF49 (120mm HE)"
+      "displayName": "SPH T155 Firtina 155mm"
     },
     "TPZ": {
-      "displayName": "BGM-71 TOW"
+      "displayName": "APC TPz Fuchs "
     },
     "TZ-22_KrAZ": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Refueler TZ-22 Tractor"
     },
     "Tigr_233036": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "LUV Tigr"
     },
     "Tor 9A331": {
-      "displayName": "9M311 Tunguska (SA-19 Grison)"
+      "displayName": "SAM SA-15 Tor \"Gauntlet\""
     },
     "Trolley bus": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Bus ZIU-9 Trolley"
     },
     "UAZ-469": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "LUV UAZ-469 Jeep"
     },
     "Uragan_BM-27": {
-      "displayName": "9M22U (122mm HE)"
+      "displayName": "MLRS 9K57 Uragan BM-27 220mm"
     },
     "Ural ATsP-6": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Firefighter Ural ATsP-6"
     },
     "Ural-375": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck Ural-375"
     },
     "Ural-375 PBU": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck Ural-375 Mobile C2"
     },
     "Ural-375 ZU-23": {
-      "displayName": "12.7mm"
+      "displayName": "SPAAA ZU-23-2 Mounted Ural 375"
     },
     "Ural-375 ZU-23 Insurgent": {
-      "displayName": "23mm HE"
+      "displayName": "SPAAA ZU-23-2 Insurgent Mounted Ural-375"
     },
     "Ural-4320 APA-5D": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "GPU APA-5D on Ural 4320"
     },
     "Ural-4320-31": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck Ural-4320-31 Arm'd"
     },
     "Ural-4320T": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck Ural-4320T"
     },
     "VAB_Mephisto": {
-      "displayName": "7.62mm"
+      "displayName": "ATGM VAB Mephisto"
     },
     "VAZ Car": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Car VAZ-2109"
     },
     "Vulcan": {
-      "displayName": "23mm HE"
+      "displayName": "SPAAA Vulcan M163"
     },
     "ZBD04A": {
-      "displayName": "12.7mm"
+      "displayName": "ZBD-04A"
     },
     "ZIL-131 KUNG": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck ZIL-131 (C2)"
     },
     "ZIL-135": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck ZIL-135"
     },
     "ZIL-4331": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "Truck ZIL-4331"
     },
     "ZSU-23-4 Shilka": {
-      "displayName": "UBR-281 (57mm APCBC-HE-T)"
+      "displayName": "SPAAA ZSU-23-4 Shilka \"Gun Dish\""
     },
     "ZSU_57_2": {
-      "displayName": "23mm HE"
+      "displayName": "SPAAA ZSU-57-2"
     },
     "ZTZ96B": {
-      "displayName": "7.62mm"
+      "displayName": "ZTZ-96B"
     },
     "ZU-23 Closed Insurgent": {
-      "displayName": "23mm HE"
+      "displayName": "AAA ZU-23 Insurgent Closed Emplacement"
     },
     "ZU-23 Emplacement": {
-      "displayName": "23mm HE"
+      "displayName": "AAA ZU-23 Emplacement"
     },
     "ZU-23 Emplacement Closed": {
-      "displayName": "23mm HE"
+      "displayName": "AAA ZU-23 Closed Emplacement"
     },
     "ZU-23 Insurgent": {
-      "displayName": "Igla-S"
+      "displayName": "AAA ZU-23 Insurgent Emplacement"
     },
     "ZiL-131 APA-80": {
-      "displayName": "HYDRA-70 M151"
+      "displayName": "GPU APA-80 on ZIL-131"
     },
     "bofors40": {
-      "displayName": "UBR-281 (57mm APCBC-HE-T)"
+      "displayName": "AAA Bofors 40mm"
     },
     "flak18": {
-      "displayName": "Bofors_40mm_HE"
+      "displayName": "AAA 8,8cm Flak 18"
     },
     "generator_5i57": {
-      "displayName": "Igla-S"
+      "displayName": "Diesel Power Station 5I57A"
     },
     "hy_launcher": {
-      "displayName": "Scud R-17"
+      "displayName": "AShM SS-N-2 Silkworm"
     },
     "leopard-2A4": {
-      "displayName": "7.62mm"
+      "displayName": "MBT Leopard-2A4"
     },
     "leopard-2A4_trs": {
-      "displayName": "7.62mm"
+      "displayName": "MBT Leopard-2A4 Trs"
     },
     "p-19 s-125 sr": {
-      "displayName": "5V27 S-125 Neva (SA-3 Goa)"
+      "displayName": "SAM SA-2/3/5 P19 \"Flat Face\" SR "
     },
     "rapier_fsa_blindfire_radar": {
-      "displayName": "Rapier"
+      "displayName": "SAM Rapier Blindfire TR"
     },
     "rapier_fsa_launcher": {
-      "displayName": "XMIM-115 Roland"
+      "displayName": "SAM Rapier LN"
     },
     "rapier_fsa_optical_tracker_unit": {
-      "displayName": "XMIM-115 Roland"
+      "displayName": "SAM Rapier Tracker"
     },
     "snr s-125 tr": {
-      "displayName": "5V28 (SA-5 Gammon)"
+      "displayName": "SAM SA-3 S-125 \"Low Blow\" TR"
     }
   },
   "munitions": {
@@ -2807,106 +2807,106 @@
   },
   "naval": {
     "ALBATROS": {
-      "displayName": "Kh-41 (SS-N-22-Sunburn)"
+      "displayName": "Corvette 1124.4 Grisha"
     },
     "CVN_71": {
-      "displayName": "RIM-116A"
+      "displayName": "CVN-71 Theodore Roosevelt"
     },
     "CVN_72": {
-      "displayName": "RIM-116A"
+      "displayName": "CVN-72 Abraham Lincoln"
     },
     "CVN_73": {
-      "displayName": "RIM-7"
+      "displayName": "CVN-73 George Washington"
     },
     "CVN_75": {
-      "displayName": "SM-2"
+      "displayName": "CVN-75 Harry S. Truman"
     },
     "CV_1143_5": {
-      "displayName": "RIM-7"
+      "displayName": "CV 1143.5 Admiral Kuznetsov(2017)"
     },
     "Dry-cargo ship-1": {
-      "displayName": "BGM-109B"
+      "displayName": "Bulker Yakushev"
     },
     "Dry-cargo ship-2": {
-      "displayName": "BGM-109B"
+      "displayName": "Cargo Ivanov"
     },
     "ELNYA": {
-      "displayName": "30mm HE"
+      "displayName": "Tanker Elnya 160"
     },
     "Forrestal": {
-      "displayName": "RIM-7"
+      "displayName": "CV-59 Forrestal"
     },
     "HandyWind": {
-      "displayName": "BGM-109B"
+      "displayName": "Bulker Handy Wind"
     },
     "IMPROVED_KILO": {
-      "displayName": "30mm HE"
+      "displayName": "SSK 636 Improved Kilo"
     },
     "KILO": {
-      "displayName": "30mm HE"
+      "displayName": "SSK 877V Kilo"
     },
     "KUZNECOW": {
-      "displayName": "P-700 (SS-N-19 Shipwreck)"
+      "displayName": "CV 1143.5 Admiral Kuznetsov"
     },
     "LHA_Tarawa": {
-      "displayName": "30mm HE"
+      "displayName": "LHA-1 Tarawa"
     },
     "La_Combattante_II": {
-      "displayName": "76mm HE"
+      "displayName": "FAC La Combattante IIa"
     },
     "MOLNIYA": {
-      "displayName": "5V55 S-300PS (SA-10B Grumble)"
+      "displayName": "Corvette 1241.1 Molniya"
     },
     "MOSCOW": {
-      "displayName": "P-700 (SS-N-19 Shipwreck)"
+      "displayName": "Cruiser 1164 Moskva"
     },
     "NEUSTRASH": {
-      "displayName": "RIM-116A"
+      "displayName": "Frigate 11540 Neustrashimy"
     },
     "PERRY": {
-      "displayName": "100mm HE"
+      "displayName": "FFG Oliver Hazard Perry"
     },
     "PIOTR": {
-      "displayName": "12.7mm"
+      "displayName": "Battlecruiser 1144.2 Pyotr Velikiy"
     },
     "REZKY": {
-      "displayName": "9M330 Tor (SA-15 Gauntlet)"
+      "displayName": "Frigate 1135M Rezky"
     },
     "Seawise_Giant": {
-      "displayName": "30mm HE"
+      "displayName": "Tanker Seawise Giant"
     },
     "Stennis": {
-      "displayName": "RIM-116A"
+      "displayName": "CVN-74 John C. Stennis"
     },
     "TICONDEROG": {
-      "displayName": "76mm HE"
+      "displayName": "CG Ticonderoga"
     },
     "Type_052B": {
-      "displayName": "YJ-62"
+      "displayName": "Type 052B Destroyer"
     },
     "Type_052C": {
-      "displayName": "YJ-83"
+      "displayName": "Type 052C Destroyer"
     },
     "Type_054A": {
-      "displayName": "30mm HE"
+      "displayName": "Type 054A Frigate"
     },
     "Type_071": {
-      "displayName": "YJ-84"
+      "displayName": "Type 071 Amphibious Transport Dock"
     },
     "Type_093": {
-      "displayName": "Sprgr. L/4.5 Kz."
+      "displayName": "Type 093 Attack Submarine"
     },
     "USS_Arleigh_Burke_IIa": {
-      "displayName": "RGM-84D Harpoon"
+      "displayName": "DDG Arleigh Burke IIa"
     },
     "VINSON": {
-      "displayName": "RIM-116A"
+      "displayName": "CVN-70 Carl Vinson"
     },
     "ZWEZDNY": {
-      "displayName": "BGM-109B"
+      "displayName": "Boat Zvezdny type"
     },
     "speedboat": {
-      "displayName": "BGM-109B"
+      "displayName": "Boat Armed Hi-speed"
     }
   },
   "other": []
