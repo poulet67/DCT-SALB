@@ -57,7 +57,7 @@ master_table["ground units"] = {}
 master_table["naval"] = {}
 --master_table["trains"] = {}
 master_table["other"] = {}
-master_table["ammo_users"] = {}
+master_table["other"]["ammo_users"] = {}
 
 template_table = {} -- for ease of editing
 template_table["airframes"] = {}
@@ -161,8 +161,8 @@ for key, value in pairs(DCS_ground_unit_table) do
 		master_table["munitions"][name]["displayName"] = displayName or false
 		template_table["munitions"][displayName] = 0
 		
-		master_table["ammo_users"][unit_name] = master_table["ammo_users"][unit_name] or {}
-		master_table["ammo_users"][unit_name][name] = true
+		master_table["other"]["ammo_users"][unit_name] = master_table["other"]["ammo_users"][unit_name] or {}
+		master_table["other"]["ammo_users"][unit_name][name] = true
 		
 	end	
 	
@@ -189,8 +189,8 @@ for key, value in pairs(DCS_ship_table) do
 		master_table["munitions"][name] = {}
 		master_table["munitions"][name]["displayName"] = displayName or false
 		
-		master_table["ammo_users"][unit_name] = master_table["ammo_users"][unit_name] or {}
-		master_table["ammo_users"][unit_name][name] = true		
+		master_table["other"]["ammo_users"][unit_name] = master_table["other"]["ammo_users"][unit_name] or {}
+		master_table["other"]["ammo_users"][unit_name][name] = true		
 		
 		template_table["munitions"][displayName] = 0
 		

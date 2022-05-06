@@ -175,7 +175,7 @@ function Inventory:Check(withdrawl_table)
 			Logger:debug("keys "..keys)
 			if(self._inventory[k][keys]) then							
 				
-				ValidTable[keys] = self._inventory[k][keys]["qty"] > withdrawl_table[k][keys]
+				ValidTable[keys] = self._inventory[k][keys] > withdrawl_table[k][keys]
 				ValidLoadout = ValidTable[keys] and ValidLoadout
 			
 			else

@@ -127,6 +127,40 @@ function read_lua_tables(file)
 
 end
 
+function generate_displayname_lookup_tbl(inv_tbl, m_table)
+	
+	inv_tbl["info"]["displayName_lu"] = {}
+	
+	--Save these so keys = displayName values = typeName
+	
+	for categories, assets in pairs(m_table) do
+		
+		if(categories ~= "other") then
+		
+		inv_tbl["info"]["displayName_lu"][categories] = {}
+		
+			for typename, values in pairs(assets) do
+				
+				inv_tbl["info"]["displayName_lu"][categories][values.displayName] = typename
+				
+			end		
+		end
+	end	
+	
+	--Overwrite any from the options file
+	print("overwrite")
+	for categories, typeNames in pairs(inv_tbl["info"]["display_names"]) do
+		print(categories)
+		for tname, dname in pairs(typeNames) do
+
+			print(dname)
+			inv_tbl["info"]["displayName_lu"][categories][dname] = tname
+		
+		end	
+	end
+	
+end
+
 
 if(valid[map]) then
 	
@@ -135,6 +169,7 @@ if(valid[map]) then
 	options_file = options_dir.."options.tbl"
 	game_table = read_lua_tables(options_file) or empty_table
 	inventories_table["info"] = game_table
+	
 	--empty table required for internal logic
 	inventories_table["info"]["empty_table"] = {}
 	empty_table(inventories_table["info"]["empty_table"])
@@ -175,19 +210,22 @@ if(valid[map]) then
 		 
 	end
 	
+	-- Generate displayName lookup table
+	generate_displayname_lookup_tbl(inventories_table, m_table)	
+	
 	-- MAIN 
 	-- inventory master table generation
 
 	
-	for k, v in pairs(cfg_tbl) do
+	for bases, config_key in pairs(cfg_tbl) do
 		
-		print(k)
+		print(bases)
 		
-		local state = v["Initial State"] or "empty"
+		local state = config_key["Initial State"] or "empty"
 		local state = state:lower()
 		
-		inventories_table[k] = {}
-		empty_table(inventories_table[k])
+		inventories_table[bases] = {}
+		empty_table(inventories_table[bases])
 		
 		if(state == "default") then
 			
@@ -209,15 +247,15 @@ if(valid[map]) then
 			
 			end--]]
 			
-			fill_values(inventories_table[k], df_tbl)
+			fill_values(inventories_table[bases], df_tbl)
 		
 		elseif(state == "specific") then
 			
 			print("specific")
-			if(v.Name) then
-				name = v.Name
+			if(config_key.Name) then
+				name = config_key.Name
 			else
-				name = k
+				name = bases
 			end
 			
 			inv_file = init_dir..name..".JSON"
@@ -250,21 +288,46 @@ if(valid[map]) then
 				inv_table = empty_table		
 				
 			end
-
+			
+			-- Decode display name into typeName
+			
+			for categories, weapons in pairs(inv_table) do
+			
+				inventories_table[bases][categories] = {}
+				
+				if(categories ~= "other") then
+					
+					for dname, value in pairs(weapons) do
+						
+						typeName = inventories_table.info.displayName_lu[categories][dname]
+						
+						if(typeName and value > 0) then
+							inventories_table[bases][categories][typeName] = value
+						end
+						
+					end
+				
+				else
+				
+					inventories_table[bases][categories] = weapons --assets in this sense
+					
+				end				
+				
+			end
 				
 		elseif(state == "value") then
 		
 			print("values")
-			if(v["Values"]) then
+			if(config_key["Values"]) then
 				
-				for keys, values in pairs(v["Values"]) do
+				for keys, values in pairs(config_key["Values"]) do
 					
 					print(keys)
 					
 					for a, b in pairs(m_table[keys]) do
 												
-						inventories_table[k][keys][a] = inventories_table[k][keys][a] or {}
-						inventories_table[k][keys][a]["qty"] = values 						
+						inventories_table[bases][keys][a] = inventories_table[bases][keys][a] or {}
+						inventories_table[bases][keys][a]["qty"] = values 						
 				
 					end
 				
@@ -282,7 +345,7 @@ if(valid[map]) then
 		
 		 
 	end
-
+	
 	
 	filename = mapdir.."output/inventory.JSON"
 	copy_file = "../../theater/tables/inventories/inventory.JSON"
