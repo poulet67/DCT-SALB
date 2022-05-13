@@ -130,7 +130,8 @@
       "weapons.missiles.AIM-7F": 200,
       "weapons.missiles.AIM-7MH": 20,
       "weapons.missiles.AIM_120": 20,
-      "weapons.missiles.AIM_7": 100
+      "weapons.missiles.AIM_7": 100,
+      "weapons.shells.M61_20_HE": 100000
     },
     "naval": [],
     "other": {
@@ -163,7 +164,8 @@
       "weapons.missiles.AIM-7F": 200,
       "weapons.missiles.AIM-7MH": 20,
       "weapons.missiles.AIM_120": 20,
-      "weapons.missiles.AIM_7": 100
+      "weapons.missiles.AIM_7": 100,
+      "weapons.shells.M61_20_HE": 100000
     },
     "naval": [],
     "other": {

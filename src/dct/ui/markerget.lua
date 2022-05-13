@@ -439,8 +439,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 						altitude = dctutils.convertDistance(altitude, "ft", "m")
 						
 					end
-				
-				
+
 				end
 				
 				if spd then
@@ -460,7 +459,11 @@ function MarkerGet:parse(text, initiator, idx, point)
 						speed = dctutils.convertSpeed(speed, "kn", "ms")
 						
 					end
-					
+				
+				else
+				
+					speed = nil
+								
 				end		
 				
 				local cmdr = self._theater:getCommander(playerasset.owner)
@@ -470,8 +473,6 @@ function MarkerGet:parse(text, initiator, idx, point)
 					name = name:sub(2,name:len()-1) --removes the double quotes "
 													
 					Logger:debug("name: " .. name)
-					Logger:debug("altitude: " .. altitude)
-					Logger:debug("speed: " .. speed)
 					
 					if(cmdr.Command_Units["ACTIVE"][unitType][name]) then
 					
@@ -501,7 +502,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 								
 				if alt then
 				
-					Logger:debug("ALTITUDE")
+					Logger:debug("ALTITUDE:"..alt)
 					
 					alt = string.sub(alt, 5) --returns number after "ALT:" works even with \n inside remainder
 					altitude = tonumber(string.match(alt, "%d+"))
@@ -516,7 +517,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 						altitude = dctutils.convertDistance(altitude, "ft", "m")
 						
 					end
-				
+					
 				
 				end
 				
@@ -537,6 +538,9 @@ function MarkerGet:parse(text, initiator, idx, point)
 						speed = dctutils.convertSpeed(speed, "kn", "ms")
 						
 					end
+				else
+				
+					speed = nil
 					
 				end		
 				
@@ -547,9 +551,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 					name = name:sub(2,name:len()-1) --removes the double quotes "
 													
 					Logger:debug("name: " .. name)
-					Logger:debug("altitude: " .. altitude)
-					Logger:debug("speed: " .. speed)
-					
+
 					if(cmdr.Command_Units["ACTIVE"][unitType][name]) then
 					
 						self._theater:queueCommand(self.parse_delay,  Command("MarkerGet: ATTACK", cmdr.attack_command, cmdr, unitType, name, point, altitude, speed))

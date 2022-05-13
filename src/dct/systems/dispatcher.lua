@@ -149,7 +149,7 @@ function Dispatcher:fixedWing_move(commandUnitType, name, point, altitude, speed
 			Logger:debug("altitude: " .. altitude)
 			Logger:debug("speed: " .. speed)
 				
-			myMission = dctutils.fixedWing.defaultMissionTask()		
+			local myMission = dctutils.fixedWing.defaultMissionTask()		
 			myMission.params.route.points[1]["x"] = point.x
 			myMission.params.route.points[1]["y"] = point.z
 			myMission.params.route.points[1]["alt"] = altitude
@@ -158,7 +158,7 @@ function Dispatcher:fixedWing_move(commandUnitType, name, point, altitude, speed
 			myMission.params.route.points[1]["type"] = "Turning Point"
 			myMission.params.route.points[1]["action"] = "Turning Point"
 			
-			task_tbl = dctutils.fixedWing.OrbitTask()
+			local task_tbl = dctutils.fixedWing.OrbitTask()
 			
 			Logger:debug("TASK DUMP")
 			utils.tprint(task_tbl)
@@ -166,7 +166,7 @@ function Dispatcher:fixedWing_move(commandUnitType, name, point, altitude, speed
 			myMission.params.route.points[1]["task"] = task_tbl
 			
 			Logger:debug("MISSION DUMP")
-			--utils.tprint(myMission)
+			utils.tprint(myMission)
 	
 			CU_Group:getController():setTask(myMission) 		
 			--ROE ------------
@@ -221,7 +221,7 @@ function Dispatcher:fixedWing_attack(commandUnitType, name, point, altitude, spe
 			
 			if(commandUnitType == "CAP" or commandUnitType == "SEAD" or commandUnitType == "ANTISHIP") then
 				
-				myMission = dctutils.fixedWing.defaultMissionTask()		
+				local myMission = dctutils.fixedWing.defaultMissionTask()		
 				myMission.params.route.points[1]["x"] = point.x
 				myMission.params.route.points[1]["y"] = point.z
 				myMission.params.route.points[1]["alt"] = altitude
@@ -230,9 +230,9 @@ function Dispatcher:fixedWing_attack(commandUnitType, name, point, altitude, spe
 				myMission.params.route.points[1]["type"] = "Turning Point"
 				myMission.params.route.points[1]["action"] = "Turning Point"
 				
-				task_tbl = dctutils.fixedWing.DefaultTask(commandUnitType)
+				local task_tbl = dctutils.fixedWing.DefaultTask(commandUnitType)
 				utils.tprint(task_tbl)
-				orbit_tsk = dctutils.fixedWing.OrbitTask() -- without an orbit task the unit will just RTB upon arrive (with no way to cancel).
+				local orbit_tsk = dctutils.fixedWing.OrbitTask() -- without an orbit task the unit will just RTB upon arrive (with no way to cancel).
 				utils.tprint(orbit_tsk)
 				
 				task_tbl.params.tasks[#task_tbl.params.tasks+1] = orbit_tsk
@@ -244,7 +244,7 @@ function Dispatcher:fixedWing_attack(commandUnitType, name, point, altitude, spe
 				myMission.params.route.points[1]["task"] = task_tbl
 				
 				Logger:debug("MISSION DUMP")
-				--utils.tprint(myMission)
+				utils.tprint(myMission)
 			
 			elseif(commandUnitType == "CAS") then	-- t.b.c
 			
@@ -296,7 +296,7 @@ function Dispatcher:fixedWing_racetrack(commandUnitType, name, point, altitude, 
 			
 			
 
-			myMission = dctutils.fixedWing.defaultMissionTask()
+			local myMission = dctutils.fixedWing.defaultMissionTask()
 			myMission.params.route.points[1]["x"] = point.x
 			myMission.params.route.points[1]["y"] = point.z
 			myMission.params.route.points[1]["alt"] = altitude
@@ -346,7 +346,7 @@ end
 
 function Dispatcher:fixedWing_land(commandUnitType, name, point, altitude, speed, heading, leg)
 	
-	DCS_group_name = self.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"]
+	DCS_group_name = self._cmdr.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"]
 	Logger:debug(DCS_group_name)
 	
 	if(DCS_group_name) then
@@ -362,7 +362,7 @@ function Dispatcher:fixedWing_land(commandUnitType, name, point, altitude, speed
 		myMission.params.route.points[1]["action"] = "Landing"
 		myMission.params.route.points[1]["task"] = {} --dctutils.fixedWing.DefaultTask(commandUnitType) --might need an empty task
 		
-		nearest_AB = dctutils.getNearestAirbase(point, self.owner)			
+		nearest_AB = dctutils.getNearestAirbase(point, self._cmdr.owner)			
 		myMission.params.route.points[1]["airdromeId"] = Airbase.getID(nearest_AB)
 		
 		Logger:debug("MISSION DUMP")

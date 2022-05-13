@@ -198,12 +198,13 @@ end
 function Inventory:Withdraw(withdrawl_table)
 	--MAKE SURE YOU ALWAYS CHECK BEFORE WITHDRAWING!
 	
-	for k, v in pairs(withdrawl_table) do --Go through categories: airframes, munitions...
+	for categories, weapons in pairs(withdrawl_table) do --Go through categories: airframes, munitions...
 		
-		for keys, values in pairs(withdrawl_table[k]) do
+		for typename, value in pairs(weapons) do
 										
-			Logger:debug("INVENTORY Withdraw k: "..keys.." v: "..values)			
-			self._inventory[k][v]["qty"] = self._inventory[k][v]["qty"] - values
+			Logger:debug("INVENTORY Withdraw k: "..typename
+			.." v: "..value)			
+			self._inventory[categories][typename] = self._inventory[categories][typename] - value
 			
 		end
 		

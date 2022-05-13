@@ -283,7 +283,7 @@ function Commander:landing_command(commandUnitType, name, point)
 
 	Logger:debug("COMMANDER: -- landing_command")
 	
-	self.theater:queueCommand(1, Command("Commander move", self.Dispatcher.fixedWing_land, self.Dispatcher, commandUnitType, name, point))
+	self.theater:queueCommand(1, Command("Commander land", self.Dispatcher.fixedWing_land, self.Dispatcher, commandUnitType, name, point))
 	
 	
 end

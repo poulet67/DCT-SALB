@@ -209,7 +209,7 @@ end
 
 function utils.tprint(tbl, indent) --useful debugging tool
   if not indent then indent = 0 end
-  for k, v in pairs(tbl) do
+  for k, v in pairs(tbl or {}) do
     formatting = string.rep("  ", indent) .. k .. ": "
     if type(v) == "table" then
       env.info(formatting)
