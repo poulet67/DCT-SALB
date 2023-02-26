@@ -14,6 +14,10 @@ local Command  = require("dct.Command")
 local Logger   = dct.Logger.getByName("UI")
 local loadout  = require("dct.systems.loadouts")
 local AssetManager= require("dct.assets.AssetManager")
+local settings    = _G.dct.settings
+
+--GLOBAL:
+console_width = _G.dct.settings.gameplay["CONSOLE_WIDTH"] -- might vary from player to player based on resolution
 
 local UICmd = class(Command)
 function UICmd:__init(theater, data)
@@ -56,42 +60,6 @@ function UICmd:uicmd(time)
 	return nil
 end
 
---[[
-
-local ScratchPadDisplay = class(UICmd)
-function ScratchPadDisplay:__init(theater, data)
-	UICmd.__init(self, theater, data)
-	self.name = "ScratchPadDisplay:"..data.name
-end
-
-function ScratchPadDisplay:_execute(_, _)
-	local msg = string.format("Scratch Pad: '%s'",
-		tostring(self.asset.scratchpad))
-	return msg
-end
-
-local ScratchPadSet = class(UICmd)
-function ScratchPadSet:__init(theater, data)
-	UICmd.__init(self, theater, data)
-	self.name = "ScratchPadSet:"..data.name
-end
-
-function ScratchPadSet:_execute(_, _)
-	local mrkid = human.getMarkID()
-	local pos   = Group.getByName(self.asset.name):getUnit(1):getPoint()
-	--local title = "SCRATCHPAD "..tostring(self.asset.groupId)
-
-	self.theater:getSystem("dct.ui.scratchpad"):set(mrkid, self.asset.name)
-	trigger.action.markToGroup(mrkid, "edit me", pos,
-		self.asset.groupId, false)
-	local msg = 
-		"Look on F10 MAP for marker ontop of you \n"..
-		"Edit text with your mission ID or command. "..
-		"Click off the mark when finished. "..
-		"The mark will automatically be deleted."
-	return msg
-end
---]]
 local TheaterUpdateCmd = class(UICmd)
 function TheaterUpdateCmd:__init(theater, data)
 	UICmd.__init(self, theater, data)
@@ -109,13 +77,6 @@ function TheaterUpdateCmd:_execute(_, cmdr)
 		string.format("Friendly Command Points: %s\n", update.friendly_CP)..		
 		string.format("Victory condition: %s\n", update.victory_condition_readable)..
 		string.format("===================\n")	
-		--string.format("  Sea:    %s\n", human.threat(update.enemy.sea)) ..
-		--string.format("  Air:    %s\n", human.airthreat(update.enemy.air)) ..
-		--string.format("  ELINT:  %s\n", human.threat(update.enemy.elint))..
-		--string.format("  SAM:    %s\n", human.threat(update.enemy.sam)) ..
-		--string.format("\n== Friendly Force Info ==\n")..
-		--string.format("  Force Str: %s\n",
-		--	human.strength(update.friendly.str))..
 		
 	return msg
 	
@@ -173,7 +134,7 @@ function ShowMissionBoard:_execute(_, cmdr)
 	
 	table.sort(missionorder, function(a,b) return missiontable[a].priority < missiontable[b].priority end) -- and it works
 	
-	console_width = 65 -- changes based on resolution (?) TODO: make this a setting
+	
 	
 	divider = "\n"..string.rep("-", console_width).."\n"	
 	
@@ -218,32 +179,68 @@ function ShowMissionBoard:_execute(_, cmdr)
 	
 end
 
-local CheckPayloadCmd = class(UICmd)
-function CheckPayloadCmd:__init(theater, data)
+local CheckLoadoutCmd = class(UICmd)
+function CheckLoadoutCmd:__init(theater, data)
 	UICmd.__init(self, theater, data)
-	self.name = "CheckPayloadCmd:"..data.name
+	self.name = "CheckLoadoutCmd:"..data.name
 end
 
-function CheckPayloadCmd:_execute(_ --[[time]], _ --[[cmdr]])
-	local msg
-	local ok, costs = loadout.check(self.asset)
-	if ok then
-		msg = "Valid loadout, you may depart. Good luck!"
-	else
-		msg = "You are over budget! Re-arm before departing, or "..
-			"you will be kicked to spectator!"
-	end
-
-	-- print cost summary
-	msg = msg.."\n== Loadout Summary:"
-	for cat, val in pairs(enum.weaponCategory) do
-		msg = msg ..string.format("\n%s cost: %d / %d",
-			cat, costs[val].current, costs[val].max)
-	end
-
+function CheckLoadoutCmd:_execute(_ --[[time]], _ --[[cmdr]])
+	
+	local msg = self.asset:UIloadoutCheck()
+	
 	return msg
+	
 end
 
+local ListInvCmd = class(UICmd)
+function ListInvCmd:__init(theater, data)
+	UICmd.__init(self, theater, data)
+	self.displaytime  = 60
+	self.name = "ListInvCmd:"..data.name
+	self.Inv_Category = data.value
+end
+
+function ListInvCmd:_execute(_, cmdr)
+	Logger:debug(self.Inv_Category)
+	local assetmgr = dct.Theater.singleton():getAssetMgr()
+	local base_asset = assetmgr:getAsset(self.asset.airbase)
+	local msg = base_asset.Inventory:UI_list(self.Inv_Category)
+	
+	return msg
+	
+end
+
+local LoadoutInfoCmd = class(UICmd)
+function LoadoutInfoCmd:__init(theater, data)
+	UICmd.__init(self, theater, data)
+	self.displaytime  = 60
+	self.name = "LoadoutInfoCmd:"..data.name
+	
+end
+
+function LoadoutInfoCmd:_execute(_, cmdr)
+	
+	local assetmgr = dct.Theater.singleton():getAssetMgr()
+	local base_asset = assetmgr:getAsset(self.airbase)
+	local msg = dctutils.printTabular("INFO", console_width, " ")
+	
+	if(loadout) then
+		 msg = msg.."Weapon restrictions are ON."
+	else
+		
+		 msg = msg.."Weapon restrictions are OFF."
+	end
+	
+	if(base_asset.Inventory) then	
+		 msg = msg.."Inventory system is ON."
+	else
+		 msg = msg.."Inventory system is OFF."	
+	end
+		
+	return msg
+	
+end
 
 local MissionCmd = class(UICmd)
 function MissionCmd:__init(theater, data)
@@ -332,7 +329,7 @@ function MissionJoinCmd:_execute(_, cmdr)
 end
 
 
--- DCT-GroundWar0.67 change:
+-- DCT-WarMachine0.67 change:
 -- No more requesting of missions
 
 -- A mission board is available showing all available missions. They are assigned a priority 1 - 10 (1 being highest priority)
@@ -366,61 +363,6 @@ end
 --
 --
 
-
---[[
-local MissionRqstCmd = class(MissionCmd)
-function MissionRqstCmd:__init(theater, data)
-	MissionCmd.__init(self, theater, data)
-	self.name = "MissionRqstCmd:"..data.name
-	self.missiontype = data.value
-	self.displaytime = 120
-end
-
-function MissionRqstCmd:_execute(_, cmdr)
-	local msn = cmdr:getAssigned(self.asset)
-	local msg
-
-	if msn then -- already assigned
-		msg = string.format("You have mission %s already assigned, "..
-			"use the F10 Menu to abort first.", msn:getID())
-		return msg
-	end
-	
-	if enum.availableMissions[self.missiontype] then --Is this mission type available?	
-		
-		if enum.periodicMissions[self.missiontype] then --if this is a periodic or triggered mission
-		
-			msg = string.format("Please join public mission from theater update")
-			return msg
-		
-		end
-			
-		msn = cmdr:requestMission(self.asset.name, self.missiontype)
-		
-		if msn == nil then
-			msg = string.format("No %s missions available.",
-				human.missiontype(self.missiontype))
-		else
-			msg = string.format("Mission %s assigned, use F10 menu "..
-				"to see this briefing again\n", msn:getID())
-			msg = msg..briefingmsg(msn, self.asset)
-			human.drawTargetIntel(msn, self.asset.groupId, false)
-		end
-		
-		return msg
-	
-	else
-		
-		msg = string.format("No %s missions available.",
-		human.missiontype(self.missiontype))
-		return msg
-	
-	
-	end
-	
-end
-
---]]
 
 local MissionBriefCmd = class(MissionCmd)
 function MissionBriefCmd:__init(theater, data)
@@ -534,7 +476,6 @@ function SpawnCmd:__init(theater, data)
 
 	Logger:debug("------ SPAWN INIT --------------")
 	Logger:debug(tostring(self.spawningAsset))
-
 	
 end
 
@@ -605,9 +546,7 @@ function VoteCmd:__init(theater, data)
 end
 
 function VoteCmd:_execute(_ --[[time]], _ --[[cmdr]])
-	local msg
 	
-
 	return self.theater:getCommander(self.asset.owner).Vote:addVote(self.asset, self.voteVal)
 	
 end
@@ -626,9 +565,13 @@ function DebuggingCmd:_execute(_ --[[time]], _ --[[cmdr]])
 	
 	--give user player commander role
 		
-	local playerAsset = self.asset --n.b some possible lua5.1 screwyness requires this to be assigned to a local variable when passed to function
+	local playerAsset = self.asset 
 	
-	self.theater:getCommander(self.asset.owner):assignCommander(playerAsset)
+	local rg_mgr = self.theater:getRegionMgr()	
+	local path = settings.server.theaterpath..utils.sep.."region.JSON"
+	
+	dctutils.write_JSON_tbl(path, rg_mgr.regions)
+	
 
 	return "DEBUG RUN"
 	
@@ -653,6 +596,9 @@ local cmds = {
 	[enum.uiRequestType.VOTE]    = VoteCmd,
 	[enum.uiRequestType.SPAWN]     = SpawnCmd,
 	[enum.uiRequestType.DEBUGGING]     = DebuggingCmd,
+	[enum.uiRequestType.CHECKLOADOUT]    = CheckLoadoutCmd,
+	[enum.uiRequestType.LISTINVENTORY]     = ListInvCmd,
+	[enum.uiRequestType.LOADOUTINFO]     = LoadoutInfoCmd,
 	
 }
 

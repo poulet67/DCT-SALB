@@ -82,7 +82,45 @@ function menus.createMenu(asset)
 			["type"]   = enum.uiRequestType.MISSIONABORT,
 			["value"]  = enum.missionAbortType.ABORT,
 		})
+		
+	---------------------------------------------------------------Inventory
+		
+	local msnmenu = addmenu(gid, "Inventory and Loadout", nil)
 	
+	addcmd(gid, "Check Loadout", msnmenu, Theater.playerRequest,
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.CHECKLOADOUT,
+		})		
+	addcmd(gid, "List Available Munitions", msnmenu, Theater.playerRequest,
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.LISTINVENTORY,
+			["value"]  = "munitions",
+		})			
+	addcmd(gid, "List Available Airframes", msnmenu, Theater.playerRequest,
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.LISTINVENTORY,
+			["value"]  = "airframes",
+		})			
+	addcmd(gid, "List Other Essentials", msnmenu, Theater.playerRequest,
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.LISTINVENTORY,
+			["value"]  = "other",
+		})				
+	addcmd(gid, "List Available Ground Units", msnmenu, Theater.playerRequest,
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.LISTINVENTORY,
+			["value"]  = "ground units",
+		})	
+	addcmd(gid, "Info", msnmenu, Theater.playerRequest,
+		{
+			["name"]   = name,
+			["type"]   = enum.uiRequestType.LOADOUTINFO,
+		})	
 	
 	---------------------------------------------------------------VOTES
 	
@@ -122,7 +160,7 @@ function menus.createMenu(asset)
 		})
 	
 	
-	--to command certain areas of code be executed in game, comment out for release/production
+	--to execute code in game, comment out for release/production
 	
 	addcmd(gid, "Debugging", nil, Theater.playerRequest,     
 		{
@@ -154,8 +192,6 @@ function menus.createMenu(asset)
 --				["type"]   = v,
 --			})
 --	end
-	
-	loadout.addmenu(asset, nil, Theater.playerRequest)
 	
 -- Copied from OD design doc:
 	

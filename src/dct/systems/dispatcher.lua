@@ -128,7 +128,8 @@ function Dispatcher:fixedWing_move(commandUnitType, name, point, altitude, speed
 		CU_Group = Group.getByName(DCS_group_name)
 		
 		if(CU_Group) then
-			
+		
+			local myMission
 			
 			if(altitude == nil) then
 				
@@ -149,21 +150,29 @@ function Dispatcher:fixedWing_move(commandUnitType, name, point, altitude, speed
 			Logger:debug("altitude: " .. altitude)
 			Logger:debug("speed: " .. speed)
 				
-			local myMission = dctutils.fixedWing.defaultMissionTask()		
+			myMission = dctutils.fixedWing.defaultMissionTask()		
 			myMission.params.route.points[1]["x"] = point.x
 			myMission.params.route.points[1]["y"] = point.z
 			myMission.params.route.points[1]["alt"] = altitude
 			myMission.params.route.points[1]["alt_type"] = "BARO"
 			myMission.params.route.points[1]["speed"] = speed
 			myMission.params.route.points[1]["type"] = "Turning Point"
-			myMission.params.route.points[1]["action"] = "Turning Point"
+			myMission.params.route.points[1]["action"] = "Fly Over Point"
 			
-			local task_tbl = dctutils.fixedWing.OrbitTask()
+			local task_tbl = dctutils.fixedWing.OrbitTask(altitude, speed)
 			
 			Logger:debug("TASK DUMP")
 			utils.tprint(task_tbl)
 			
 			myMission.params.route.points[1]["task"] = task_tbl
+			
+			-- quick and dirty table export for grimes
+			--path = lfs.writedir() .. "Mods\\tech\\DCT".."\\movetbl.JSON"
+			--local JSON = require("libs.JSON")
+			--file = io.open(path, "w+")
+			--file:write(JSON:encode_pretty(myMission))
+			--file:close()
+			-------------------------------------------
 			
 			Logger:debug("MISSION DUMP")
 			utils.tprint(myMission)
@@ -190,6 +199,10 @@ end
 
 function Dispatcher:fixedWing_attack(commandUnitType, name, point, altitude, speed)
 
+	local myMission
+	local task_tbl
+	local orbit_tsk
+	
 	DCS_group_name = self._cmdr.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"] -- The DCS group name 
 		
 	if(DCS_group_name and enum.offensiveUnits[enum.commandUnitTypes[commandUnitType]]) then -- group name exists and this is an offensive type unit
@@ -198,6 +211,7 @@ function Dispatcher:fixedWing_attack(commandUnitType, name, point, altitude, spe
 		CU_Group = Group.getByName(DCS_group_name)
 		
 		if(CU_Group) then
+			
 			
 			
 			if(altitude == nil) then
@@ -214,25 +228,25 @@ function Dispatcher:fixedWing_attack(commandUnitType, name, point, altitude, spe
 				
 			end
 			
-			Logger:debug("DISPATCHER ==== MOVE===")		
+			Logger:debug("DISPATCHER ==== ATTACK ===")		
 			Logger:debug("commandUnitType: " .. commandUnitType)	
 			Logger:debug("altitude: " .. altitude)
 			Logger:debug("speed: " .. speed)
 			
 			if(commandUnitType == "CAP" or commandUnitType == "SEAD" or commandUnitType == "ANTISHIP") then
 				
-				local myMission = dctutils.fixedWing.defaultMissionTask()		
+				myMission = dctutils.fixedWing.defaultMissionTask()		
 				myMission.params.route.points[1]["x"] = point.x
 				myMission.params.route.points[1]["y"] = point.z
 				myMission.params.route.points[1]["alt"] = altitude
 				myMission.params.route.points[1]["alt_type"] = "BARO"
 				myMission.params.route.points[1]["speed"] = speed
 				myMission.params.route.points[1]["type"] = "Turning Point"
-				myMission.params.route.points[1]["action"] = "Turning Point"
+				myMission.params.route.points[1]["action"] = "Fly Over Point"
 				
-				local task_tbl = dctutils.fixedWing.DefaultTask(commandUnitType)
+				task_tbl = dctutils.fixedWing.DefaultTask(commandUnitType)
 				utils.tprint(task_tbl)
-				local orbit_tsk = dctutils.fixedWing.OrbitTask() -- without an orbit task the unit will just RTB upon arrive (with no way to cancel).
+				orbit_tsk = dctutils.fixedWing.OrbitTask(altitude, speed) -- without an orbit task the unit will just RTB upon arrive (with no way to cancel).
 				utils.tprint(orbit_tsk)
 				
 				task_tbl.params.tasks[#task_tbl.params.tasks+1] = orbit_tsk
@@ -245,7 +259,15 @@ function Dispatcher:fixedWing_attack(commandUnitType, name, point, altitude, spe
 				
 				Logger:debug("MISSION DUMP")
 				utils.tprint(myMission)
-			
+				
+				-- quick and dirty table export for grimes
+				--path = lfs.writedir() .. "Mods\\tech\\DCT".."\\attacktbl.JSON"
+				--local JSON = require("libs.JSON")
+				--file = io.open(path, "w+")
+				--file:write(JSON:encode_pretty(myMission))
+				--file:close()
+				-------------------------------------------
+				
 			elseif(commandUnitType == "CAS") then	-- t.b.c
 			
 			
@@ -276,6 +298,9 @@ function Dispatcher:fixedWing_racetrack(commandUnitType, name, point, altitude, 
 	DCS_group_name = self._cmdr.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"]
 	Logger:debug(DCS_group_name)
 	
+	local angle 
+	local myMission
+	
 	if(DCS_group_name and point and altitude and speed and heading and leg) then
 	
 		CU_Group = Group.getByName(DCS_group_name)
@@ -286,7 +311,7 @@ function Dispatcher:fixedWing_racetrack(commandUnitType, name, point, altitude, 
 			-- in order to compute where this will be we have to do some trigonometry
 			-- with the given heading and leg length.
 			
-			local angle = math.rad(heading)		
+			angle = math.rad(heading)		
 			
 			--unit vectors of heading (x,y in mathematical terms, x, z in DCS terms)
 			
@@ -296,14 +321,14 @@ function Dispatcher:fixedWing_racetrack(commandUnitType, name, point, altitude, 
 			
 			
 
-			local myMission = dctutils.fixedWing.defaultMissionTask()
+			myMission = dctutils.fixedWing.defaultMissionTask()
 			myMission.params.route.points[1]["x"] = point.x
 			myMission.params.route.points[1]["y"] = point.z
 			myMission.params.route.points[1]["alt"] = altitude
 			myMission.params.route.points[1]["alt_type"] = "BARO"
 			myMission.params.route.points[1]["speed"] = speed
 			myMission.params.route.points[1]["type"] = "Turning Point"
-			myMission.params.route.points[1]["action"] = "Turning Point"
+			myMission.params.route.points[1]["action"] = "Fly Over Point"
 			myMission.params.route.points[1]["task"] = dctutils.fixedWing.DefaultTask(commandUnitType)
 
 			tasknum = myMission.params.route.points[1]["task"]["params"]["tasks"]
@@ -318,7 +343,7 @@ function Dispatcher:fixedWing_racetrack(commandUnitType, name, point, altitude, 
 			myMission.params.route.points[2]["alt_type"] = "BARO"
 			myMission.params.route.points[2]["speed"] = speed
 			myMission.params.route.points[2]["type"] = "Turning Point"
-			myMission.params.route.points[2]["action"] = "Turning Point"
+			myMission.params.route.points[2]["action"] = "Fly Over Point"
 			--if(commandUnitType == "Tanker") then
 			myMission.params.route.points[2]["task"] = dctutils.fixedWing.EmptyTask()
 			--else
@@ -348,6 +373,9 @@ function Dispatcher:fixedWing_land(commandUnitType, name, point, altitude, speed
 	
 	DCS_group_name = self._cmdr.Command_Units["ACTIVE"][commandUnitType][name]["DCS_group_name"]
 	Logger:debug(DCS_group_name)
+	local myMission
+	local nearest_AB
+	local mytask
 	
 	if(DCS_group_name) then
 	
@@ -362,7 +390,7 @@ function Dispatcher:fixedWing_land(commandUnitType, name, point, altitude, speed
 		myMission.params.route.points[1]["action"] = "Landing"
 		myMission.params.route.points[1]["task"] = {} --dctutils.fixedWing.DefaultTask(commandUnitType) --might need an empty task
 		
-		nearest_AB = dctutils.getNearestAirbase(point, self._cmdr.owner)			
+		nearest_AB = dctutils.getNearestAirbase(point, self._cmdr.owner)
 		myMission.params.route.points[1]["airdromeId"] = Airbase.getID(nearest_AB)
 		
 		Logger:debug("MISSION DUMP")

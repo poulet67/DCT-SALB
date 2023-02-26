@@ -24,6 +24,37 @@ local enum        = require("dct.enum")
 local Command     = require("dct.Command")
 local settings    = _G.dct.settings
 
+-- GLOBALS
+
+function generate_master()
+
+	local path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."inventory.JSON"
+	local inv_table = dctutils.read_JSON_file(path)
+
+	return inv_table
+	
+end
+
+g_master_table = generate_master()
+g_crew_requirements = g_master_table["info"]["game_config"]["crew_requirements"]
+g_fuel_types = g_master_table["info"]["game_config"]["fuel_type"]
+g_links = g_master_table["info"]["game_config"]["links"]
+
+--Convert in game typeName to displayable name format
+
+function tName2dName(tName)
+
+	return g_master_table["info"]["typeName2displayName"][tName] or tName
+
+	
+end
+
+function dName2tName(dName)
+
+	return g_master_table["info"]["displayName2typeName"][dName]
+		
+end
+
 local Inventory = class("Inventory")
 function Inventory:__init(base)
 	
@@ -35,10 +66,7 @@ function Inventory:__init(base)
 	
 	--self.inventory_tables_path = settings.theaterpath..utils.sep.."tables"..utils.sep.."inventories"
 	--self._theater = theater might be useful to have these (n.b might also be able to just grab these with requires, no need to pass anything
-	--self._cmdr = cmdr
-	
-
-	
+	--self._cmdr = cmdr	
 	
 end
 
@@ -124,9 +152,9 @@ function Inventory:handleTakeoff(event)
 		
 		--Logger:debug("INVENTORY - TAKEOFF: "..unit_takingOff:getPlayerName())
 		
-		withdrawl_table = air.compute_withdrawl_table(unit_takingOff)			
+				
 		
-		valid_loadout_table = self:Check(withdrawl_table)
+		valid_loadout_table, withdrawl_table = self:Check(unit_takingOff)
 		
 		
 		if(valid_loadout_table["all"]) then --Unit has a valid loadout
@@ -155,17 +183,31 @@ function Inventory:handleTakeoff(event)
 
 		end
 	
-	--end
-	
+	--end	
 	
 end
 
-function Inventory:Check(withdrawl_table)
+function Inventory:handleLanding(event)
+	
+	Logger:debug("INVENTORY LANDING: "..self.base.name)
+	
+	local unit_landing = event.initiator
+	
+	--todo: add cargo/delivery handling capability
+	
+	deposit_table = air.compute_withdrawl_table(unit_landing)
+	self:Deposit(deposit_table)
+	
+end
+
+function Inventory:Check(unit)
 	
 	local ValidLoadout = true
 	local ValidTable = {}
 	Logger:debug("INVENTORY check -- my inventory:")
-	utils.tprint(self._inventory)	
+	utils.tprint(self._inventory)
+	
+	local withdrawl_table = air.compute_withdrawl_table(unit)
 	
 	for k, v in pairs(withdrawl_table) do --Go through categories: airframes, munitions...
 		
@@ -191,7 +233,7 @@ function Inventory:Check(withdrawl_table)
 	
 	ValidTable["all"] = ValidLoadout
 
-	return ValidTable
+	return ValidTable, withdrawl_table
 	
 end
 
@@ -202,8 +244,7 @@ function Inventory:Withdraw(withdrawl_table)
 		
 		for typename, value in pairs(weapons) do
 										
-			Logger:debug("INVENTORY Withdraw k: "..typename
-			.." v: "..value)			
+			Logger:debug("INVENTORY Withdraw k: "..typename	.." v: "..value)			
 			self._inventory[categories][typename] = self._inventory[categories][typename] - value
 			
 		end
@@ -212,21 +253,83 @@ function Inventory:Withdraw(withdrawl_table)
 		
 end
 
-function generate_master()
+function Inventory:Deposit(deposit_table)
+	
+	for categories, weapons in pairs(deposit_table) do --Go through categories: airframes, munitions...
+		
+		for typename, value in pairs(weapons) do
+			
+			qty = self._inventory[categories][typename] or 0
+			Logger:debug("INVENTORY Deposit k: "..typename	.." v: "..value)
+			self._inventory[categories][typename] = qty + value
+			
+		end
+		
+	end
+		
+end
+	
+function Inventory:UI_check(unit)
 
-	local path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."inventories"..utils.sep.."inventory.JSON"
-	local inv_table = dctutils.read_JSON_file(path)
+	local ValidLoadout = true
+	local msg = ""
+	
+	local withdrawl_table = air.compute_withdrawl_table(unit)
+	
+	for categories, tbls in pairs(withdrawl_table) do --Go through categories: airframes, munitions...
+		Logger:debug(categories)
+		
+		for names, values in pairs(tbls) do
+		
+			local dName = tName2dName(names)
+			local qty = self._inventory[categories][names] or 0
+			local ok = qty > withdrawl_table[categories][names]
+			Logger:debug("name: "..names.." dName: "..dName.." value: "..values)	
+			
+			if(ok) then							
+				
+				msg = msg..values.."/"..qty.." - "..dName.." - OK\n"
+				ValidLoadout = ValidLoadout and ok
+			
+			else
+			
+				msg = msg..values.."/"..qty.." - "..dName.." - NOT AVAILABLE\n"
+				ValidLoadout = ValidLoadout and ok
+			
+			end
+		end
+	end
 
-	return inv_table
+	return msg, ValidLoadout
 	
 end
 
--- GLOBALS
-g_master_table = generate_master()
-g_display_names = g_master_table["info"]["display_names"]
-g_crew_requirements = g_master_table["info"]["game_config"]["crew_requirements"]
-g_fuel_types = g_master_table["info"]["game_config"]["fuel_type"]
-g_links = g_master_table["info"]["game_config"]["links"]
+function Inventory:UI_list(category)
+
+	local msg = ""
+	
+	if(self._inventory[category]) then
+		local console_width = settings.gameplay["CONSOLE_WIDTH"]
+		msg = dctutils.printTabular("INVENTORY", console_width, "-").."\n"
+		msg = msg..dctutils.printTabular(self.base.name, console_width, "-").."\n"
+		msg = msg..dctutils.printTabular(string.upper(category), console_width, "-").."\n"
+		
+		Logger:debug(msg)
+		
+		for name, value in pairs(self._inventory[category]) do
+
+			msg = msg..value.." - "..tName2dName(name).."\n"
+		
+		end
+
+	else
+		msg = "Invalid Category"
+	end
+
+	
+	return msg
+	
+end
 
 --[[
 function EventHandler:onEvent(event)
@@ -370,31 +473,7 @@ function Inventory:delivery(arrivingAirbase, UnitAttachedto)
 	end
 end
 --]]
-	
-function Inventory:check_loadout(MunitionTable)
 
-	--MunitionTable:
-	--A table of the munitions carried 
-
-	Logger:debug("INVENTORY --- CHECKING LOADOUT")
-	
-	currentAirbase = getCurrentAirbase(playerUnit:getPoint().x,playerUnit:getPoint().y,playerUnit:getPoint().z)
-	
-	local valid = Inventory_Check(playerUnit)
-	
-	if(valid) then
-		
-		message = "Your loadout is approved, you may proceed."
-		
-	elseif(not(valid)) then
-		
-		message = "You currently in an airframe or have weapons equipped that do not exist at this airbase. Temporal paradoxes are NOT permitted. Please change your loadout before takeoff."
-		
-	end
-	
-	return message
-	
-end
 
 
 

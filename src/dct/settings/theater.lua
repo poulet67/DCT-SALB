@@ -317,7 +317,7 @@ local function validate_gameplay_configs(cfgdata, tbl)
 			["name"] = "COMMAND_UNIT_DEFAULT_ALTITUDE",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
-			["default"] = 6000
+			["default"] = 6000 --m 
 		},
 		[33] = {
 			["name"] = "COMMANDER_PUBLIC_BY_DEFAULT",
@@ -328,7 +328,13 @@ local function validate_gameplay_configs(cfgdata, tbl)
 			["name"] = "COMMAND_UNIT_DEFAULT_SPEED",
 			["type"] = "number",
 			["check"] = checkgreaterthanzero,
-			["default"] = 123.46
+			["default"] = 123.46 -- m/s
+		},
+		[35] = {
+			["name"] = "CONSOLE_WIDTH",
+			["type"] = "number",
+			["check"] = checkgreaterthanzero,
+			["default"] = 65
 		}
 	}
 	

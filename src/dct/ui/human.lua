@@ -8,8 +8,41 @@ require("math")
 local utils    = require("libs.utils")
 local enum     = require("dct.enum")
 local dctutils = require("dct.utils")
+local Logger   = require("dct.libs.Logger").getByName("UI")
+
+local lineType = {
+	[dctutils.COALITION_CONTESTED] = enum.lineType.LongDash,
+	[coalition.side.NEUTRAL]       = enum.lineType.Solid,
+	[coalition.side.BLUE]          = enum.lineType.Solid,
+	[coalition.side.RED]           = enum.lineType.Solid,
+}
+
+local lineColor = {
+	[dctutils.COALITION_CONTESTED] = { 0.5, 0,   0.5, 1 },
+	[coalition.side.NEUTRAL]       = { 0.5, 0.5, 0.5, 1 },
+	[coalition.side.BLUE]          = { 0,   0,   1,   1 },
+	[coalition.side.RED]           = { 1,   0,   0,   1 },
+}
+
+local fillColor = {
+	[dctutils.COALITION_CONTESTED] = { 0.8, 0.4,  0.8, 0.075 },
+	[coalition.side.NEUTRAL]       = { 0,   0,    0,   0.075 },
+	[coalition.side.BLUE]          = { 0,   0.25, 1,   0.075 },
+	[coalition.side.RED]           = { 1,   0.25, 0,   0.075 },
+}
+
+local textColor = {
+	[dctutils.COALITION_CONTESTED] = { 0.4,  0,    0.4,  1 },
+	[coalition.side.NEUTRAL]       = { 1,    1,    1,    1 },
+	[coalition.side.BLUE]          = { 0,    0,    0.75, 1 },
+	[coalition.side.RED]           = { 0.75, 0,    0,    1 },
+}
+
+local transparent = { 0, 0, 0, 0 }
 
 local human = {}
+
+local mapBorders = {}
 
 local markindex = 10
 
@@ -17,6 +50,17 @@ function human.getMarkID()
 	markindex = markindex + 1
 	return markindex
 end
+
+function human.getMarkID(list)
+	markindex = markindex + 1
+	if list ~= nil then
+		table.insert(list, markindex)
+	end
+	return markindex
+end
+
+-- mapping of inserted marks for later removal
+local marks = {}
 
 -- enemy air superiroty as defined by the US-DOD is
 --  'incapability', 'denial', 'parity', 'superiority',
@@ -77,19 +121,176 @@ function human.locationhdr(msntype)
 	return hdr
 end
 
-function human.drawTargetIntel(msn, grpid, readonly)
-	local tgtinfo = msn:getTargetInfo()
-	local degpos = dctutils.degrade_position(tgtinfo.location,
-		tgtinfo.intellvl)
-	local msg = "desc: "..tostring(tgtinfo.description).."\n"..
-		string.format("status: %d%% complete\nthreats: TODO",
-			tgtinfo.status)
-	trigger.action.markToGroup(human.getMarkID(),
-		"TGT: "..tgtinfo.callsign,
-		degpos,
-		grpid,
-		readonly,
-		msg)
+local function point3D(point)
+	return {
+		x = point.x,
+		y = land.getHeight(point),
+		z = point.y
+	}
+end
+
+--[[
+function human.updateBorders(region, borders)
+	local oldBorders = mapBorders[region.name]
+	if oldBorders ~= nil and oldBorders.owner == region.owner then
+		return
+	end
+
+	if oldBorders == nil then
+		oldBorders = { marks = {} }
+	end
+
+	Logger:debug("updating borders for region %s from coalition %s to %d",
+		region.name, tostring(oldBorders.owner), region.owner)
+
+	for _, oldMark in pairs(oldBorders.marks) do
+		trigger.action.removeMark(oldMark)
+	end
+
+	local borderMarks = {}
+	for _, border in pairs(borders) do
+		-- note: fill color doesn't work on polygons with too many vertices
+		local points = border.polygon
+		for i = 1, #points do
+			local prev
+			if i == 1 then
+				prev = points[#points]
+			else
+				prev = points[i - 1]
+			end
+			local curr = points[i]
+			local lineId = human.getMarkID(borderMarks)
+			trigger.action.lineToAll(-1, lineId, point3D(prev), point3D(curr),
+				lineColor[region.owner], lineType[region.owner])
+		end
+
+		-- so we draw a triangulated mesh to make the fill instead
+		for _, triangle in ipairs(border.triangles) do
+			local triangleId = human.getMarkID(borderMarks)
+			trigger.action.markupToAll(enum.markShape.Freeform, -1, triangleId,
+				point3D(triangle[1]), point3D(triangle[2]), point3D(triangle[3]),
+				transparent, fillColor[region.owner], enum.lineType.NoLine)
+		end
+
+		local textId = human.getMarkID(borderMarks)
+		trigger.action.textToAll(-1, textId, point3D(border.center),
+			textColor[region.owner], transparent, 24, true, border.title)
+	end
+
+	mapBorders[region.name] = {
+		owner = region.owner,
+		marks = borderMarks,
+	}
+end
+--]]
+
+function human.updateRegionBorders(region)
+	local oldBorders = mapBorders[region.name]
+	if oldBorders ~= nil and oldBorders.owner == region.owner then
+		return
+	end
+
+	if oldBorders == nil then
+		oldBorders = { marks = {} }
+	end
+
+	Logger:debug("updating borders for region %s from coalition %s to %d",
+		region.name, tostring(oldBorders.owner), region.owner)
+
+	for _, oldMark in pairs(oldBorders.marks) do
+		trigger.action.removeMark(oldMark)
+	end
+
+	local borderMarks = {}
+
+	-- note: fill color doesn't work on polygons with too many vertices
+	local points = region.border.polygon
+	for i = 1, #points do
+		local prev
+		if i == 1 then
+			prev = points[#points]
+		else
+			prev = points[i - 1]
+		end
+		local curr = points[i]
+		local lineId = human.getMarkID(borderMarks)
+		trigger.action.lineToAll(-1, lineId, point3D(prev), point3D(curr), lineColor[region.owner], lineType[region.owner])
+	end
+
+	-- so we draw a triangulated mesh to make the fill instead
+	for _, triangle in ipairs(region.border.triangles) do
+		local triangleId = human.getMarkID(borderMarks)
+		trigger.action.markupToAll(enum.markShape.Freeform, -1, triangleId,
+			point3D(triangle[1]), point3D(triangle[2]), point3D(triangle[3]),
+			transparent, fillColor[region.owner], enum.lineType.NoLine)
+	end
+
+	local textId = human.getMarkID(borderMarks)
+	trigger.action.textToAll(-1, textId, point3D(region.border.center),
+		textColor[region.owner], transparent, 24, true, region.name)
+
+
+	mapBorders[region.name] = {
+		owner = region.owner,
+		marks = borderMarks,
+	}
+end
+
+local function markToGroup(label, pos, missionId, groupId, readonly)
+	local markId = human.getMarkID()
+	trigger.action.markToGroup(markId, label, pos, groupId, readonly)
+	if marks[groupId] == nil then
+		marks[groupId] = {}
+	end
+	if marks[groupId][missionId] == nil then
+		marks[groupId][missionId] = {}
+	end
+	table.insert(marks[groupId][missionId], markId)
+end
+
+function human.drawTargetIntel(mission, groupId, fmt)
+	assert(fmt == nil or type(fmt) == "number", "fmt must be a number")
+	local tgtInfo = mission:getTargetInfo()
+	local intel = tgtInfo.intellvl
+	if intel >= 4 and #tgtInfo.locations > 1 then
+		-- Mission has multiple static locations
+		for _, location in pairs(tgtInfo.locations) do
+			local degpos = dctutils.degrade_position(location, intel, fmt)
+			markToGroup(string.format(
+				"TGT: %s (%s)", tgtInfo.callsign, tostring(location.desc)),
+				degpos, mission.id, groupId, false)
+		end
+	else
+		-- Mission only has a single location
+		local degpos = dctutils.degrade_position(tgtInfo.location, intel, fmt)
+		markToGroup("TGT: "..tgtInfo.callsign, degpos, mission.id, groupId, false)
+	end
+	-- Designer-authored marks
+	for _, mark in pairs(tgtInfo.extramarks) do
+		mark.y = mark.y or 0
+		mark.label = dctutils.interp(mark.label, { ["TARGET"] = tgtInfo.callsign })
+		markToGroup(mark.label, mark, mission.id, groupId, false)
+	end
+end
+
+function human.removeIntel(missionId, groupId)
+	if marks[groupId] ~= nil and marks[groupId][missionId.id] ~= nil then
+		local marksToRemove = marks[groupId][missionId.id]
+		for i = 1, #marksToRemove do
+			trigger.action.removeMark(marksToRemove[i])
+			marksToRemove[i] = nil
+		end
+	end
+end
+
+function human.relationship(side1, side2)
+	if side1 == side2 then
+		return "Friendly"
+	elseif dctutils.getenemy(side1) == side2 then
+		return "Hostile"
+	else
+		return "Neutral"
+	end
 end
 
 return human

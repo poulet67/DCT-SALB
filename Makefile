@@ -21,16 +21,6 @@ build:
 	cp -a $(SRCPATH)/mission $(BUILDPATH)/DCT/
 	mkdir -p $(BUILDPATH)/HOOKS
 	cp -a $(SRCPATH)/hooks/* $(BUILDPATH)/HOOKS/
-	mkdir -p $(BUILDPATH)/DEMO/
-	cp -a $(SRCPATH)/data/DCT $(SRCPATH)/data/Config \
-		$(SRCPATH)/data/README.md $(BUILDPATH)/DEMO/
-	(mkdir -p $(BUILDPATH)/DEMO/demomiz; \
-		cd $(BUILDPATH)/DEMO/demomiz; \
-		cp -a $(SRCPATH)/data/mission/* .; \
-		cp $(SRCPATH)/mission/* l10n/DEFAULT/; \
-		zip -r "../dct-demo-mission.zip" .; \
-		cd ..; \
-		rm -rf demomiz)
 	cp $(SRCPATH)/README.md $(BUILDPATH)/
 	mkdir -p $(BUILDPATH)/temp
 	(cd $(BUILDPATH)/temp; \
@@ -38,6 +28,6 @@ build:
 		unzip $(LUALIBSAR) >/dev/null; \
 		cp -a $(LUALIBSDIR)/src/libs* $(BUILDPATH)/DCT/lua)
 	(cd $(BUILDPATH); \
-		zip -r "DCT-$(VERSION).zip" HOOKS DCT DEMO README.md; \
+		zip -r "DCT-$(VERSION).zip" HOOKS DCT README.md; \
 		mv DCT-$(VERSION).zip ../)
 	rm -rf $(BUILDPATH)

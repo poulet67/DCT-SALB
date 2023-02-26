@@ -7,6 +7,7 @@
 require("lfs")
 local class = require("libs.class")
 local utils = require("libs.utils")
+local dctutils = require("libs.utils")
 local enum  = require("dct.enum")
 local vector= require("dct.libs.vector")
 local Goal  = require("dct.Goal")
@@ -568,8 +569,12 @@ function Template.fromFile(dctfile, stmfile, command_unit)  --region, dctfile, s
 	-- this should be last
 	
 	if stmfile ~= nil then
-		Logger:debug("TEMPLATE -- STM TRANSFORM")	
-		template = utils.mergetables(STM.transform(utils.readlua(stmfile, "staticTemplate")), template)
+		Logger:debug("TEMPLATE -- STM TRANSFORM")
+		template_from_file = STM.transform(utils.readlua(stmfile, "staticTemplate"))
+		utils.tprint(template_from_file)
+		template = utils.mergetables(template_from_file, template)
+		Logger:debug("template dump")
+		utils.tprint(template)
 		
 	end
 	
@@ -589,8 +594,6 @@ function Template.fromFile(dctfile, stmfile, command_unit)  --region, dctfile, s
 		Logger:debug("TEMPLATE -- commandUnitType found: %s", template.commandUnitType)
 		
 	end	
-	--local settings = dct.settings.server
-	--utils.savetable(template, "C:\Users\ian\Saved Games\DCS\Mods\tech\DCT\debug\table.dump")
 	
 	Logger:debug("RETURN")	
 	return Template(template)

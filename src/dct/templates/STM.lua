@@ -231,14 +231,7 @@ end
 2022-02-10 05:41:32.144 INFO    SCRIPTING: stage: 1
 --]]
 
-
--- This is the most spaghetti piece of spaghetti made to unspaghetti spaghetti
--- This is the jenga piece that will bring the whole tower down 
--- push and prod at your own risk
-
-
-
-function STM.transform(stmdata, file)
+function STM.transform(stmdata)
 	local template   = {}
 	local lookupname =  function(name)
 		if name == nil then
@@ -251,32 +244,16 @@ function STM.transform(stmdata, file)
 		end
 		return newname
 	end
-	local trackUniqueCoalition = function(_, cntryid, _)
-		local side = coalition.getCountryCoalition(cntryid)
-		if template.coalition == nil then
-			template.coalition = side
-		end
-		assert(template.coalition == side, string.format(
-			"runtime error: invalid STM; country(%s) does not belong "..
-			"to '%s' coalition, country belongs to '%s' coalition; file: %s",
-			country.name[cntryid],
-			tostring(utils.getkey(coalition.side, template.coalition)),
-			tostring(utils.getkey(coalition.side, side)),
-			file))
-		return true
-	end
 
 	template.name    = lookupname(stmdata.name)
 	template.theater = lookupname(stmdata.theatre)
 	template.desc    = lookupname(stmdata.desc)
 	template.tpldata = {}
-
+	
 	for _, coa_data in pairs(stmdata.coalition) do
-		for _, grp in ipairs(STM.processCoalition(coa_data,
-				lookupname,
-				trackUniqueCoalition,
-				modifyStatic)) do
-			table.insert(template.tpldata, grp)
+		local groups = STM.processCoalition(coa_data, lookupname, nil, modifyStatic)
+		for _, group in ipairs(groups) do
+			table.insert(template.tpldata, group)
 		end
 	end
 	return template

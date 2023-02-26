@@ -44,6 +44,7 @@ local defaultwaypoint = {
 }
 
 utils.INTELMAX = 5
+utils.COALITION_CONTESTED = -1
 
 function utils.getenemy(side)
 	return enemymap[side]
@@ -301,6 +302,25 @@ function utils.read_JSON_file(filename)
 			return nil	
 		end
 		
+	
+	else
+		
+		return nil
+	
+	end
+
+
+end
+
+function utils.write_JSON_tbl(path, tbl)
+		
+	file = io.open(path, "w+")
+	
+	if(file) then
+		
+		file:write(JSON:encode_pretty(tbl))
+		file:close()
+		return true	
 	
 	else
 		
@@ -1192,7 +1212,7 @@ function utils.fixedWing.DefaultTask(CommandUnitType)
 end
 
 
-function utils.fixedWing.OrbitTask()
+function utils.fixedWing.OrbitTask(altitude, speed)
 	return	
 			{
 				["number"] = {},
@@ -1201,9 +1221,9 @@ function utils.fixedWing.OrbitTask()
 				["enabled"] = true,
 				["params"] = 
 				{
-					["altitude"] = {},
+					["altitude"] = altitude,
 					["pattern"] = "Circle",
-					["speed"] = {},
+					["speed"] = speed,
 				}, -- end of ["params"]
 			}
 			

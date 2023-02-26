@@ -44,16 +44,17 @@ local settings = _G.dct.settings
 local notifymsg =
 	"Please read the loadout limits in the briefing and "..
 	"use the F10 Menu to validate your loadout before departing."
+	
 
 local function build_kick_flagname(name)
 	return name.."_kick"
 end
 
-local function find_netId(name)
+local function find_netId(name) 
 
 	env.info("find_netID: name is:"..name)
 	
-	ptable = net.get_player_list()
+	ptable = net.get_player_list()  
 
 	for k,v in pairs(ptable) do
 	
@@ -75,7 +76,7 @@ end
 
 local function on_birth(asset, event)
 	local grp = event.initiator:getGroup()
-	local netId = find_netId(event.initiator:getPlayerName())
+	local netId = find_netId(event.initiator:getPlayerName()) 
 	local id = grp:getID()
 	if asset.groupId ~= id then
 		asset._logger:warn(
@@ -83,7 +84,7 @@ local function on_birth(asset, event)
 				asset.groupId, id))
 	end
 	
-	if netId == nil then
+	if netId == nil then 
 		asset._logger:warn("No netID found for player %s", event.initiator:getPlayerName())
 	end
 	
@@ -388,6 +389,57 @@ function Player:getLocation()
 	local p = Group.getByName(self.name)
 	self._location = p:getUnit(1):getPoint()
 	return self._location
+end
+
+local truthTbl = {
+				[true] = "OK",
+				[false] = "NOT OK",
+					}
+	
+function Player:UIloadoutCheck()
+	
+	-- Header
+	local console_width = settings.gameplay["CONSOLE_WIDTH"] 
+	local msg = dctutils.printTabular("LOADOUT SUMMARY", console_width, "-").."\n"
+	
+	-- CHECK payload restrictions
+	
+	if(loadout) then -- if the payload restriction system is loaded
+		
+		local ok, costs = loadout.check(self)
+		
+		if ok then
+			msg = msg.."Payload restrictions: OK".."\n"
+		else
+			msg = msg.."Payload restrictions: NOT OK".."\n"
+			
+			for cat, val in pairs(enum.weaponCategory) do
+				msg = msg ..string.format("\n%s cost: %d / %d",
+					cat, costs[val].current, costs[val].max)
+			end
+		end
+	
+	end
+	
+	local msg = msg.."\n"..dctutils.printTabular("BASE INVENTORY", console_width, "-").."\n"
+	
+	local assetmgr = dct.Theater.singleton():getAssetMgr()
+		
+	airbase = assetmgr:getAsset(self.airbase)
+	
+	if(airbase.Inventory) then -- if the inventory system is loaded
+		
+		local msg_tbl, valid = airbase.Inventory:UI_check(Group.getByName(self.name):getUnit(1))
+		
+		if valid then
+			msg = msg.."Inventory availability: OK\n"..msg_tbl
+		else
+			msg = msg.."Inventory availability: NOT OK\n"..msg_tbl
+		end	
+	end
+	
+	return msg
+	
 end
 
 function Player:isEnabled()

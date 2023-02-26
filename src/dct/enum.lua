@@ -369,13 +369,23 @@ enum.uiRequestType = {
 	["CALLVOTE"]     = 15,
 	["VOTE"]     = 16,
 	["SPAWN"]     = 17,
-	["DEBUGGING"]     = 17,
+	["DEBUGGING"]     = 18,
+	["CHECKLOADOUT"]     = 19,
+	["LISTINVENTORY"]     = 20,
+	["LOADOUTINFO"]     = 21,
 
 }
 
 enum.weaponCategory = {
 	["AA"] = 1,
 	["AG"] = 2,
+}
+
+enum.InventoryCategories = {
+	["airframes"] = 1,
+	["munitions"] = 2,
+	["ground units"] = 3,
+	["other"] = 4,
 }
 
 enum.coalitionMap = {
@@ -449,6 +459,30 @@ enum.kickCode = require("dct.libs.kickinfo").kickCode
 -- the commander
 
 
+enum.markShape = {
+		
+		 ["Line"] = 1,
+		 ["Circle"] = 2,
+		 ["Rect"] = 3,
+		 ["Arrow"] = 4,
+		 ["Text"] = 5,
+		 ["Quad"] = 6,
+		 ["Freeform"] = 7,
+			
+}	
+		
+		
+enum.lineType = {		
+		
+		 ["NoLine"] = 0,
+		 ["Solid"] = 1,
+		 ["Dashed"] = 2,
+		 ["Dotted"] = 3,
+		 ["DotDash"] = 4,
+		 ["LongDash"] = 5,
+		 ["TwoDash"] = 6,
+
+		}
 enum.gameplay = {}
 
 enum.gameplay.ReconRange = {

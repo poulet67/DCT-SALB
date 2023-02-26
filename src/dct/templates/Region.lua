@@ -2,6 +2,47 @@
 -- SPDX-License-Identifier: LGPL-3.0
 --
 -- Defines the Region class.
+--  Region class
+--    base class that reads in a region definition.
+--
+--    properties
+--    ----------
+--      * name
+--      * priority
+--
+--    Storage
+--    -------
+--		_templates   = {
+--			["<tpl-name>"] = Template(),
+--		},
+--		_tpltypes    = {
+--			<ttype> = {
+--				[#] = {
+--					kind = tpl | exclusion,
+--					name = "<tpl-name>" | "<ex-name>",
+--				},
+--			},
+--		},
+--		_exclusions  = {
+--			["<ex-name>"] = {
+--				ttype = <ttype>,
+--				names = {
+--					[#] = ["<tpl-name>"],
+--				},
+--			},
+--		}
+--
+--    region.def File
+--    ---------------
+--      Required Keys:
+--        * priority - how high in the targets from this region will be
+--				ordered
+--        * name - the name of the region, mainly used for debugging
+--
+--      Optional Keys:
+--        * limits - a table defining the minimum and maximum number of
+--              assets to spawn from a given asset type
+--              [<objtype>] = { ["min"] = <num>, ["max"] = <num>, }
 --]]
 
 require("lfs")
@@ -15,6 +56,7 @@ local Template   = require("dct.templates.Template")
 local Logger     = dct.Logger.getByName("Region")
 local Command     = require("dct.Command")
 local settings    = _G.dct.settings.server
+local geometry    = require("dct.libs.geometry")
 
 local tplkind = {
 	["TEMPLATE"]  = 1,
@@ -60,6 +102,7 @@ local function loadMetadata(self, regiondefpath)
 		[2] = {
 			["name"] = "priority",
 			["type"] = "number",
+			["default"] = 1000,
 		},
 		[4] = {
 			["name"] = "limits",
@@ -86,56 +129,6 @@ local function loadMetadata(self, regiondefpath)
 	
 end
 
-local function loadGeoData(self)
-		
-	---- Poulet changes
-	---- Load region geo data	
-	
-	
-	geopath = settings.theaterpath..utils.sep.."RegionGeo.def"
-	region_table = utils.loadtable(geopath)
-	
-	
-	--for k, v in pairs(region_table) do
-	
-	--	trigger.action.outText("Key: "..k, 30)	
-	--	trigger.action.outText("Type:"..type(k), 30)	
-	
-	--end
-	
-	--trigger.action.outText("Self ID: "..self.name, 30)	
-	--trigger.action.outText(type(self.name), 30)	
-	
-	--trigger.action.outText(settings.theaterpath, 30)	
-	--trigger.action.outText(utils.sep, 30)		
-	--trigger.action.outText(settings.theaterpath, 30)	
-	--trigger.action.outText(utils.sep, 30)		
-	
-	--trigger.action.outText("Self ID: "..self.name, 30)	
-	--trigger.action.outText(type(self.name), 30)	
-	
-
-	--tprint(region_table)
-	
-	self.Vertices = region_table[self.name].Verts
-	
-end
---[[
-function tprint (tbl, indent) --okay I need to keep this...
-  if not indent then indent = 0 end
-  for k, v in pairs(tbl) do
-    formatting = string.rep("  ", indent) .. k .. ": "
-    if type(v) == "table" then
-      trigger.action.outText(formatting, 30)
-      tprint(v, indent+1)
-    elseif type(v) == 'boolean' then
-      trigger.action.outText(formatting .. tostring(v))		
-    else
-      trigger.action.outText(formatting .. v, 30)
-    end
-  end
-end
---]]
 local function getTemplates(self, basepath)
 	local ignorepaths = {
 		["."] = true,
@@ -227,53 +220,10 @@ local function addAndSpawnAsset(self, name, assetmgr)
 	return asset
 end
 
---[[
---  Region class
---    base class that reads in a region definition.
---
---    properties
---    ----------
---      * name
---      * priority
---
---    Storage
---    -------
---		_templates   = {
---			["<tpl-name>"] = Template(),
---		},
---		_tpltypes    = {
---			<ttype> = {
---				[#] = {
---					kind = tpl | exclusion,
---					name = "<tpl-name>" | "<ex-name>",
---				},
---			},
---		},
---		_exclusions  = {
---			["<ex-name>"] = {
---				ttype = <ttype>,
---				names = {
---					[#] = ["<tpl-name>"],
---				},
---			},
---		}
---
---    region.def File
---    ---------------
---      Required Keys:
---        * priority - how high in the targets from this region will be
---				ordered
---        * name - the name of the region, mainly used for debugging
---
---      Optional Keys:
---        * limits - a table defining the minimum and maximum number of
---              assets to spawn from a given asset type
---              [<objtype>] = { ["min"] = <num>, ["max"] = <num>, }
---]]
 
 local Region = class("Region", Marshallable)
 
-function Region:__init(regionpath)
+function Region:__init(regionpath, region_table)
 	Marshallable.__init(self)
 	self:_addMarshalNames({ 
 		"location",
@@ -288,14 +238,23 @@ function Region:__init(regionpath)
 	self._exclusions   = {}
 	self.Staged = {} -- for staged templates
 	
-	Logger:debug("=> regionpath: "..regionpath)
-	loadMetadata(self, regionpath..utils.sep.."region.def")
-	loadGeoData(self) -- load in geographical data
-	getTemplates(self, self.path)
-    --initMapDrawing()
-	Logger:debug("'"..self.name.."' Loaded")
+	if regionpath then --dct region
+		
+		Logger:debug("=> regionpath: "..regionpath)
+		loadMetadata(self, regionpath..utils.sep.."region.def")
+		getTemplates(self, self.path)
+		--initMapDrawing()
+		Logger:debug("'"..self.name.."' Loaded")
+		
+		--draw the region
+
+	elseif region_table then --WM region
+			
+		utils.mergetables(self, region_table)
+		--Logger:debug("=> LOOK AT ME!!: ")
+		--utils.tprint(self)
 	
-	--draw the region
+	end
 	
 	
 	
@@ -410,7 +369,6 @@ function Region:getTemplateByName(name)
 	return self._templates[name]
 end
 
--- I will have to also hack this apart
 
 function Region:_generate(assetmgr, objtype, names, centroid)
 	local limits = {
@@ -502,6 +460,73 @@ function Region:generateStagedTemplates(assetmgr, stagenum)
 	--occured
 	
 	
+end
+
+function Region:isInside(point)
+	--returns true if the given point is inside the boundaries of Region
+	inside = false	
+		
+	Logger:debug("=> checking region: "..self.name.." point x: "..point.x.." point y: "..point.y.." point z: "..point.z)
+	
+	for ind, tri in ipairs(self["border"]["triangles"]) do
+		
+		inside = inside or geometry.point_in_triangle_fast(point, tri, self["border"]["barycentric_precalcs"][ind])
+		
+		if inside then	
+		
+			return inside
+			
+		end
+		
+	end		
+	
+	return inside
+
+	
+end
+
+function Region:add_airbase(AB_Obj)
+	Logger:debug("=> Add airbase: ")
+	
+	--local mgr = dct.Theater.singleton():getAssetMgr()
+	
+	Logger:debug("=> blah ")
+	
+	local AB_Tpl = {
+		["objtype"] = "AIRBASE", --enum.assetType["AIRBASE"]
+		["subordinates"] = {},
+	}
+	
+   Logger:debug("=> blah ")
+   
+   Logger:debug("var declared")	
+   
+   AB_Tpl.AB_Obj = AB_Obj
+	Logger:debug("=> blah ")
+   AB_Tpl.name = AB_Obj.name
+	Logger:debug("=> blah ")
+   AB_Tpl.id = AB_Obj:getID()
+	Logger:debug("=> blah ")
+   AB_Tpl.location = AB_Obj:getPoint()
+	Logger:debug("=> blah ")
+   AB_Tpl.coalition = AB_Obj:getCoalition()	   
+   
+   Logger:debug("creating template")
+   tpl = Template(AB_Tpl)
+   Logger:debug("Template created")
+   AB_asset = ass_mgr:factory(tpl.objtype)(tpl, self)
+   Logger:debug("Asset created")
+   ass_mgr:add(AB_asset)   
+   Logger:debug("Asset added")
+   AB_asset:generate(self)
+   AB_asset:spawn() --kind of weird to "spawn" an airbase, but whatever
+   
+   Logger:debug("adding to region")
+   --base_tbl = {[AB_asset.name] = AB_asset}
+   
+   table.insert(self.bases, base_tbl)
+
+   Logger:debug("done")
 end
 
 return Region

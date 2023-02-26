@@ -71,14 +71,18 @@ function AssetManager:__init(theater)
 		Command(self.__clsname..".update", self.update, self))
 end
 
+
 function AssetManager:AirbaseInit()
--- Add all airbases from world.getAirbases() to the airbase table
+-- Add all airbases from world.getAirbases() as assets if they haven't already been created
+-- Note: We likely will have already created some as part of region setup
 
 	Logger:debug("ASSET MANAGER: AIRBASE INIT-----")
 	
 	for __, side in pairs(coalition.side) do
 	
-		AB_tbl = coalition.getAirbases(side) -- ordinarily coalition.getAirbases(1) + coalition.getAirbases(2) + coalition.getAirbases(3) = world.getAirbases              but of course, it just doesn't work like that.... hope you enjoy hacky workarounds
+		AB_tbl = coalition.getAirbases(side) 
+		-- ordinarily coalition.getAirbases(1) + coalition.getAirbases(2) + coalition.getAirbases(3) = world.getAirbases
+		-- this is DCS of course so we have to do it this way
 		
 		Logger:debug("AIRBASE DUMP-----")		
 		Logger:debug("SIDE: ".. side)		
@@ -92,21 +96,15 @@ function AssetManager:AirbaseInit()
 		   name = AB_Obj:getName()
 		   id = AB_Obj:getID()
 		   desc_table = AB_Obj:getDesc() 
-		   Logger:debug("-------------------------")
-		   Logger:debug(name)
-		   Logger:debug(desc_table.typeName)
-		   Logger:debug(id)
-		   Logger:debug("i"..i)
+		   -- Logger:debug("-------------------------")
+		   -- Logger:debug(name)
+		   -- Logger:debug(desc_table.typeName)
+		   -- Logger:debug(id)
+		   -- Logger:debug("i"..i)
 		   --utils.tprint(desc_table) -- TPRINT BAD
 			  
 			if(self:getAsset(name) == nil) then -- no airbase already defined
-				AB_Tpl = {
-					["objtype"] = "AIRBASE", --enum.assetType["AIRBASE"],
-					["subordinates"] = {},
-					--["contest_dist"] = 10,
-					--["takeofftype"] = {},
-					--["recoverytype"] = {},
-				}
+
 				
 			   AB_Tpl.AB_Obj = AB_Obj
 			   AB_Tpl.name = name		   
@@ -135,9 +133,8 @@ function AssetManager:AirbaseInit()
 			end
 		end
 	end
-	
-
 end
+--]]
 
 function AssetManager:factory(assettype)
 	Logger:debug(assettype)	

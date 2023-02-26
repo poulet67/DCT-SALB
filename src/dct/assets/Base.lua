@@ -190,13 +190,14 @@ local statemap = {
 }
 
 local Base = class("Base", AssetBase, Subordinates)
-function Base:__init(template)
+function Base:__init(template, region)
 	AssetBase.__init(self, template)
 	self.Inventory = require("dct.systems.inventory")(self)
 	Subordinates.__init(self)
 	self:_addMarshalNames({
 		"_subordinates",
 	})
+	self.region = region;
 	self._eventhandlers = nil
 end
 
