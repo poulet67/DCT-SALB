@@ -20,6 +20,28 @@ To come:
 - Full fledged logistics
 - More
 
+## Gameplay:
+
+Recon finds targets 
+Targets create strike missions
+
+CAS missions:
+On station --> Friendlies approach FOB, Town, SP --> Enemies are spawned --> CAS Target added, all on mission are notified
+(persistent)
+
+Successful missions earn Command Points
+Command Points buy new equipment, dispatch AI, or do other things
+
+Ground Forces:
+- Convoys of any vehicle type can be created and dispatched
+- Formations of military units: from company level to batallion
+
+A formation is required to create a FOB in enemy territory
+
+Whenever a ground unit, or a recon unit within range approaches a FOB, strategic point or town, all the equipment contained inside it
+is spawned (for recon, a strike mission is created, but will time out if not acted on quickly). If ground units approach, both sides will be
+issues attack commands.
+
 Still very much a work in progress, hope to have a demo server running stage 1 a demo operation soon.
 
 ## Description
