@@ -38,6 +38,7 @@ function AssetManager:__init(theater)
 	-- These lists are simply asset names as keys with values of
 	-- asset type. To get the actual asset object we need to lookup
 	-- the name in a master asset list.
+	self._airbase_assets = {}
 	self._sideassets = {
 		[coalition.side.NEUTRAL] = {
 			["assets"] = {},
@@ -188,6 +189,13 @@ function AssetManager:add(asset)
 		end
 	else
 		self._sideassets[asset.owner].assets[asset.name] = asset.type
+	end
+
+	Logger:debug("Adding object names for '%s'", asset.name)
+
+	-- add asset to airbase list
+	if asset.type == enum.assetType.AIRBASE then
+		self._airbase_assets[asset.name] = asset
 	end
 
 	Logger:debug("Adding object names for '%s'", asset.name)

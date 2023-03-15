@@ -345,6 +345,7 @@ local function getkeys(objtype)
 			["name"]  = "coalition",
 			["type"]  = "number",
 			["check"] = checkside,
+			["default"] = "NEUTRAL",
 		}, {
 			["name"]    = "uniquenames",
 			["type"]    = "boolean",
@@ -572,6 +573,7 @@ function Template.fromFile(dctfile, stmfile, command_unit)  --region, dctfile, s
 		Logger:debug("TEMPLATE -- STM TRANSFORM")
 		template_from_file = STM.transform(utils.readlua(stmfile, "staticTemplate"))
 		utils.tprint(template_from_file)
+		template.coaliton = template_from_file.coalition --these should not disagree, including them in dct file is of debatable value
 		template = utils.mergetables(template_from_file, template)
 		Logger:debug("template dump")
 		utils.tprint(template)

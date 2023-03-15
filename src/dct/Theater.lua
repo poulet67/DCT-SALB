@@ -49,6 +49,7 @@ function Systems:__init()
 		--"dct.systems.decision",
 		--"dct.systems.stages",
 		"dct.templates.RegionManager",
+		--"dct.systems.formation",
 	}
 
 	for _, syspath in ipairs(systems) do

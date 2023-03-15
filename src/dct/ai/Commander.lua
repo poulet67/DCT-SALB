@@ -14,7 +14,6 @@ local Command    = require("dct.Command")
 local Template    = require("dct.templates.Template")
 local Logger     = dct.Logger.getByName("Commander")
 local settings    = _G.dct.settings
-local package_names = require("dct.data.package_names")
 
 
 
@@ -58,6 +57,9 @@ function Commander:__init(theater, side)
 	self.aifreq       = 15  -- 2 minutes in seconds
 	--we have known knowns and known unknowns -- Dick Cheney
 	self.known = {}
+	if(self.owner ~= 0) then --No neutral formations for now
+		self.formations = require("dct.systems.formation")(self, theater)
+	end
 	self.Command_Units = {} -- spawnable AI units
 	self.CommandPoints = 0
 		

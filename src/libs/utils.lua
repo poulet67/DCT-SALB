@@ -48,10 +48,61 @@ function utils.deepcopy(obj)
 	return copy
 end
 
+-- overwrites dest
 function utils.mergetables(dest, source)
 	assert(type(dest) == "table", "dest must be a table")
 	for k, v in pairs(source or {}) do
 		dest[k] = v
+	end
+	return dest
+end
+
+
+function utils.deepcopy(obj)
+	local obj_type = type(obj)
+	local copy
+
+	if obj_type == 'table' then
+		copy = {}
+		for k,v in next, obj, nil do
+			copy[k] = utils.deepcopy(v)
+		end
+	else
+		copy = obj
+	end
+	return copy
+end
+
+function utils.tprint(tbl, indent) --useful debugging tool
+  if not indent then indent = 0 end
+  for k, v in pairs(tbl or {}) do
+    formatting = string.rep("  ", indent) .. k .. ": "
+    if type(v) == "table" then
+      env.info(formatting)
+      utils.tprint(v, indent+1)
+    elseif type(v) == 'boolean' then
+      env.info(formatting .. tostring(v))		
+    elseif type(v) == 'function' then
+	  env.info(formatting .. "FUNCTION: "..k)
+    else
+      env.info(formatting .. tostring(v))
+    end
+  end
+end
+-- overwrites dest
+function utils.deepmerge(dest, source)
+	assert(type(dest) == "table", "dest must be a table")
+	for k, v in pairs(source or {}) do
+		if type(v) == "table" then
+			if dest[k] then
+				utils.deepmerge(dest[k], source[k])
+			else
+				dest[k] = {}
+				utils.deepmerge(dest[k], source[k])
+			end
+		else
+			dest[k] = v
+		end
 	end
 	return dest
 end

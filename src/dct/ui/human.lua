@@ -9,6 +9,7 @@ local utils    = require("libs.utils")
 local enum     = require("dct.enum")
 local dctutils = require("dct.utils")
 local Logger   = require("dct.libs.Logger").getByName("UI")
+local settings    = _G.dct.settings.server
 
 local lineType = {
 	[dctutils.COALITION_CONTESTED] = enum.lineType.LongDash,
@@ -45,6 +46,26 @@ local human = {}
 local mapBorders = {}
 
 local markindex = 10
+
+function human.getCodenames()
+	codename_path = settings.theaterpath..utils.sep.."codenames.txt"
+	Logger:debug("Loading codenames, file: "..codename_path)		
+	
+	local f = assert(io.open(codename_path, "r"))
+	
+	local codenames = {}
+	
+	for line in f:lines() do
+      table.insert(codenames, line)
+	end	  
+	
+	--utils.tprint(codenames)
+	
+	return codenames
+	
+end
+
+human.Codenames = human.getCodenames()
 
 function human.getMarkID()
 	markindex = markindex + 1

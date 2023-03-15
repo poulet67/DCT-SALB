@@ -231,7 +231,15 @@ function Region:__init(regionpath, region_table)
 		"radius",})
 	self.path          = regionpath
 	self.Vertices 	   = {} -- A set of vertices defining a polygon
-	self.Airbase 	   = nil -- Airbase inside this region
+	self.bases = {
+					["FARP"]  = {},
+					["FOB"]  = {},
+					["FSB"]  = {},
+					["INV"]  = {},
+					["OM"]  = {},
+					["SP"]  = {},
+					["Airbases"]  = {},
+				}
 	self.Frontline 	   = {}	-- Frontlines associated with this region
 	self._templates    = {}
 	self._tpltypes     = {}
@@ -249,10 +257,10 @@ function Region:__init(regionpath, region_table)
 		--draw the region
 
 	elseif region_table then --WM region
-			
-		utils.mergetables(self, region_table)
-		--Logger:debug("=> LOOK AT ME!!: ")
-		--utils.tprint(self)
+		
+		utils.deepmerge(self, region_table)
+		Logger:debug("=> LOOK AT ME!!: ")
+		utils.tprint(self)
 	
 	end
 	
@@ -485,48 +493,22 @@ function Region:isInside(point)
 	
 end
 
-function Region:add_airbase(AB_Obj)
-	Logger:debug("=> Add airbase: ")
+-- remove or use in Region Manager
+function Region:add_airbase(name)
 	
-	--local mgr = dct.Theater.singleton():getAssetMgr()
+	Logger:debug("BOOIIIIING")
 	
-	Logger:debug("=> blah ")
+	local mgr = dct.Theater.singleton():getAssetMgr()
+	AB_asset = mgr:getAsset(name)
 	
-	local AB_Tpl = {
-		["objtype"] = "AIRBASE", --enum.assetType["AIRBASE"]
-		["subordinates"] = {},
-	}
+	assert(AB_asset,
+	       "Airbase asset must exist")
 	
-   Logger:debug("=> blah ")
-   
-   Logger:debug("var declared")	
-   
-   AB_Tpl.AB_Obj = AB_Obj
-	Logger:debug("=> blah ")
-   AB_Tpl.name = AB_Obj.name
-	Logger:debug("=> blah ")
-   AB_Tpl.id = AB_Obj:getID()
-	Logger:debug("=> blah ")
-   AB_Tpl.location = AB_Obj:getPoint()
-	Logger:debug("=> blah ")
-   AB_Tpl.coalition = AB_Obj:getCoalition()	   
-   
-   Logger:debug("creating template")
-   tpl = Template(AB_Tpl)
-   Logger:debug("Template created")
-   AB_asset = ass_mgr:factory(tpl.objtype)(tpl, self)
-   Logger:debug("Asset created")
-   ass_mgr:add(AB_asset)   
-   Logger:debug("Asset added")
-   AB_asset:generate(self)
-   AB_asset:spawn() --kind of weird to "spawn" an airbase, but whatever
-   
-   Logger:debug("adding to region")
-   --base_tbl = {[AB_asset.name] = AB_asset}
-   
-   table.insert(self.bases, base_tbl)
+	mytable = {[name] = true}
+	
+	--self.base.Airbases[name] = true
+	
 
-   Logger:debug("done")
 end
 
 return Region

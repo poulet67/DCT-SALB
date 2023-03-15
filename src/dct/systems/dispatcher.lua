@@ -16,6 +16,7 @@ local Command     = require("dct.Command")
 local dctutils   = require("dct.utils")
 local utils      = require("libs.utils")
 local settings    = _G.dct.settings
+local human    = require("dct.ui.human")
 
 local Dispatcher = class("Dispatcher")
 function Dispatcher:__init(cmdr, theater)
@@ -413,42 +414,13 @@ function Dispatcher:fixedWing_land(commandUnitType, name, point, altitude, speed
 	
 end
 
-
-
-local codenames = { --for naming AI command groups
-	"ALPHA",
-	"BRAVO",
-	"CHARLIE",
-	"DELTA",
-	"ECHO",
-	"FOXTROT",
-	"GOLF",
-	"HOTEL",
-	"INDIA",
-	"JULIETT",
-	"KILO",
-	"LIMA",
-	"MIKE",
-	"NOVEMBER",
-	"OSCAR",
-	"PAPA",
-	"QUEBEC",
-	"ROMEO",
-	"SIERRA",
-	"TANGO",
-	"UNIFORM",
-	"VICTOR",
-	"WHISKEY",
-	"XRAY",
-	"YANKEE",
-	"ZULU",
-}
-
 function Dispatcher:assignCallsign(CUType)
 	
 	-- Tries names from codenames table until an unused one is found (up to 4)
 	-- If no available names, will compound two names at random (e.g: Alpha-Papa) if this one is unavailable
 	-- will compound a random number at the end over and over until something is available. e.g (Alpha-Papa-1)(Alpha-Papa-1-2-3-4)
+	
+	local codenames = human.Codenames
 	
 	tries = 0
 	

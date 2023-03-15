@@ -66,6 +66,13 @@ enum.commandUnitTypes = {
 	["STRIKE"] = 5, --["AI"] = 36, -- still just a concept
 	["CAS"] = 6, --["AI"] = 36, -- still just a concept
 	["ANTISHIP"] = 7, --["AI"] = 36, -- still just a concept
+	["MECHANIZED"] = 8, --["AI"] = 36, -- still just a concept
+	["ARMOR"] = 8, --["AI"] = 36, -- still just a concept
+	["ARTILLERY"] = 8, --["AI"] = 36, -- still just a concept
+	["SPECIAL FORCES"] = 8, --["AI"] = 36, -- still just a concept
+	["ANTI-AIR"] = 9, --["AI"] = 36, -- still just a concept
+	["LOGISTICS"] = 10, --["AI"] = 36, -- still just a concept
+	["RECON"] = 11, --["AI"] = 36, -- still just a concept
 }
 
 enum.offensiveUnits = { -- units that partake in offensive missions (a permissive for the attack command)

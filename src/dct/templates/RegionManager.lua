@@ -51,16 +51,25 @@ function RegionManager:loadRegions()
 	--- WM configs
 	
 	for _,  WM_region in pairs(self.region_table) do
-	
+		
+		Logger:debug("=> loading region:" .. WM_region.name)
+		
 		if self.regions[WM_region.name] then -- already defined
+					
+			Logger:debug("=> region defined:")
+			utils.tprint(self.regions[WM_region.name])
 			
 			Logger:debug("=> in mergetables")
-			utils.mergetables(self.region_table[WM_region.name], WM_region)
+		    utils.mergetables(self.regions[WM_region.name], WM_region)
 			
 		else
 		
-			local r = Region(nil, WM_region)
-			Logger:debug("=> returned:"..WM_region.name)
+			utils.tprint(WM_region)
+			r = Region(nil, WM_region) --not sure why, but if I make this local everything goes to hell
+			--could be an old lua thing
+			Logger:debug("=> returned: "..WM_region.name)
+			
+			
 			
 			if(WM_region.type ~= "OOB") then
 				
@@ -71,84 +80,64 @@ function RegionManager:loadRegions()
 			self.regions[r.name] = r			
 			self.mapped_regions[r.name] = true
 			
-			human.updateRegionBorders(self.regions[r.name])			
+			
+			human.updateRegionBorders(r)			
 						
 		end
 	
 	end
 	
 	Logger:debug("=> regions loaded!")
-	utils.tprint(r)
+	--utils.tprint(r)
 end
 
 function RegionManager:checkAirbases(rgn)
 
 	for __, side in pairs(coalition.side) do
 	
+		Logger:debug("ring ring")
+		
 		local AB_tbl = coalition.getAirbases(side) 
 		
 		for i = 1, #AB_tbl do
-		
-		   local AB_Obj = AB_tbl[i]
-		   local pos = AB_Obj:getPoint()
 		   
-			-- TODO: check pos x, y values, could be reversed		
+			Logger:debug("ding ding")
+		  
+			AB_Obj = AB_tbl[i]
+			ABname = AB_Obj:getName()
+			ABpos = AB_Obj:getPoint()
+		   
+					
+			Logger:debug("AB Pos is:")
+			utils.tprint(ABpos)
+		   
+			--A refresher:
+			-- In DCS the Z coordinate is the 2-D "y" coordinate as used by geometry library
 			
-		   if rgn:isInside(pos) then --if this airbase is inside the region
+			ABpos.y = ABpos.z
+		   		   
+			if rgn:isInside(ABpos) then --if this airbase is inside the region
 		   
-			Logger:debug("=> adding airbase: "..AB_Obj:getName().." to region: "..rgn.name)
-			self:add_airbase(AB_Obj, rgn)
-		   
-		   end
+				Logger:debug("-- > inside")
+				utils.tprint(rgn.bases)
+				
+				--rgn:add_airbase(ABname)
+				rgn.bases.Airbases[ABname] = true
+				
+				utils.tprint(rgn.bases)
+				
+			else -- does not exist
+			
+				Logger:debug("=> BING")
+			
+			end			
 		   
 		end
+		   
+		
 	end
 	
 	
-end
-
-function RegionManager:add_airbase(AB_Obj, region)
-	Logger:debug("=> Add airbase: ")
-	
-	local mgr = self.theater:getAssetMgr()
-	
-	Logger:debug("=> blah ")
-	
-	local AB_Tpl = {
-		["objtype"] = "AIRBASE", --enum.assetType["AIRBASE"]
-		["subordinates"] = {},
-	}
-	
-   
-   Logger:debug("var declared")	
-   
-   
-   Logger:debug("=> blah ")
-   AB_Tpl.name = AB_Obj:getName()
-   Logger:debug("=> blah ")
-   AB_Tpl.id = AB_Obj:getID()
-   Logger:debug("=> blah ")
-   AB_Tpl.location = AB_Obj:getPoint()
-   Logger:debug("=> blah ")
-   AB_Tpl.coalition = AB_Obj:getCoalition()	   
-   
-   Logger:debug("creating template")
-   tpl = Template(AB_Tpl)
-   Logger:debug("Template created")
-   AB_asset = mgr:factory(tpl.objtype)(tpl, region)
-   Logger:debug("Asset created")
-   mgr:add(AB_asset)   
-   Logger:debug("Asset added")
-   AB_asset:generate(region)
-   AB_asset:spawn() --kind of weird to "spawn" an airbase, but whatever
-   
-   Logger:debug("adding to region")
-   base_tbl = {[AB_asset.name] = true}
-   
-   table.insert(region.bases, base_tbl)
-
-   Logger:debug("done")
-   
 end
 
 local function cost(thisrgn, otherrgn)

@@ -121,6 +121,8 @@ function MarkerGet:parse(text, initiator, idx, point)
 	Logger:debug("MarkerGet : initiatior: "..tostring(initiator))
 	
 	if(valid and initiator) then -- can not run commands for players not in a slot on F10 map
+								 -- sol'n: give each side a free aircraft in air spawn with no weapons
+								 -- they can land, but if they take off again they are de-spawned
 	
 		first = string.match(text, "%a+") -- returns everything up to the :
 		second = string.match(text, ":%w+") -- returns everything after the :
@@ -205,6 +207,16 @@ function MarkerGet:parse(text, initiator, idx, point)
 		COMMANDER SYSTEM
 		================
 		
+		Formations:
+		
+		Creates a formation from nearest inventory
+		
+		Formations can be dispatched
+		
+		
+		
+		====
+		
 		Mission Control:
 		
 		MISSION
@@ -217,6 +229,8 @@ function MarkerGet:parse(text, initiator, idx, point)
 		Note: All units will remember their specified ALT and SPD, so if specified once, will not need to specify on future commands
 		
 		Works on 
+		
+		
 		
 		MOVE
 			GROUP:MOVE
@@ -344,7 +358,27 @@ function MarkerGet:parse(text, initiator, idx, point)
 			
 			-- COMMANDER COMMANDS _---------------------------------------------------------------------------------------------------------
 			
-			if(second == "DISPATCH" and remainder) then
+			if(first == "FORMATION" and second) then
+				--FORMATION commands: 
+				-- CREATE
+				-- LIST
+				-- DEPLOY
+				-- ===maybe something else for below===
+				-- UNGROUP
+				-- MOUNT
+				-- DISMOUNT
+				-- COVER				
+				
+				
+				Logger:debug("MarkerGet : FORMATION")
+				
+				if(second == "LIST") then
+				
+				elseif(second == "CREATE") then
+				elseif(second == "DEPLOY") then
+				end		
+				
+			elseif(second == "DISPATCH" and remainder) then
 				
 				unitType = first
 				sel = string.match(remainder, "TYPE:%d+")
