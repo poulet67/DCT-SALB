@@ -1,0 +1,161 @@
+{
+  "AIR": [ [ {
+    "category": 0,
+    "countryid": 2,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"C-130\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "Aerial-1-1",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "C-130",
+        "unitId": 1,
+        "x": -314968.34375,
+        "y": 895729.1875
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"C-130\"",
+    "x": -314968.34375,
+    "y": 895729.1875
+  } ] ],
+  "GROUND": [ [ {
+    "category": 2,
+    "countryid": 2,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"M939 Truck\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "INF-14-1",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "M 818",
+        "unitId": 1,
+        "x": -314978.4375,
+        "y": 896871.5625
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"M939 Truck\"",
+    "x": -314978.4375,
+    "y": 896871.5625
+  } ] ],
+  "HELOS": [ [ {
+    "category": 1,
+    "countryid": 2,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"CH-47D Chinook Helicopter\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "Rotary-1-1",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "CH-47D",
+        "unitId": 1,
+        "x": -314950.5625,
+        "y": 896903.125
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"CH-47D Chinook Helicopter\"",
+    "x": -314950.5625,
+    "y": 896903.125
+  } ] ]
+}

@@ -1,0 +1,166 @@
+
+2023-03-07 05:48:36.915 INFO    SCRIPTING (Main): DEBUG-DCT|Template: TEMPLATE -- STM TRANSFORM
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main): tpldata: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):   1: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):     countryid: 68
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):     data: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       visible: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       route: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):         spans: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           1: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             1: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               y: 236612.48394931
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               x: -8198.955182072
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             2: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               y: 236585.28368786
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               x: -8233.4835686529
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           2: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             1: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               y: 236598.00770863
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               x: -8239.4848393953
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             2: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               y: 236598.00770863
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               x: -8239.4848393953
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):         points: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           1: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             speed_locked: true
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             type: Turning Point
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             ETA: 0
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             ETA_locked: true
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             x: -8198.955182072
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             y: 236612.48394931
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             formation_template: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             alt: 17
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             speed: 0
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             action: Off Road
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             task: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               id: ComboTask
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               params: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):                 tasks: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             alt_type: BARO
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           2: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             speed_locked: true
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             type: Turning Point
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             ETA: 7.911944386259
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             ETA_locked: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             x: -8233.4835686529
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             y: 236585.28368786
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             formation_template: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             alt: 17
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             speed: 5.5555555555556
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             action: Off Road
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             task: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               id: ComboTask
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):               params: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):                 tasks: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             alt_type: BARO
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       groupId: 1
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       tasks: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       hidden: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       units: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):         1: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           type: ZSU_57_2
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           transportable: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             randomTransportable: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           unitId: 1
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           skill: Average
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           AddPropVehicle: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             Branches: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           y: 236612.48394931
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           x: -8198.955182072
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           name: Ground-1-1
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           playerCanDrive: true
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           heading: 3.8088287028932
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):         2: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           type: ZSU_57_2
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           transportable: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             randomTransportable: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           unitId: 2
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           skill: Average
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           AddPropVehicle: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             Branches: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           y: 236958.63372829
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           x: -8430.1964719262
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           name: Anapa-Forces-1-1
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           playerCanDrive: true
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           heading: 3.8088287028932
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):         3: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           type: Ural-375 ZU-23
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           transportable: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             randomTransportable: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           unitId: 9
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           skill: Average
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           y: 236411.14190538
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           x: -8662.7078454068
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           name: Anapa-Forces-1-2
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           playerCanDrive: true
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           heading: 3.8088287028932
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):         4: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           type: Ural-375 ZU-23
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           transportable: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             randomTransportable: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           unitId: 10
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           skill: Average
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           y: 237248.40216164
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           x: -9095.7825088601
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           name: Anapa-Forces-1-3
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           playerCanDrive: true
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           heading: 3.8088287028932
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):         5: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           type: Ural-375 ZU-23
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           transportable: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             randomTransportable: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           unitId: 11
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           skill: Average
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           y: 239774.49098772
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           x: -11050.362912092
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           name: Anapa-Forces-1-4
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           playerCanDrive: true
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           heading: 3.8088287028932
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):         6: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           type: Ural-375 ZU-23
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           transportable: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             randomTransportable: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           unitId: 12
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           skill: Average
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           y: 236736.24738399
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           x: -8041.8481731968
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           name: Anapa-Forces-1-5
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           playerCanDrive: true
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           heading: 3.8088287028932
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):         7: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           type: Ural-375 ZU-23
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           transportable: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             randomTransportable: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           unitId: 13
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           skill: Average
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           y: 240381.1412018
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           x: -12522.659746825
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           name: Anapa-Forces-1-6
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           playerCanDrive: true
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           heading: 3.8088287028932
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):         8: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           type: SA-18 Igla manpad
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           transportable: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):             randomTransportable: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           unitId: 16
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           skill: Average
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           y: 236495.89789386
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           x: -8751.9460013766
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           name: Anapa-Forces-1-7
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           playerCanDrive: true
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):           heading: 3.8088287028932
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       y: 236612.48394931
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       uncontrollable: false
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       name: Anapa-Forces-1
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       start_time: 0
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       task: Ground Nothing
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):       x: -8198.955182072
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main):     category: 2
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main): theater: Caucasus
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main): name: Anapa-Forces1
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main): desc: 
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main): DEBUG-DCT|Template: template dump
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main): objtype: SPECIALFORCES
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main): path: C:\Users\ian\Saved Games\DCS\Mods\tech\DCT\theater\region_1\Anapa-Forces1.dct
+2023-03-07 05:48:36.916 INFO    SCRIPTING (Main): name: Anapa Shore Air Defence Company 

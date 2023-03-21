@@ -1,0 +1,520 @@
+{
+  "AIR": [ [ {
+    "category": 0,
+    "countryid": 68,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"Il-78M\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "LOGI NAME=\"Il-76MD\"-1-1",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "IL-78M",
+        "unitId": 1,
+        "x": -51372.504304856,
+        "y": 705786.54722738
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"Il-78M\"",
+    "x": -51372.504304856,
+    "y": 705786.54722738
+  } ], [ {
+    "category": 0,
+    "countryid": 68,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"Il-76MD\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "LOGI NAME=\"An-26B\"-1-1",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "IL-76MD",
+        "unitId": 1,
+        "x": -51295.456693213,
+        "y": 705791.42251396
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"Il-76MD\"",
+    "x": -51295.456693213,
+    "y": 705791.42251396
+  } ], [ {
+    "category": 0,
+    "countryid": 68,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"An-26B\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "LOGI NAME=\"C-130\"-1-1",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "An-26B",
+        "unitId": 1,
+        "x": -51241.435704123,
+        "y": 705782.34078431
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"An-26B\"",
+    "x": -51241.435704123,
+    "y": 705782.34078431
+  } ] ],
+  "GROUND": [ [ {
+    "countryid": 68,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"Ural-375 Truck\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "MOTORIZED PLATOON 8 NAME=\"Ural Platoon\"-1-1",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "Ural-375",
+        "unitId": 1,
+        "x": -51889.359375,
+        "y": 706452.1875
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"Ural-375 Truck\"",
+    "x": -51889.359375,
+    "y": 706452.1875
+  } ], [ {
+    "countryid": 68,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"Ural-4320 Truck\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "MOTORIZED PLATOON 8-5-1",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "Ural-4320T",
+        "unitId": 1,
+        "x": -51889.34765625,
+        "y": 706447.5625
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"Ural-4320 Truck\"",
+    "x": -51889.34765625,
+    "y": 706447.5625
+  } ], [ {
+    "countryid": 68,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "LOGI 13 \"Kamaz Truck\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "MOTORIZED PLATOON 8-3-2",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "KAMAZ Truck",
+        "unitId": 1,
+        "x": -51888.66015625,
+        "y": 706440.8125
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "LOGI 13 \"Kamaz Truck\"",
+    "x": -51888.66015625,
+    "y": 706440.8125
+  } ], [ {
+    "countryid": 68,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"Refueler ATZ-5\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "MOTORIZED PLATOON 8-3-1",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "ATZ-5",
+        "unitId": 1,
+        "x": -51888.74609375,
+        "y": 706437.8125
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"Refueler ATZ-5\"",
+    "x": -51888.74609375,
+    "y": 706437.8125
+  } ], [ {
+    "countryid": 68,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"UAZ-469\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "ARTILLERY BATTERY 1-10-1",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "UAZ-469",
+        "unitId": 1,
+        "x": -51888.789062439,
+        "y": 706456.5625
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"UAZ-469\"",
+    "x": -51888.789062439,
+    "y": 706456.5625
+  } ] ],
+  "HELOS": [ [ {
+    "category": 1,
+    "countryid": 68,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"Mi-8\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "Rotary-3-2",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "Mi-8MT",
+        "unitId": 1,
+        "x": -51928.5703125,
+        "y": 706630.6875
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"Mi-8\"",
+    "x": -51928.5703125,
+    "y": 706630.6875
+  } ], [ {
+    "category": 1,
+    "countryid": 68,
+    "data": {
+      "groupID": 0,
+      "hidden": false,
+      "name": "\"Mi-26\"",
+      "points": [ {
+        "ETA": 0,
+        "ETA_locked": true,
+        "action": "",
+        "alt": [],
+        "alt_type": "BARO",
+        "formation_template": [],
+        "speed": 0,
+        "task": {
+          "id": "ComboTask",
+          "params": {
+            "tasks": []
+          }
+        },
+        "type": "Turning Point",
+        "x": [],
+        "y": []
+      } ],
+      "route": {
+        "spans": []
+      },
+      "start_time": 0,
+      "task": "Ground Nothing",
+      "tasks": [],
+      "uncontrollable": [],
+      "units": [ {
+        "heading": 0,
+        "name": "Rotary-2-2",
+        "playerCanDrive": true,
+        "skill": "Average",
+        "transportable": {
+          "randomTransportable": false
+        },
+        "type": "Mi-26",
+        "unitId": 1,
+        "x": -51929.109375,
+        "y": 706595.125
+      } ],
+      "visible": false,
+      "x": [],
+      "y": []
+    },
+    "name": "\"Mi-26\"",
+    "x": -51929.109375,
+    "y": 706595.125
+  } ] ]
+}

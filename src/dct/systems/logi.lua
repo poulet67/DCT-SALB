@@ -22,14 +22,14 @@ local settings    = _G.dct.settings
 
 -- GLOBALS
 
-local Formation_Table = {}
+local logistics = {}
 
 -- Logistics
 -- Weights, volumes, capacity, fuel consumption, ammo requirements, etc
 -- 
-enum.gameplay.logistics = {}
+logistics = {}
 
-enum.gameplay.logistics.FlightCrew = { -- all Flight Crew
+logistics.FlightCrew = { -- all Flight Crew
 -- 
 	["C-130"] = 5, 
 	["A-10A"] = 1,
@@ -155,7 +155,7 @@ enum.gameplay.logistics.FlightCrew = { -- all Flight Crew
 							
 }
 
-enum.gameplay.logistics.capacity = {
+logistics.capacity = {
 ["airframes"] = {
 				["C-130"] = {
 							["weight"] = 4000, --kg
@@ -187,7 +187,7 @@ enum.gameplay.logistics.capacity = {
 
 }
 
-enum.gameplay.logistics.payload = {
+logistics.payload = {
 ["munitions"] = {
 				["AIM-120C"] = {
 							["weight"] = 200, --kg
@@ -231,7 +231,7 @@ enum.gameplay.logistics.payload = {
 
 
 }
-enum.gameplay.logistics.discrete = { -- A discrete value is 1 per unit.
+logistics.discrete = { -- A discrete value is 1 per unit.
 									 -- A non discrete value is weight/volume (or volume/weight)
 									 -- 1 person vs. 100 kg of diesel
 	["Manpower"] = true,
@@ -245,7 +245,7 @@ enum.gameplay.logistics.discrete = { -- A discrete value is 1 per unit.
 
 
 
-enum.gameplay.logistics.fuel_consumption = {
+logistics.fuel_consumption = {
 --in m/cu m (a bit of a weird unit, but saves a calculation at run time)
 
 ["ground_units"] = {
@@ -256,7 +256,7 @@ enum.gameplay.logistics.fuel_consumption = {
 
 }
 
-enum.gameplay.logistics.ammo_consumption = {
+logistics.ammo_consumption = {
 --amount of ammo to go from empty to reloaded (again controversial and approximate)
 ["ground_units"] = {
 				["TRUCCCK"] = {
@@ -272,16 +272,16 @@ enum.gameplay.logistics.ammo_consumption = {
 
 
 local Logi = class("Logi")
-function Formation:__init(cmdr, theater)
+function Logi:__init(cmdr, theater)
 
 	self._theater = theater
 	self._cmdr = cmdr	
 	
-	Formation:init_units()
+	Logi:init_units()
 	
 end
 
-function Formation:init_units()
+function Logi:init_units()
 
 	local side = string.lower(enum.coalitionMap[self._cmdr.owner])
 	local path = settings.server.theaterpath..utils.sep.."tables"..utils.sep.."logi"..utils.sep..side..utils.sep..side.."_formations.JSON"
@@ -290,8 +290,8 @@ function Formation:init_units()
 	
 	self.unit_table = dctutils.read_JSON_file(path)
 	
-	assert(self.unit_table, "Formation table not found")
+	assert(self.unit_table, "Logi table not found")
 	
 end	
 
-return Formation
+return Logi

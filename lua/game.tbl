@@ -1,0 +1,20 @@
+--
+-- NON DCS assets for DCT logistic system:
+--
+--
+
+master_table =
+{
+["other"] =
+   ["Pilots"] = {},
+   ["Manpower"] = {},
+   ["Diesel"] = {},
+   ["Aviation Fuel"] = {},
+   ["Jet Fuel"] = {},
+   ["Amenities"] = {},
+   ["Mail"] = {},
+   ["Casualties"] = {},
+  --["Transit"] = {}, -- need to think of a good term for this...
+   ["Ammo"] = {},
+   
+}

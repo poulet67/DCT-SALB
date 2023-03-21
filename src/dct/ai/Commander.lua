@@ -92,7 +92,9 @@ end
 
 function Commander:initAICommandUnits()
 
+	--[[
 	sideString = enum.coalitionMap[self.owner]
+	
 	local command_path = settings.server.theaterpath..utils.sep.."command"..utils.sep..sideString
 	
 	self.Command_Units["ACTIVE"] = {}
@@ -105,7 +107,7 @@ function Commander:initAICommandUnits()
 	end	
 	
 	self:getTemplates(command_path)
-	
+	--]]
 
 end
 
@@ -137,10 +139,13 @@ function Commander:process_template(template)
 		
 	table.insert(self.Command_Units[AI_Template.commandUnitType], {[template.display_name] = AI_Template})
 	Logger:debug("COMMANDER ==== Command unit assinged" .. enum.commandUnitTypes[AI_Template.commandUnitType])
-		
 
 end
 
+
+--[[
+I killed this.
+--]]
 function Commander:getTemplates(command_path)
 
 	Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  : "..command_path)
@@ -192,6 +197,9 @@ function Commander:getTemplates(command_path)
 
 end
 
+--]]
+
+--[[
 function Commander:getUnitList(commandUnitType)
 
 	--Logger:debug("COMMANDER ==== List ===")
@@ -215,6 +223,7 @@ function Commander:getUnitList(commandUnitType)
 	
 
 end
+--]]
 
 function Commander:getActiveUnits(commandUnitType)
 

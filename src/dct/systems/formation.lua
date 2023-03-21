@@ -24,27 +24,46 @@ Formation_Table.Master.Ground = {}
 Formation_Table.Master.Air = {}
 Formation_Table.Air = {}
 
+types_Brigade = {"Combined Arms"} -- just a lazy way for me to do this
+
+types_Battalion = {"Combined Arms", "Armored", "Anti-Air", "Artillery", "Support"} 
+
+types_Battery = {"Anti-Air", "Artillery",} 
+
+types_Company = {"Armored", "Anti-Air", "Support", "Mechanized", "Motorized"}	
+
+types_Platoon = {"Armored", "Anti-Air", "Support", "Mechanized", "Motorized"}	
+
+types_Squad = {"Marines", "Airborne-Air", "Mortar", "Rifle", "Engineer"}	
+
+types_Team = {"JTAC", "Engineer", "Recon"} 
 
 Formation_Table.Master.Ground.BLUE = {["Brigade"] = {--["Top"] = true,
 									["CP Reward"] = 5000,
+									["Types"] = types_Brigade,									
 									["Batallion"] = {["Min"] = 3,
 													 ["Max"] = 8,
 													 ["CP Reward"] = 1000,
+													 ["Types"] = types_Battalion,
 													 ["Company"] = {
 																	["Min"] = 3,
 																	["Max"] = 6,
 																	["CP Reward"] = 300,
+																	["Types"] = types_Company,
 																	["Platoon"] = {["CP Reward"] = 100,
 																				   ["Min"] = 3,
 																				   ["Max"] = 4,
+																				   ["Types"] = types_Platoon,
 																				   ["Squad"] = {["Min"] = 3,
 																								 ["Max"] = 3,
 																								 ["CP Reward"] = 0,
 																								 ["Infantry"] = true,
+																								 ["Types"] = types_Squad,
 																								 ["Team"] = {
 																												["Min"] = 2,
 																												["Max"] = 3,
 																												["CP Reward"] = 0,
+																												["Types"] = types_Team,
 																												["Infantry"] = true,
 																											}
 																								},
@@ -60,8 +79,8 @@ Formation_Table.Master.Ground.BLUE = {["Brigade"] = {--["Top"] = true,
 									
 									
 									
-										}
-						}
+													}
+									}
 						
 Formation_Table.Master.Air.BLUE = {
 									["Air Group"] = {["CP Reward"] = 3000,
@@ -93,7 +112,7 @@ Formation_Table.Master.Air.BLUE = {
 									
 									
 									
-										}
+								}
 						
 						
 Formation_Table.Master.Air.RED = {
@@ -128,27 +147,32 @@ Formation_Table.Master.Air.RED = {
 									
 										}
 						
-						
 Formation_Table.Master.Ground.RED = {["Regiment"] = {--["Top"] = true,
 									["CP Reward"] = 5000,
+									["Types"] = types_Brigade,	
 									["Batallion"] = {["Min"] = 3,
 													 ["Max"] = 5,
 													 ["CP Reward"] = 1000,
+													 ["Types"] = types_Battalion,	
 													 ["Company"] = {
 																	["Min"] = 3,
 																	["Max"] = 6,
 																	["CP Reward"] = 300,
+																	["Types"] = types_Company,	
 																	["Platoon"] = {["CP Reward"] = 100,
 																				   ["Min"] = 3,
 																				   ["Max"] = 4,
+																				   ["Types"] = types_Platoon,	
 																				   ["Squad"] = {["Min"] = 3,
 																								 ["Max"] = 3,
 																								 ["CP Reward"] = 0,
+																								 ["Types"] = types_Squad,	
 																								 ["Infantry"] = true,
 																								 ["Team"] = {
 																												["Min"] = 2,
 																												["Max"] = 3,
 																												["CP Reward"] = 0,
+																												["Types"] = types_Team,	
 																												["Infantry"] = true,
 																											}
 																								},
@@ -159,19 +183,20 @@ Formation_Table.Master.Ground.RED = {["Regiment"] = {--["Top"] = true,
 													   
 										 ["Battery"] = {["Min"] = 0,
 														["Max"] = 2,
-														["CP Reward"] = 500
+														["CP Reward"] = 500,
+														["Types"] = types_Battery,	
 													   }
 									
 									
 									
 										}
-						}
+									}
 		
 Formation_Table.Restrictions = {}
 Formation_Table.Restrictions.BLUE = {["Batallion"] = {["Combined Arms"] = {}, -- no restrictions
 										   ["Armored"] = "Armored",
 										   ["Anti-Air"] = "Anti-Air",
-										   ["Artillery"] =  "Artillery",
+										   ["Artillery"] = "Artillery",
 										   ["Support"] = {"Mechanized",
 													      "Motorized"}
 									}
@@ -214,7 +239,8 @@ Formation_Table.Restrictions.Transports = {["Rifle"] = {"Mechanized",
 				  ["JTAC"]  = {"Mechanized",
 							   "Motorized"
 							  }
-				}	
+				}			
+
 
 Formation_Table.Air.Types = {
 	["CAP"] = true,
@@ -226,7 +252,23 @@ Formation_Table.Air.Types = {
     ["RECON"] = true,
     ["SEAD"] = true,
 }
+
+function Formation_Table.Air.matchTypes(string_in)
+	
+	for k,v in pairs(Formation_Table.Air.Types) do
+		
+		if string.match(k, string_in) then
 			
+			return k
+			
+		end
+	
+	end
+	
+	return nil
+	
+end
+
 Formation_Table.Not_Mobile = { --These will be trucks while mobile and need to be deployed
 	["Hawk cwar"] = true,
 	["Hawk ln"] = true,
@@ -264,40 +306,42 @@ Formation_Table.Special = {
 				  ["Engineer"] = true,
 						}	
 
-function returnFlatTable(table_in)
+function returnFlatTable(table_in, table_out)
 	
-	flat = {}
 	values = {}
 	
-	key = ""
+	key = "";
 	
 	local lot_queue = {}
 	
 	for k,v in pairs(table_in) do
 		
-		if type(v) == "table" then
-			flat[k] = {}			
+		if type(v) == "table" and k ~= "Types" then
+			table_out[k] = {}			
 			table.insert(lot_queue, v)
 			key = k
 		else
-			table.insert(values, v)
+			table.insert(values, {[k] = v})
 		end
 	
 	end
 	
-	flat[key] = values
+	table_out[key] = values
 	
-	--env.info("LOT Queue:")
-	--utils.tprint(lot_queue)
+	env.info("LOT Queue:")
+	utils.tprint(lot_queue)
+	
+	env.info("Table_Out:")
+	utils.tprint(table_out)
 	
 	for k,v in ipairs(lot_queue) do
 		
 		env.info("Deeper...")
-		returnFlatTable(v)
+		table_out = returnFlatTable(v, table_out)
 				
 	end
 	
-	return flat
+	return table_out
 	
 end
 
@@ -314,14 +358,14 @@ function Formation:__init(cmdr, theater)
 	
 	Logger:debug("OWNER --->:"..enum.coalitionMap[self._cmdr.owner])
 	
-	self.flat_table["GROUND"] = returnFlatTable(Formation_Table.Master.Ground[enum.coalitionMap[self._cmdr.owner]])
-	self.flat_table["HELO"] = returnFlatTable(Formation_Table.Master.Air[enum.coalitionMap[self._cmdr.owner]])
-	self.flat_table["AIR"] = returnFlatTable(Formation_Table.Master.Air[enum.coalitionMap[self._cmdr.owner]])
+	self.flat_table["GROUND"] = returnFlatTable(Formation_Table.Master.Ground[enum.coalitionMap[self._cmdr.owner]], {})
+	self.flat_table["HELO"] = returnFlatTable(Formation_Table.Master.Air[enum.coalitionMap[self._cmdr.owner]], {})
+	self.flat_table["AIR"] = returnFlatTable(Formation_Table.Master.Air[enum.coalitionMap[self._cmdr.owner]],{})
 
 	self:init_units()
 
 	Logger:debug("FORMATIONS:")
-	utils.tprint(flat_table)
+	utils.tprint(self.flat_table)
 	
 end
 
@@ -344,7 +388,7 @@ function find_keyword(word, table_in)
 	
 	for k,v in pairs(table_in) do
 		--env.info(k)
-		if type(v) == "table" then
+		if type(v) == "table" and k ~= "Types" then
 			--env.info("Compare: "..string.upper(k).." with: "..word)
 			if string.match(string.upper(word), string.upper(k)) then				
 				env.info("Returning:"..k)
@@ -374,6 +418,56 @@ function find_keyword(word, table_in)
 	return nil
 	
 end
+
+
+function Formation:readble(typeString)
+
+	Logger:debug("In Readable")
+	
+	local divider = "\n"..string.rep('-',60).."\n"
+	
+	if typeString == nil then
+
+		output = {divider..
+				  "\n Creatable Formations: \n"..
+				  divider}
+				  
+		for k,v in pairs(self.flat_table) do
+			table.insert(output,divider);	
+			table.insert(output, k) -- Header, such as "Air" and "Ground"
+			table.insert(output,divider);	
+			if type(v) == "table" and k ~= "Types" then
+			
+				for key, value in pairs(v) do
+					
+					table.insert(output, key.."\n");	
+					--todo: add in types available, how many make up each, etc.
+				end
+				
+			
+			end
+					
+		end
+		
+	else
+	
+	end
+	
+	return table.concat(output)
+	
+	--Logger:debug("-- MISSION: DONE READABLE --")	
+		
+end
+
+function Formation:create()
+	
+		
+end
+
+function Formation:deploy()
+	
+end
+
 --[[
 
 function find_in_table(word, table_in)
@@ -422,5 +516,10 @@ ENGINEER -- Can build FOBs
 
 
 --]]
+
+-- Logistics
+-- Weights, volumes, capacity, fuel consumption, ammo requirements, etc
+-- 
+
 
 return Formation

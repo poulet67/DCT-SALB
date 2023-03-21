@@ -1,0 +1,5228 @@
+{
+  "AIR": {
+    "Ship": [ [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Mig 31 2-0-2\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "CAP SHIP NAME=\"Mig 25 2-2-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "MiG-31",
+          "unitId": 1,
+          "x": -51784.016510963,
+          "y": 706724.07012391
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Mig 31 2-0-2\"",
+      "x": -51784.016510963,
+      "y": 706724.07012391
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "CAP SHIP NAME=\"Mig 25 2-2-0",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "TANKER SHIP  NAME=\"A-50\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "MiG-25PD",
+          "unitId": 1,
+          "x": -51789.555543423,
+          "y": 706770.63263428
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "CAP SHIP NAME=\"Mig 25 2-2-0",
+      "x": -51789.555543423,
+      "y": 706770.63263428
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"A-50\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "AWACS SHIP  NAME=\"A-50\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "IL-78M",
+          "unitId": 1,
+          "x": -51970.769514322,
+          "y": 706831.34837306
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"A-50\"",
+      "x": -51970.769514322,
+      "y": 706831.34837306
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"A-50\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "CAP SHIP  NAME=\"F14 0-4-6\"-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "A-50",
+          "unitId": 1,
+          "x": -51994.550257444,
+          "y": 706905.83170784
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"A-50\"",
+      "x": -51994.550257444,
+      "y": 706905.83170784
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Tu-160 12xAShM\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "BOMBER SHIP  NAME=\"Tu-22 33xFAB500\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Tu-160",
+          "unitId": 1,
+          "x": -52429.626265526,
+          "y": 707400.12690651
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Tu-160 12xAShM\"",
+      "x": -52429.626265526,
+      "y": 707400.12690651
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Tu-22 33xFAB500\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTISHIP SHIP  NAME=\"Tu-22 2xAShM\"-2-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Tu-22M3",
+          "unitId": 1,
+          "x": -52368.594059467,
+          "y": 707307.42404675
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Tu-22 33xFAB500\"",
+      "x": -52368.594059467,
+      "y": 707307.42404675
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Tu-22 2xAShM\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTISHIP SHIP  NAME=\"Tu-22 2xAShM\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Tu-22M3",
+          "unitId": 1,
+          "x": -52299.242567062,
+          "y": 707032.04902101
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Tu-22 2xAShM\"",
+      "x": -52299.242567062,
+      "y": 707032.04902101
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Tu-22 2xAShM\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTISHIP SHIP  NAME=\"Tu-142 6 AShM\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Tu-22M3",
+          "unitId": 1,
+          "x": -52247.226942062,
+          "y": 707102.42402101
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Tu-22 2xAShM\"",
+      "x": -52247.226942062,
+      "y": 707102.42402101
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Tu-142 6 AShM\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTISHIP SHIP  NAME=\"SU-24M 2x AShM\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Tu-142",
+          "unitId": 1,
+          "x": -52183.844733715,
+          "y": 707017.41767204
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Tu-142 6 AShM\"",
+      "x": -52183.844733715,
+      "y": 707017.41767204
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"SU-24M 2x AShM\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "CAP SHIP  NAME=\"F14 0-4-6\"-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Su-24M",
+          "unitId": 1,
+          "x": -52164.369582891,
+          "y": 706969.01553476
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"SU-24M 2x AShM\"",
+      "x": -52164.369582891,
+      "y": 706969.01553476
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Mig 29 4xFAB-250\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "SEAD SHIP NAME=\"Su-17 ARMS\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "MiG-29A",
+          "unitId": 1,
+          "x": -52413.247412205,
+          "y": 707765.31765795
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Mig 29 4xFAB-250\"",
+      "x": -52413.247412205,
+      "y": 707765.31765795
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Su-17 ARMS\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "SEAD SHIP NAME=\"Mig-27K ARMS\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Su-17M4",
+          "unitId": 1,
+          "x": -52395.007421732,
+          "y": 707719.40102303
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Su-17 ARMS\"",
+      "x": -52395.007421732,
+      "y": 707719.40102303
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Mig-27K ARMS\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "SEAD SHIP NAME=\"Su-24M 4 ARMS\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "MiG-27K",
+          "unitId": 1,
+          "x": -52375.249262571,
+          "y": 707675.36411643
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Mig-27K ARMS\"",
+      "x": -52375.249262571,
+      "y": 707675.36411643
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Su-24M 4 ARMS\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "SEAD SHIP NAME=\"Su-25 KH-58U and KH-25MPU\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Su-24M",
+          "unitId": 1,
+          "x": -52350.61623168,
+          "y": 707623.61420691
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Su-24M 4 ARMS\"",
+      "x": -52350.61623168,
+      "y": 707623.61420691
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Su-25 KH-58U and KH-25MPU\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "CAS SHIP NAME=\"Su-25 Rockets\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Su-25T",
+          "unitId": 1,
+          "x": -52325.678081989,
+          "y": 707571.25291383
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Su-25 KH-58U and KH-25MPU\"",
+      "x": -52325.678081989,
+      "y": 707571.25291383
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Su-25 Rockets\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "BOMBER SHIP NAME=\"Su-24 HE\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Su-25",
+          "unitId": 1,
+          "x": -52274.401034832,
+          "y": 707468.69029081
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Su-25 Rockets\"",
+      "x": -52274.401034832,
+      "y": 707468.69029081
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Su-24 HE\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "BOMBER SHIP NAME=\"Su-24 Cluster\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Su-25",
+          "unitId": 1,
+          "x": -52234.594041109,
+          "y": 707403.71124208
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Su-24 HE\"",
+      "x": -52234.594041109,
+      "y": 707403.71124208
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Su-24 Cluster\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "CAS SHIP  NAME=\"Mig 21 S-24\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Su-25",
+          "unitId": 1,
+          "x": -52192.730706453,
+          "y": 707334.64876246
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Su-24 Cluster\"",
+      "x": -52192.730706453,
+      "y": 707334.64876246
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Mig 21 S-24\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "CAP SHIP  NAME=\"Mig 21 0-2-4\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "MiG-21Bis",
+          "unitId": 1,
+          "x": -52150.103264332,
+          "y": 707250.18967009
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Mig 21 S-24\"",
+      "x": -52150.103264332,
+      "y": 707250.18967009
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Mig 21 0-2-4\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "CAP SHIP  NAME=\"Mig 29 0-2-4\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "MiG-21Bis",
+          "unitId": 1,
+          "x": -52111.380357742,
+          "y": 707163.31476486
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Mig 21 0-2-4\"",
+      "x": -52111.380357742,
+      "y": 707163.31476486
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Mig 29 0-2-4\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "CAP SHIP  NAME=\"F14 0-4-6\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "MiG-29A",
+          "unitId": 1,
+          "x": -52062.85676384,
+          "y": 707084.62732399
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Mig 29 0-2-4\"",
+      "x": -52062.85676384,
+      "y": 707084.62732399
+    } ], [ {
+      "category": 0,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"F14 0-4-6\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "CAP SHIP  NAME=\"F14 4-2-2\"-2-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Su-27",
+          "unitId": 1,
+          "x": -52036.653021812,
+          "y": 706994.95109987
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"F14 0-4-6\"",
+      "x": -52036.653021812,
+      "y": 706994.95109987
+    } ] ]
+  },
+  "GROUND": {
+    "Battery": [ [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Buk Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY NAME=\"Buk Battery\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-11 Buk CC 9S470M1",
+          "unitId": 1,
+          "x": -51955.093749874,
+          "y": 706445.1875
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY NAME=\"Buk Battery\"-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-11 Buk SR 9S18M1",
+          "unitId": 2,
+          "x": -51965.324218624,
+          "y": 706445.3125
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY NAME=\"Buk Battery\"-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-11 Buk LN 9A310M1",
+          "unitId": 3,
+          "x": -51976.582031124,
+          "y": 706445.375
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY NAME=\"Buk Battery\"-1-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-11 Buk LN 9A310M1",
+          "unitId": 4,
+          "x": -51987.238281124,
+          "y": 706445.375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Buk Battery\"",
+      "x": -51955.093749874,
+      "y": 706445.1875
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"S-300 Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-3-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-300PS 64H6E sr",
+          "unitId": 1,
+          "x": -51651.937500079,
+          "y": 705751.43750011
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-3-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-300PS 54K6 cp",
+          "unitId": 2,
+          "x": -51689.425781329,
+          "y": 705864.25000011
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-3-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-300PS 40B6M tr",
+          "unitId": 3,
+          "x": -51703.4296875,
+          "y": 705945.75
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-3-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-300PS 5P85D ln",
+          "unitId": 4,
+          "x": -51691.929687576,
+          "y": 705781.81250011
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-3-5",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-300PS 5P85D ln",
+          "unitId": 5,
+          "x": -51707.429687576,
+          "y": 705806.43750011
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-3-6",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-300PS 5P85D ln",
+          "unitId": 6,
+          "x": -51707.929687576,
+          "y": 705825.62500011
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-3-7",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-300PS 5P85D ln",
+          "unitId": 7,
+          "x": -51674.777343826,
+          "y": 705806.31250011
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-3-8",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-300PS 5P85D ln",
+          "unitId": 8,
+          "x": -51675.281250076,
+          "y": 705824.68750011
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"S-300 Battery\"",
+      "x": -51651.937500079,
+      "y": 705751.43750011
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"SA-75 Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-2-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "p-19 s-125 sr",
+          "unitId": 1,
+          "x": -51823.47265625,
+          "y": 706355.9375
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-2-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SNR_75V",
+          "unitId": 2,
+          "x": -51823.640625,
+          "y": 706367.125
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-2-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S_75M_Volhov",
+          "unitId": 3,
+          "x": -51866.2265625,
+          "y": 706353.5625
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-2-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S_75M_Volhov",
+          "unitId": 4,
+          "x": -51842.65234375,
+          "y": 706355.25
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-2-5",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S_75M_Volhov",
+          "unitId": 5,
+          "x": -51841.98046875,
+          "y": 706382.6875
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-2-6",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S_75M_Volhov",
+          "unitId": 6,
+          "x": -51864.87890625,
+          "y": 706385.0625
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"SA-75 Battery\"",
+      "x": -51823.47265625,
+      "y": 706355.9375
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"SA-125 Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "snr s-125 tr",
+          "unitId": 1,
+          "x": -51904.3671875,
+          "y": 706330.0625
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "p-19 s-125 sr",
+          "unitId": 2,
+          "x": -51904.53515625,
+          "y": 706341.25
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "5p73 s-125 ln",
+          "unitId": 3,
+          "x": -51925.05859375,
+          "y": 706330.1875
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-1-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "5p73 s-125 ln",
+          "unitId": 4,
+          "x": -51952.77734375,
+          "y": 706329.1875
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-1-5",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "5p73 s-125 ln",
+          "unitId": 5,
+          "x": -51955.64453125,
+          "y": 706360.3125
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-1-6",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "5p73 s-125 ln",
+          "unitId": 6,
+          "x": -51925.078125,
+          "y": 706358.125
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"SA-125 Battery\"",
+      "x": -51904.3671875,
+      "y": 706330.0625
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"S-200 Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-6-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "RLS_19J6",
+          "unitId": 1,
+          "x": -51862.9921875,
+          "y": 706212.5625
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-6-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "RPC_5N62V",
+          "unitId": 2,
+          "x": -51859.58984375,
+          "y": 706238.4375
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-6-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-200_Launcher",
+          "unitId": 3,
+          "x": -51883.60546875,
+          "y": 706212.625
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-6-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-200_Launcher",
+          "unitId": 4,
+          "x": -51910.515625,
+          "y": 706211.5625
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-200_Launcher",
+          "unitId": 5,
+          "x": -51883.95703125,
+          "y": 706232.6875
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 3-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "S-200_Launcher",
+          "unitId": 6,
+          "x": -51912.0078125,
+          "y": 706232.3125
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"S-200 Battery\"",
+      "x": -51862.9921875,
+      "y": 706212.5625
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Kub Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-5-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Kub 1S91 str",
+          "unitId": 1,
+          "x": -52060.195312609,
+          "y": 706687.9375
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-5-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Kub 2P25 ln",
+          "unitId": 2,
+          "x": -52070.550781366,
+          "y": 706687.9375
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-5-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Kub 2P25 ln",
+          "unitId": 3,
+          "x": -52078.179687616,
+          "y": 706688
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-5-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Kub 2P25 ln",
+          "unitId": 4,
+          "x": -52085.863281366,
+          "y": 706688.0625
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-5 NAME=\"Kub Platoon\"-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Kub 2P25 ln",
+          "unitId": 5,
+          "x": -52093.671875116,
+          "y": 706688.125
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Kub Battery\"",
+      "x": -52060.195312609,
+      "y": 706687.9375
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Osa Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-4-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Osa 9A33 ln",
+          "unitId": 1,
+          "x": -52059.656249887,
+          "y": 706674.875
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-4-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Osa 9A33 ln",
+          "unitId": 2,
+          "x": -52070.011718637,
+          "y": 706674.875
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-4-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Osa 9A33 ln",
+          "unitId": 3,
+          "x": -52080.269531137,
+          "y": 706674.9375
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Osa 9A33 ln",
+          "unitId": 4,
+          "x": -52090.914062387,
+          "y": 706675
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Osa Battery\"",
+      "x": -52059.656249887,
+      "y": 706674.875
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"ZU-23-2 on Ural Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-3-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-375 ZU-23",
+          "unitId": 1,
+          "x": -52058.33203125,
+          "y": 706661.0625
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-3-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-375 ZU-23",
+          "unitId": 2,
+          "x": -52067.031249995,
+          "y": 706661.0625
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-3-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-375 ZU-23",
+          "unitId": 3,
+          "x": -52075.996093745,
+          "y": 706661
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR Battery-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-375 ZU-23",
+          "unitId": 4,
+          "x": -52085.13671875,
+          "y": 706661
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"ZU-23-2 on Ural Battery\"",
+      "x": -52058.33203125,
+      "y": 706661.0625
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Shilka Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "ZSU-23-4 Shilka",
+          "unitId": 1,
+          "x": -52061.06640625,
+          "y": 706699.8125
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "ZSU-23-4 Shilka",
+          "unitId": 2,
+          "x": -52069.140625,
+          "y": 706699.8125
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "ZSU-23-4 Shilka",
+          "unitId": 3,
+          "x": -52076.82421875,
+          "y": 706699.8125
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-1 NAME=\"Shilka Platoon\"-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "ZSU-23-4 Shilka",
+          "unitId": 4,
+          "x": -52084.7734375,
+          "y": 706699.9375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Shilka Battery\"",
+      "x": -52061.06640625,
+      "y": 706699.8125
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Tunguska Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-2-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "2S6 Tunguska",
+          "unitId": 1,
+          "x": -52046.492187374,
+          "y": 706610.4375
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-2-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "2S6 Tunguska",
+          "unitId": 2,
+          "x": -52055.613281124,
+          "y": 706610.3125
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-2-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "2S6 Tunguska",
+          "unitId": 3,
+          "x": -52064.710937374,
+          "y": 706610.25
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY NAME=\"Tunguska Battery\"-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "2S6 Tunguska",
+          "unitId": 4,
+          "x": -52073.703124874,
+          "y": 706610.375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Tunguska Battery\"",
+      "x": -52046.492187374,
+      "y": 706610.4375
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Tor Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Tor 9A331",
+          "unitId": 1,
+          "x": -52058.44531238,
+          "y": 706648.375
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Tor 9A331",
+          "unitId": 2,
+          "x": -52068.64062488,
+          "y": 706648.25
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Tor 9A331",
+          "unitId": 3,
+          "x": -52079.417968618,
+          "y": 706648.4375
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-1-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Tor 9A331",
+          "unitId": 4,
+          "x": -52089.417968624,
+          "y": 706648.5625
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Tor Battery\"",
+      "x": -52058.44531238,
+      "y": 706648.375
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Strela Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-3-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Strela-10M3",
+          "unitId": 1,
+          "x": -52021.84375,
+          "y": 706467.625
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-3-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Strela-10M3",
+          "unitId": 2,
+          "x": -52029.65234375,
+          "y": 706467.6875
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-3-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Strela-10M3",
+          "unitId": 3,
+          "x": -52037.7578125,
+          "y": 706467.875
+        }, {
+          "heading": 0,
+          "name": "ANTI-AIR BATTERY 1 NAME=\"Strela Battery\"-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Strela-10M3",
+          "unitId": 4,
+          "x": -52045.515625,
+          "y": 706468.375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Strela Battery\"",
+      "x": -52021.84375,
+      "y": 706467.625
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Buk Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-14-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-11 Buk CC 9S470M1",
+          "unitId": 1,
+          "x": -52043.04296863,
+          "y": 706647.75
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-14-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-11 Buk SR 9S18M1",
+          "unitId": 2,
+          "x": -52043.800781124,
+          "y": 706661.25
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-14-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-11 Buk LN 9A310M1",
+          "unitId": 3,
+          "x": -52044.562499874,
+          "y": 706673.9375
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-11 Buk LN 9A310M1",
+          "unitId": 4,
+          "x": -52044.234374874,
+          "y": 706687.6875
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-11 Buk LN 9A310M1",
+          "unitId": 5,
+          "x": -52044.343749874,
+          "y": 706701.5
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR BATTERY-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-11 Buk LN 9A310M1",
+          "unitId": 6,
+          "x": -52044.124999874,
+          "y": 706713.625
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Buk Battery\"",
+      "x": -52043.04296863,
+      "y": 706647.75
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Scud Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-9-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Scud_B",
+          "unitId": 1,
+          "x": -51951.910156382,
+          "y": 706499.5625
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-9-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Scud_B",
+          "unitId": 2,
+          "x": -51968.804687632,
+          "y": 706499.75
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-9 NAME=\"Scud Battery\"-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Scud_B",
+          "unitId": 3,
+          "x": -51984.429687632,
+          "y": 706499.6875
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Scud Battery\"",
+      "x": -51951.910156382,
+      "y": 706499.5625
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Smerch Battery (HE)\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "UNIT",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Smerch_HE",
+          "unitId": 1,
+          "x": -52047.292968882,
+          "y": 706625.875
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-8-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Smerch_HE",
+          "unitId": 2,
+          "x": -52060.960937632,
+          "y": 706625.75
+        }, {
+          "heading": 0,
+          "name": "UNIT-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Smerch_HE",
+          "unitId": 3,
+          "x": -52073.914062632,
+          "y": 706625.6875
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Smerch Battery (HE)\"",
+      "x": -52047.292968882,
+      "y": 706625.875
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Smerch Battery (Cluster)\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-7-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Smerch",
+          "unitId": 1,
+          "x": -52047.128906382,
+          "y": 706618.375
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-7-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Smerch",
+          "unitId": 2,
+          "x": -52060.753906382,
+          "y": 706618.25
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-7-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Smerch",
+          "unitId": 3,
+          "x": -52073.949218882,
+          "y": 706618.125
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Smerch Battery (Cluster)\"",
+      "x": -52047.128906382,
+      "y": 706618.375
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Uragan Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-6-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Uragan_BM-27",
+          "unitId": 1,
+          "x": -51962.082031128,
+          "y": 706417.125
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-6-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Uragan_BM-27",
+          "unitId": 2,
+          "x": -51972.902343628,
+          "y": 706417
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-6-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Uragan_BM-27",
+          "unitId": 3,
+          "x": -51983.667968628,
+          "y": 706417
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Uragan Battery\"",
+      "x": -51962.082031128,
+      "y": 706417.125
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Grad Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-5-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Grad-URAL",
+          "unitId": 1,
+          "x": -51955.3984375,
+          "y": 706392.875
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-5-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Grad-URAL",
+          "unitId": 2,
+          "x": -51963.5625,
+          "y": 706392.9375
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-5-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Grad-URAL",
+          "unitId": 3,
+          "x": -51972.015625,
+          "y": 706392.9375
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-5-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Grad_FDDM",
+          "unitId": 4,
+          "x": -51947.3359375,
+          "y": 706392.9375
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-5 NAME=\"Grad Battery\"-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Grad-URAL",
+          "unitId": 5,
+          "x": -51980.21484375,
+          "y": 706393.125
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Grad Battery\"",
+      "x": -51955.3984375,
+      "y": 706392.875
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Nona Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-4-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU 2-C9",
+          "unitId": 1,
+          "x": -51951.800781324,
+          "y": 706532
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-4-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU 2-C9",
+          "unitId": 2,
+          "x": -51959.500000074,
+          "y": 706532.25
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-4-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU 2-C9",
+          "unitId": 3,
+          "x": -51966.156250083,
+          "y": 706532.25
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Nona Battery\"",
+      "x": -51951.800781324,
+      "y": 706532
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Ataksia Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-2-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU Akatsia",
+          "unitId": 1,
+          "x": -51951.37109363,
+          "y": 706507.875
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-2-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU Akatsia",
+          "unitId": 2,
+          "x": -51961.05468738,
+          "y": 706507.875
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-2-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU Akatsia",
+          "unitId": 3,
+          "x": -51970.61718738,
+          "y": 706507.8125
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Ataksia Battery\"",
+      "x": -51951.37109363,
+      "y": 706507.875
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Msta Battery\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU Msta",
+          "unitId": 1,
+          "x": -51951.5,
+          "y": 706523.75
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU Msta",
+          "unitId": 2,
+          "x": -51959.531249994,
+          "y": 706523.75
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU Msta",
+          "unitId": 3,
+          "x": -51967.578125006,
+          "y": 706523.75
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Msta Battery\"",
+      "x": -51951.5,
+      "y": 706523.75
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Gvozdika Batter\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-13-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU Gvozdika",
+          "unitId": 1,
+          "x": -51951.5,
+          "y": 706516
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU Gvozdika",
+          "unitId": 2,
+          "x": -51960.5078125,
+          "y": 706516.125
+        }, {
+          "heading": 0,
+          "name": "ARTILLERY BATTERY 1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SAU Gvozdika",
+          "unitId": 3,
+          "x": -51969.078125,
+          "y": 706516.125
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Gvozdika Batter\"",
+      "x": -51951.5,
+      "y": 706516
+    } ] ],
+    "Platoon": [ [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Ural Truck (Armored)\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON 8-3-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-4320-31",
+          "unitId": 1,
+          "x": -51889.69140625,
+          "y": 706444.375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Ural Truck (Armored)\"",
+      "x": -51889.69140625,
+      "y": 706444.375
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Kamaz Truck Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON 8-4-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "KAMAZ Truck",
+          "unitId": 1,
+          "x": -51903.1328125,
+          "y": 706408.5
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON 8-4-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "KAMAZ Truck",
+          "unitId": 2,
+          "x": -51911.90625,
+          "y": 706408.5
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON 8-4-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "KAMAZ Truck",
+          "unitId": 3,
+          "x": -51920.503906244,
+          "y": 706408.4375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Kamaz Truck Platoon\"",
+      "x": -51903.1328125,
+      "y": 706408.5
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Ural-4320 Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON 8-2-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-4320T",
+          "unitId": 1,
+          "x": -51903.93359375,
+          "y": 706413.8125
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON 8-2-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-4320T",
+          "unitId": 2,
+          "x": -51912.140625,
+          "y": 706413.8125
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON 8-2-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-4320T",
+          "unitId": 3,
+          "x": -51920.27734375,
+          "y": 706413.75
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Ural-4320 Platoon\"",
+      "x": -51903.93359375,
+      "y": 706413.8125
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"ZSU-57-2 Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-2-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "ZSU_57_2",
+          "unitId": 1,
+          "x": -52061.144531193,
+          "y": 706708
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-2-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "ZSU_57_2",
+          "unitId": 2,
+          "x": -52068.531249943,
+          "y": 706708.0625
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-2-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "ZSU_57_2",
+          "unitId": 3,
+          "x": -52076.226562443,
+          "y": 706708.0625
+        }, {
+          "heading": 0,
+          "name": "ANTI AIR PLATOON-2 NAME=\"ZSU-57-2 Platoon\"-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "ZSU_57_2",
+          "unitId": 4,
+          "x": -52084.675781193,
+          "y": 706708.1875
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"ZSU-57-2 Platoon\"",
+      "x": -52061.144531193,
+      "y": 706708
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Armored Ural Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON 8-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-4320-31",
+          "unitId": 1,
+          "x": -51904.27734375,
+          "y": 706427.0625
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON 8-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-4320-31",
+          "unitId": 2,
+          "x": -51912.54296875,
+          "y": 706427.0625
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON 8-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-4320-31",
+          "unitId": 3,
+          "x": -51920.6796875,
+          "y": 706427
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Armored Ural Platoon\"",
+      "x": -51904.27734375,
+      "y": 706427.0625
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Ural-375 Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "LOGI 10-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-375",
+          "unitId": 1,
+          "x": -51905.031249995,
+          "y": 706441.625
+        }, {
+          "heading": 0,
+          "name": "LOGI 10-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-375",
+          "unitId": 2,
+          "x": -51913.292968745,
+          "y": 706441.625
+        }, {
+          "heading": 0,
+          "name": "LOGI 10-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ural-375",
+          "unitId": 3,
+          "x": -51921.4296875,
+          "y": 706441.5625
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Ural-375 Platoon\"",
+      "x": -51905.031249995,
+      "y": 706441.625
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"BRDM-2 Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-11-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BRDM-2",
+          "unitId": 1,
+          "x": -51904.42187506,
+          "y": 706508.1875
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-11-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BRDM-2",
+          "unitId": 2,
+          "x": -51910.64453131,
+          "y": 706508.3125
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-11-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BRDM-2",
+          "unitId": 3,
+          "x": -51917.08203131,
+          "y": 706508.4375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"BRDM-2 Platoon\"",
+      "x": -51904.42187506,
+      "y": 706508.1875
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"T-80U Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-10-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "T-80UD",
+          "unitId": 1,
+          "x": -51904.3515625,
+          "y": 706503.5625
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-10-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "T-80UD",
+          "unitId": 2,
+          "x": -51911.86328125,
+          "y": 706503.5625
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-10-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "T-80UD",
+          "unitId": 3,
+          "x": -51919.515625,
+          "y": 706503.6875
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"T-80U Platoon\"",
+      "x": -51904.3515625,
+      "y": 706503.5625
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"T-72B Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-9-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "T-72B",
+          "unitId": 1,
+          "x": -51904.21874988,
+          "y": 706498.0625
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-9-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "T-72B",
+          "unitId": 2,
+          "x": -51912.23046863,
+          "y": 706498
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-9-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "T-72B",
+          "unitId": 3,
+          "x": -51920.24218738,
+          "y": 706498
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"T-72B Platoon\"",
+      "x": -51904.21874988,
+      "y": 706498.0625
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"T-55 Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-8-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "T-55",
+          "unitId": 1,
+          "x": -51904.445312443,
+          "y": 706491.875
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-8-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "T-55",
+          "unitId": 2,
+          "x": -51911.097656193,
+          "y": 706491.875
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-8-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "T-55",
+          "unitId": 3,
+          "x": -51917.894531193,
+          "y": 706491.9375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"T-55 Platoon\"",
+      "x": -51904.445312443,
+      "y": 706491.875
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"PT-76 Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-7-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "PT_76",
+          "unitId": 1,
+          "x": -51904.187500064,
+          "y": 706485.625
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-7-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "PT_76",
+          "unitId": 2,
+          "x": -51911.769531314,
+          "y": 706485.625
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-7-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "PT_76",
+          "unitId": 3,
+          "x": -51919.570312564,
+          "y": 706485.6875
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"PT-76 Platoon\"",
+      "x": -51904.187500064,
+      "y": 706485.625
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"BMP-3 Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-6-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMP-3",
+          "unitId": 1,
+          "x": -51904.31640618,
+          "y": 706478.6875
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-6-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMP-3",
+          "unitId": 2,
+          "x": -51912.328124923,
+          "y": 706478.8125
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-6-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMP-3",
+          "unitId": 3,
+          "x": -51920.19921868,
+          "y": 706478.6875
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"BMP-3 Platoon\"",
+      "x": -51904.31640618,
+      "y": 706478.6875
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"BMP-2 Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-5-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMP-2",
+          "unitId": 1,
+          "x": -51903.73828125,
+          "y": 706471.75
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-5-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMP-2",
+          "unitId": 2,
+          "x": -51911.03515625,
+          "y": 706471.6875
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-5-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMP-2",
+          "unitId": 3,
+          "x": -51918.402343742,
+          "y": 706471.5625
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"BMP-2 Platoon\"",
+      "x": -51903.73828125,
+      "y": 706471.75
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"BMP-1 Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-4-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMP-1",
+          "unitId": 1,
+          "x": -51903.714843825,
+          "y": 706464.4375
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-4-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMP-1",
+          "unitId": 2,
+          "x": -51911.085937575,
+          "y": 706464.4375
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-4-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMP-1",
+          "unitId": 3,
+          "x": -51918.308593825,
+          "y": 706464.5
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"BMP-1 Platoon\"",
+      "x": -51903.714843825,
+      "y": 706464.4375
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"BMD-1 Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-3-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMD-1",
+          "unitId": 1,
+          "x": -51903.61328125,
+          "y": 706456.875
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-3-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMD-1",
+          "unitId": 2,
+          "x": -51909.8671875,
+          "y": 706456.9375
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-3-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BMD-1",
+          "unitId": 3,
+          "x": -51916.01953125,
+          "y": 706456.9375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"BMD-1 Platoon\"",
+      "x": -51903.61328125,
+      "y": 706456.875
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"MTLB Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-2-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "MTLB",
+          "unitId": 1,
+          "x": -51903.50390625,
+          "y": 706448.3125
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-2-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "MTLB",
+          "unitId": 2,
+          "x": -51911.531250007,
+          "y": 706448.3125
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-2-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "MTLB",
+          "unitId": 3,
+          "x": -51918.91015625,
+          "y": 706448.4375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"MTLB Platoon\"",
+      "x": -51903.50390625,
+      "y": 706448.3125
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"BTR-RD Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BTR_D",
+          "unitId": 1,
+          "x": -51903.117187574,
+          "y": 706434.6875
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BTR_D",
+          "unitId": 2,
+          "x": -51909.472656324,
+          "y": 706434.75
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BTR_D",
+          "unitId": 3,
+          "x": -51915.871093824,
+          "y": 706434.75
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"BTR-RD Platoon\"",
+      "x": -51903.117187574,
+      "y": 706434.6875
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"BTR-80 Platoon\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED 1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BTR-80",
+          "unitId": 1,
+          "x": -51903.281249873,
+          "y": 706419.0625
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BTR-80",
+          "unitId": 2,
+          "x": -51912.11718738,
+          "y": 706419.25
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "BTR-80",
+          "unitId": 3,
+          "x": -51920.80859363,
+          "y": 706419.375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"BTR-80 Platoon\"",
+      "x": -51903.281249873,
+      "y": 706419.0625
+    } ] ],
+    "Squad": [ [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Engineer Squad\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-6",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 1,
+          "x": -51918.50390625,
+          "y": 706536
+        }, {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-7",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 2,
+          "x": -51918.50390625,
+          "y": 706536.8125
+        }, {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-8",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 3,
+          "x": -51918.50390625,
+          "y": 706537.6875
+        }, {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-9",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 4,
+          "x": -51918.50390625,
+          "y": 706538.5
+        }, {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-10",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 5,
+          "x": -51918.50390625,
+          "y": 706539.3125
+        }, {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-11",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 6,
+          "x": -51918.4921875,
+          "y": 706540.1875
+        }, {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-12",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 7,
+          "x": -51918.4921875,
+          "y": 706541
+        }, {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-13",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 8,
+          "x": -51918.51953125,
+          "y": 706541.875
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Engineer Squad\"",
+      "x": -51918.50390625,
+      "y": 706536
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Mortar Squad\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-12-6",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "2B11 mortar",
+          "unitId": 1,
+          "x": -51912.2265625,
+          "y": 706536.4375
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-12-7",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 2,
+          "x": -51912.2265625,
+          "y": 706537.5
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-12-8",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 3,
+          "x": -51912.25390625,
+          "y": 706538.5
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Mortar Squad\"",
+      "x": -51912.2265625,
+      "y": 706536.4375
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"VDV Squad\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTOSTREKLI SQUAD-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Paratrooper AKS-74",
+          "unitId": 1,
+          "x": -51906.2734375,
+          "y": 706536.3125
+        }, {
+          "heading": 0,
+          "name": "MOTOSTREKLI SQUAD-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Paratrooper AKS-74",
+          "unitId": 2,
+          "x": -51906.2734375,
+          "y": 706537.125
+        }, {
+          "heading": 0,
+          "name": "MOTOSTREKLI SQUAD-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Paratrooper AKS-74",
+          "unitId": 3,
+          "x": -51906.24609375,
+          "y": 706538
+        }, {
+          "heading": 0,
+          "name": "MOTOSTREKLI SQUAD-1-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Paratrooper RPG-16",
+          "unitId": 4,
+          "x": -51906.2734375,
+          "y": 706538.8125
+        }, {
+          "heading": 0,
+          "name": "MOTOSTREKLI SQUAD-1-5",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Paratrooper AKS-74",
+          "unitId": 5,
+          "x": -51906.2734375,
+          "y": 706539.625
+        }, {
+          "heading": 0,
+          "name": "VDV SQUAD-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Paratrooper AKS-74",
+          "unitId": 6,
+          "x": -51906.28125,
+          "y": 706540.5
+        }, {
+          "heading": 0,
+          "name": "VDV SQUAD-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Paratrooper AKS-74",
+          "unitId": 7,
+          "x": -51906.28125,
+          "y": 706541.375
+        }, {
+          "heading": 0,
+          "name": "VDV SQUAD-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Paratrooper RPG-16",
+          "unitId": 8,
+          "x": -51906.25,
+          "y": 706542.25
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"VDV Squad\"",
+      "x": -51906.2734375,
+      "y": 706536.3125
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Motostrelki Squad\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-12-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 1,
+          "x": -51903.8046875,
+          "y": 706536.375
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-12-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 2,
+          "x": -51903.8046875,
+          "y": 706537.1875
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-12-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 3,
+          "x": -51903.8046875,
+          "y": 706538.0625
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-12-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 4,
+          "x": -51903.8046875,
+          "y": 706538.875
+        }, {
+          "heading": 0,
+          "name": "MOTORIZED PLATOON A-12-5",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 5,
+          "x": -51903.8046875,
+          "y": 706539.6875
+        }, {
+          "heading": 0,
+          "name": "MOTOSTREKLI SQUAD-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 6,
+          "x": -51903.79296875,
+          "y": 706540.5625
+        }, {
+          "heading": 0,
+          "name": "MOTOSTREKLI SQUAD-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 7,
+          "x": -51903.79296875,
+          "y": 706541.375
+        }, {
+          "heading": 0,
+          "name": "MOTOSTREKLI SQUAD-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 8,
+          "x": -51903.82421875,
+          "y": 706542.25
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Motostrelki Squad\"",
+      "x": -51903.8046875,
+      "y": 706536.375
+    } ] ],
+    "Team": [ [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Recon Team\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 1,
+          "x": -51915.1875,
+          "y": 706536.625
+        }, {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 2,
+          "x": -51915.1875,
+          "y": 706537.4375
+        }, {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-3",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 3,
+          "x": -51915.1875,
+          "y": 706538.25
+        }, {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-4",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 4,
+          "x": -51915.1875,
+          "y": 706539.125
+        }, {
+          "heading": 0,
+          "name": "RIFLE SQUAD 2 NAME=\"Motostrelki Squad\"-1-5",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Infantry AK",
+          "unitId": 5,
+          "x": -51915.1875,
+          "y": 706539.9375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Recon Team\"",
+      "x": -51915.1875,
+      "y": 706536.625
+    } ], [ {
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Igla Team\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "VDV SQUAD-2-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-18 Igla manpad",
+          "unitId": 1,
+          "x": -51908.56640625,
+          "y": 706536.3125
+        }, {
+          "heading": 0,
+          "name": "VDV SQUAD-2-2",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "SA-18 Igla comm",
+          "unitId": 2,
+          "x": -51908.56640625,
+          "y": 706537.4375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Igla Team\"",
+      "x": -51908.56640625,
+      "y": 706536.3125
+    } ] ]
+  },
+  "HELOS": {
+    "Ship": [ [ {
+      "category": 1,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"Mi-24P\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "CAS SHIP NAME=\"KA-50\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Mi-24P",
+          "unitId": 1,
+          "x": -52732.5078125,
+          "y": 707810.625
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"Mi-24P\"",
+      "x": -52732.5078125,
+      "y": 707810.625
+    } ], [ {
+      "category": 1,
+      "countryid": 68,
+      "data": {
+        "groupID": 0,
+        "hidden": false,
+        "name": "\"KA-50\"",
+        "points": [ {
+          "ETA": 0,
+          "ETA_locked": true,
+          "action": "",
+          "alt": [],
+          "alt_type": "BARO",
+          "formation_template": [],
+          "speed": 0,
+          "task": {
+            "id": "ComboTask",
+            "params": {
+              "tasks": []
+            }
+          },
+          "type": "Turning Point",
+          "x": [],
+          "y": []
+        } ],
+        "route": {
+          "spans": []
+        },
+        "start_time": 0,
+        "task": "Ground Nothing",
+        "tasks": [],
+        "uncontrollable": [],
+        "units": [ {
+          "heading": 0,
+          "name": "LOGI 2 NAME=\"Mi-26\"-1-1",
+          "playerCanDrive": true,
+          "skill": "Average",
+          "transportable": {
+            "randomTransportable": false
+          },
+          "type": "Ka-50",
+          "unitId": 1,
+          "x": -52717.22265625,
+          "y": 707736.4375
+        } ],
+        "visible": false,
+        "x": [],
+        "y": []
+      },
+      "name": "\"KA-50\"",
+      "x": -52717.22265625,
+      "y": 707736.4375
+    } ] ]
+  }
+}

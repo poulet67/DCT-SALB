@@ -14,6 +14,8 @@ local uicmds      = require("dct.ui.cmds")
 local Command     = require("dct.Command")
 local CLI     = require("dct.ui.CLI")
 local dctutils   = require("dct.utils") 
+local formation   = require("dct.systems.formation") 
+local inventory   = require("dct.systems.inventory") 
 local settings    = _G.dct.settings
 
 local function sanitize(txt)
@@ -348,8 +350,8 @@ function MarkerGet:parse(text, initiator, idx, point)
 		validUnitType = enum.commandUnitTypes[first] ~= nil
 		
 		Logger:debug("MarkerGet : COMMAND "..tostring(validUnitType))				
-				
-		if((self._theater:getCommander(playerasset.owner):isCommander(playerasset) or self._theater:getCommander(playerasset.owner):isPublic()) and validUnitType) then	-- check player is commander
+		if(self._theater:getCommander(playerasset.owner):isCommander(playerasset) or self._theater:getCommander(playerasset.owner):isPublic()) then		
+		
 			
 			Logger:debug("MarkerGet : INSIDE")	
 			Logger:debug("MarkerGet : second: ".. second)	
@@ -357,7 +359,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 			remainder = string.match(text, "\n.+$") -- returns everything on the next lines			
 			
 			-- COMMANDER COMMANDS _---------------------------------------------------------------------------------------------------------
-			
+			----- FORMATIONS -------------
 			if(first == "FORMATION" and second) then
 				--FORMATION commands: 
 				-- CREATE
@@ -374,11 +376,55 @@ function MarkerGet:parse(text, initiator, idx, point)
 				
 				if(second == "LIST") then
 				
+					local cmdr = self._theater:getCommander(playerasset.owner)
+					outtext = cmdr.formations:readble() or "";
+					trigger.action.outTextForGroup(playerasset.groupId, outtext, 30)
+					
 				elseif(second == "CREATE") then
+					-- CREATE requirements:
+					-- AIR, GROUND or HELO (type)
+					-- Formation selection (company, platoon, etc)
+					-- Template chosen (assignment)
+					--
+					unitType = first
+					f_type = string.match(remainder, "\nGROUND\n") or string.match(remainder, "\nHELO\n") or string.match(remainder, "\nAIR\n")
+					f_sel = string.match(remainder, "\n%a+\n")
+					f_tpl = string.match(remainder, "\n%d+\n")
+					
+					if(f_type and sel and template) then
+					
+						trigger.action.outTextForGroup(playerasset.groupId, "Attempting to create "..f_type.." formation: "..f_sel.." template: "..f_tpl, 30)
+					
+					end
+					
+					
+					formation:create();
+					
 				elseif(second == "DEPLOY") then
+										
+					formation:create();
+					
+				elseif(second == "HELP") then
+					
 				end		
+			
+			----- LOGI -------------
+			
+			----- FORMATIONS -------------
+			
+			----- Roll this up into FORMATION -----		
+			elseif(first == "LOGI" and second) then	
 				
-			elseif(second == "DISPATCH" and remainder) then
+				if(second == "LIST") then
+									
+				elseif(second == "CREATE") then
+				
+				elseif(second == "DEPLOY") then
+				
+				elseif(second == "HELP") then
+				end	
+			
+			elseif(second == "DISPATCH" and remainder and validUnitType) then	-- check player is commander) then
 				
 				unitType = first
 				sel = string.match(remainder, "TYPE:%d+")
@@ -447,7 +493,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 					
 				end
 			
-			elseif(second == "MOVE" and remainder) then
+			elseif(second == "MOVE" and remainder and validUnitType) then
 				
 				Logger:debug("MOVE COMMAND")
 				unitType = first
@@ -525,7 +571,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 					
 				end	
 
-			elseif(second == "ATTACK" and remainder) then
+			elseif(second == "ATTACK" and remainder and validUnitType) then
 				
 				Logger:debug("MOVE COMMAND")
 				unitType = first
@@ -673,7 +719,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 				end
 				--]]
 				
-			elseif(second == "RACETRACK" and remainder) then
+			elseif(second == "RACETRACK" and remainder and validUnitType) then
 			
 				Logger:debug("RACETRACK COMMAND")
 				unitType = first
@@ -769,7 +815,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 				end
 				
 			
-			elseif(second == "LAND" and remainder) then
+			elseif(second == "LAND" and remainder and validUnitType) then
 				
 				Logger:debug("LAND COMMAND")
 				unitType = first
@@ -792,7 +838,7 @@ function MarkerGet:parse(text, initiator, idx, point)
 				end
 				
 			
-			elseif(second == "LIST") then
+			elseif(first == "COMMAND" and second == "LIST") then
 							
 				unitType = first
 								

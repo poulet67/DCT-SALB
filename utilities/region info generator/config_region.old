@@ -1,0 +1,555 @@
+--	CONFIG REGION TOOL
+--	How to use:
+--	- If creating a new region map for the first time, use the F10 menu to select "new region"
+--	- If loading, select "import region" make sure the region.JSON file in the import folder
+--	  the first region in the list will automatically be selected.
+--	
+--	-Use map markers to enter commands and define the vertices that encompase your region
+--	 map markers without any text inside will be assumed to be vertices. Enter vertices in clockwise
+--	 orientation.
+--	
+--	Commands:
+--	NAME:"" will name the region whatever is inside the quotation marks
+--	
+--	Ser Region Type:
+--	REG	 Sets to regular type. Regions are regular type by default
+--	OOB  Sets the region to an out of bounds type. 
+--	NC 	 Sets the region as non capturable type (needed for over water regions)
+--	
+--	Add region features:
+--	FOB:"" 	Specifies a FOB at the marker. Name in quotations must be provided
+--	FARP 	Specifies a farp at point. Must be within set distance from FOB.
+--	FSB 	Specifies a fire support base at point. Must be within set distance from FOB
+--	OM		Specifies an off map spawn point. This will act like an airbase as far as the inventory system works.
+--	SHOP:"on" or "off" Region must have an off map spawn for this. Will create a shop for this point.
+--	SP:""	Specifies a strategic point at the marker. This functions the same as towns and bases. Name in quotations must be provided
+--	INV: Specifies an inventory  at the given point. This will overwrite the default.
+--	will spawn assets from the base inventory that can be destroyed.
+	
+
+
+-- Setup package path so we can require DCT utils
+do
+	if not lfs or not io or not require then
+		local assertmsg = "DCT requires DCS mission scripting environment"..
+			" to be modified, the file needing to be changed can be found"..
+			" at $DCS_ROOT\\Scripts\\MissionScripting.lua. Comment out"..
+			" the removal of lfs and io and the setting of 'require' to"..
+			" nil."
+		assert(false, assertmsg)
+	end
+
+	-- Check that DCT mod is installed
+	modpath = lfs.writedir() .. "Mods\\tech\\DCT"
+	if lfs.attributes(modpath) == nil then
+		local errmsg = "DCT: module not installed, mission not DCT enabled"
+		if dctsettings.nomodlog then
+			env.error(errmsg)
+		else
+			assert(false, errmsg)
+		end
+	else
+		package.path = package.path .. ";" .. modpath .. "\\lua\\?.lua;"
+		
+	end
+end
+
+local JSON = require("libs.JSON")
+local utils = require("libs.utils")
+local dctutils = require("dct.utils")
+local human = require("dct.ui.human")
+local geometry = require("dct.libs.geometry")
+local Logger   = require("dct.libs.Logger").getByName("Config Region")
+
+local addmenu = missionCommands.addSubMenuForGroup
+local addcmd  = missionCommands.addCommandForGroup
+
+		
+local Marks = {}	
+function Marks.new()
+	
+	local self = {}
+	self.markerindex = 10
+	self.region_def = false
+	self.marks_table = {}
+	self.r_table = {}
+	self.curr_id = nil
+	self.enabled = false
+	self.modify = Marks.modify
+	self.removeall = Marks.removeall
+	
+	return self
+	
+end
+
+
+function Marks:modify(id, text, pos)
+	
+	if(self.enabled) then
+		
+		-- Input Parsing:
+		
+		first = string.match(text, "%a+") -- returns everything up to the :
+		second = string.match(text, "%p.+") -- returns everything after the :
+		vert = string.match(text, "^$") -- empty string
+		--done = string.match(text, "^done$") -- just "done"
+		OOB = string.match(text, "^OOB$") -- outofbounds
+			
+		if(first == "R") then-- Region info
+		
+			trigger.action.outText("REGION DEFINITION", 30)
+					
+			R_name = second:match("%p.+"):sub(2)
+			
+			if(R_name ~= nil) then
+				
+				trigger.action.outText("REGION NAME:"..R_name.."\n", 30)	
+				self.region_def = true
+				self.r_name = R_name
+				trigger.action.outText("You can now place vertices. \n Place them in clockwise order with \"V\" in the text field and then type \"done\" into a marker.", 30)	
+				
+				self.r_table[self.r_name] = {}
+				self.r_table[self.r_name]["Verts"] = {}
+				self.r_table[self.r_name]["r_type"] = "R"
+			
+			else
+			
+				trigger.action.outText("INVALID INPUT", 30)	
+				
+			end
+			
+
+		elseif(vert) then -- Vertice of a region
+			
+			if(self.region_def and self.r_name ~= "OOB") then
+			
+				table.insert(self.r_table[self.r_name]["Verts"], pos)
+				trigger.action.outText("Vertex added", 30)	
+			
+			elseif(self.region_def and self.r_name == "OOB") then
+			
+				trigger.action.outText("test #rtable"..#self.r_table["OOB"], 30)
+				
+				table.insert(self.r_table["OOB"][#self.r_table["OOB"]]["Verts"], pos)
+				trigger.action.outText("Vertex added", 30)	
+			
+			else
+				
+				trigger.action.outText("You must define a region first!", 30)	
+			
+			end
+			
+		-- Will make this an F10 command instead
+
+			
+		elseif(first == "FL") then -- Location of a frontline
+					
+			trigger.action.outText("Frontline defintition", 30)	
+					
+			R1_id = second:match("%p%d+"):sub(2) -- sub 2 to remove colon
+			R2_id = second:sub(2):match("%p%d+"):sub(2)  -- sub 2 to remove colon then to remove comma
+				
+			trigger.action.outText("Links:\nRegion 1: "..R1_id.."\nRegion 2: "..R2_id, 30)	
+						
+			table.insert(self.r_table["Frontlines"],{["r_type"] = "FL",
+												["R1"] = R1_id,
+												["R1"] = R2_id,
+												["pos"] = pos,	
+												})
+							
+		elseif(first == "OM") then -- Location of an off-map point
+					
+			
+		elseif(first == "FOB") then -- Location of a FOB
+		
+			
+		elseif(first == "OOB") then -- Vertice of an out of bounds region
+		
+
+			trigger.action.outText("OUT OF BOUNDS REGION DEFINITION", 30)	
+
+			self.region_def = true
+			self.r_name = "OOB"
+			trigger.action.outText("You can now place vertices. \n Place them in clockwise order with \"V\" in the ext field and then type \"done\" into a marker.", 30)	
+				
+			table.insert(self.r_table["OOB"], {["Verts"] = {}} )
+			
+		elseif(text == "") then
+		
+		
+		else
+		
+			trigger.action.outText("INVALID INPUT", 30)	
+			
+		end
+	
+	else
+	
+		trigger.action.outText("No region selected. Use F10 region to select one, or create a new one", 30)	
+	
+	end
+	
+end
+
+function Marks:removeall()
+	
+	for k,v in pairs(self.marks_table) do
+		trigger.action.removeMark(k)
+		self.marks_table[k] = nil
+	end
+
+end
+
+-- GLOBAL
+Mark_Obj = Marks.new()	
+
+-- To do: finish these
+
+
+function Marks:help()
+	
+	trigger.action.outText(
+	"CONFIG REGION TOOL\n"..
+	"How to use:\n"..
+	"- If creating a new region map for the first time, use the F10 menu to select \"new region\"\n"..
+	"- If loading, select \"import region\" make sure the region.JSON file in the import folder\n"..
+	"the first region in the list will automatically be selected. \n"..
+	"\n"..
+	"-Use map markers to enter commands and define the vertices that encompase your region\n"..
+	" map markers without any text inside will be assumed to be vertices. Enter vertices in clockwise\n"..
+	" orientation.\n"..
+	"\n"..
+	"Commands:\n"..
+	"NAME:\"\" will name the region with whatever is inside the quotation marks\n"..
+	"\n"..
+	"SET REGION TYPE:\n"..
+	"REG: Sets to regular type. Regions are regular type by default\n"..
+	"OOB: Sets the region to an out of bounds type. \n"..
+	"NC: Sets the region as non capturable type (needed for over water regions)\n"..
+	"\n"..
+	"Set feature points:\n"..
+	"FOB: Specified a FOB a point \n"..
+	"FARP: Specifies a farp at point. Must be within set distance from FOB\n"..
+	"FSB: Specifies a fire support base at point. Must be within set distance from FOB\n"..
+	"OM: Specifies an off map spawn point. This will act like an airbase that can be withdrawn from\n"..
+	"for the inventory system (for air spawns)\n"..
+	"SHOP:\"on\" or \"off\" Region must have an off map spawn for this. Will create a shop for this point\n"..
+	"SP: Specifies a strategic point at the point. This functions the same as towns and bases\n"..
+	"INV: Specifies an inventory at the given point. This will overwrite the default. Inventories \n"..
+	"will spawn assets from the base inventory that can be destroyed.\n" , 30)
+	
+end
+
+function Marks:display_info()
+			
+	if (self.curr_id == nil) then -- brand new table
+		trigger.action.outText("No regions currently defined, create a new one to start configuring", 30)
+	else
+		trigger.action.outText("Current region: "..self.curr_regions.."\n"..
+							   "Name: ".."\n"..self.r_table[self.curr_id]["name"].."\n"..
+							   "# of verts: "..#self.r_table[self.curr_id]["verts"].."\n"..
+							   "Type: "..self.r_table[self.curr_id]["type"].."\n"..
+							   " ", 30)
+	end	
+		
+	
+end
+	
+function Marks:delete_region()
+
+	if (self.curr_id == nil) then -- brand new table
+		trigger.action.outText("No regions currently defined, create a new one to start configuring", 30)
+		
+	elseif (self.r_table[self.curr_id]) then
+	
+		table.remove(self.r_table[self.curr_id])
+		trigger.action.outText("Region #"..self.curr_id.." deleted", 30)
+		
+		if(self.r_table[self.curr_id] == nil) then-- last entry in table
+			self.curr_id = self.curr_id - 1
+			if(self.r_table[self.curr_id] == nil) then -- empty table
+				self.r_table = {}
+				self.curr_id = nil
+				self.enabled = false				
+			end
+			
+			trigger.action.outText("Current Region: #"..self.curr_id, 30)
+			
+		end
+		
+		
+			
+	end	
+	
+end
+
+function Marks:select_next()
+	
+	if (self.curr_id == nil) then -- brand new table
+		trigger.action.outText("No regions currently defined, create a new one to start configuring", 30)
+		
+	elseif (self.r_table[self.curr_id+1]) then
+	
+		self.curr_id = self.curr_id + 1		
+		self.enabled = true		
+		trigger.action.outText("Region #"..self.curr_id.." selected, you may configure the region now with map markers", 30)
+		
+	else
+		
+		trigger.action.outText("Region #"..self.curr_id.." is the last region in the region list! You may create a new one", 30)
+	
+	end	
+		
+end
+
+function Marks:select_prev()
+	
+	if (self.curr_id == nil) then -- brand new table
+		trigger.action.outText("No regions currently defined, create a new one to start configuring", 30)
+		
+	elseif (self.r_table[self.curr_id-1]) then
+	
+		self.curr_id = self.curr_id - 1		
+		self.enabled = true		
+		trigger.action.outText("Region #"..self.curr_id.." selected, you may configure the region now with map markers", 30)
+		
+	else
+		
+		trigger.action.outText("Region #"..self.curr_id.." is the first region in the region list!", 30)
+	
+	end	
+	
+end
+
+function Marks:reset_region()
+	
+	if (self.curr_id == nil) then -- brand new table
+		trigger.action.outText("No regions currently defined, create a new one to start configuring", 30)
+		self.enabled = true
+	else
+		self.curr_id = self.curr_id + 1		
+		self.enabled = true
+	end	
+	
+	local empty_table = {["name"] = "",
+						 ["verts"] = {},
+						 ["type"] = {},
+						 ["FOB"] = {},
+						 ["FARP"] = {},
+						 ["FSB"] = {},
+						 ["OM"] = {},
+						 ["SP"] = {},
+						 ["INV"] = {},
+						}
+						
+	self.r_table[self.curr_id] = empty_table
+	
+	trigger.action.outText("Region #"..self.curr_id.." created. You may configure the region now with map markers", 30)
+	
+end
+
+function Marks:new_region()
+
+	if (self.curr_id == nil) then -- brand new table
+		self.curr_id = 1
+		self.enabled = true
+	else
+		self.curr_id = self.curr_id + 1		
+		self.enabled = true
+	end	
+	
+	local empty_table = {["name"] = "",
+						 ["verts"] = {},
+						 ["type"] = {},
+						 ["FOB"] = {},
+						 ["FARP"] = {},
+						 ["FSB"] = {},
+						 ["OM"] = {},
+						 ["SP"] = {},
+						 ["INV"] = {},
+						}
+						
+	self.r_table[self.curr_id] = empty_table
+	
+	trigger.action.outText("Region #"..self.curr_id.." created. You may configure the region now with map markers", 30)
+	
+end
+
+function Marks:export_region()
+	
+	if(write_JSON_tbl(tbl)) then	
+		trigger.action.outText("Region successfully written!", 30)
+		
+	else	
+		trigger.action.outText("Error writing region! Are your directories set up correctly?", 30)
+	
+	end
+	
+end
+
+function Marks:import_region()
+	-- need to read the JSON file and create the markups. going to be a bit of a job.
+	
+end
+
+function Marks:debugging()
+	
+	utils.tprint(self.r_table)
+	
+end
+
+function add_region()
+	
+	if(self.region_def and r_name ~= "OOB") then
+
+		trigger.action.outText("----------DRAWING -------------", 30)
+		argtable = {}
+		
+		for k, v in pairs(self.r_table[self.r_name]["Verts"]) do
+					
+			table.insert(argtable, v)
+				
+		end	
+
+		grey = {0.8,0.8,0.8,0.8}
+		colorfill = {1, 0, 0, 0.5}
+		linetype = enum.LineType["Solid"]
+		readonly = false
+		message = k
+		
+		table.insert(argtable, grey)
+		table.insert(argtable, colorfill)
+		table.insert(argtable, linetype)
+		table.insert(argtable, readonly)
+		table.insert(argtable, message)
+		
+		trigger.action.markupToAll(enum.Shape["Freeform"] , enum.Coalition["All"] , self.curr_id + 1 , unpack(argtable))
+		
+		self.curr_id = self.curr_id+1
+		
+	elseif(self.region_def and r_name == "OOB") then
+
+		trigger.action.outText("----------DRAWING -------------", 30)
+		trigger.action.outText("test #rtable"..#self.r_table["OOB"], 30)
+		argtable = {}
+			
+		for k, v in pairs(self.r_table["OOB"][#self.r_table["OOB"]]) do
+			
+			table.insert(argtable, v)
+
+		end	
+		
+		grey = {0.8,0.8,0.8,0.8}
+		colorfill = {1, 0, 0, 0.5}
+		linetype = enum.LineType["Solid"]
+		readonly = false
+		message = k
+		
+		table.insert(argtable, grey)
+		table.insert(argtable, colorfill)
+		table.insert(argtable, linetype)
+		table.insert(argtable, readonly)
+		table.insert(argtable, message)		
+		
+		trigger.action.markupToAll(enum.Shape["Freeform"] , enum.Coalition["All"] , self.curr_id + 1 , unpack(argtable))
+		
+		self.curr_id = self.curr_id+1
+		
+	end
+					
+	self.region_def = false
+	self.r_name = nil
+	self:removeall()
+
+end
+
+function read_JSON_file(filename)
+	
+	local input_path = modpath..utils.sep.."utilities"..utils.sep.."region info generator"..utils.sep.."input"..utils.sep 
+	
+	file = io.open(filename, "r")
+	
+	if(file) then
+		JSONString = file:read("*all")
+		file:close()
+		
+		if(JSONString) then
+			return JSON:decode(JSONString)
+		else
+			return nil	
+		end
+		
+	
+	else
+		
+		return nil
+	
+	end
+
+
+end
+
+function write_JSON_tbl(tbl)
+	--saves to output as well as to the theater folder (overwrite)
+	local output_path = modpath..utils.sep.."utilities"..utils.sep.."region info generator"..utils.sep.."output"..utils.sep 
+	local game_path = modpath..utils.sep.."theater"..utils.sep.."region.JSON"
+	
+	output_path = path.."region.JSON"
+	
+	file = io.open(output_path, "w+")
+	
+	if(file) then
+		
+		file:write(JSON:encode_pretty(tbl))
+		file:close()
+		return true	
+	
+	else
+		
+		return nil
+	
+	end
+
+
+end
+
+-- EVENT HANDLER
+
+local handler = {}
+
+function handler:onEvent(event)
+    if event.id == world.event.S_EVENT_MARK_REMOVE then
+        Mark_Obj:remove(event.idx)
+    elseif event.id == world.event.S_EVENT_BIRTH then
+		createMenu(event.initiator)
+    elseif event.id == world.event.S_EVENT_MARK_CHANGE then
+       	Mark_Obj:modify(event.idx, event.text, event.pos)
+    elseif event.id == world.event.S_EVENT_MARK_ADDED then
+       	Mark_Obj:modify(event.idx, event.text, event.pos)		
+    end
+end
+
+-- MENUS
+
+function createMenu(user_unit)
+	local gid  = user_unit:getID()
+	--local name = "Region Creator"
+	
+	---------------------------------------------------------------Region
+	
+
+	addcmd(gid, "Help", nil, Marks.help, Mark_Obj)	
+	addcmd(gid, "Current Region Info", nil, Marks.display_info, Mark_Obj)	
+	addcmd(gid, "Delete Current Region", nil, Marks.delete_region, Mark_Obj)	
+	addcmd(gid, "Select Next Region", nil, Marks.select_next, Mark_Obj)	
+	addcmd(gid, "Select Previous Region", nil, Marks.select_prev, Mark_Obj)	
+	addcmd(gid, "Reset Region", nil, Marks.reset_region, Mark_Obj)	
+	addcmd(gid, "New Region", nil, Marks.new_region, Mark_Obj)	
+	addcmd(gid, "Export", nil, Marks.export_region, Mark_Obj)	
+	addcmd(gid, "Import", nil, Marks.import_region, Mark_Obj)
+	addcmd(gid, "Debugging", nil, Marks.debugging, Mark_Obj)
+	addcmd(gid, "Add Region (done editing)", nil, add_region, Mark_Obj)	
+	
+end
+
+world.addEventHandler(handler)

@@ -129,19 +129,19 @@ end
 
 function generate_displayname_lookup_tbl(inv_tbl, m_table)
 	
-	inv_tbl["info"]["displayName_lu"] = {}
+	inv_tbl["info"]["displayName2typeName"] = {}
+	inv_tbl["info"]["typeName2displayName"] = {}
 	
+	--displayName2typeName
 	--Save these so keys = displayName values = typeName
 	
 	for categories, assets in pairs(m_table) do
 		
 		if(categories ~= "other") then
 		
-		inv_tbl["info"]["displayName_lu"][categories] = {}
-		
 			for typename, values in pairs(assets) do
 				
-				inv_tbl["info"]["displayName_lu"][categories][values.displayName] = typename
+				inv_tbl["info"]["displayName2typeName"][values.displayName] = typename
 				
 			end		
 		end
@@ -154,7 +154,31 @@ function generate_displayname_lookup_tbl(inv_tbl, m_table)
 		for tname, dname in pairs(typeNames) do
 
 			print(dname)
-			inv_tbl["info"]["displayName_lu"][categories][dname] = tname
+			inv_tbl["info"]["displayName2typeName"][dname] = tname
+		
+		end	
+	end
+	
+	--typeName2displayName
+	--Save these so keys = typeName values = displayName
+		
+	for categories, assets in pairs(m_table) do
+		
+		if(categories ~= "other") then
+		
+			for typename, values in pairs(assets) do
+				
+				inv_tbl["info"]["typeName2displayName"][typename] = values.displayName
+				
+			end		
+		end
+	end	
+	
+	--Overwrite any from the options file
+	print("overwrite")
+	for categories, typeNames in pairs(inv_tbl["info"]["display_names"]) do
+		for tname, dname in pairs(typeNames) do
+			inv_tbl["info"]["typeName2displayName"][tname] = dname
 		
 		end	
 	end
@@ -299,7 +323,7 @@ if(valid[map]) then
 					
 					for dname, value in pairs(weapons) do
 						
-						typeName = inventories_table.info.displayName_lu[categories][dname]
+						typeName = inventories_table.info.displayName2typeName[dname]
 						
 						if(typeName and value > 0) then
 							inventories_table[bases][categories][typeName] = value
