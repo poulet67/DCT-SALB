@@ -92,37 +92,43 @@ end
 
 function Commander:initAICommandUnits()
 
-	--[[
+	
 	sideString = enum.coalitionMap[self.owner]
 	
 	local command_path = settings.server.theaterpath..utils.sep.."command"..utils.sep..sideString
 	
-	self.Command_Units["ACTIVE"] = {}
+	self.Command_Units.ACTIVE = {}
+	self.Command_Units.ACTIVE.GROUND = {}
+	self.Command_Units.ACTIVE.HELO = {}
+	self.Command_Units.ACTIVE.AIR = {}
 	
-	for k,v in pairs(enum.commandUnitTypes) do
+	for k,v in pairs(self.formation.unit_table) do
 	
-		self.Command_Units[k] = {}
-		self.Command_Units["ACTIVE"][k] = {}
+		for key,values in pairs(v) do
+			
+			self:process_template(self.formation.unit_table)
+			
+		end
+			
+	end
 	
-	end	
-	
-	self:getTemplates(command_path)
-	--]]
-
 end
 
 function Commander:process_template(template)
-
-	assert(enum.commandUnitTypes[template.commandUnitType], "Command unit template must have valid unit type")
+	
+	--Any post import magic you want to pull, do it in here
+	
+	--assert(enum.commandUnitTypes[template.commandUnitType], "Command unit template must have valid unit type")
 	
 	-- TAKE OFF BEHAVIOR --------------
+
 	Logger:debug("TEMPLATE DUMP")
-	utils.tprint(AI_Template) 
-	Logger:debug(AI_Template.tpldata[1]["category"])
-	Logger:debug(Group.Category["AIRPLANE"])
-	Logger:debug(tostring(settings.gameplay["COMMAND_UNIT_AIRCRAFT_START_FROM_RAMP"]))
+	utils.tprint(template) 
+	--Logger:debug(AI_Template.tpldata[1]["category"])
+	--Logger:debug(Group.Category["AIRPLANE"])
+	--Logger:debug(tostring(settings.gameplay["COMMAND_UNIT_AIRCRAFT_START_FROM_RAMP"]))
 	
-	if(AI_Template.tpldata[1]["category"] == Group.Category["AIRPLANE"] and settings.gameplay["COMMAND_UNIT_AIRCRAFT_START_FROM_RAMP"]) then
+	if(template.tpldata[1]["category"] == Group.Category["AIRPLANE"] and settings.gameplay["COMMAND_UNIT_AIRCRAFT_START_FROM_RAMP"]) then
 		Logger:debug("INSIDE")
 		template.tpldata[1]["data"]["route"]["points"][1]["type"] = "From Runway" 
 		template.tpldata[1]["data"]["route"]["points"][1]["action"] = "From Runway" --Eagle Dynamics makes software
@@ -133,23 +139,16 @@ function Commander:process_template(template)
 	
 	-- STORE TEMPLATE -------------
 	
-	Logger:debug("TEMPLATE SAVE")
-	Logger:debug(template.display_name)
-
-		
-	table.insert(self.Command_Units[AI_Template.commandUnitType], {[template.display_name] = AI_Template})
-	Logger:debug("COMMANDER ==== Command unit assinged" .. enum.commandUnitTypes[AI_Template.commandUnitType])
-
 end
 
 
---[[
-I killed this.
---]]
+
 function Commander:getTemplates(command_path)
 
 	Logger:debug("COMMANDER ==== IN GETTEMPLATES ====  : "..command_path)
 	
+	
+
 	for filename in lfs.dir(command_path) do
 		if filename ~= "." and filename ~= ".." and
 			filename ~= ".git" then			
@@ -193,6 +192,13 @@ function Commander:getTemplates(command_path)
 			end
 			
 		end
+	end
+	
+	
+	for k,v in pairs(self.formation.unit_table) do
+	
+		
+	
 	end
 
 end

@@ -11,3 +11,4 @@
 # ignore release zip files
 *.zip
 src/dct/names.txt
+theater/OD

@@ -1,4 +1,3 @@
-#yes I stole this from online, credit to https://henney.com/chm/callsign.htm
 import re
 
 f = open("codenames.txt", "r", encoding='utf-8')
