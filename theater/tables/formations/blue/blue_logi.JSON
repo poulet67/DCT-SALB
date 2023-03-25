@@ -5,7 +5,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"C-130\"",
+      "name": "LOGI NAME=\"C-130\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -48,7 +48,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"C-130\"",
+    "name": "LOGI NAME=\"C-130\"",
     "x": -314968.34375,
     "y": 895729.1875
   } ] ],
@@ -58,7 +58,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"M939 Truck\"",
+      "name": "LOGI 1  NAME=\"M939 Truck\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -101,7 +101,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"M939 Truck\"",
+    "name": "LOGI 1  NAME=\"M939 Truck\"",
     "x": -314978.4375,
     "y": 896871.5625
   } ] ],
@@ -111,7 +111,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"CH-47D Chinook Helicopter\"",
+      "name": "LOGI 6  NAME=\"CH-47D Chinook Helicopter\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -154,7 +154,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"CH-47D Chinook Helicopter\"",
+    "name": "LOGI 6  NAME=\"CH-47D Chinook Helicopter\"",
     "x": -314950.5625,
     "y": 896903.125
   } ] ]

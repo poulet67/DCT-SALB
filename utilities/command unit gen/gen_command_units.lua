@@ -160,13 +160,6 @@ for key, value in pairs(DCS_ground_unit_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.Ground_Unit -- 2
@@ -206,6 +199,8 @@ for key, value in pairs(DCS_ground_unit_table) do
 	
 end
 
+--******************************************************HELICOPTER FORMATIONS *****************************
+
 for key, value in pairs(DCS_helo_table) do
 	
 	-- read through each group in the table, if any of these match the formation table, save it as a template
@@ -221,13 +216,6 @@ for key, value in pairs(DCS_helo_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.HELICOPTER     -- 1
@@ -282,13 +270,6 @@ for key, value in pairs(DCS_airframe_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.AIRPLANE -- 2
@@ -360,13 +341,6 @@ for key, value in pairs(DCS_ground_unit_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.GROUND_UNIT -- 2
@@ -420,13 +394,6 @@ for key, value in pairs(DCS_helo_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.HELICOPTER     -- 1
@@ -478,13 +445,6 @@ for key, value in pairs(DCS_airframe_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.AIRPLANE -- 2
@@ -567,13 +527,6 @@ for key, value in pairs(DCS_ground_unit_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.Ground_Unit -- 2
@@ -628,13 +581,6 @@ for key, value in pairs(DCS_helo_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.HELICOPTER     -- 1
@@ -689,13 +635,6 @@ for key, value in pairs(DCS_airframe_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.AIRPLANE -- 2
@@ -770,13 +709,6 @@ for key, value in pairs(DCS_ground_unit_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.Ground_Unit -- 2
@@ -830,13 +762,6 @@ for key, value in pairs(DCS_helo_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.HELICOPTER -- 2
@@ -886,13 +811,6 @@ for key, value in pairs(DCS_airframe_table) do
 		
 		a = empty_template()
 		--utils.tprint(a)
-		namestring = string.match(name, "NAME=\".+\"")
-		
-		if(namestring) then-- this name will be as displayed in F10 menu commands
-			--env.info("Namestring: "..namestring)
-			name = string.match(namestring, "\".+\"")
-			--env.info("Name found:"..name)
-		end
 			
 		a[1]["countryid"] = countryId
 		a[1]["category"] = Unit.Category.AIRPLANE -- 2

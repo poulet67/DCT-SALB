@@ -266,7 +266,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"F5 - 5xMk82\"",
+        "name": "BOMBER SHIP NAME=\"F5 - 5xMk82\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -309,7 +309,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"F5 - 5xMk82\"",
+      "name": "BOMBER SHIP NAME=\"F5 - 5xMk82\"",
       "x": -315391.77882481,
       "y": 897621.96332288
     } ], [ {
@@ -318,7 +318,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"F5 - Hydras\"",
+        "name": "CAS SHIP NAME=\"F5 - Hydras\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -361,7 +361,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"F5 - Hydras\"",
+      "name": "CAS SHIP NAME=\"F5 - Hydras\"",
       "x": -315188.67088223,
       "y": 897336.38661265
     } ], [ {
@@ -370,59 +370,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"S-3B\"",
-        "points": [ {
-          "ETA": 0,
-          "ETA_locked": true,
-          "action": "",
-          "alt": [],
-          "alt_type": "BARO",
-          "formation_template": [],
-          "speed": 0,
-          "task": {
-            "id": "ComboTask",
-            "params": {
-              "tasks": []
-            }
-          },
-          "type": "Turning Point",
-          "x": [],
-          "y": []
-        } ],
-        "route": {
-          "spans": []
-        },
-        "start_time": 0,
-        "task": "Ground Nothing",
-        "tasks": [],
-        "uncontrollable": [],
-        "units": [ {
-          "heading": 0,
-          "name": "TANKER SHIP NAME=\"S-3B\"-1-1",
-          "playerCanDrive": true,
-          "skill": "Average",
-          "transportable": {
-            "randomTransportable": false
-          },
-          "type": "S-3B Tanker",
-          "unitId": 1,
-          "x": -315678.38298476,
-          "y": 898250.86511368
-        } ],
-        "visible": false,
-        "x": [],
-        "y": []
-      },
-      "name": "\"S-3B\"",
-      "x": -315678.38298476,
-      "y": 898250.86511368
-    } ], [ {
-      "category": 0,
-      "countryid": 2,
-      "data": {
-        "groupID": 0,
-        "hidden": false,
-        "name": "\"S-3B\"",
+        "name": "TANKER SHIP NAME=\"S-3B\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -465,7 +413,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"S-3B\"",
+      "name": "TANKER SHIP NAME=\"S-3B\"",
       "x": -315631.28503466,
       "y": 898175.73328787
     } ], [ {
@@ -474,7 +422,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"KC-130\"",
+        "name": "TANKER SHIP NAME=\"KC-130\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -517,7 +465,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"KC-130\"",
+      "name": "TANKER SHIP NAME=\"KC-130\"",
       "x": -315600.20857882,
       "y": 898113.72883117
     } ], [ {
@@ -526,7 +474,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"KC-135\"",
+        "name": "TANKER SHIP NAME=\"KC-135\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -569,7 +517,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"KC-135\"",
+      "name": "TANKER SHIP NAME=\"KC-135\"",
       "x": -315562.53659368,
       "y": 898067.04465866
     } ], [ {
@@ -682,7 +630,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"B-52 8xHarpoon\"",
+        "name": "ANTISHIP SHIP NAME=\"B-52 8xHarpoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -725,7 +673,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"B-52 8xHarpoon\"",
+      "name": "ANTISHIP SHIP NAME=\"B-52 8xHarpoon\"",
       "x": -315417.51117587,
       "y": 897836.91058731
     } ], [ {
@@ -734,7 +682,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"B-52 51 Mk82\"",
+        "name": "BOMBER SHIP NAME=\"B-52 51 Mk82\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -777,7 +725,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"B-52 51 Mk82\"",
+      "name": "BOMBER SHIP NAME=\"B-52 51 Mk82\"",
       "x": -315393.3313849,
       "y": 897762.49635911
     } ], [ {
@@ -786,7 +734,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"F/A 18 5xMk83\"",
+        "name": "BOMBER SHIP NAME=\"F/A 18 5xMk83\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -829,7 +777,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"F/A 18 5xMk83\"",
+      "name": "BOMBER SHIP NAME=\"F/A 18 5xMk83\"",
       "x": -315348.65366793,
       "y": 897684.91746354
     } ], [ {
@@ -838,7 +786,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"F/A 18 4xHarpoon\"",
+        "name": "ANTISHIP SHIP NAME=\"F/A 18 4xHarpoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -881,7 +829,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"F/A 18 4xHarpoon\"",
+      "name": "ANTISHIP SHIP NAME=\"F/A 18 4xHarpoon\"",
       "x": -315327.04789186,
       "y": 897645.87190604
     } ], [ {
@@ -1202,7 +1150,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"F14 4-2-2\"",
+        "name": "CAP SHIP  NAME=\"F14 4-2-2\"-1",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -1245,7 +1193,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"F14 4-2-2\"",
+      "name": "CAP SHIP  NAME=\"F14 4-2-2\"-1",
       "x": -315069.07921147,
       "y": 897208.23822737
     } ], [ {
@@ -1254,7 +1202,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"F15 2-4-2 \"",
+        "name": "CAP SHIP NAME=\"F15 2-4-2 \"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -1297,7 +1245,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"F15 2-4-2 \"",
+      "name": "CAP SHIP NAME=\"F15 2-4-2 \"",
       "x": -315090.75897861,
       "y": 897243.71198702
     } ], [ {
@@ -1306,7 +1254,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"F14 4-2-2\"",
+        "name": "CAP SHIP NAME=\"F14 4-2-2\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -1349,7 +1297,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"F14 4-2-2\"",
+      "name": "CAP SHIP NAME=\"F14 4-2-2\"",
       "x": -315140.51671147,
       "y": 897329.17572737
     } ], [ {
@@ -1358,7 +1306,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"F5 - 0-0-2\"",
+        "name": "CAP SHIP NAME=\"F5 - 0-0-2\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -1401,7 +1349,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"F5 - 0-0-2\"",
+      "name": "CAP SHIP NAME=\"F5 - 0-0-2\"",
       "x": -315127.1499064,
       "y": 897302.14393556
     } ], [ {
@@ -1410,7 +1358,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"F/A 18 0-2-6\"",
+        "name": "CAP SHIP  NAME=\"F/A 18 0-2-6\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -1453,7 +1401,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"F/A 18 0-2-6\"",
+      "name": "CAP SHIP  NAME=\"F/A 18 0-2-6\"",
       "x": -315114.72878599,
       "y": 897286.9198997
     } ], [ {
@@ -1462,7 +1410,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"F16 2-0-4\"",
+        "name": "CAP SHIP NAME=\"F16 2-0-4\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -1505,7 +1453,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"F16 2-0-4\"",
+      "name": "CAP SHIP NAME=\"F16 2-0-4\"",
       "x": -315106.35604858,
       "y": 897272.31110001
     } ], [ {
@@ -1514,7 +1462,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"F15 0-4-2 \"",
+        "name": "CAP SHIP NAME=\"F15 0-4-2 \"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -1557,7 +1505,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"F15 0-4-2 \"",
+      "name": "CAP SHIP NAME=\"F15 0-4-2 \"",
       "x": -315101.18237185,
       "y": 897256.33919358
     } ], [ {
@@ -1620,7 +1568,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Hawk Anti-Air Battery\"",
+        "name": "ANTI-AIR BATTERY 2 NAME=\"Hawk Anti-Air Battery\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -1747,7 +1695,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Hawk Anti-Air Battery\"",
+      "name": "ANTI-AIR BATTERY 2 NAME=\"Hawk Anti-Air Battery\"",
       "x": -315196.34375,
       "y": 897080.875
     } ], [ {
@@ -1755,7 +1703,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"PATRIOT BatterY\"",
+        "name": "ANTI-AIR BATTERY NAME=\"PATRIOT BatterY\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -1918,7 +1866,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"PATRIOT BatterY\"",
+      "name": "ANTI-AIR BATTERY NAME=\"PATRIOT BatterY\"",
       "x": -315099.96875,
       "y": 897005.9375
     } ], [ {
@@ -1926,7 +1874,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"M270 Battery\"",
+        "name": "ARTILLERY BATTERY-1 NAME=\"M270 Battery\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2005,7 +1953,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"M270 Battery\"",
+      "name": "ARTILLERY BATTERY-1 NAME=\"M270 Battery\"",
       "x": -315017.15624999,
       "y": 896895.875
     } ], [ {
@@ -2013,7 +1961,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"M109 Howitzer Battery\"",
+        "name": "ARTILLERY BATTERY NAME=\"M109 Howitzer Battery\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2080,7 +2028,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"M109 Howitzer Battery\"",
+      "name": "ARTILLERY BATTERY NAME=\"M109 Howitzer Battery\"",
       "x": -315016.71875012,
       "y": 896886.625
     } ] ],
@@ -2089,7 +2037,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"M163 Vulcan Platoon\"",
+        "name": "ANTI-AIR PLATOON 3 NAME=\"M163 Vulcan Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2144,7 +2092,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"M163 Vulcan Platoon\"",
+      "name": "ANTI-AIR PLATOON 3 NAME=\"M163 Vulcan Platoon\"",
       "x": -315039.96875,
       "y": 896832.625
     } ], [ {
@@ -2152,7 +2100,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Chaparral Platoon\"",
+        "name": "ANTI-AIR PLATOON NAME=\"Chaparral Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2207,7 +2155,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Chaparral Platoon\"",
+      "name": "ANTI-AIR PLATOON NAME=\"Chaparral Platoon\"",
       "x": -315039.68749999,
       "y": 896827.875
     } ], [ {
@@ -2215,7 +2163,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Avenger Platoon\"",
+        "name": "ANTI-AIR PLATOON NAME=\"Avenger Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2270,7 +2218,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Avenger Platoon\"",
+      "name": "ANTI-AIR PLATOON NAME=\"Avenger Platoon\"",
       "x": -315040.06249994,
       "y": 896823.625
     } ], [ {
@@ -2278,7 +2226,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"MG HMMWV Platoon\"",
+        "name": "MOTORIZED PLATOON NAME=\"MG HMMWV Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2345,7 +2293,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"MG HMMWV Platoon\"",
+      "name": "MOTORIZED PLATOON NAME=\"MG HMMWV Platoon\"",
       "x": -314976.84374995,
       "y": 896829.4375
     } ], [ {
@@ -2353,7 +2301,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"M60A3 Platoon\"",
+        "name": "ARMORED PLATOON 4 NAME=\"M60A3 Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2420,7 +2368,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"M60A3 Platoon\"",
+      "name": "ARMORED PLATOON 4 NAME=\"M60A3 Platoon\"",
       "x": -314978.18750013,
       "y": 896822.5
     } ], [ {
@@ -2428,7 +2376,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"M1A2 Platoon\"",
+        "name": "ARMORED PLATOON NAME=\"M1A2 Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2495,7 +2443,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"M1A2 Platoon\"",
+      "name": "ARMORED PLATOON NAME=\"M1A2 Platoon\"",
       "x": -314978.99999999,
       "y": 896815.5625
     } ], [ {
@@ -2578,7 +2526,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Unarmed HMMWV Platoon\"",
+        "name": "MOTORIZED PLATOON 1 NAME=\"Unarmed HMMWV Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2645,7 +2593,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Unarmed HMMWV Platoon\"",
+      "name": "MOTORIZED PLATOON 1 NAME=\"Unarmed HMMWV Platoon\"",
       "x": -314977.40624995,
       "y": 896799.6875
     } ], [ {
@@ -2653,7 +2601,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"AAV-7 (Amphibious) Platoon\"",
+        "name": "AMPHIBIOUS PLATOON NAME=\"AAV-7 (Amphibious) Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2720,7 +2668,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"AAV-7 (Amphibious) Platoon\"",
+      "name": "AMPHIBIOUS PLATOON NAME=\"AAV-7 (Amphibious) Platoon\"",
       "x": -314978.74999991,
       "y": 896793.625
     } ], [ {
@@ -2728,7 +2676,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Bradley Platoon\"",
+        "name": "MECHANIZED PLATOON 2 NAME=\"Bradley Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2795,7 +2743,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Bradley Platoon\"",
+      "name": "MECHANIZED PLATOON 2 NAME=\"Bradley Platoon\"",
       "x": -314977.84374988,
       "y": 896774.4375
     } ], [ {
@@ -2803,7 +2751,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"ATGM HMMWV Platoon\"",
+        "name": "MOTORIZED PLATOON 4 NAME=\"ATGM HMMWV Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2870,7 +2818,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"ATGM HMMWV Platoon\"",
+      "name": "MOTORIZED PLATOON 4 NAME=\"ATGM HMMWV Platoon\"",
       "x": -314977.15624995,
       "y": 896787.1875
     } ], [ {
@@ -2878,7 +2826,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"M113 Platoon\"",
+        "name": "MECHANIZED PLATOON NAME=\"M113 Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -2945,7 +2893,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"M113 Platoon\"",
+      "name": "MECHANIZED PLATOON NAME=\"M113 Platoon\"",
       "x": -314977.15625,
       "y": 896781.5625
     } ], [ {
@@ -2953,7 +2901,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"LAV-25 Platoon\"",
+        "name": "MOTORIZED PLATOON  NAME=\"LAV-25 Platoon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -3020,7 +2968,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"LAV-25 Platoon\"",
+      "name": "MOTORIZED PLATOON  NAME=\"LAV-25 Platoon\"",
       "x": -314978.09375007,
       "y": 896768.25
     } ] ],
@@ -3029,7 +2977,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Airborne Squad\"",
+        "name": "Airborne Squad NAME=\"Airborne Squad\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -3120,7 +3068,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Airborne Squad\"",
+      "name": "Airborne Squad NAME=\"Airborne Squad\"",
       "x": -314985.375,
       "y": 896927.4375
     } ], [ {
@@ -3128,7 +3076,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Engineer Squad\"",
+        "name": "ENGINEER SQUAD NAME=\"Engineer Squad\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -3279,7 +3227,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Engineer Squad\"",
+      "name": "ENGINEER SQUAD NAME=\"Engineer Squad\"",
       "x": -314983.53125,
       "y": 896927.375
     } ], [ {
@@ -3287,7 +3235,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"USMC Squad\"",
+        "name": "MARINES SQUAD NAME=\"USMC Squad\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -3498,7 +3446,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"USMC Squad\"",
+      "name": "MARINES SQUAD NAME=\"USMC Squad\"",
       "x": -314980.84375,
       "y": 896927.3125
     } ], [ {
@@ -3506,7 +3454,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Mortar Squad\"",
+        "name": "MORTAR SQUAD NAME=\"Mortar Squad\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -3609,7 +3557,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Mortar Squad\"",
+      "name": "MORTAR SQUAD NAME=\"Mortar Squad\"",
       "x": -314978.71875,
       "y": 896927.25
     } ], [ {
@@ -3617,7 +3565,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Army Rifle Squad\"",
+        "name": "RIFLE SQUAD NAME=\"Army Rifle Squad\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -3780,7 +3728,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Army Rifle Squad\"",
+      "name": "RIFLE SQUAD NAME=\"Army Rifle Squad\"",
       "x": -314971.53125,
       "y": 896927.1875
     } ] ],
@@ -3789,7 +3737,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Recon Team\"",
+        "name": "RECON TEAM NAME=\"Recon Team\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -3868,7 +3816,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Recon Team\"",
+      "name": "RECON TEAM NAME=\"Recon Team\"",
       "x": -314986.625,
       "y": 896927.4375
     } ], [ {
@@ -3876,7 +3824,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Fire Team\"",
+        "name": "FIRE TEAM NAME=\"Fire Team\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -3955,7 +3903,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Fire Team\"",
+      "name": "FIRE TEAM NAME=\"Fire Team\"",
       "x": -314974.8125,
       "y": 896931.0625
     } ], [ {
@@ -3963,7 +3911,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"JTAC Team\"",
+        "name": "JTAC TEAM NAME=\"JTAC Team\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -4030,7 +3978,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"JTAC Team\"",
+      "name": "JTAC TEAM NAME=\"JTAC Team\"",
       "x": -314974.78125,
       "y": 896936.375
     } ], [ {
@@ -4038,7 +3986,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"Stinger Team\"",
+        "name": "ANTI-AIR TEAM NAME=\"Stinger Team\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -4093,7 +4041,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"Stinger Team\"",
+      "name": "ANTI-AIR TEAM NAME=\"Stinger Team\"",
       "x": -314974.625,
       "y": 896927.3125
     } ] ]
@@ -4105,7 +4053,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"UH-1H Recon\"",
+        "name": "RECON SHIP NAME=\"UH-1H Recon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -4148,7 +4096,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"UH-1H Recon\"",
+      "name": "RECON SHIP NAME=\"UH-1H Recon\"",
       "x": -315441.5,
       "y": 897464.3125
     } ], [ {
@@ -4157,7 +4105,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"SA342 Recon\"",
+        "name": "RECON SHIP NAME=\"SA342 Recon\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -4200,7 +4148,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"SA342 Recon\"",
+      "name": "RECON SHIP NAME=\"SA342 Recon\"",
       "x": -315443.90625,
       "y": 897494.8125
     } ], [ {
@@ -4209,7 +4157,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"OH-58D Kiowa Warrior\"",
+        "name": "RECON SHIP NAME=\"OH-58D Kiowa Warrior\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -4252,7 +4200,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"OH-58D Kiowa Warrior\"",
+      "name": "RECON SHIP NAME=\"OH-58D Kiowa Warrior\"",
       "x": -315440.53125,
       "y": 897433.625
     } ], [ {
@@ -4261,7 +4209,7 @@
       "data": {
         "groupID": 0,
         "hidden": false,
-        "name": "\"AH-64A\"",
+        "name": "CAS SHIP NAME=\"AH-64A\"",
         "points": [ {
           "ETA": 0,
           "ETA_locked": true,
@@ -4304,7 +4252,7 @@
         "x": [],
         "y": []
       },
-      "name": "\"AH-64A\"",
+      "name": "CAS SHIP NAME=\"AH-64A\"",
       "x": -315457.125,
       "y": 897377.25
     } ] ]

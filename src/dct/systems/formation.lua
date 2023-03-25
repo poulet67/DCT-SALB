@@ -18,7 +18,7 @@ local settings    = _G.dct.settings
 
 -- GLOBALS
 
-local Formation_Table = {}
+Formation_Table = {}
 Formation_Table.Master = {}
 Formation_Table.Master.Ground = {}
 Formation_Table.Master.Air = {}
@@ -84,31 +84,31 @@ Formation_Table.Master.Ground.BLUE = {["Brigade"] = {--["Top"] = true,
 													}
 									}
 		
-function get_ground_types(table_in, table_out)
+function get_ground_types(table_in, table_out, prev_form)
 		
-	local values = {}
+	local string_table = {}
 	
-	local formation_string = "";
+	local formation_string = {};
 		
 	local lot_queue = {}
 	
-	for k,v in pairs(table_in) do
-		
+	for k,v in pairs(table_in) do		
 		if type(v) == "table" and k ~= "Types" then
-			formation_string = k
+			table_out[k] = {}
+			table.insert(string_table, k)
 			table.insert(lot_queue, v)
-		end
-		if k == "Types" then
-			values = v
+		elseif k == "Types" then
+			assert(prev_form, "error in formation table structure")
+			table_out[prev_form] = v
 		end
 	
 	end
 	
 	table_out[formation_string] = values
 		
-	for k,v in ipairs(lot_queue) do		
+	for i,subtable in ipairs(lot_queue) do		
 		env.info("Deeper...")
-		table_out = get_ground_types(v)
+		table_out = get_ground_types(subtable, table_out, string_table[i])
 				
 	end
 	
@@ -116,16 +116,16 @@ function get_ground_types(table_in, table_out)
 	
 end
 
-Formation_Table.Ground.BLUE.Types = get_ground_types(Formation_Table.Master.Ground.BLUE)
+Formation_Table.Ground.BLUE.Types = get_ground_types(Formation_Table.Master.Ground.BLUE, {})
 
 
 function Formation_Table.Ground.BLUE.matchTypes(string_in)
 	
-	Logger:debug("in match types: "..string_in)
+	Logger:debug("in match types BLUE: "..string_in)
 	
 	for k,v in pairs(Formation_Table.Ground.BLUE.Types) do
 		Logger:debug(k)
-		if string.match(string.upper(string_in),string.upper(k)) then
+		if string.match(string.upper(string_in), string.upper(k)) then
 		
 			Logger:debug("match found! "..k)
 			return k
@@ -160,11 +160,6 @@ Formation_Table.Master.Air.BLUE = {
 																				 }
 																		
 																	}
-													   },
-													   
-										 ["Battery"] = {["Min"] = 0,
-														["Max"] = 2,
-														["CP Reward"] = 500
 													   }
 									
 									
@@ -193,13 +188,7 @@ Formation_Table.Master.Air.RED = {
 																				 }
 																		
 																	}
-													   },
-													   
-										 ["Battery"] = {["Min"] = 0,
-														["Max"] = 2,
-														["CP Reward"] = 500
-													   }
-									
+													   }					
 									
 									
 										}
@@ -249,15 +238,36 @@ Formation_Table.Master.Ground.RED = {["Regiment"] = {--["Top"] = true,
 										}
 									}
 									
-Formation_Table.Ground.RED.Types = get_ground_types(Formation_Table.Master.Ground.RED)
+Formation_Table.Ground.RED.Types = get_ground_types(Formation_Table.Master.Ground.RED, {})
 
 
 function Formation_Table.Ground.RED.matchTypes(string_in)
 	
+	Logger:debug("in match types: "..string_in)
+	
 	for k,v in pairs(Formation_Table.Ground.RED.Types) do
+		Logger:debug(k)
+		if string.match(string.upper(string_in),string.upper(k)) then
 		
-		if string.match(k, string_in) then
+			Logger:debug("match found! "..k)
+			return k
 			
+		end
+	
+	end
+	
+	return nil
+	
+end
+function Formation_Table.Ground.BLUE.matchTypes(string_in)
+	
+	Logger:debug("in match types: "..string_in)
+	
+	for k,v in pairs(Formation_Table.Ground.BLUE.Types) do
+		Logger:debug(k)
+		if string.match(string.upper(string_in), string.upper(k)) then
+		
+			Logger:debug("match found! "..k)
 			return k
 			
 		end
@@ -343,11 +353,12 @@ Formation_Table.Air.RED.Types = {
 }
 
 function Formation_Table.Air.BLUE.matchTypes(string_in)
-	
-	for k,v in pairs(Formation_Table.Air.BLUE.Types) do
 		
-		if string.match(k, string_in) then
-			
+	for k,v in pairs(Formation_Table.Air.RED.Types) do
+		Logger:debug(k)
+		if string.match(string.upper(string_in),string.upper(k)) then
+		
+			Logger:debug("match found! "..k)
 			return k
 			
 		end
@@ -355,7 +366,6 @@ function Formation_Table.Air.BLUE.matchTypes(string_in)
 	end
 	
 	return nil
-	
 end
 
 function Formation_Table.Air.RED.matchTypes(string_in)
@@ -511,7 +521,7 @@ function Formation:process_types_GROUND()
 			--utils.tprint(templ)
 			
 			name_str = templ[1]["name"]
-			match_str = string.match(name_str, "Name=\"(.*)\"") or ""
+			match_str = string.match(name_str, "Name=\"(.*)\"")
 			if(match_str) then -- special name
 				match_str:sub(5)		
 				Logger:debug("Name found: "..match_str)
@@ -549,12 +559,13 @@ end
 function Formation:process_types_HELO()
 		
 	Logger:debug("Processing JSON file: ")
-	local side_str = enum.coalitionMap[self._cmdr.owner]
 	
 	Logger:debug("Type table: ")
-	utils.tprint(Formation_Table.Air.BLUE.Types)
+	--utils.tprint(Formation_Table.Air.BLUE.Types)
 	
-	--utils.tprint(self.unit_table.GROUND)
+	local side_str = enum.coalitionMap[self._cmdr.owner]
+	
+	--utils.tprint(self.unit_table.HELOS)
 	
 	for k, form in pairs(self.unit_table.HELOS) do
 	
@@ -563,19 +574,24 @@ function Formation:process_types_HELO()
 			Logger:debug("n: "..n)
 			--utils.tprint(templ)
 			
-			name_str = templ[1]["name"]			
+			name_str = templ[1]["name"]
 			match_str = string.match(name_str, "Name=\"(.*)\"")
-			
-			match_str:sub(5)
-			
-			Logger:debug("Name found: "..match_str)
+			if(match_str) then -- special name
+				match_str:sub(5)		
+				Logger:debug("Name found: "..match_str)
+				templ[1]["name"] = name_str
+			end
 			
 			t_string = Formation_Table.Air[side_str]["matchTypes"](name_str) --string with the type of unit
 			--yes we are going to gloss over the fact the the line of code above looks like a function and a table
 			--had the most unholiest of offspring
 			--welcome to lua motherfucker
 			
-			Logger:debug("Type found: "..t_string)
+			if(t_string) then -- 
+				Logger:debug("Type found: "..t_string)
+			else				
+				Logger:debug("Type not found!: "..name_str)
+			end
 			
 			--todo: now that we can match individual templates to types... something
 			--put them in the flat table?
@@ -599,32 +615,38 @@ end
 function Formation:process_types_AIR()
 		
 	Logger:debug("Processing JSON file: ")
-	local side_str = enum.coalitionMap[self._cmdr.owner]
 	
 	Logger:debug("Type table: ")
-	utils.tprint(Formation_Table.Air.BLUE.Types)
+	--utils.tprint(Formation_Table.Air.BLUE.Types)
 	
-	--utils.tprint(self.unit_table.GROUND)
+	local side_str = enum.coalitionMap[self._cmdr.owner]
 	
-	for k, form in pairs(self.unit_table.Air) do
+	--utils.tprint(self.unit_table.Air)
+	
+	for k, form in pairs(self.unit_table.AIR) do
 	
 		Logger:debug("k: "..k)
 		for n, templ in ipairs(form) do
 			Logger:debug("n: "..n)
 			--utils.tprint(templ)
 			
-			name_str = templ[1]["name"]			
-			match_str = string.match(name_str, "Name=\"(.*)\"") or ""
-			match_str:sub(5)
-			
-			Logger:debug("Name found: "..match_str)
+			name_str = templ[1]["name"]
+			match_str = string.match(name_str, "Name=\"(.*)\"")
+			if(match_str) then -- special name
+				match_str:sub(5)		
+				Logger:debug("Name found: "..match_str)
+			end
 			
 			t_string = Formation_Table.Air[side_str]["matchTypes"](name_str) --string with the type of unit
 			--yes we are going to gloss over the fact the the line of code above looks like a function and a table
 			--had the most unholiest of offspring
 			--welcome to lua motherfucker
 			
-			Logger:debug("Type found: "..t_string)
+			if(t_string) then -- 
+				Logger:debug("Type found: "..t_string)
+			else				
+				Logger:debug("Type not found!: "..name_str)
+			end
 			
 			--todo: now that we can match individual templates to types... something
 			--put them in the flat table?

@@ -5,7 +5,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"Il-78M\"",
+      "name": "LOGI NAME=\"Il-78M\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -48,7 +48,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"Il-78M\"",
+    "name": "LOGI NAME=\"Il-78M\"",
     "x": -51372.504304856,
     "y": 705786.54722738
   } ], [ {
@@ -57,7 +57,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"Il-76MD\"",
+      "name": "LOGI NAME=\"Il-76MD\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -100,7 +100,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"Il-76MD\"",
+    "name": "LOGI NAME=\"Il-76MD\"",
     "x": -51295.456693213,
     "y": 705791.42251396
   } ], [ {
@@ -109,7 +109,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"An-26B\"",
+      "name": "LOGI NAME=\"An-26B\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -152,7 +152,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"An-26B\"",
+    "name": "LOGI NAME=\"An-26B\"",
     "x": -51241.435704123,
     "y": 705782.34078431
   } ] ],
@@ -161,7 +161,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"Ural-375 Truck\"",
+      "name": "LOGI 20 NAME=\"Ural-375 Truck\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -204,7 +204,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"Ural-375 Truck\"",
+    "name": "LOGI 20 NAME=\"Ural-375 Truck\"",
     "x": -51889.359375,
     "y": 706452.1875
   } ], [ {
@@ -212,7 +212,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"Ural-4320 Truck\"",
+      "name": "LOGI 45 NAME=\"Ural-4320 Truck\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -255,7 +255,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"Ural-4320 Truck\"",
+    "name": "LOGI 45 NAME=\"Ural-4320 Truck\"",
     "x": -51889.34765625,
     "y": 706447.5625
   } ], [ {
@@ -314,7 +314,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"Refueler ATZ-5\"",
+      "name": "LOGI 12 NAME=\"Refueler ATZ-5\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -357,7 +357,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"Refueler ATZ-5\"",
+    "name": "LOGI 12 NAME=\"Refueler ATZ-5\"",
     "x": -51888.74609375,
     "y": 706437.8125
   } ], [ {
@@ -365,7 +365,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"UAZ-469\"",
+      "name": "LOGI NAME=\"UAZ-469\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -408,7 +408,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"UAZ-469\"",
+    "name": "LOGI NAME=\"UAZ-469\"",
     "x": -51888.789062439,
     "y": 706456.5625
   } ] ],
@@ -418,7 +418,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"Mi-8\"",
+      "name": "LOGI 5 NAME=\"Mi-8\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -461,7 +461,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"Mi-8\"",
+    "name": "LOGI 5 NAME=\"Mi-8\"",
     "x": -51928.5703125,
     "y": 706630.6875
   } ], [ {
@@ -470,7 +470,7 @@
     "data": {
       "groupID": 0,
       "hidden": false,
-      "name": "\"Mi-26\"",
+      "name": "LOGI 2 NAME=\"Mi-26\"",
       "points": [ {
         "ETA": 0,
         "ETA_locked": true,
@@ -513,7 +513,7 @@
       "x": [],
       "y": []
     },
-    "name": "\"Mi-26\"",
+    "name": "LOGI 2 NAME=\"Mi-26\"",
     "x": -51929.109375,
     "y": 706595.125
   } ] ]
